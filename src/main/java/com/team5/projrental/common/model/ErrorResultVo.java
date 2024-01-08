@@ -5,11 +5,9 @@ import lombok.Data;
 @Data
 public class ErrorResultVo {
     private String message;
-    private String reason;
     private Integer errorCode;
 
-    public ErrorResultVo(String message, String reason) {
+    public ErrorResultVo(String message) {
         this.message = message;
-        this.reason = reason;
     }
 }

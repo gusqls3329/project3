@@ -4,5 +4,34 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team5.projrental.product.ProductMapper">
 
+    <select id="getProduct">
+        select U.nick, U.pic, P.iproduct, P.title, P.pic as prodPic, P.rental_price as rentalPrice,
+            P.rental_start_date as rentalDateDate, P.rental_end_date as rentalEndDate, concat(S.sido, G.gungu, E.eupmyun,
+        U.rest_addr) as addr
+        <if test="sort ==1">
+            , (select count(L.iproduct) from like L where L.iproduct = P.iproduct) as like
+        </if>
+        from product P
+        join category C on P.icategory = C.icategory
+        join user U on P.iuser = U.iuser
+        join eupmyun E on U.iaddr = ieupmyun
+        join gungu G on E.igungu = G.igungu
+        join sido S on G.isido = S.isido
+        <where>
+            C.icategory = #{category}
+            <if test="search != null">
+                and P.title like concat('%', #{search}, '%')
+            </if>
+        </where>
+        <if test="sort == 2">
+            order by P.view desc
+        </if>
+        <if test="sort == 1">
+            order by like desc
+        </if>
+        <if test="sort == null">
+            order by P.iproduct desc
+        </if>
+    </select>
 
 </mapper>
