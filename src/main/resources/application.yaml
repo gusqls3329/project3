@@ -22,3 +22,7 @@ springdoc:
 
 #fcm:
 #  certification: serviceAccountKey.json
+
+logging:
+  level:
+    -com.team5.projrental: DEBUG
