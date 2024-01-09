@@ -92,15 +92,7 @@ public class ProductService {
      price 양수 검증(@V) -> buyDate 오늘보다 이전인지 검증 -> depositPer 70 이상 100 이하 검증(@V) ->
      오늘이 rentalStartDate 보다 이전이 아닌지 검증 -> rentalEndDate 가 rentalStartDate 보다 이전이 아닌지 검증
      */
-    /* TODO: 1/9/24
-        문제 없다면 본 로직 시작
-        depositPer 를 price 기준 퍼센트 금액으로 환산 ->
-        카테고리 pk 로 카테고리 파싱 ->
-        -> addr + restAddr 기준으로 x, y 좌표 획득 -> insert model 객체 생성 ->
-        =
-        여기부터 작업 다시 시작.
-        -> insert
-        --by Hyunmin */
+
 
         if (dto.getPics() != null) {
             commonUtils.checkSizeIfOverLimitNumThrow(NotEnoughProductPics.class, NOT_ENOUGH_PRODUCT_PICS_EX_MESSAGE,
@@ -127,17 +119,14 @@ public class ProductService {
         commonUtils.checkSizeIfOverLimitNumThrow(BadAddressInfoException.class, BAD_ADDRESS_INFO_EX_MESSAGE,
                 addrBy.stream(), 1);
 
-        /* TODO: 1/9/24
-            마저 작업 시작
-            --by Hyunmin */
         Map<String, Double> axis = commonUtils.getAxis(dto.getAddr().concat(dto.getRestAddr()));
         // insert 할 객체 준비 완.
         InsProdBasicInfoDto insProdBasicInfoDto = new InsProdBasicInfoDto(dto, addrBy.get(0), axis.get("x"), axis.get("y"));
         insProdBasicInfoDto.setMainPicObj(savePic(dto.getMainPic()));
         if (productRepository.saveProduct(insProdBasicInfoDto) == 1 && dto.getPics() != null) {
+            // pics 에 insert 할 객체
             InsProdPicsDto insProdPicsDto = new InsProdPicsDto(insProdBasicInfoDto.getIproduct(), savePic(dto.getPics()));
             productRepository.savePics(insProdPicsDto);
-
         }
 
         return new ResVo(1);
