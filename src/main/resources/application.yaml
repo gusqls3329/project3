@@ -26,3 +26,8 @@ springdoc:
 logging:
   level:
     -com.team5.projrental: DEBUG
+
+server:
+  tomcat:
+    threads:
+      max: 200
