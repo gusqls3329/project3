@@ -23,7 +23,7 @@ public class CommonAop {
     public void countView(JoinPoint joinPoint, CurProductListVo result) {
 
         /* TODO: 1/10/24
-            Thread 추가 - spring 의 thread pool 사용 가능?
+            Thread 추가 - 100개로 별도의 스레드풀 만들어서 빈등록, DI 받아 사용하자. - 100은 Const 로 만들자. 차후 변경 유리하게.
             --by Hyunmin */
 
         log.debug("AOP Start");
