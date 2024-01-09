@@ -141,6 +141,9 @@ public class ProductService {
      * @return Resource
      */
     private Resource getPic(StoredFileInfo pic) {
+        /* TODO: 1/9/24
+            차후 파일 업로드 배우면 수정.
+            --by Hyunmin */
         return null;
     }
 
@@ -170,6 +173,9 @@ public class ProductService {
     private StoredFileInfo savePic(MultipartFile multipartFile) {
 
 
+        /* TODO: 1/9/24
+            차후 파일 업로드 배우면 수정.
+            --by Hyunmin */
         // tmp value
         return new StoredFileInfo("tmp", "tmp");
     }
