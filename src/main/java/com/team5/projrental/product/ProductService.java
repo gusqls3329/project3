@@ -9,14 +9,13 @@ import com.team5.projrental.product.model.ProductInsDto;
 import com.team5.projrental.product.model.innermodel.PicSet;
 import com.team5.projrental.product.model.innermodel.StoredFileInfo;
 import com.team5.projrental.product.model.ProductListVo;
-import com.team5.projrental.product.model.proc.GetProdEctPicDto;
-import com.team5.projrental.product.model.proc.GetProductDto;
-import com.team5.projrental.product.model.proc.GetProductListResultDto;
-import com.team5.projrental.product.model.proc.GetProductResultDto;
+import com.team5.projrental.product.model.proc.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -31,6 +30,12 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final CommonUtils commonUtils;
 
+    /**
+     * 해당 카테고리의 전체 제품 조회.
+     *
+     * @param getProductDto
+     * @return List<ProductListVo>
+     */
     public List<ProductListVo> getProductList(GetProductDto getProductDto) {
 
         List<GetProductListResultDto> products = productRepository.findProductListBy(getProductDto);
@@ -51,6 +56,12 @@ public class ProductService {
         return result;
     }
 
+    /**
+     * 선택한 특정 제품페이지 조회.
+     *
+     * @param iproduct
+     * @return CurProductListVo
+     */
     public CurProductListVo getProduct(Integer iproduct) {
         // 사진을 제외한 모든 정보 획득
         GetProductResultDto productBy = productRepository.findProductBy(iproduct);
@@ -67,6 +78,13 @@ public class ProductService {
     }
 
 
+    /**
+     * 제품 & 제품 사진 등록
+     *
+     * @param dto
+     * @return ResVo
+     */
+    @Transactional
     public ResVo postProduct(ProductInsDto dto) {
     /*
      pics + mainPic 개수 검증 - 10개 이하 -> iuser 가 존재하는지 검증 -> category 존재여부 검증 ->
@@ -74,11 +92,13 @@ public class ProductService {
      오늘이 rentalStartDate 보다 이전이 아닌지 검증 -> rentalEndDate 가 rentalStartDate 보다 이전이 아닌지 검증
      */
     /* TODO: 1/9/24
-        여기부터 작업 다시 시작.
-        =
         문제 없다면 본 로직 시작
         depositPer 를 price 기준 퍼센트 금액으로 환산 ->
-        -> addr + restAddr 기준으로 x, y 좌표 획득 -> insert model 객체 생성 -> insert
+        카테고리 pk 로 카테고리 파싱 ->
+        -> addr + restAddr 기준으로 x, y 좌표 획득 -> insert model 객체 생성 ->
+        =
+        여기부터 작업 다시 시작.
+        -> insert
         --by Hyunmin */
 
         if (dto.getPics() != null) {
@@ -86,7 +106,7 @@ public class ProductService {
                     dto.getPics().stream(), 9);
         }
         /* TODO: 1/9/24
-            유저 검증 체크 해야함 - userSel
+            유저 검증 체크 해야함 - userSel (iuser 가 db 에 있는 유저인지 체크)
             --by Hyunmin */
         commonUtils.ifCategoryNotContainsThrow(dto.getCategory());
         commonUtils.ifAfterThrow(
@@ -101,23 +121,76 @@ public class ProductService {
                 , dto.getRentalEndDate(), dto.getRentalStartDate());
 
 
+        /* TODO: 1/9/24
+            마저 작업 시작
+            --by Hyunmin */
+        Map<String, Double> axis = commonUtils.getAxis(dto.getAddr().concat(dto.getRestAddr()));
+        // insert 할 객체 준비 완.
+        InsProdBasicInfoDto insProdBasicInfoDto = new InsProdBasicInfoDto(dto, axis.get("x"), axis.get("y"));
+        insProdBasicInfoDto.setMainPicObj(savePic(dto.getMainPic()));
+
+        // pics insert 할 객체
+        InsProdPicsDto insProdPicsDto = new InsProdPicsDto(insProdBasicInfoDto.getIproduct(), savePic(dto.getPics()));
+
         return null;
     }
 
     /*
-    ------- ext Method -------
+        ------- Extracted Method -------
      */
 
     // 파일 업로드 배운 후 완성시킬 예정.
+
+    /**
+     * 하나의 사진 파일 조회
+     *
+     * @param pic
+     * @return Resource
+     */
     private Resource getPic(StoredFileInfo pic) {
         return null;
     }
 
     // 파일 업로드 배운 후 완성시킬 예정.
+
+    /**
+     * 2개 이상의 사진 파일 조회
+     * [getPic 내부 호출]
+     *
+     * @param pic
+     * @return List<Resource>
+     */
     private List<Resource> getPic(List<StoredFileInfo> pic) {
         List<Resource> results = new ArrayList<>();
         pic.forEach(p -> results.add(getPic(p)));
         return results;
+    }
+
+    // 파일 업로드 배운 후 완성시킬 예정.
+
+    /**
+     * 하나의 사진 파일 저장
+     *
+     * @param multipartFile
+     * @return StoredFileInfo
+     */
+    private StoredFileInfo savePic(MultipartFile multipartFile) {
+
+        return null;
+    }
+
+    // 파일 업로드 배운 후 완성시킬 예정.
+
+    /**
+     * 2개 이상의 사진 파일 저장
+     * [savePic 내부 호출]
+     *
+     * @param multipartFiles
+     * @return List<StoredFileInfo>
+     */
+    private List<StoredFileInfo> savePic(List<MultipartFile> multipartFiles) {
+
+        return null;
     }
 
 

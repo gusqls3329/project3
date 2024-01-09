@@ -1,11 +1,20 @@
 package com.team5.projrental.common.utils;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.team5.projrental.common.Const;
 import com.team5.projrental.common.exception.IllegalCategoryException;
+import com.team5.projrental.common.model.restapi.Addrs;
+import com.team5.projrental.common.model.restapi.Documents;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClient;
 
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 import static com.team5.projrental.common.Const.*;
@@ -36,9 +45,8 @@ public class CommonUtils {
     }
 
     public void ifCategoryNotContainsThrow(String category) {
-        if (!CATEGORIES.contains(category)) {
+        if (!CATEGORIES.containsValue(category)) {
             thrown(IllegalCategoryException.class, ILLEGAL_CATEGORY_EX_MESSAGE);
-
         }
     }
 
@@ -63,4 +71,38 @@ public class CommonUtils {
         }
     }
 
+    public Map<String, Double> getAxis(String fullAddr) {
+        Map<String, Double> axisMap = new HashMap<>();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("?query=").append(fullAddr);
+        String query = sb.toString();
+        String url = "https://dapi.kakao.com/v2/local/search/address";
+        String headerKey = "Authorization";
+        String headerValue = "KakaoAK 7b5a7755251df2d95b48052980a5c025";
+
+        RestClient restClient = RestClient.builder()
+                .baseUrl(url)
+                .build();
+
+        String result = restClient.get()
+                .uri(query)
+                .header(headerKey, headerValue)
+                .retrieve()
+                .body(String.class);
+
+        Documents documents;
+        ObjectMapper om = new ObjectMapper();
+        try {
+           documents = om.readValue(result, Documents.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(Const.SERVER_ERR_MESSAGE);
+        }
+        Addrs addrs = documents.getDocuments().stream().filter(Objects::nonNull)
+                .findFirst().orElseThrow(() -> new RuntimeException(SERVER_ERR_MESSAGE));
+        axisMap.put("x", Double.parseDouble(addrs.getX()));
+        axisMap.put("y", Double.parseDouble(addrs.getY()));
+
+        return axisMap;
+    }
 }
