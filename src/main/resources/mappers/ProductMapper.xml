@@ -4,21 +4,21 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team5.projrental.product.ProductMapper">
 
-    <select id="getProduct">
-        select U.nick, U.stored_pic as storedPic, U.request_pic as requestPic,
-        P.iproduct, P.title, P.stored_pic as storedPic, P.request_pic as requestPic,
+    <select id="getProductList">
+        select U.nick, U.stored_pic as userStoredPic, U.request_pic as userRequestPic,
+        P.iproduct, P.title, P.stored_pic as prodMainStoredPic, P.request_pic as prodMainRequestPic,
         P.rental_price as rentalPrice,
         P.rental_start_date as rentalDateDate, P.rental_end_date as rentalEndDate, concat(S.sido, G.gungu, E.eupmyun,
         U.rest_addr) as addr
-        <if test="sort ==1">
-            , (select count(L.iproduct) from like L where L.iproduct = P.iproduct) as like
+        <if test="sort == 1">
+            , (select count(L.iproduct) from t_like L where L.iproduct = P.iproduct) as prodLike
         </if>
-        from product P
-        join category C on P.icategory = C.icategory
-        join user U on P.iuser = U.iuser
-        join eupmyun E on U.iaddr = ieupmyun
-        join gungu G on E.igungu = G.igungu
-        join sido S on G.isido = S.isido
+        from t_product P
+        join t_category C on P.icategory = C.icategory
+        join t_user U on P.iuser = U.iuser
+        join t_eupmyun E on U.iaddr = E.ieupmyun
+        join t_gungu G on E.igungu = G.igungu
+        join t_sido S on G.isido = S.isido
         <where>
             C.category = #{category}
             <if test="search != null">
@@ -29,11 +29,28 @@
             order by P.view desc
         </if>
         <if test="sort == 1">
-            order by like desc
+            order by prodLike desc
         </if>
         <if test="sort == null">
             order by P.iproduct desc
         </if>
     </select>
 
+    <select id="getProduct">
+        select U.iuser, U.nick,
+        P.iproduct, P.title, P.stored_pic as prodMainStoredPic, P.request_pic as prodMainRequestPic,
+        P.rental_price as rentalPrice, P.rental_start_date as rentalStartDate, P.rental_end_date as rentalEndDate,
+        concat(S.sido, G.gungu, E.eupmyun, P.rest_addr) as addr, (select count(L.iproduct) from t_like L where L.iproduct = P.iproduct) prodLike
+        from t_product P
+        join t_user U on P.iuser = U.iuser
+        join t_eupmyun E on P.iaddr = E.ieupmyun
+        join t_gungu G on E.igungu = G.igungu
+        join t_sido S on G.isido = S.isido
+        where P.iproduct = #{iproduct}
+    </select>
+
+    <select id="getProdEctPics">
+        select ipics, stored_pic, request_pic from t_pics
+        where iproduct = #{iproduct}
+    </select>
 </mapper>

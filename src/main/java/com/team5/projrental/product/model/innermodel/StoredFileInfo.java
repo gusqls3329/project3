@@ -1,4 +1,4 @@
-package com.team5.projrental.product.model;
+package com.team5.projrental.product.model.innermodel;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

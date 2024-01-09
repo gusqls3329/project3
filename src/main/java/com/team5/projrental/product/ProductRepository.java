@@ -1,6 +1,8 @@
 package com.team5.projrental.product;
 
+import com.team5.projrental.product.model.proc.GetProdEctPicDto;
 import com.team5.projrental.product.model.proc.GetProductDto;
+import com.team5.projrental.product.model.proc.GetProductListResultDto;
 import com.team5.projrental.product.model.proc.GetProductResultDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -13,8 +15,15 @@ public class ProductRepository {
 
     private final ProductMapper productMapper;
 
-    public List<GetProductResultDto> findProductBy(GetProductDto getProductDto) {
-        return productMapper.getProduct(getProductDto);
+    public List<GetProductListResultDto> findProductListBy(GetProductDto getProductDto) {
+        return productMapper.getProductList(getProductDto);
     }
 
+    public GetProductResultDto findProductBy(Integer iproduct) {
+        return productMapper.getProduct(iproduct);
+    }
+
+    public List<GetProdEctPicDto> findPicsBy(Integer productPK) {
+        return productMapper.getProdEctPics(productPK);
+    }
 }

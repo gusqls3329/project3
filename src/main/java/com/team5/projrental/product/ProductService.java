@@ -1,8 +1,12 @@
 package com.team5.projrental.product;
 
-import com.team5.projrental.product.model.StoredFileInfo;
+import com.team5.projrental.product.model.CurProductListVo;
+import com.team5.projrental.product.model.innermodel.PicSet;
+import com.team5.projrental.product.model.innermodel.StoredFileInfo;
 import com.team5.projrental.product.model.ProductListVo;
+import com.team5.projrental.product.model.proc.GetProdEctPicDto;
 import com.team5.projrental.product.model.proc.GetProductDto;
+import com.team5.projrental.product.model.proc.GetProductListResultDto;
 import com.team5.projrental.product.model.proc.GetProductResultDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,18 +24,42 @@ public class ProductService {
 
     public List<ProductListVo> getProductList(GetProductDto getProductDto) {
 
-        List<GetProductResultDto> products = productRepository.findProductBy(getProductDto);
+        List<GetProductListResultDto> products = productRepository.findProductListBy(getProductDto);
 
         List<ProductListVo> result = new ArrayList<>();
         products.forEach(product -> {
             ProductListVo productListVo = new ProductListVo(product);
-            productListVo.setUserPic(getPic(product.getStoredFileInfo()));
-            productListVo.setProdPic(getPic(product.getStoredFileInfo()));
+
+            productListVo.setUserPic(
+                    getPic(new StoredFileInfo(product.getUserRequestPic(), product.getUserStoredPic()))
+            );
+            productListVo.setProdPic(
+                    getPic(new StoredFileInfo(product.getProdMainRequestPic(), product.getProdMainStoredPic()))
+            );
             result.add(productListVo);
         });
 
         return result;
     }
+
+    public CurProductListVo getProduct(Integer iproduct) {
+        // 사진을 제외한 모든 정보 획득
+        GetProductResultDto productBy = productRepository.findProductBy(iproduct);
+
+        Integer productPK = productBy.getIproduct();
+        List<GetProdEctPicDto> ectPics = productRepository.findPicsBy(productPK);
+        List<PicSet> resultEctPic = new ArrayList<>();
+        ectPics.forEach(p -> {
+            resultEctPic.add(new PicSet(getPic(new StoredFileInfo(p.getProdRequestPic(), p.getProdStoredPic())), p.getIpics()));
+        });
+        CurProductListVo result = new CurProductListVo(productBy);
+        result.setProdPics(resultEctPic);
+        return result;
+    }
+
+    /*
+    ------- ext Method -------
+     */
 
     // 파일 업로드 배운 후 완성시킬 예정.
     private Resource getPic(StoredFileInfo pic) {
@@ -39,11 +67,9 @@ public class ProductService {
     }
 
     // 파일 업로드 배운 후 완성시킬 예정.
-    private List<Resource> getPic(StoredFileInfo... pic) {
+    private List<Resource> getPic(List<StoredFileInfo> pic) {
         List<Resource> results = new ArrayList<>();
-        for (StoredFileInfo p : pic) {
-            results.add(getPic(p));
-        }
+        pic.forEach(p -> results.add(getPic(p)));
         return results;
     }
 
