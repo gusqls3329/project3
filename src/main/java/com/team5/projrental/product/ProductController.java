@@ -42,7 +42,8 @@ public class ProductController {
      */
     @PostMapping
     public ResVo postProduct(@Validated ProductInsDto dto) {
-        return null;
+        return productService.postProduct(dto);
+
     }
 
 }

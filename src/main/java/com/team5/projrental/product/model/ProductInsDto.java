@@ -21,6 +21,7 @@ public class ProductInsDto {
     private String addr;
     @NotBlank
     private String restAddr;
+    @NotNull
     private MultipartFile mainPic;
     private List<MultipartFile> pics;
     @NotNull

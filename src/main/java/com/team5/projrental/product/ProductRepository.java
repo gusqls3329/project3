@@ -15,6 +15,15 @@ public class ProductRepository {
 
     private final ProductMapper productMapper;
 
+    //
+    public String countView(Integer iproduct) {
+        if (productMapper.countView(iproduct) == 1) {
+            return "SUCCEED";
+        }
+        return "FALSE";
+    }
+    //
+
     public List<GetProductListResultDto> findProductListBy(GetProductDto getProductDto) {
         return productMapper.getProductList(getProductDto);
     }

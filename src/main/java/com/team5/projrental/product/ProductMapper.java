@@ -10,10 +10,16 @@ import java.util.List;
 
 @Mapper
 public interface ProductMapper {
+    //
+
+    //
 
     List<GetProductListResultDto> getProductList(GetProductDto getProductDto);
 
     GetProductResultDto getProduct(Integer iproduct);
 
     List<GetProdEctPicDto> getProdEctPics(Integer productPK);
+
+    int countView(Integer iproduct);
+
 }
