@@ -16,11 +16,11 @@ public class ProductListVo {
 
 
     private String nick;
-    private ResponseEntity<Resource> userPic;
+    private Resource userPic;
 
     private Integer iproduct;
     private String title;
-    private ResponseEntity<Resource> prodPic;
+    private Resource prodPic;
     private Integer rentalPrice;
     private LocalDate rentalStartDate;
     private LocalDate rentalEndDate;

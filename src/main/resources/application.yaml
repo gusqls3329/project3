@@ -9,7 +9,7 @@ springboot: #속성을 바꿀 수 있는 부분 들은 상수 처럼 쓰기 편�
 spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:3306/greengram3
+    url: jdbc:mariadb://localhost:3306/projrental
     username: root
     password: green502
 

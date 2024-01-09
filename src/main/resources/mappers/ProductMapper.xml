@@ -5,8 +5,10 @@
 <mapper namespace="com.team5.projrental.product.ProductMapper">
 
     <select id="getProduct">
-        select U.nick, U.pic, P.iproduct, P.title, P.pic as prodPic, P.rental_price as rentalPrice,
-            P.rental_start_date as rentalDateDate, P.rental_end_date as rentalEndDate, concat(S.sido, G.gungu, E.eupmyun,
+        select U.nick, U.stored_pic as storedPic, U.request_pic as requestPic,
+        P.iproduct, P.title, P.stored_pic as storedPic, P.request_pic as requestPic,
+        P.rental_price as rentalPrice,
+        P.rental_start_date as rentalDateDate, P.rental_end_date as rentalEndDate, concat(S.sido, G.gungu, E.eupmyun,
         U.rest_addr) as addr
         <if test="sort ==1">
             , (select count(L.iproduct) from like L where L.iproduct = P.iproduct) as like
@@ -18,7 +20,7 @@
         join gungu G on E.igungu = G.igungu
         join sido S on G.isido = S.isido
         <where>
-            C.icategory = #{category}
+            C.category = #{category}
             <if test="search != null">
                 and P.title like concat('%', #{search}, '%')
             </if>

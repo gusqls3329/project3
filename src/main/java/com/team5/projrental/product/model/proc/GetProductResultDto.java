@@ -1,8 +1,7 @@
 package com.team5.projrental.product.model.proc;
 
+import com.team5.projrental.product.model.StoredFileInfo;
 import lombok.Data;
-import org.springframework.core.io.Resource;
-import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
 
@@ -15,7 +14,8 @@ public class GetProductResultDto {
 
     private Integer iproduct;
     private String title;
-    private String prodPic;
+    private String requestPic;
+    private StoredFileInfo storedFileInfo;
     private Integer rentalPrice;
     private LocalDate rentalStartDate;
     private LocalDate rentalEndDate;
