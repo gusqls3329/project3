@@ -1,5 +1,6 @@
 package com.team5.projrental.product;
 
+import com.team5.projrental.common.exception.BadAddressInfoException;
 import com.team5.projrental.common.exception.BadDateInfoException;
 import com.team5.projrental.common.exception.NotEnoughProductPics;
 import com.team5.projrental.common.model.ResVo;
@@ -121,18 +122,25 @@ public class ProductService {
                 , dto.getRentalEndDate(), dto.getRentalStartDate());
 
 
+        // logic
+        List<Integer> addrBy = productRepository.findAddrBy(commonUtils.subEupmyun(dto.getAddr()));
+        commonUtils.checkSizeIfOverLimitNumThrow(BadAddressInfoException.class, BAD_ADDRESS_INFO_EX_MESSAGE,
+                addrBy.stream(), 1);
+
         /* TODO: 1/9/24
             마저 작업 시작
             --by Hyunmin */
         Map<String, Double> axis = commonUtils.getAxis(dto.getAddr().concat(dto.getRestAddr()));
         // insert 할 객체 준비 완.
-        InsProdBasicInfoDto insProdBasicInfoDto = new InsProdBasicInfoDto(dto, axis.get("x"), axis.get("y"));
+        InsProdBasicInfoDto insProdBasicInfoDto = new InsProdBasicInfoDto(dto, addrBy.get(0), axis.get("x"), axis.get("y"));
         insProdBasicInfoDto.setMainPicObj(savePic(dto.getMainPic()));
+        if (productRepository.saveProduct(insProdBasicInfoDto) == 1 && dto.getPics() != null) {
+            InsProdPicsDto insProdPicsDto = new InsProdPicsDto(insProdBasicInfoDto.getIproduct(), savePic(dto.getPics()));
+            productRepository.savePics(insProdPicsDto);
 
-        // pics insert 할 객체
-        InsProdPicsDto insProdPicsDto = new InsProdPicsDto(insProdBasicInfoDto.getIproduct(), savePic(dto.getPics()));
+        }
 
-        return null;
+        return new ResVo(1);
     }
 
     /*
@@ -176,7 +184,9 @@ public class ProductService {
      */
     private StoredFileInfo savePic(MultipartFile multipartFile) {
 
-        return null;
+
+        // tmp value
+        return new StoredFileInfo("tmp", "tmp");
     }
 
     // 파일 업로드 배운 후 완성시킬 예정.
@@ -189,8 +199,11 @@ public class ProductService {
      * @return List<StoredFileInfo>
      */
     private List<StoredFileInfo> savePic(List<MultipartFile> multipartFiles) {
-
-        return null;
+        List<StoredFileInfo> result = new ArrayList<>();
+        multipartFiles.forEach(file -> {
+            result.add(savePic(file));
+        });
+        return result;
     }
 
 

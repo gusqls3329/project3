@@ -4,14 +4,14 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team5.projrental.product.ProductMapper">
 
-<!--    -->
+    <!--    -->
     <update id="countView">
         <selectKey keyProperty="beforeView" resultType="java.lang.Integer" order="BEFORE">
             select view from t_product where iproduct = #{iproduct}
         </selectKey>
         update t_product set view = 1 + #{beforeView} where iproduct = #{iproduct}
     </update>
-<!--    -->
+    <!--    -->
 
     <select id="getProductList">
         select U.nick, U.stored_pic as userStoredPic, U.request_pic as userRequestPic,
@@ -49,7 +49,8 @@
         select U.iuser, U.nick,
         P.iproduct, P.title, P.stored_pic as prodMainStoredPic, P.request_pic as prodMainRequestPic,
         P.rental_price as rentalPrice, P.rental_start_date as rentalStartDate, P.rental_end_date as rentalEndDate,
-        concat(S.sido, G.gungu, E.eupmyun, P.rest_addr) as addr, (select count(L.iproduct) from t_like L where L.iproduct = P.iproduct) prodLike
+        concat(S.sido, G.gungu, E.eupmyun, P.rest_addr) as addr, (select count(L.iproduct) from t_like L where L.iproduct =
+        P.iproduct) prodLike
         from t_product P
         join t_user U on P.iuser = U.iuser
         join t_eupmyun E on P.iaddr = E.ieupmyun
@@ -62,4 +63,30 @@
         select ipics, stored_pic, request_pic from t_pics
         where iproduct = #{iproduct}
     </select>
+
+    <select id="getIEupmyun">
+        select ieupmyun from t_eupmyun where eupmyun in (
+        <foreach collection="eupmyun" item="eup" separator=", ">
+            #{eup}
+        </foreach>
+        )
+    </select>
+
+    <insert id="insProduct" useGeneratedKeys="true" keyProperty="iproduct">
+        insert into t_product
+        (iuser, title, contents, addr, rest_addr, stored_pic, request_pic,
+        price, rental_price, deposit, buy_date, rental_start_date, rental_end_date, x, y)
+        values
+        (#{iuser}, #{title}, #{contents}, #{addr}, #{restAddr}, #{mainPicObj.storedPic}, #{mainPicObj.requestPic},
+        #{price}, #{rentalPrice}, #{deposit}, #{buyDate}, #{rentalStartDate}, #{rentalEndDate}, #{icategoty}, #{x}, #{y})
+    </insert>
+
+    <insert id="insPics">
+        insert into t_pics (iproduct, stored_pic, request_pic)
+        values
+        <foreach collection="pics" item="pic" separator=", ">
+            (#{iproduct}, #{pic.storedPic}, #{pic.requestPic})
+        </foreach>
+
+    </insert>
 </mapper>

@@ -11,10 +11,7 @@ import org.springframework.web.client.RestClient;
 
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static com.team5.projrental.common.Const.*;
@@ -25,6 +22,7 @@ public class CommonUtils {
 
     /**
      * 하나라도 null 일 경우 , ex 에 해당하는 예외를 message 를 담아서, throw 함.
+     *
      * @param ex
      * @param message
      * @param objs
@@ -56,8 +54,9 @@ public class CommonUtils {
             thrown(ex, message);
         }
     }
+
     public void ifBeforeThrow(Class<? extends RuntimeException> ex, String message, LocalDate expectedAfter,
-                             LocalDate expectedBefore) {
+                              LocalDate expectedBefore) {
         if (expectedAfter.isBefore(expectedBefore)) {
             thrown(ex, message);
         }
@@ -94,7 +93,7 @@ public class CommonUtils {
         Documents documents;
         ObjectMapper om = new ObjectMapper();
         try {
-           documents = om.readValue(result, Documents.class);
+            documents = om.readValue(result, Documents.class);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(Const.SERVER_ERR_MESSAGE);
         }
@@ -104,5 +103,12 @@ public class CommonUtils {
         axisMap.put("y", Double.parseDouble(addrs.getY()));
 
         return axisMap;
+    }
+
+    public List<String> subEupmyun(String fullAddr) {
+        List<String> result = new ArrayList<>();
+        Arrays.stream(fullAddr.split(" ")).filter(s -> s.contains("읍") || s.contains("동") || s.contains("면"))
+                .forEach(result::add);
+        return result;
     }
 }

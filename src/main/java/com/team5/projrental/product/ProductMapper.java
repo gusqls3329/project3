@@ -1,9 +1,6 @@
 package com.team5.projrental.product;
 
-import com.team5.projrental.product.model.proc.GetProdEctPicDto;
-import com.team5.projrental.product.model.proc.GetProductDto;
-import com.team5.projrental.product.model.proc.GetProductListResultDto;
-import com.team5.projrental.product.model.proc.GetProductResultDto;
+import com.team5.projrental.product.model.proc.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -21,5 +18,11 @@ public interface ProductMapper {
     List<GetProdEctPicDto> getProdEctPics(Integer productPK);
 
     int countView(Integer iproduct);
+
+    int insProduct(InsProdBasicInfoDto insProdBasicInfoDto);
+
+    void insPics(InsProdPicsDto insProdPicsDto);
+
+    List<Integer> getIEupmyun(List<String> eupmyun);
 
 }
