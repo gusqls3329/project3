@@ -80,19 +80,16 @@ public class ProductService {
 
 
     /**
-     * 제품 & 제품 사진 등록
+     * 제품 & 제품 사진 등록<br><br>
+     * pics + mainPic 개수 검증 - 10개 이하 -> iuser 가 존재하는지 검증 -> category 존재여부 검증 ->
+     * price 양수 검증(@V) -> buyDate 오늘보다 이전인지 검증 -> depositPer 70 이상 100 이하 검증(@V) ->
+     * 오늘이 rentalStartDate 보다 이전이 아닌지 검증 -> rentalEndDate 가 rentalStartDate 보다 이전이 아닌지 검증
      *
      * @param dto
      * @return ResVo
      */
     @Transactional
     public ResVo postProduct(ProductInsDto dto) {
-    /*
-     pics + mainPic 개수 검증 - 10개 이하 -> iuser 가 존재하는지 검증 -> category 존재여부 검증 ->
-     price 양수 검증(@V) -> buyDate 오늘보다 이전인지 검증 -> depositPer 70 이상 100 이하 검증(@V) ->
-     오늘이 rentalStartDate 보다 이전이 아닌지 검증 -> rentalEndDate 가 rentalStartDate 보다 이전이 아닌지 검증
-     */
-
 
         if (dto.getPics() != null) {
             commonUtils.checkSizeIfOverLimitNumThrow(NotEnoughProductPics.class, NOT_ENOUGH_PRODUCT_PICS_EX_MESSAGE,
@@ -115,7 +112,6 @@ public class ProductService {
         List<Integer> addrBy = productRepository.findAddrBy(commonUtils.subEupmyun(dto.getAddr()));
         commonUtils.checkSizeIfOverLimitNumThrow(BadAddressInfoException.class, BAD_ADDRESS_INFO_EX_MESSAGE,
                 addrBy.stream(), 1);
-
 
 
         // logic
