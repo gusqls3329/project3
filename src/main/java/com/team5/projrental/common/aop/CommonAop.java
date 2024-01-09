@@ -22,7 +22,7 @@ public class CommonAop {
             returning = "result")
     public void countView(JoinPoint joinPoint, CurProductListVo result) {
         log.debug("AOP Start");
-        productRepository.countView(result.getIproduct());
+        log.debug(productRepository.countView(result.getIproduct()));
     }
 
 }
