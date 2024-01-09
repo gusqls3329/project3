@@ -112,13 +112,13 @@ public class ProductService {
         );
         commonUtils.ifBeforeThrow(BadDateInfoException.class, RENTAL_END_DATE_MUST_BE_AFTER_THAN_RENTAL_START_DATE_EX_MESSAGE
                 , dto.getRentalEndDate(), dto.getRentalStartDate());
-
-
-        // logic
         List<Integer> addrBy = productRepository.findAddrBy(commonUtils.subEupmyun(dto.getAddr()));
         commonUtils.checkSizeIfOverLimitNumThrow(BadAddressInfoException.class, BAD_ADDRESS_INFO_EX_MESSAGE,
                 addrBy.stream(), 1);
 
+
+
+        // logic
         Map<String, Double> axis = commonUtils.getAxis(dto.getAddr().concat(dto.getRestAddr()));
         // insert 할 객체 준비 완.
         InsProdBasicInfoDto insProdBasicInfoDto = new InsProdBasicInfoDto(dto, addrBy.get(0), axis.get("x"), axis.get("y"));
