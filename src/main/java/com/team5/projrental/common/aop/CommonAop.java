@@ -21,6 +21,11 @@ public class CommonAop {
     @AfterReturning(value = "execution(* com.team5.projrental.product.ProductService.getProduct(..))",
             returning = "result")
     public void countView(JoinPoint joinPoint, CurProductListVo result) {
+
+        /* TODO: 1/10/24
+            Thread 추가 - spring 의 thread pool 사용 가능?
+            --by Hyunmin */
+
         log.debug("AOP Start");
         log.debug(productRepository.countView(result.getIproduct()));
     }
