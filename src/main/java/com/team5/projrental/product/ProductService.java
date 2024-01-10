@@ -1,9 +1,6 @@
 package com.team5.projrental.product;
 
-import com.team5.projrental.common.exception.BadAddressInfoException;
-import com.team5.projrental.common.exception.BadDateInfoException;
-import com.team5.projrental.common.exception.BadUserInformationException;
-import com.team5.projrental.common.exception.IllegalProductPicsException;
+import com.team5.projrental.common.exception.*;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.utils.CommonUtils;
 import com.team5.projrental.product.model.CurProductListVo;
@@ -47,7 +44,12 @@ public class ProductService {
         GetProductListDto getProductListDto = new GetProductListDto(sort, search,
                 CommonUtils.ifCategoryNotContainsThrowOrReturn(category));
         List<GetProductListResultDto> products = productRepository.findProductListBy(getProductListDto);
+        // 결과물 없음 여부 체크
+        CommonUtils.ifAnyNullThrow(ProductNotFoundException.class, PRODUCT_NOT_FOUND_EX_MESSAGE, products);
+        CommonUtils.checkSizeIfUnderLimitNumThrow(ProductNotFoundException.class, PRODUCT_NOT_FOUND_EX_MESSAGE,
+                products.stream(), 1);
 
+        // 검증 이상 무
         List<ProductListVo> result = new ArrayList<>();
         products.forEach(product -> {
             ProductListVo productListVo = new ProductListVo(product);
@@ -77,12 +79,21 @@ public class ProductService {
         GetProductResultDto productBy = productRepository.findProductBy(
                 new GetProductBaseDto(CommonUtils.ifCategoryNotContainsThrowOrReturn(category), iproduct)
         );
+        // 결과물 없음 검증
+        CommonUtils.ifAnyNullThrow(ProductNotFoundException.class, PRODUCT_NOT_FOUND_EX_MESSAGE, productBy);
 
+        // 검증 완
         Integer productPK = productBy.getIproduct();
         List<GetProdEctPicDto> ectPics = productRepository.findPicsBy(productPK);
+
+        CurProductListVo result = new CurProductListVo(productBy);
+        // 사진 조회 결과가 없으면 곧바로 리턴
+        if (ectPics == null || ectPics.isEmpty()) {
+            return result;
+        }
+
         List<PicSet> resultEctPic = new ArrayList<>();
         ectPics.forEach(p -> resultEctPic.add(new PicSet(getPic(new StoredFileInfo(p.getProdRequestPic(), p.getProdStoredPic())), p.getIpics())));
-        CurProductListVo result = new CurProductListVo(productBy);
         result.setProdPics(resultEctPic);
         return result;
     }
@@ -235,6 +246,27 @@ public class ProductService {
         return new ResVo(productRepository.updateProduct(dto));
     }
 
+    public ResVo delProduct(Integer iproduct, Integer iuser, Integer div) {
+
+        /* TODO: 1/10/24
+            로직 여기부터 다시 시작.
+            --by Hyunmin */
+
+        // 삭제를 거래중이면 불가능하게? -> 별로인듯 함 그냥 -1 처리 해 두기만 하면 판매자 정보를 join 으로 조회할 수 있음.
+        //
+        // div * -1
+        // -1 -> -1이 아닌곳을 -1 로
+        // -2 -> 0인 곳을 -2 로
+        // update
+        //
+        // 만약 거래중이면 삭제 불가능하게 하는경우,
+        // 결과가 0 이면 -> 잘못된 정보 기입됨. ex 발생.
+
+        new DelProductBaseDto(iproduct, iuser, div);
+
+        return null;
+    }
+
     /*
         ------- Extracted Method -------
      */
@@ -311,5 +343,6 @@ public class ProductService {
                 addrBy.stream(), 1);
         return addrBy.get(0);
     }
+
 
 }

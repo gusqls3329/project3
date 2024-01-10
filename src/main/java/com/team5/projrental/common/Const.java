@@ -12,6 +12,7 @@ public interface Const {
     String SERVER_ERR_MESSAGE = "알 수 없는 오류로 실패 했습니다.";
     String BAD_ADDRESS_INFO_EX_MESSAGE = "잘못된 주소 입니다.";
     String BAD_USER_INFO_EX_MESSAGE = "잘못된 유저 정보 입니다.";
+    String PRODUCT_NOT_FOUND_EX_MESSAGE = "조회된 상품이 없습니다.";
     //
     Map<Integer, String> CATEGORIES = Map.of(1, "mobile", 2, "home_appliance", 3, "game",
             4, "laptop", 5, "camera", 6, "ect");

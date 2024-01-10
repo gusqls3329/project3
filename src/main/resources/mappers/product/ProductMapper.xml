@@ -34,7 +34,7 @@
         join t_gungu G on E.igungu = G.igungu
         join t_sido S on G.isido = S.isido
         <where>
-            P.icategory = #{icategory}
+            P.icategory = #{icategory} and P.istatus = 0
             <if test="search != null">
                 and P.title like concat('%', #{search}, '%')
             </if>
@@ -62,7 +62,7 @@
         join t_gungu G on E.igungu = G.igungu
         join t_sido S on G.isido = S.isido
         <where>
-            P.iproduct = #{iproduct} and U.iuser = #{iuser}
+            P.iproduct = #{iproduct} and U.iuser = #{iuser} and P.istatus = 0
             <if test="icategory != null and icategory > 0">
                 and P.icategory = #{icategory}
             </if>
@@ -115,7 +115,7 @@
     <select id="getProductForUpdate">
         select P.price, P.buy_date as buyDate, P.rental_start_date as rentalStartDate, P.rental_end_date as rentalEndDate
         from t_product P
-        where P.iproduct = #{iproduct} and P.icategory = #{icategory}
+        where P.iproduct = #{iproduct} and P.icategory = #{icategory} and P.istatus = 0
 
     </select>
 

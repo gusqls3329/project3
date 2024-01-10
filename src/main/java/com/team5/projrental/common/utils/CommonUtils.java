@@ -27,13 +27,7 @@ public class CommonUtils {
      * @param message
      * @param objs
      */
-    public static void anyNullThrown(Class<? extends RuntimeException> ex, String message, Object... objs) {
-        Arrays.stream(objs).forEach(o -> {
-            if (o == null) {
-                thrown(ex, message);
-            }
-        });
-    }
+
 
     public static void ifFalseThrow(Class<? extends RuntimeException> ex, String message, boolean b) {
         if (!b) thrown(ex, message);
@@ -42,6 +36,14 @@ public class CommonUtils {
     public static <T> void checkSizeIfOverLimitNumThrow(Class<? extends RuntimeException> ex, String message, Stream<T> collection,
                                                         int limitNum) {
         if (collection.count() > limitNum) {
+            thrown(ex, message);
+        }
+    }
+
+    public static <T> void checkSizeIfUnderLimitNumThrow(Class<? extends RuntimeException> ex, String message,
+                                                         Stream<T> collection,
+                                                         int limitNum) {
+        if (collection.count() < limitNum) {
             thrown(ex, message);
         }
     }
@@ -118,5 +120,13 @@ public class CommonUtils {
 
     public static Integer getDepositFromPer(Integer price, Integer percent) {
         return (int) (price * percent * 0.01);
+    }
+
+    public static void ifAnyNullThrow(Class<? extends RuntimeException> ex, String message, Object... objs) {
+        Arrays.stream(objs).forEach(o -> {
+            if (o == null) {
+                thrown(ex, message);
+            }
+        });
     }
 }

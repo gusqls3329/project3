@@ -5,8 +5,11 @@ import com.team5.projrental.product.model.CurProductListVo;
 import com.team5.projrental.product.model.ProductInsDto;
 import com.team5.projrental.product.model.ProductListVo;
 import com.team5.projrental.product.model.ProductUpdDto;
+import com.team5.projrental.product.model.proc.DelProductBaseDto;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,12 +49,17 @@ public class ProductController {
 
     }
 
-    @PutMapping("/api/prod")
+    @PutMapping
     public ResVo putProduct(@Validated ProductUpdDto dto) {
-        /* TODO: 2024-01-10
-            로직 시작
-            --by Hyunmin */
         return productService.putProduct(dto);
+    }
+
+    @Validated
+    @DeleteMapping("/{iproduct}/{iuser}")
+    public ResVo delProduct(@PathVariable @Min(1) Integer iproduct,
+                            @PathVariable @Min(1) Integer iuser,
+                            @RequestParam @Range(min = 1, max = 1) Integer div) {
+        return productService.delProduct(iproduct, iuser, div);
     }
 
 }
