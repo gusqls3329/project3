@@ -22,7 +22,7 @@
     <select id="getProductList">
         select U.nick, U.stored_pic as userStoredPic, U.request_pic as userRequestPic,
         P.iproduct, concat(S.sido, G.gungu, E.eupmyun,
-        U.rest_addr) as addr, P.title, P.stored_pic as prodMainStoredPic, P.request_pic as prodMainRequestPic,
+        P.rest_addr) as addr, P.title, P.stored_pic as prodMainStoredPic, P.request_pic as prodMainRequestPic,
         P.rental_price as rentalPrice,
         P.rental_start_date as rentalStartDate, P.rental_end_date as rentalEndDate
         <if test="sort == 1">
@@ -30,7 +30,7 @@
         </if>
         from t_product P
         join t_user U on P.iuser = U.iuser
-        join t_eupmyun E on U.iaddr = E.ieupmyun
+        join t_eupmyun E on P.iaddr = E.ieupmyun
         join t_gungu G on E.igungu = G.igungu
         join t_sido S on G.isido = S.isido
         <where>
@@ -62,12 +62,9 @@
         join t_gungu G on E.igungu = G.igungu
         join t_sido S on G.isido = S.isido
         <where>
-            P.iproduct = #{iproduct}
+            P.iproduct = #{iproduct} and U.iuser = #{iuser}
             <if test="icategory != null and icategory > 0">
                 and P.icategory = #{icategory}
-            </if>
-            <if test="iuser != null and iuser > 0">
-                and U.iuser = #{iuser}
             </if>
         </where>
 
@@ -146,7 +143,6 @@
             </if>
             <if test="storedMainPic != null">
                 , stored_pic = #{storedMainPic.storedPic}, request_pic = #{storedMainPic.requestPic}
-
             </if>
             <if test="price != null">
                 , price = #{price}
