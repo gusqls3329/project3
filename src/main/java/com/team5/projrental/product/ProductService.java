@@ -29,7 +29,6 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-
     /*
         ------- Logic -------
      */
@@ -260,14 +259,14 @@ public class ProductService {
      * 0: 활성화 상태 (제품 insert 시 default 값)<br>
      * -1: 삭제<br>
      * -2: 숨김<br><br><br>
-     *
+     * <p>
      * 로직:<br>
      * 삭제를 거래중이면 불가능하게? -> 별로인듯 함 그냥 -1 처리 해 두기만 하면 판매자 정보를 join 으로 조회할 수 있음. <br><br>
-     *
+     * <p>
      * div * -1 로 istatus 값 세팅 <br>
      * -1 -> -1이 아닌곳을 -1 로, <br>
      * -2 -> 0인 곳을 -2 로 <br><br>
-     *
+     * <p>
      * 결과가 0 이면 -> 잘못된 정보 기입됨. ex 발생.
      *
      * @param iproduct
@@ -284,6 +283,14 @@ public class ProductService {
 
         return new ResVo(1);
     }
+
+
+
+
+
+
+
+
 
     /*
         ------- Extracted Method -------
