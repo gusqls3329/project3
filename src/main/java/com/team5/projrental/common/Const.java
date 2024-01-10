@@ -16,6 +16,7 @@ public interface Const {
     String BAD_USER_INFO_EX_MESSAGE = "잘못된 유저 정보 입니다.";
     String PRODUCT_NOT_FOUND_EX_MESSAGE = "조회된 상품이 없습니다.";
     String BAD_INFO_EX_MESSAGE = "잘못된 정보 입니다.";
+    String BAD_SORT_EX_MESSAGE = "SORT 는 1 또는 2 만 가능합니다.";
     //
 
     /*

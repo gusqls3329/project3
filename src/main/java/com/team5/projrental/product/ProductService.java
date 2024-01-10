@@ -44,6 +44,9 @@ public class ProductService {
     public List<ProductListVo> getProductList(Integer sort,
                                               String search,
                                               String category) {
+        // sort 검증
+        if (sort != 1 && sort != 2) throw new BadInformationException(BAD_SORT_EX_MESSAGE);
+        // 카테고리 검증
         GetProductListDto getProductListDto = new GetProductListDto(sort, search,
                 CommonUtils.ifCategoryNotContainsThrowOrReturn(category));
         List<GetProductListResultDto> products = productRepository.findProductListBy(getProductListDto);

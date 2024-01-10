@@ -31,8 +31,9 @@ public class ProductController {
         return productService.getProductList(sort, search, category);
     }
 
+    @Validated
     @GetMapping("/api/prod/{category}/{iproduct}")
-    public CurProductListVo getProduct(@PathVariable String category, @PathVariable Integer iproduct) {
+    public CurProductListVo getProduct(@PathVariable String category, @PathVariable @Min(1) Integer iproduct) {
         return productService.getProduct(category, iproduct);
     }
 
