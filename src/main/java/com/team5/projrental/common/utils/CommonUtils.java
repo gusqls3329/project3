@@ -19,16 +19,7 @@ import static com.team5.projrental.common.Const.ILLEGAL_CATEGORY_EX_MESSAGE;
 
 @Component
 public class CommonUtils {
-
-    /**
-     * 하나라도 null 일 경우 , ex 에 해당하는 예외를 message 를 담아서, throw 함.
-     *
-     * @param ex
-     * @param message
-     * @param objs
-     */
-
-
+    
     public static void ifFalseThrow(Class<? extends RuntimeException> ex, String message, boolean b) {
         if (!b) thrown(ex, message);
     }
@@ -105,8 +96,8 @@ public class CommonUtils {
         }
         Addrs addrs = documents.getDocuments().stream().filter(Objects::nonNull)
                 .findFirst().orElseThrow(() -> new RuntimeException(SERVER_ERR_MESSAGE));
-        axisMap.put("x", Double.parseDouble(addrs.getX()));
-        axisMap.put("y", Double.parseDouble(addrs.getY()));
+        axisMap.put(AXIS_X, Double.parseDouble(addrs.getX()));
+        axisMap.put(AXIS_Y, Double.parseDouble(addrs.getY()));
 
         return axisMap;
     }

@@ -68,4 +68,8 @@ public class ProductRepository {
     public int findPicsCount(Integer iproduct) {
         return productMapper.getPicCount(iproduct);
     }
+
+    public int updateProductStatus(DelProductBaseDto delProductBaseDto) {
+        return productMapper.changeProdStatus(delProductBaseDto);
+    }
 }

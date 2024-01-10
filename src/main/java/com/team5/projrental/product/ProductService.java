@@ -30,6 +30,10 @@ public class ProductService {
     private final ProductRepository productRepository;
 
 
+    /*
+        ------- Logic -------
+     */
+
     /**
      * 해당 카테고리의 전체 제품 조회.
      *
@@ -73,13 +77,12 @@ public class ProductService {
      * @return CurProductListVo
      */
     public CurProductListVo getProduct(String category, Integer iproduct) {
-        // 제공된 카테고리 검증
 
-        // 사진을 제외한 모든 정보 획득
+        // 사진을 '제외한' 모든 정보 획득 & 제공된 카테고리 검증 (category -> icategory)
         GetProductResultDto productBy = productRepository.findProductBy(
                 new GetProductBaseDto(CommonUtils.ifCategoryNotContainsThrowOrReturn(category), iproduct)
         );
-        // 결과물 없음 검증
+        // 결과물 없음 여부 검증
         CommonUtils.ifAnyNullThrow(ProductNotFoundException.class, PRODUCT_NOT_FOUND_EX_MESSAGE, productBy);
 
         // 검증 완
@@ -148,7 +151,7 @@ public class ProductService {
         // logic
         Map<String, Double> axis = CommonUtils.getAxis(dto.getAddr().concat(dto.getRestAddr()));
         // insert 할 객체 준비 완.
-        InsProdBasicInfoDto insProdBasicInfoDto = new InsProdBasicInfoDto(dto, addrBy, axis.get("x"), axis.get("y"));
+        InsProdBasicInfoDto insProdBasicInfoDto = new InsProdBasicInfoDto(dto, addrBy, axis.get(AXIS_X), axis.get(AXIS_Y));
         insProdBasicInfoDto.setMainPicObj(savePic(dto.getMainPic()));
         if (productRepository.saveProduct(insProdBasicInfoDto) == 1 && dto.getPics() != null) {
             // pics 에 insert 할 객체
@@ -160,6 +163,12 @@ public class ProductService {
     }
 
 
+    /**
+     * 제품 정보 수정 <br>
+     *
+     * @param dto
+     * @return ResVo
+     */
     @Transactional
     public ResVo putProduct(ProductUpdDto dto) {
 
@@ -221,8 +230,8 @@ public class ProductService {
         // 날짜 검증 끝
 
 
+        // 문제 없음.
 
-        /* ------ 문제 없음. ------ */
 
         // 문제 없으면 추가 사진 insert
         if (!dto.getPics().isEmpty()) {
@@ -236,35 +245,44 @@ public class ProductService {
         dto.setIcategory(CommonUtils.ifCategoryNotContainsThrowOrReturn(dto.getCategory()));
         if (dto.getAddr() != null && dto.getRestAddr() != null) {
             Map<String, Double> axis = CommonUtils.getAxis(dto.getAddr().concat(dto.getRestAddr()));
-            dto.setX(axis.get("X"));
-            dto.setY(axis.get("Y"));
+            dto.setX(axis.get(AXIS_X));
+            dto.setY(axis.get(AXIS_Y));
         }
 
-        // update
-
-
+        // do update
         return new ResVo(productRepository.updateProduct(dto));
     }
 
+    /**
+     * 게시물 삭제<br>
+     * 실제로 삭제하지는 않고, 상태를 변경. <br><br><br>
+     * 상태설명:<br>
+     * 0: 활성화 상태 (제품 insert 시 default 값)<br>
+     * -1: 삭제<br>
+     * -2: 숨김<br><br><br>
+     *
+     * 로직:<br>
+     * 삭제를 거래중이면 불가능하게? -> 별로인듯 함 그냥 -1 처리 해 두기만 하면 판매자 정보를 join 으로 조회할 수 있음. <br><br>
+     *
+     * div * -1 로 istatus 값 세팅 <br>
+     * -1 -> -1이 아닌곳을 -1 로, <br>
+     * -2 -> 0인 곳을 -2 로 <br><br>
+     *
+     * 결과가 0 이면 -> 잘못된 정보 기입됨. ex 발생.
+     *
+     * @param iproduct
+     * @param iuser
+     * @param div
+     * @return ResVo
+     */
     public ResVo delProduct(Integer iproduct, Integer iuser, Integer div) {
 
-        /* TODO: 1/10/24
-            로직 여기부터 다시 시작.
-            --by Hyunmin */
+        DelProductBaseDto delProductBaseDto = new DelProductBaseDto(iproduct, iuser, div * -1);
+        if (productRepository.updateProductStatus(delProductBaseDto) == 0) {
+            throw new BadInformationException(BAD_INFO_EX_MESSAGE);
+        }
 
-        // 삭제를 거래중이면 불가능하게? -> 별로인듯 함 그냥 -1 처리 해 두기만 하면 판매자 정보를 join 으로 조회할 수 있음.
-        //
-        // div * -1
-        // -1 -> -1이 아닌곳을 -1 로
-        // -2 -> 0인 곳을 -2 로
-        // update
-        //
-        // 만약 거래중이면 삭제 불가능하게 하는경우,
-        // 결과가 0 이면 -> 잘못된 정보 기입됨. ex 발생.
-
-        new DelProductBaseDto(iproduct, iuser, div);
-
-        return null;
+        return new ResVo(1);
     }
 
     /*

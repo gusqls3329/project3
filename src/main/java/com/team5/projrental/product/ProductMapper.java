@@ -1,6 +1,5 @@
 package com.team5.projrental.product;
 
-import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.product.model.ProductUpdDto;
 import com.team5.projrental.product.model.proc.*;
 import org.apache.ibatis.annotations.Mapper;
@@ -40,4 +39,6 @@ public interface ProductMapper {
     int updateProduct(ProductUpdDto productUpdDto);
 
     int getPicCount(Integer iproduct);
+
+    int changeProdStatus(DelProductBaseDto delProductBaseDto);
 }

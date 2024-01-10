@@ -173,4 +173,26 @@
 
     </update>
 
+    <!--
+
+
+        삭제를 거래중이면 불가능하게? -> 별로인듯 함 그냥 -1 처리 해 두기만 하면 판매자 정보를 join 으로 조회할 수 있음.
+
+        div * -1
+        -1 -> -1이 아닌곳을 -1 로
+        -2 -> 0인 곳을 -2 로 update
+        결과가 0 이면 -> 잘못된 정보 기입됨. ex 발생.
+    -->
+    <update id="changeProdStatus">
+        update t_product
+        set istatus = #{div}
+        where iproduct = #{iproduct} and iuser = #{iuser} and status
+        <if test="div == -1">
+            != #{div}
+        </if>
+        <if test="div == -2">
+            = 0
+        </if>
+    </update>
+
 </mapper>
