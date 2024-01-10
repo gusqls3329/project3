@@ -11,9 +11,9 @@ public interface ProductMapper {
 
     //
 
-    List<GetProductListResultDto> getProductList(GetProductDto getProductDto);
+    List<GetProductListResultDto> getProductList(GetProductListDto getProductListDto);
 
-    GetProductResultDto getProduct(Integer iproduct);
+    GetProductResultDto getProduct(GetProductBaseDto getProductBaseDto);
 
     List<GetProdEctPicDto> getProdEctPics(Integer productPK);
 

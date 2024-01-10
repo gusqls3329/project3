@@ -56,7 +56,7 @@
         join t_eupmyun E on P.iaddr = E.ieupmyun
         join t_gungu G on E.igungu = G.igungu
         join t_sido S on G.isido = S.isido
-        where P.iproduct = #{iproduct}
+        where P.iproduct = #{iproduct} and P.icategory = #{icategory}
     </select>
 
     <select id="getProdEctPics">

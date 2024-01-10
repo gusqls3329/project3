@@ -1,7 +1,5 @@
 package com.team5.projrental.product;
 
-import com.team5.projrental.common.Const;
-import com.team5.projrental.common.exception.BadAddressInfoException;
 import com.team5.projrental.product.model.proc.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -23,12 +21,12 @@ public class ProductRepository {
     }
     //
 
-    public List<GetProductListResultDto> findProductListBy(GetProductDto getProductDto) {
-        return productMapper.getProductList(getProductDto);
+    public List<GetProductListResultDto> findProductListBy(GetProductListDto getProductListDto) {
+        return productMapper.getProductList(getProductListDto);
     }
 
-    public GetProductResultDto findProductBy(Integer iproduct) {
-        return productMapper.getProduct(iproduct);
+    public GetProductResultDto findProductBy(GetProductBaseDto getProductBaseDto) {
+        return productMapper.getProduct(getProductBaseDto);
     }
 
     public List<GetProdEctPicDto> findPicsBy(Integer productPK) {

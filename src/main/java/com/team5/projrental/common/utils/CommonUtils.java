@@ -42,10 +42,10 @@ public class CommonUtils {
         }
     }
 
-    public void ifCategoryNotContainsThrow(String category) {
-        if (!CATEGORIES.containsValue(category)) {
-            thrown(IllegalCategoryException.class, ILLEGAL_CATEGORY_EX_MESSAGE);
-        }
+    public Integer ifCategoryNotContainsThrowOrReturn(String category) {
+        Map<Integer, String> categories = CATEGORIES;
+        return categories.keySet().stream().filter(k -> categories.get(k).equals(category))
+                .findAny().orElseThrow(() -> new IllegalCategoryException(ILLEGAL_CATEGORY_EX_MESSAGE));
     }
 
     public void ifAfterThrow(Class<? extends RuntimeException> ex, String message, LocalDate expectedAfter,

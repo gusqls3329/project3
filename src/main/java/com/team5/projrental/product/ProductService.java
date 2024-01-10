@@ -34,12 +34,12 @@ public class ProductService {
     /**
      * 해당 카테고리의 전체 제품 조회.
      *
-     * @param getProductDto
+     * @param getProductListDto
      * @return List<ProductListVo>
      */
-    public List<ProductListVo> getProductList(GetProductDto getProductDto) {
+    public List<ProductListVo> getProductList(GetProductListDto getProductListDto) {
 
-        List<GetProductListResultDto> products = productRepository.findProductListBy(getProductDto);
+        List<GetProductListResultDto> products = productRepository.findProductListBy(getProductListDto);
 
         List<ProductListVo> result = new ArrayList<>();
         products.forEach(product -> {
@@ -63,16 +63,18 @@ public class ProductService {
      * @param iproduct
      * @return CurProductListVo
      */
-    public CurProductListVo getProduct(Integer iproduct) {
+    public CurProductListVo getProduct(String category, Integer iproduct) {
+        // 제공된 카테고리 검증
+
         // 사진을 제외한 모든 정보 획득
-        GetProductResultDto productBy = productRepository.findProductBy(iproduct);
+        GetProductResultDto productBy = productRepository.findProductBy(
+                new GetProductBaseDto(commonUtils.ifCategoryNotContainsThrowOrReturn(category), iproduct)
+        );
 
         Integer productPK = productBy.getIproduct();
         List<GetProdEctPicDto> ectPics = productRepository.findPicsBy(productPK);
         List<PicSet> resultEctPic = new ArrayList<>();
-        ectPics.forEach(p -> {
-            resultEctPic.add(new PicSet(getPic(new StoredFileInfo(p.getProdRequestPic(), p.getProdStoredPic())), p.getIpics()));
-        });
+        ectPics.forEach(p -> resultEctPic.add(new PicSet(getPic(new StoredFileInfo(p.getProdRequestPic(), p.getProdStoredPic())), p.getIpics())));
         CurProductListVo result = new CurProductListVo(productBy);
         result.setProdPics(resultEctPic);
         return result;
@@ -98,7 +100,7 @@ public class ProductService {
         /* TODO: 1/9/24
             유저 검증 체크 해야함 - userSel (iuser 가 db 에 있는 유저인지 체크)
             --by Hyunmin */
-        commonUtils.ifCategoryNotContainsThrow(dto.getCategory());
+        commonUtils.ifCategoryNotContainsThrowOrReturn(dto.getCategory());
         commonUtils.ifAfterThrow(
                 BadDateInfoException.class, BUY_DATE_MUST_BE_LATER_THAN_TODAY_EX_MESSAGE,
                 LocalDate.now(), dto.getBuyDate()

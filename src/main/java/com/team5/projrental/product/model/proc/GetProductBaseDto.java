@@ -2,14 +2,11 @@ package com.team5.projrental.product.model.proc;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 
-@Data
 @AllArgsConstructor
-
-public class GetProductDto {
-
-    private Integer sort;
-    private String search;
-    private String category;
-
+@Getter
+public class GetProductBaseDto {
+    private Integer icategory;
+    private Integer iproduct;
 }
