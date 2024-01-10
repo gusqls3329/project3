@@ -10,6 +10,6 @@ public class GetProductListDto {
 
     private Integer sort;
     private String search;
-    private String category;
+    private Integer icategory;
 
 }

@@ -2,6 +2,7 @@ package com.team5.projrental.product.model.proc;
 
 import com.team5.projrental.common.Const;
 import com.team5.projrental.common.exception.IllegalCategoryException;
+import com.team5.projrental.common.utils.CommonUtils;
 import com.team5.projrental.product.model.ProductInsDto;
 import com.team5.projrental.product.model.innermodel.StoredFileInfo;
 import lombok.Data;
@@ -41,7 +42,7 @@ public class InsProdBasicInfoDto {
         this.restAddr = dto.getRestAddr();
         this.price = dto.getPrice();
         this.rentalPrice = dto.getRentalPrice();
-        this.deposit = (int) (dto.getPrice() * deposit * 0.01);
+        this.deposit = CommonUtils.getDepositFromPer(dto.getPrice(), dto.getDepositPer());
         this.buyDate = dto.getBuyDate();
         this.rentalStartDate = dto.getRentalStartDate();
         this.rentalEndDate = dto.getRentalEndDate();

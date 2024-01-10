@@ -1,5 +1,7 @@
 package com.team5.projrental.product.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.team5.projrental.product.model.innermodel.StoredFileInfo;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.hibernate.validator.constraints.Range;
@@ -9,33 +11,47 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Data
-public class ProductInsDto {
+public class ProductUpdDto {
+
     @NotNull
+    @Min(1)
+    private Integer iproduct;
+    @NotNull
+    @Min(1)
     private Integer iuser;
-    @NotBlank
-    private String title;
-    @NotBlank
-    private String contents;
-    @NotBlank
+    private String category;
     private String addr;
-    @NotBlank
     private String restAddr;
-    @NotNull
+    private String title;
+    private String contents;
     private MultipartFile mainPic;
     private List<MultipartFile> pics;
-    @NotNull
     @Range(min = 100, max = Integer.MAX_VALUE)
     private Integer price;
-    @NotNull
     @Range(min = 100, max = Integer.MAX_VALUE)
     private Integer rentalPrice;
-    @NotNull
     @Range(min = 70, max = 100)
     private Integer depositPer;
     private LocalDate buyDate;
     private LocalDate rentalStartDate;
     private LocalDate rentalEndDate;
-    @NotBlank
-    private String category;
 
+    // add
+    @Size(max = 9)
+    List<Integer> delPics;
+
+
+    @JsonIgnore
+    private StoredFileInfo storedMainPic;
+    @JsonIgnore
+    private Integer iaddr;
+    @JsonIgnore
+    private Integer icategory;
+    @JsonIgnore
+    private Integer deposit;
+    @JsonIgnore
+    private Double x;
+    @JsonIgnore
+    private Double y;
 }
+

@@ -5,6 +5,12 @@
 <mapper namespace="com.team5.projrental.product.ProductMapper">
 
     <!--    -->
+    <select id="checkIuser">
+        select count(iuser) from t_user where iuser = #{iuser}
+    </select>
+    <!--    -->
+
+    <!--    -->
     <update id="countView">
         <selectKey keyProperty="beforeView" resultType="java.lang.Integer" order="BEFORE">
             select view from t_product where iproduct = #{iproduct}
@@ -15,21 +21,20 @@
 
     <select id="getProductList">
         select U.nick, U.stored_pic as userStoredPic, U.request_pic as userRequestPic,
-        P.iproduct, P.title, P.stored_pic as prodMainStoredPic, P.request_pic as prodMainRequestPic,
+        P.iproduct, concat(S.sido, G.gungu, E.eupmyun,
+        U.rest_addr) as addr, P.title, P.stored_pic as prodMainStoredPic, P.request_pic as prodMainRequestPic,
         P.rental_price as rentalPrice,
-        P.rental_start_date as rentalDateDate, P.rental_end_date as rentalEndDate, concat(S.sido, G.gungu, E.eupmyun,
-        U.rest_addr) as addr
+        P.rental_start_date as rentalStartDate, P.rental_end_date as rentalEndDate
         <if test="sort == 1">
             , (select count(L.iproduct) from t_like L where L.iproduct = P.iproduct) as prodLike
         </if>
         from t_product P
-        join t_category C on P.icategory = C.icategory
         join t_user U on P.iuser = U.iuser
         join t_eupmyun E on U.iaddr = E.ieupmyun
         join t_gungu G on E.igungu = G.igungu
         join t_sido S on G.isido = S.isido
         <where>
-            C.category = #{category}
+            P.icategory = #{icategory}
             <if test="search != null">
                 and P.title like concat('%', #{search}, '%')
             </if>
@@ -46,17 +51,26 @@
     </select>
 
     <select id="getProduct">
-        select U.iuser, U.nick,
-        P.iproduct, P.title, P.stored_pic as prodMainStoredPic, P.request_pic as prodMainRequestPic,
-        P.rental_price as rentalPrice, P.rental_start_date as rentalStartDate, P.rental_end_date as rentalEndDate,
-        concat(S.sido, G.gungu, E.eupmyun, P.rest_addr) as addr, (select count(L.iproduct) from t_like L where L.iproduct =
-        P.iproduct) prodLike
+        select U.nick, U.userStoredPic, U.userRequestPic,
+        P.iproduct, concat(S.sido, G.gungu, E.eupmyun, P.rest_addr) as addr, P.title, P.request_pic as prodMainRequestPic,
+        P.request_pic as prodMainRequestPic, P.rental_price as rentalPrice, P.rental_start_date as rentalStartDate,
+        P.rental_end_date as rentalEndDate, (select count(L.iproduct) from t_like L where L.iproduct = P.iproduct) prodLike,
+        P.iuser, P.contents, P.deposit, P.buyDate, P,x, P,y
         from t_product P
         join t_user U on P.iuser = U.iuser
         join t_eupmyun E on P.iaddr = E.ieupmyun
         join t_gungu G on E.igungu = G.igungu
         join t_sido S on G.isido = S.isido
-        where P.iproduct = #{iproduct} and P.icategory = #{icategory}
+        <where>
+            P.iproduct = #{iproduct}
+            <if test="icategory != null and icategory > 0">
+                and P.icategory = #{icategory}
+            </if>
+            <if test="iuser != null and iuser > 0">
+                and U.iuser = #{iuser}
+            </if>
+        </where>
+
     </select>
 
     <select id="getProdEctPics">
@@ -89,4 +103,78 @@
         </foreach>
 
     </insert>
+
+    <delete id="deletePic">
+        delete from t_pics
+        <where>
+            iproduct = #{iproduct} and ipics in (
+            <foreach collection="delpics" item="pic" separator=", ">
+                pic
+            </foreach>
+            )
+        </where>
+    </delete>
+
+    <select id="getProductForUpdate">
+        select P.price, P.buy_date as buyDate, P.rental_start_date as rentalStartDate, P.rental_end_date as rentalEndDate
+        from t_product P
+        where P.iproduct = #{iproduct} and P.icategory = #{icategory}
+
+    </select>
+
+    <select id="getPicCount">
+        select count(iproduct) from t_pics where iproduct = #{iproduct}
+    </select>
+
+    <update id="updateProduct">
+        update t_product
+        <set>
+            <if test="icategory != null">
+                icategory = #{icategory}
+            </if>
+            <if test="iaddr != null">
+                , iaddr = #{iaddr}
+            </if>
+            <if test="restAddr != null">
+                , rest_addr = #{restAddr}
+            </if>
+            <if test="title != null">
+                , title = #{title}
+            </if>
+            <if test="contents != null">
+                , contents = #{contents}
+            </if>
+            <if test="storedMainPic != null">
+                , stored_pic = #{storedMainPic.storedPic}, request_pic = #{storedMainPic.requestPic}
+
+            </if>
+            <if test="price != null">
+                , price = #{price}
+            </if>
+            <if test="rentalPrice != null">
+                , rental_price = #{rental_price}
+            </if>
+            <if test="deposit != null">
+                , deposit = #{deposit}
+            </if>
+            <if test="buyDate != null">
+                , buy_date = #{buyDate}
+            </if>
+            <if test="rentalStartDate != null">
+                , rental_start_date = #{rentalStartDate}
+            </if>
+            <if test="rentalEndDate != null">
+                , rental_end_date = #{rentalEndDate}
+            </if>
+            <if test="x != null">
+                , x = #{x}
+            </if>
+            <if test="y != null">
+                , y = #{y}
+            </if>
+        </set>
+        where iproduct = #{iproduct} and iuser = #{iuser}
+
+    </update>
+
 </mapper>

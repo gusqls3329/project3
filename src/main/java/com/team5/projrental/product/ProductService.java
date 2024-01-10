@@ -2,11 +2,13 @@ package com.team5.projrental.product;
 
 import com.team5.projrental.common.exception.BadAddressInfoException;
 import com.team5.projrental.common.exception.BadDateInfoException;
-import com.team5.projrental.common.exception.NotEnoughProductPics;
+import com.team5.projrental.common.exception.BadUserInformationException;
+import com.team5.projrental.common.exception.IllegalProductPicsException;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.utils.CommonUtils;
 import com.team5.projrental.product.model.CurProductListVo;
 import com.team5.projrental.product.model.ProductInsDto;
+import com.team5.projrental.product.model.ProductUpdDto;
 import com.team5.projrental.product.model.innermodel.PicSet;
 import com.team5.projrental.product.model.innermodel.StoredFileInfo;
 import com.team5.projrental.product.model.ProductListVo;
@@ -29,16 +31,21 @@ import static com.team5.projrental.common.Const.*;
 public class ProductService {
 
     private final ProductRepository productRepository;
-    private final CommonUtils commonUtils;
+
 
     /**
      * 해당 카테고리의 전체 제품 조회.
      *
-     * @param getProductListDto
-     * @return List<ProductListVo>
+     * @param sort
+     * @param search
+     * @param category
+     * @return
      */
-    public List<ProductListVo> getProductList(GetProductListDto getProductListDto) {
-
+    public List<ProductListVo> getProductList(Integer sort,
+                                              String search,
+                                              String category) {
+        GetProductListDto getProductListDto = new GetProductListDto(sort, search,
+                CommonUtils.ifCategoryNotContainsThrowOrReturn(category));
         List<GetProductListResultDto> products = productRepository.findProductListBy(getProductListDto);
 
         List<ProductListVo> result = new ArrayList<>();
@@ -68,7 +75,7 @@ public class ProductService {
 
         // 사진을 제외한 모든 정보 획득
         GetProductResultDto productBy = productRepository.findProductBy(
-                new GetProductBaseDto(commonUtils.ifCategoryNotContainsThrowOrReturn(category), iproduct)
+                new GetProductBaseDto(CommonUtils.ifCategoryNotContainsThrowOrReturn(category), iproduct)
         );
 
         Integer productPK = productBy.getIproduct();
@@ -92,34 +99,45 @@ public class ProductService {
      */
     @Transactional
     public ResVo postProduct(ProductInsDto dto) {
+        /* TODO: 2024-01-10
+            security 적용시 모든 iuser 가 있는부분 로직 변경, 모델 변경 해야함.
+            --by Hyunmin */
 
+
+        // 사진 개수 검증 - 예외 코드, 메시지 를 위해 직접 검증 (!@Validated)
         if (dto.getPics() != null) {
-            commonUtils.checkSizeIfOverLimitNumThrow(NotEnoughProductPics.class, NOT_ENOUGH_PRODUCT_PICS_EX_MESSAGE,
+            CommonUtils.checkSizeIfOverLimitNumThrow(IllegalProductPicsException.class, ILLEGAL_PRODUCT_PICS_EX_MESSAGE,
                     dto.getPics().stream(), 9);
         }
-        /* TODO: 1/9/24
-            유저 검증 체크 해야함 - userSel (iuser 가 db 에 있는 유저인지 체크)
-            --by Hyunmin */
-        commonUtils.ifCategoryNotContainsThrowOrReturn(dto.getCategory());
-        commonUtils.ifAfterThrow(
+
+        // iuser 있는지 체크
+        CommonUtils.ifFalseThrow(BadUserInformationException.class, BAD_USER_INFO_EX_MESSAGE, productRepository.findIuserBy(dto.getIuser()));
+
+        // 카테고리 검증 - 예외 코드, 메시지 를 위해 직접 검증 (!@Validated)
+        CommonUtils.ifCategoryNotContainsThrowOrReturn(dto.getCategory());
+
+        // 날짜 검증 시작  - 예외 코드, 메시지 를 위해 직접 검증 (!@Validated)
+        CommonUtils.ifAfterThrow(
                 BadDateInfoException.class, BUY_DATE_MUST_BE_LATER_THAN_TODAY_EX_MESSAGE,
                 LocalDate.now(), dto.getBuyDate()
         );
-        commonUtils.ifBeforeThrow(
+        CommonUtils.ifBeforeThrow(
                 BadDateInfoException.class, RENTAL_DATE_MUST_BE_BEFORE_THAN_TODAY_EX_MESSAGE,
                 dto.getRentalStartDate(), LocalDate.now()
         );
-        commonUtils.ifBeforeThrow(BadDateInfoException.class, RENTAL_END_DATE_MUST_BE_AFTER_THAN_RENTAL_START_DATE_EX_MESSAGE
+        CommonUtils.ifBeforeThrow(BadDateInfoException.class, RENTAL_END_DATE_MUST_BE_AFTER_THAN_RENTAL_START_DATE_EX_MESSAGE
                 , dto.getRentalEndDate(), dto.getRentalStartDate());
-        List<Integer> addrBy = productRepository.findAddrBy(commonUtils.subEupmyun(dto.getAddr()));
-        commonUtils.checkSizeIfOverLimitNumThrow(BadAddressInfoException.class, BAD_ADDRESS_INFO_EX_MESSAGE,
-                addrBy.stream(), 1);
+        // 날짜 검증 끝
+
+
+        // 주소 검증 (ieupmyun)
+        Integer addrBy = checkAddrInDb(dto.getAddr());
 
 
         // logic
-        Map<String, Double> axis = commonUtils.getAxis(dto.getAddr().concat(dto.getRestAddr()));
+        Map<String, Double> axis = CommonUtils.getAxis(dto.getAddr().concat(dto.getRestAddr()));
         // insert 할 객체 준비 완.
-        InsProdBasicInfoDto insProdBasicInfoDto = new InsProdBasicInfoDto(dto, addrBy.get(0), axis.get("x"), axis.get("y"));
+        InsProdBasicInfoDto insProdBasicInfoDto = new InsProdBasicInfoDto(dto, addrBy, axis.get("x"), axis.get("y"));
         insProdBasicInfoDto.setMainPicObj(savePic(dto.getMainPic()));
         if (productRepository.saveProduct(insProdBasicInfoDto) == 1 && dto.getPics() != null) {
             // pics 에 insert 할 객체
@@ -128,6 +146,93 @@ public class ProductService {
         }
 
         return new ResVo(1);
+    }
+
+
+    @Transactional
+    public ResVo putProduct(ProductUpdDto dto) {
+
+        // 삭제사진 필요시 삭제
+        if (!dto.getDelPics().isEmpty()) {
+            if (productRepository.deletePics(dto.getIproduct(), dto.getDelPics()) == 0) {
+                throw new RuntimeException(SERVER_ERR_MESSAGE);
+            }
+        }
+        // 병합하지 않아도 되는 데이터 검증
+
+        // 주소 검증
+        if (dto.getAddr() != null) {
+            dto.setIaddr(checkAddrInDb(dto.getAddr()));
+        }
+        UpdProdBasicDto fromDb = productRepository.findProductByForUpdate(new GetProductBaseDto(CommonUtils.ifCategoryNotContainsThrowOrReturn(dto.getCategory()), dto.getIproduct()));
+        // 병합
+        Integer price = dto.getPrice() == null ? fromDb.getPrice() : dto.getPrice();
+        UpdProdBasicDto mergedData = new UpdProdBasicDto(
+                dto.getPrice() == null ? fromDb.getPrice() : dto.getPrice(),
+                dto.getBuyDate() == null ? fromDb.getBuyDate() : dto.getBuyDate(),
+                dto.getRentalStartDate() == null ? fromDb.getRentalStartDate() : dto.getRentalStartDate(),
+                dto.getRentalEndDate() == null ? fromDb.getRentalEndDate() : dto.getRentalEndDate()
+        );
+        int dbPicsCount = productRepository.findPicsCount(dto.getIproduct());
+
+        // 사진 세팅
+//        if (!dto.getPics().isEmpty() && !fromDb.getPics().isEmpty()) {
+//            List<StoredFileInfo> dtoPics = savePic(dto.getPics());
+//            dtoPics.addAll(fromDb.getPics());
+//            mergedData.setPics(dtoPics);
+//        }
+//        if (!dto.getPics().isEmpty() && fromDb.getPics() == null) {
+//            fromDb.setPics(savePic(dto.getPics()));
+//        }
+
+        // 사진 개수 검증
+        // fromDb 사진(이미 삭제필요한 사진은 삭제 된 상태) 과 dto.getPics 를 savePic 하고난 결과를 합쳐서 개수 체크.
+        if (!dto.getPics().isEmpty()) {
+            CommonUtils.checkSizeIfOverLimitNumThrow(IllegalProductPicsException.class, ILLEGAL_PRODUCT_PICS_EX_MESSAGE,
+                    dto.getPics().stream(), 9 - dbPicsCount);
+        }
+
+
+        //
+
+        // 데이터 검증
+        // 날짜 검증 시작  - 예외 코드, 메시지 를 위해 직접 검증 (!@Validated)
+        CommonUtils.ifAfterThrow(
+                BadDateInfoException.class, BUY_DATE_MUST_BE_LATER_THAN_TODAY_EX_MESSAGE,
+                LocalDate.now(), mergedData.getBuyDate()
+        );
+        CommonUtils.ifBeforeThrow(
+                BadDateInfoException.class, RENTAL_DATE_MUST_BE_BEFORE_THAN_TODAY_EX_MESSAGE,
+                mergedData.getRentalStartDate(), LocalDate.now()
+        );
+        CommonUtils.ifBeforeThrow(BadDateInfoException.class, RENTAL_END_DATE_MUST_BE_AFTER_THAN_RENTAL_START_DATE_EX_MESSAGE
+                , mergedData.getRentalEndDate(), mergedData.getRentalStartDate());
+        // 날짜 검증 끝
+
+
+
+        /* ------ 문제 없음. ------ */
+
+        // 문제 없으면 추가 사진 insert
+        if (!dto.getPics().isEmpty()) {
+            productRepository.savePics(new InsProdPicsDto(dto.getIproduct(), savePic(dto.getPics())));
+        }
+
+
+        // update 할 객체 세팅
+        dto.setStoredMainPic(dto.getMainPic() == null ? null : savePic(dto.getMainPic()));
+        dto.setDeposit(dto.getDepositPer() == null ? null : CommonUtils.getDepositFromPer(price, dto.getDeposit()));
+        dto.setIcategory(CommonUtils.ifCategoryNotContainsThrowOrReturn(dto.getCategory()));
+        if (dto.getAddr() != null && dto.getRestAddr() != null) {
+            Map<String, Double> axis = CommonUtils.getAxis(dto.getAddr().concat(dto.getRestAddr()));
+            dto.setX(axis.get("X"));
+            dto.setY(axis.get("Y"));
+        }
+
+        // update
+
+
+        return new ResVo(productRepository.updateProduct(dto));
     }
 
     /*
@@ -199,5 +304,12 @@ public class ProductService {
         return result;
     }
 
+    private Integer checkAddrInDb(String addr) {
+        List<Integer> addrBy = productRepository.findAddrBy(CommonUtils.subEupmyun(addr));
+        if (addrBy.isEmpty()) throw new BadAddressInfoException(BAD_ADDRESS_INFO_EX_MESSAGE);
+        CommonUtils.checkSizeIfOverLimitNumThrow(BadAddressInfoException.class, BAD_ADDRESS_INFO_EX_MESSAGE,
+                addrBy.stream(), 1);
+        return addrBy.get(0);
+    }
 
 }

@@ -13,12 +13,12 @@ public class GetProductListResultDto {
     private String userRequestPic;
 
     private Integer iproduct;
+    private String addr;
     private String title;
     private String prodMainStoredPic;
     private String prodMainRequestPic;
     private Integer rentalPrice;
     private LocalDate rentalStartDate;
     private LocalDate rentalEndDate;
-    private String addr;
     private Integer prodLike;
 }

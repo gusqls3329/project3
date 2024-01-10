@@ -27,7 +27,7 @@ public class CommonUtils {
      * @param message
      * @param objs
      */
-    public void anyNullThrown(Class<? extends RuntimeException> ex, String message, Object... objs) {
+    public static void anyNullThrown(Class<? extends RuntimeException> ex, String message, Object... objs) {
         Arrays.stream(objs).forEach(o -> {
             if (o == null) {
                 thrown(ex, message);
@@ -35,34 +35,38 @@ public class CommonUtils {
         });
     }
 
-    public <T> void checkSizeIfOverLimitNumThrow(Class<? extends RuntimeException> ex, String message, Stream<T> collection,
-                                                 int limitNum) {
+    public static void ifFalseThrow(Class<? extends RuntimeException> ex, String message, boolean b) {
+        if (!b) thrown(ex, message);
+    }
+
+    public static <T> void checkSizeIfOverLimitNumThrow(Class<? extends RuntimeException> ex, String message, Stream<T> collection,
+                                                        int limitNum) {
         if (collection.count() > limitNum) {
             thrown(ex, message);
         }
     }
 
-    public Integer ifCategoryNotContainsThrowOrReturn(String category) {
+    public static Integer ifCategoryNotContainsThrowOrReturn(String category) {
         Map<Integer, String> categories = CATEGORIES;
         return categories.keySet().stream().filter(k -> categories.get(k).equals(category))
                 .findAny().orElseThrow(() -> new IllegalCategoryException(ILLEGAL_CATEGORY_EX_MESSAGE));
     }
 
-    public void ifAfterThrow(Class<? extends RuntimeException> ex, String message, LocalDate expectedAfter,
-                             LocalDate expectedBefore) {
+    public static void ifAfterThrow(Class<? extends RuntimeException> ex, String message, LocalDate expectedAfter,
+                                    LocalDate expectedBefore) {
         if (expectedBefore.isAfter(expectedAfter)) {
             thrown(ex, message);
         }
     }
 
-    public void ifBeforeThrow(Class<? extends RuntimeException> ex, String message, LocalDate expectedAfter,
-                              LocalDate expectedBefore) {
+    public static void ifBeforeThrow(Class<? extends RuntimeException> ex, String message, LocalDate expectedAfter,
+                                     LocalDate expectedBefore) {
         if (expectedAfter.isBefore(expectedBefore)) {
             thrown(ex, message);
         }
     }
 
-    private void thrown(Class<? extends RuntimeException> ex, String message) {
+    private static void thrown(Class<? extends RuntimeException> ex, String message) {
         try {
             throw ex.getDeclaredConstructor(String.class).newInstance(message);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
@@ -70,7 +74,7 @@ public class CommonUtils {
         }
     }
 
-    public Map<String, Double> getAxis(String fullAddr) {
+    public static Map<String, Double> getAxis(String fullAddr) {
         Map<String, Double> axisMap = new HashMap<>();
 
         StringBuilder sb = new StringBuilder();
@@ -105,10 +109,14 @@ public class CommonUtils {
         return axisMap;
     }
 
-    public List<String> subEupmyun(String fullAddr) {
+    public static List<String> subEupmyun(String fullAddr) {
         List<String> result = new ArrayList<>();
         Arrays.stream(fullAddr.split(" ")).filter(s -> s.contains("읍") || s.contains("동") || s.contains("면"))
                 .forEach(result::add);
         return result;
+    }
+
+    public static Integer getDepositFromPer(Integer price, Integer percent) {
+        return (int) (price * percent * 0.01);
     }
 }

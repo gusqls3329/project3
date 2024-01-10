@@ -1,5 +1,6 @@
 package com.team5.projrental.product;
 
+import com.team5.projrental.product.model.ProductUpdDto;
 import com.team5.projrental.product.model.proc.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -11,6 +12,12 @@ import java.util.List;
 public class ProductRepository {
 
     private final ProductMapper productMapper;
+
+    //
+    public boolean findIuserBy(Integer iuser) {
+        return productMapper.checkIuser(iuser) == 1;
+    }
+    //
 
     //
     public String countView(Integer iproduct) {
@@ -43,5 +50,22 @@ public class ProductRepository {
 
     public List<Integer> findAddrBy(List<String> eupmyun) {
         return productMapper.getIEupmyun(eupmyun);
+    }
+
+    public Integer deletePics(Integer iproduct, List<Integer> delPic) {
+        return productMapper.deletePic(iproduct, delPic);
+    }
+
+    public UpdProdBasicDto findProductByForUpdate(GetProductBaseDto getProductBaseDto) {
+        return productMapper.getProductForUpdate(getProductBaseDto);
+
+    }
+
+    public int updateProduct(ProductUpdDto productUpdDto) {
+        return productMapper.updateProduct(productUpdDto);
+    }
+
+    public int findPicsCount(Integer iproduct) {
+        return productMapper.getPicCount(iproduct);
     }
 }

@@ -4,8 +4,7 @@ import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.product.model.CurProductListVo;
 import com.team5.projrental.product.model.ProductInsDto;
 import com.team5.projrental.product.model.ProductListVo;
-import com.team5.projrental.product.model.proc.GetProductBaseDto;
-import com.team5.projrental.product.model.proc.GetProductListDto;
+import com.team5.projrental.product.model.ProductUpdDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -26,10 +25,10 @@ public class ProductController {
                                               @RequestParam(required = false) String search,
                                               @PathVariable String category) {
 
-        return productService.getProductList(new GetProductListDto(sort, search, category));
+        return productService.getProductList(sort, search, category);
     }
 
-    @GetMapping("/api/prod/{category}/{iproduct}") // 카테고리 받을 필요?
+    @GetMapping("/api/prod/{category}/{iproduct}")
     public CurProductListVo getProduct(@PathVariable String category, @PathVariable Integer iproduct) {
         return productService.getProduct(category, iproduct);
     }
@@ -45,6 +44,14 @@ public class ProductController {
     public ResVo postProduct(@Validated ProductInsDto dto) {
         return productService.postProduct(dto);
 
+    }
+
+    @PutMapping("/api/prod")
+    public ResVo putProduct(@Validated ProductUpdDto dto) {
+        /* TODO: 2024-01-10
+            로직 시작
+            --by Hyunmin */
+        return productService.putProduct(dto);
     }
 
 }
