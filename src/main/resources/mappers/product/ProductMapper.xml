@@ -5,9 +5,22 @@
 <mapper namespace="com.team5.projrental.product.ProductMapper">
 
     <!--    -->
+    <select id="getPricePerDay">
+        select rental_price from t_product where iproduct = #{iproduct}
+    </select>
+    <!--    -->
+
+
+
+    <!--    -->
     <select id="checkIuser">
         select count(iuser) from t_user where iuser = #{iuser}
     </select>
+
+    <select id="checkIproduct">
+        select count(iproduct) from t_product where iproduct = #{iproduct}
+    </select>
+
     <!--    -->
 
     <!--    -->
@@ -193,6 +206,10 @@
         <if test="div == -2">
             = 0
         </if>
+    </update>
+
+    <update id="updateIpayment">
+        update t_product set ipayment = #{ipayment} where iproduct = #{iproduct}
     </update>
 
 </mapper>

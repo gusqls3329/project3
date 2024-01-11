@@ -9,6 +9,11 @@ import java.util.List;
 
 @Mapper
 public interface ProductMapper {
+
+    //
+    int getRentalPricePerDay(Integer iproduct);
+    //
+
     //
     int checkIuser(Integer iuser);
     //
@@ -23,7 +28,6 @@ public interface ProductMapper {
     GetProductResultDto getProduct(GetProductBaseDto getProductBaseDto);
 
     List<GetProdEctPicDto> getProdEctPics(Integer productPK);
-
 
 
     int insProduct(InsProdBasicInfoDto insProdBasicInfoDto);
@@ -41,4 +45,8 @@ public interface ProductMapper {
     int getPicCount(Integer iproduct);
 
     int changeProdStatus(DelProductBaseDto delProductBaseDto);
+
+    int updateIpayment(@Param("iproduct") Integer iproduct, @Param("ipayment") Integer ipayment);
+
+    int checkIproduct(Integer iproduct);
 }

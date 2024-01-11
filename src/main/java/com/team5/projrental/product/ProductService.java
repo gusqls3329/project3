@@ -3,7 +3,7 @@ package com.team5.projrental.product;
 import com.team5.projrental.common.exception.*;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.utils.CommonUtils;
-import com.team5.projrental.product.model.CurProductListVo;
+import com.team5.projrental.product.model.ProductVo;
 import com.team5.projrental.product.model.ProductInsDto;
 import com.team5.projrental.product.model.ProductUpdDto;
 import com.team5.projrental.product.model.innermodel.PicSet;
@@ -39,7 +39,7 @@ public class ProductService {
      * @param sort
      * @param search
      * @param category
-     * @return
+     * @return List<ProductListVo>
      */
     public List<ProductListVo> getProductList(Integer sort,
                                               String search,
@@ -51,7 +51,7 @@ public class ProductService {
                 CommonUtils.ifCategoryNotContainsThrowOrReturn(category));
         List<GetProductListResultDto> products = productRepository.findProductListBy(getProductListDto);
         // 결과물 없음 여부 체크
-        checkNullOrZeroIfCollection(ProductNotFoundException.class, PRODUCT_NOT_FOUND_EX_MESSAGE, products);
+        checkNullOrZeroIfCollection(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE, products);
 
         // 검증 이상 무
         List<ProductListVo> result = new ArrayList<>();
@@ -74,22 +74,22 @@ public class ProductService {
      * 선택한 특정 제품페이지 조회.
      *
      * @param iproduct
-     * @return CurProductListVo
+     * @return ProductVo
      */
-    public CurProductListVo getProduct(String category, Integer iproduct) {
+    public ProductVo getProduct(String category, Integer iproduct) {
 
         // 사진을 '제외한' 모든 정보 획득 & 제공된 카테고리 검증 (category -> icategory)
         GetProductResultDto productBy = productRepository.findProductBy(
                 new GetProductBaseDto(CommonUtils.ifCategoryNotContainsThrowOrReturn(category), iproduct)
         );
         // 결과물 없음 여부 검증
-        CommonUtils.ifAnyNullThrow(ProductNotFoundException.class, PRODUCT_NOT_FOUND_EX_MESSAGE, productBy);
+        CommonUtils.ifAnyNullThrow(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE, productBy);
 
         // 검증 완
         Integer productPK = productBy.getIproduct();
         List<GetProdEctPicDto> ectPics = productRepository.findPicsBy(productPK);
 
-        CurProductListVo result = new CurProductListVo(productBy);
+        ProductVo result = new ProductVo(productBy);
         // 사진 조회 결과가 없으면 곧바로 리턴
         if (ectPics == null || ectPics.isEmpty()) {
             return result;
@@ -125,7 +125,7 @@ public class ProductService {
         }
 
         // iuser 있는지 체크
-        CommonUtils.ifFalseThrow(BadUserInformationException.class, BAD_USER_INFO_EX_MESSAGE, productRepository.findIuserBy(dto.getIuser()));
+        CommonUtils.ifFalseThrow(NoSuchUserException.class, NO_SUCH_USER_EX_MESSAGE, productRepository.findIuserCountBy(dto.getIuser()));
 
         // 카테고리 검증 - 예외 코드, 메시지 를 위해 직접 검증 (!@Validated)
         CommonUtils.ifCategoryNotContainsThrowOrReturn(dto.getCategory());

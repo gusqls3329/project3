@@ -1,11 +1,10 @@
 package com.team5.projrental.product;
 
 import com.team5.projrental.common.model.ResVo;
-import com.team5.projrental.product.model.CurProductListVo;
+import com.team5.projrental.product.model.ProductVo;
 import com.team5.projrental.product.model.ProductInsDto;
 import com.team5.projrental.product.model.ProductListVo;
 import com.team5.projrental.product.model.ProductUpdDto;
-import com.team5.projrental.product.model.proc.DelProductBaseDto;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +32,7 @@ public class ProductController {
 
     @Validated
     @GetMapping("/api/prod/{category}/{iproduct}")
-    public CurProductListVo getProduct(@PathVariable String category, @PathVariable @Min(1) Integer iproduct) {
+    public ProductVo getProduct(@PathVariable String category, @PathVariable @Min(1) Integer iproduct) {
         return productService.getProduct(category, iproduct);
     }
 

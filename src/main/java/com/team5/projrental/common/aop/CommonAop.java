@@ -2,12 +2,11 @@ package com.team5.projrental.common.aop;
 
 import com.team5.projrental.common.threadpool.MyThreadPoolHolder;
 import com.team5.projrental.product.ProductRepository;
-import com.team5.projrental.product.model.CurProductListVo;
+import com.team5.projrental.product.model.ProductVo;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ExecutorService;
@@ -27,7 +26,7 @@ public class CommonAop {
 
     @AfterReturning(value = "execution(* com.team5.projrental.product.ProductService.getProduct(..))",
             returning = "result")
-    public void countView(JoinPoint joinPoint, CurProductListVo result) {
+    public void countView(JoinPoint joinPoint, ProductVo result) {
 
         log.debug("AOP Start");
         threadPool.execute(() -> {

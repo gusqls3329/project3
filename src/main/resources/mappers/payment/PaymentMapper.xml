@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team5.projrental.payment.PaymentMapper">
+
+    <insert id="insPayment" useGeneratedKeys="true" keyProperty="ipayment">
+        insert into t_payment (ibuyer, payment_method, rental_start_date, rental_end_date, rental_duration,
+            ipayment_method, price, code)
+        values (#{ibuyer}, #{paymentMethod}, #{rentalStartDate}, #{rentalEndDate}, #{rentalDuration},
+            #{ipaymentMethod}, #{price}, #{code}
+    </insert>
+
+    <insert id="insProductPayment">
+        insert into t_product_payment (iproduct, ipayment)
+        values #{iproduct}, #{ipayment}
+    </insert>
+
+
+    <select id="checkIuserAndIproduct">
+        select PA.istatus, PA.rental_end_date as rentalEndDate, P.iuser as iSeller, PA.ibuyer as iBuyer
+        from t_product_payment PPA
+        join t_product P on P.iproduct = PPA.iproduct
+        join t_payment PA on PA.ipayment = PPA.ipayment
+        where PA.ipayment = #{ipayment} and PA.istatus != -1
+    </select>
+
+    <update id="delPayment">
+        update t_payment set istatus = #{istatus} where ipayment = #{ipayment}
+    </update>
+</mapper>

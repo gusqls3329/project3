@@ -14,7 +14,19 @@ public class ProductRepository {
     private final ProductMapper productMapper;
 
     //
-    public boolean findIuserBy(Integer iuser) {
+    public int findRentalPriceBy(Integer iproduct) {
+        return productMapper.getRentalPricePerDay(iproduct);
+    }
+    //
+
+    //
+    public boolean findIproductCountBy(Integer iproduct) {
+        return productMapper.checkIproduct(iproduct) == 1;
+    }
+    //
+
+    //
+    public boolean findIuserCountBy(Integer iuser) {
         return productMapper.checkIuser(iuser) == 1;
     }
     //
@@ -71,5 +83,9 @@ public class ProductRepository {
 
     public int updateProductStatus(DelProductBaseDto delProductBaseDto) {
         return productMapper.changeProdStatus(delProductBaseDto);
+    }
+
+    public int updateIpayment(Integer iproduct, Integer ipayment) {
+        return productMapper.updateIpayment(iproduct, ipayment);
     }
 }

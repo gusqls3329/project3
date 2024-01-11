@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team5.projrental.common.Const;
 import com.team5.projrental.common.exception.IllegalCategoryException;
+import com.team5.projrental.common.exception.IllegalPaymentMethodException;
 import com.team5.projrental.common.model.restapi.Addrs;
 import com.team5.projrental.common.model.restapi.Documents;
 import org.springframework.stereotype.Component;
@@ -43,6 +44,11 @@ public class CommonUtils {
         Map<Integer, String> categories = CATEGORIES;
         return categories.keySet().stream().filter(k -> categories.get(k).equals(category))
                 .findAny().orElseThrow(() -> new IllegalCategoryException(ILLEGAL_CATEGORY_EX_MESSAGE));
+    }
+    public static Integer ifPaymentMethodNotContainsThrowOrReturn(String paymentMethod) {
+        Map<Integer, String> paymentMethods = PAYMENT_METHODS;
+        return paymentMethods.keySet().stream().filter(k -> paymentMethods.get(k).equals(paymentMethod))
+                .findAny().orElseThrow(() -> new IllegalPaymentMethodException(ILLEGAL_PAYMENT_EX_MESSAGE));
     }
 
     public static void ifAfterThrow(Class<? extends RuntimeException> ex, String message, LocalDate expectedAfter,
