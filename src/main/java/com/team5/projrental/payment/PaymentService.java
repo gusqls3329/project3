@@ -154,12 +154,13 @@ public class PaymentService {
     ------- Extracted Method -------
 */
     private String createCode() {
-        String nowStr = LocalDateTime.now().toString();
-        String uuid = UUID.randomUUID().toString();
-        String uuidResult = uuid.substring(uuid.lastIndexOf("-") + 1);
 
-        return new StringBuilder().append(uuidResult).append(nowStr.substring(2, 4)).append(nowStr.substring(nowStr.length() - 6, nowStr.length() - 2))
-                .append(nowStr.substring(8, 10)).toString();
+        String systemCurrent = String.valueOf(System.currentTimeMillis());
+        String uuidFront = UUID.randomUUID().toString().substring(0, 4);
+        String uuidBackBase = UUID.randomUUID().toString();
+        String uuidBack = uuidBackBase.substring(uuidBackBase.length() - 3);
+
+        return new StringBuilder().append(uuidFront).append(systemCurrent).append(uuidBack).toString();
 
     }
 
