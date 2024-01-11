@@ -34,6 +34,6 @@ public class CommonAop {
             log.debug(productRepository.countView(result.getIproduct()));
         });
 
-}
+    }
 
 }
