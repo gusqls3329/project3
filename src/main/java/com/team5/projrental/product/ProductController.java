@@ -1,10 +1,7 @@
 package com.team5.projrental.product;
 
 import com.team5.projrental.common.model.ResVo;
-import com.team5.projrental.product.model.ProductVo;
-import com.team5.projrental.product.model.ProductInsDto;
-import com.team5.projrental.product.model.ProductListVo;
-import com.team5.projrental.product.model.ProductUpdDto;
+import com.team5.projrental.product.model.*;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -60,6 +57,12 @@ public class ProductController {
                             @PathVariable @Min(1) Integer iuser,
                             @RequestParam @Range(min = 1, max = 1) Integer div) {
         return productService.delProduct(iproduct, iuser, div);
+    }
+
+    @Validated
+    @GetMapping("/list/{iuser}")
+    public List<ProductUserVo> getUserProductList(@PathVariable @Min(0) Integer iuser, @RequestParam @Min(0) Integer page) {
+        return productService.getUserProductList(iuser, page);
     }
 
 }

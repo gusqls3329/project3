@@ -5,9 +5,13 @@ import com.team5.projrental.common.exception.*;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.utils.CommonUtils;
 import com.team5.projrental.payment.model.PaymentInsDto;
+import com.team5.projrental.payment.model.PaymentListVo;
 import com.team5.projrental.payment.model.proc.DelPaymentDto;
 import com.team5.projrental.payment.model.proc.GetInfoForCheckIproductAndIuserResult;
+import com.team5.projrental.payment.model.proc.GetPaymentListDto;
+import com.team5.projrental.payment.model.proc.GetPaymentListResultDto;
 import com.team5.projrental.product.ProductRepository;
+import com.team5.projrental.product.model.innermodel.StoredFileInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static com.team5.projrental.common.Const.*;
@@ -24,6 +30,9 @@ import static com.team5.projrental.common.Const.*;
 @Slf4j
 @RequiredArgsConstructor
 public class PaymentService {
+    /* TODO: 1/11/24
+        페이징
+        --by Hyunmin */
     private final PaymentRepository paymentRepository;
     private final ProductRepository productRepository;
 
@@ -128,6 +137,18 @@ public class PaymentService {
         return new ResVo(paymentRepository.deletePayment(delPaymentDto));
     }
 
+    public List<PaymentListVo> getAllPayment(Integer iuser, Integer role) {
+        List<GetPaymentListResultDto> paymentBy = paymentRepository.findPaymentBy(new GetPaymentListDto(iuser, role));
+        List<PaymentListVo> result = new ArrayList<>();
+        CommonUtils.checkNullOrZeroIfCollection(NoSuchPaymentException.class, NO_SUCH_PAYMENT_EX_MESSAGE, paymentBy);
+        paymentBy.forEach(p -> new PaymentListVo(
+                p.getIuser(), p.getNick(), CommonUtils.getPic(new StoredFileInfo(p.getRequestPic(), p.getStoredPic())),
+                p.getIpayment(), p.getIproduct(), status.get(p.getIstatus()), p.getRentalStartDate(), p.getRentalEndDate(),
+                p.getRentalDuration(), p.getPrice(), p.getDeposit()
+        ));
+        return result;
+    }
+
 
     /*
     ------- Extracted Method -------
@@ -164,4 +185,6 @@ public class PaymentService {
         }
         throw new BadDivInformationException(BAD_DIV_INFO_EX_MESSAGE);
     }
+
+
 }

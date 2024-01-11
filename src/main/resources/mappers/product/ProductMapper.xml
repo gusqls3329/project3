@@ -11,7 +11,6 @@
     <!--    -->
 
 
-
     <!--    -->
     <select id="checkIuser">
         select count(iuser) from t_user where iuser = #{iuser}
@@ -38,6 +37,9 @@
         P.rest_addr) as addr, P.title, P.stored_pic as prodMainStoredPic, P.request_pic as prodMainRequestPic,
         P.rental_price as rentalPrice,
         P.rental_start_date as rentalStartDate, P.rental_end_date as rentalEndDate
+        <if test="iuser != null">
+            , category
+        </if>
         <if test="sort == 1">
             , (select count(L.iproduct) from t_like L where L.iproduct = P.iproduct) as prodLike
         </if>
@@ -50,6 +52,9 @@
             P.icategory = #{icategory} and P.istatus = 0
             <if test="search != null">
                 and P.title like concat('%', #{search}, '%')
+            </if>
+            <if test="iuser != null">
+                and P.iuser = #{iuser}
             </if>
         </where>
         <if test="sort == 2">

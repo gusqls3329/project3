@@ -7,8 +7,11 @@ import com.team5.projrental.common.exception.IllegalCategoryException;
 import com.team5.projrental.common.exception.IllegalPaymentMethodException;
 import com.team5.projrental.common.model.restapi.Addrs;
 import com.team5.projrental.common.model.restapi.Documents;
+import com.team5.projrental.product.model.innermodel.StoredFileInfo;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
@@ -152,5 +155,79 @@ public class CommonUtils {
             }
         }
         thrown(ex, message);
+    }
+
+    public static void checkNullOrZeroIfCollection(Class<? extends RuntimeException> ex, String message, Object instance) {
+        ifAnyNullThrow(ex, message, instance);
+        if (instance instanceof Collection<?>) {
+        checkSizeIfUnderLimitNumThrow(ex, message,
+                    ((Collection<?>) instance).stream(), 1);
+        }
+    }
+
+
+    // 파일 업로드 배운 후 완성시킬 예정.
+
+    /**
+     * 하나의 사진 파일 조회
+     *
+     * @param pic
+     * @return Resource
+     */
+    public static Resource getPic(StoredFileInfo pic) {
+        /* TODO: 1/9/24
+            차후 파일 업로드 배우면 수정.
+            --by Hyunmin */
+        return null;
+    }
+
+    // 파일 업로드 배운 후 완성시킬 예정.
+
+    /**
+     * 2개 이상의 사진 파일 조회
+     * [getPic 내부 호출]
+     *
+     * @param pic
+     * @return List<Resource>
+     */
+    public static List<Resource> getPic(List<StoredFileInfo> pic) {
+        List<Resource> results = new ArrayList<>();
+        pic.forEach(p -> results.add(getPic(p)));
+        return results;
+    }
+
+    // 파일 업로드 배운 후 완성시킬 예정.
+
+    /**
+     * 하나의 사진 파일 저장
+     *
+     * @param multipartFile
+     * @return StoredFileInfo
+     */
+    public static StoredFileInfo savePic(MultipartFile multipartFile) {
+
+
+        /* TODO: 1/9/24
+            차후 파일 업로드 배우면 수정.
+            --by Hyunmin */
+        // tmp value
+        return new StoredFileInfo("tmp", "tmp");
+    }
+
+    // 파일 업로드 배운 후 완성시킬 예정.
+
+    /**
+     * 2개 이상의 사진 파일 저장
+     * [savePic 내부 호출]
+     *
+     * @param multipartFiles
+     * @return List<StoredFileInfo>
+     */
+    public static List<StoredFileInfo> savePic(List<MultipartFile> multipartFiles) {
+        List<StoredFileInfo> result = new ArrayList<>();
+        multipartFiles.forEach(file -> {
+            result.add(savePic(file));
+        });
+        return result;
     }
 }

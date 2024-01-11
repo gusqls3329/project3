@@ -2,12 +2,15 @@ package com.team5.projrental.payment;
 
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.payment.model.PaymentInsDto;
+import com.team5.projrental.payment.model.PaymentListVo;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,5 +30,12 @@ public class PaymentController {
                             @PathVariable("iuser") @Min(0) Integer iuser,
                             @RequestParam @Range(min = 1, max = 3) Integer div) {
         return paymentService.delPayment(ipayment, iuser, div);
+    }
+
+    @Validated
+    @GetMapping("/{iuser}")
+    public List<PaymentListVo> getAllPayment(@PathVariable @Min(0) Integer iuser,
+                                             @RequestParam @Range(min = 1, max = 2) Integer role) {
+        return paymentService.getAllPayment(iuser, role);
     }
 }

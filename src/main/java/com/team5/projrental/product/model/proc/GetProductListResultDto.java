@@ -21,4 +21,7 @@ public class GetProductListResultDto {
     private LocalDate rentalStartDate;
     private LocalDate rentalEndDate;
     private Integer prodLike;
+
+    //
+    private String category;
 }

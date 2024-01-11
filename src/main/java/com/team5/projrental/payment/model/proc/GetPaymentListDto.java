@@ -1,4 +1,4 @@
-package com.team5.projrental.payment;
+package com.team5.projrental.payment.model.proc;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PaymentDelDto {
-    private Integer ipayment;
+public class GetPaymentListDto {
     private Integer iuser;
-    private Integer div;
+    private Integer role;
 }

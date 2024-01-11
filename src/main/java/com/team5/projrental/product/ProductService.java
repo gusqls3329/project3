@@ -3,12 +3,9 @@ package com.team5.projrental.product;
 import com.team5.projrental.common.exception.*;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.utils.CommonUtils;
-import com.team5.projrental.product.model.ProductVo;
-import com.team5.projrental.product.model.ProductInsDto;
-import com.team5.projrental.product.model.ProductUpdDto;
+import com.team5.projrental.product.model.*;
 import com.team5.projrental.product.model.innermodel.PicSet;
 import com.team5.projrental.product.model.innermodel.StoredFileInfo;
-import com.team5.projrental.product.model.ProductListVo;
 import com.team5.projrental.product.model.proc.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +23,9 @@ import static com.team5.projrental.common.Const.*;
 @Slf4j
 @RequiredArgsConstructor
 public class ProductService {
+    /* TODO: 1/11/24
+        페이징
+        --by Hyunmin */
 
     private final ProductRepository productRepository;
 
@@ -51,7 +51,7 @@ public class ProductService {
                 CommonUtils.ifCategoryNotContainsThrowOrReturn(category));
         List<GetProductListResultDto> products = productRepository.findProductListBy(getProductListDto);
         // 결과물 없음 여부 체크
-        checkNullOrZeroIfCollection(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE, products);
+        CommonUtils.checkNullOrZeroIfCollection(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE, products);
 
         // 검증 이상 무
         List<ProductListVo> result = new ArrayList<>();
@@ -59,10 +59,10 @@ public class ProductService {
             ProductListVo productListVo = new ProductListVo(product);
 
             productListVo.setUserPic(
-                    getPic(new StoredFileInfo(product.getUserRequestPic(), product.getUserStoredPic()))
+                    CommonUtils.getPic(new StoredFileInfo(product.getUserRequestPic(), product.getUserStoredPic()))
             );
             productListVo.setProdPic(
-                    getPic(new StoredFileInfo(product.getProdMainRequestPic(), product.getProdMainStoredPic()))
+                    CommonUtils.getPic(new StoredFileInfo(product.getProdMainRequestPic(), product.getProdMainStoredPic()))
             );
             result.add(productListVo);
         });
@@ -96,7 +96,7 @@ public class ProductService {
         }
 
         List<PicSet> resultEctPic = new ArrayList<>();
-        ectPics.forEach(p -> resultEctPic.add(new PicSet(getPic(new StoredFileInfo(p.getProdRequestPic(), p.getProdStoredPic())), p.getIpics())));
+        ectPics.forEach(p -> resultEctPic.add(new PicSet(CommonUtils.getPic(new StoredFileInfo(p.getProdRequestPic(), p.getProdStoredPic())), p.getIpics())));
         result.setProdPics(resultEctPic);
         return result;
     }
@@ -152,10 +152,10 @@ public class ProductService {
         Map<String, Double> axis = CommonUtils.getAxis(dto.getAddr().concat(dto.getRestAddr()));
         // insert 할 객체 준비 완.
         InsProdBasicInfoDto insProdBasicInfoDto = new InsProdBasicInfoDto(dto, addrBy, axis.get(AXIS_X), axis.get(AXIS_Y));
-        insProdBasicInfoDto.setMainPicObj(savePic(dto.getMainPic()));
+        insProdBasicInfoDto.setMainPicObj(CommonUtils.savePic(dto.getMainPic()));
         if (productRepository.saveProduct(insProdBasicInfoDto) == 1 && dto.getPics() != null) {
             // pics 에 insert 할 객체
-            InsProdPicsDto insProdPicsDto = new InsProdPicsDto(insProdBasicInfoDto.getIproduct(), savePic(dto.getPics()));
+            InsProdPicsDto insProdPicsDto = new InsProdPicsDto(insProdBasicInfoDto.getIproduct(), CommonUtils.savePic(dto.getPics()));
             productRepository.savePics(insProdPicsDto);
         }
 
@@ -235,12 +235,12 @@ public class ProductService {
 
         // 문제 없으면 추가 사진 insert
         if (!dto.getPics().isEmpty()) {
-            productRepository.savePics(new InsProdPicsDto(dto.getIproduct(), savePic(dto.getPics())));
+            productRepository.savePics(new InsProdPicsDto(dto.getIproduct(), CommonUtils.savePic(dto.getPics())));
         }
 
 
         // update 할 객체 세팅
-        dto.setStoredMainPic(dto.getMainPic() == null ? null : savePic(dto.getMainPic()));
+        dto.setStoredMainPic(dto.getMainPic() == null ? null : CommonUtils.savePic(dto.getMainPic()));
         dto.setDeposit(dto.getDepositPer() == null ? null : CommonUtils.getDepositFromPer(price, dto.getDeposit()));
         dto.setIcategory(CommonUtils.ifCategoryNotContainsThrowOrReturn(dto.getCategory()));
         if (dto.getAddr() != null && dto.getRestAddr() != null) {
@@ -285,6 +285,27 @@ public class ProductService {
         return new ResVo(1);
     }
 
+    public List<ProductUserVo> getUserProductList(Integer iuser, Integer page) {
+        List<GetProductListResultDto> productListBy = productRepository.findProductListBy(new GetProductListDto(iuser));
+        CommonUtils.checkNullOrZeroIfCollection(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE, productListBy);
+
+        List<ProductUserVo> result = new ArrayList<>();
+        productListBy.forEach(product -> {
+            ProductUserVo productListVo = new ProductUserVo(product);
+
+            productListVo.setUserPic(
+                    CommonUtils.getPic(new StoredFileInfo(product.getUserRequestPic(), product.getUserStoredPic()))
+            );
+            productListVo.setProdPic(
+                    CommonUtils.getPic(new StoredFileInfo(product.getProdMainRequestPic(), product.getProdMainStoredPic()))
+            );
+            result.add(productListVo);
+        });
+
+        return result;
+
+    }
+
 
 
 
@@ -297,70 +318,7 @@ public class ProductService {
         ------- Extracted Method -------
      */
 
-    // 파일 업로드 배운 후 완성시킬 예정.
 
-    /**
-     * 하나의 사진 파일 조회
-     *
-     * @param pic
-     * @return Resource
-     */
-    private Resource getPic(StoredFileInfo pic) {
-        /* TODO: 1/9/24
-            차후 파일 업로드 배우면 수정.
-            --by Hyunmin */
-        return null;
-    }
-
-    // 파일 업로드 배운 후 완성시킬 예정.
-
-    /**
-     * 2개 이상의 사진 파일 조회
-     * [getPic 내부 호출]
-     *
-     * @param pic
-     * @return List<Resource>
-     */
-    private List<Resource> getPic(List<StoredFileInfo> pic) {
-        List<Resource> results = new ArrayList<>();
-        pic.forEach(p -> results.add(getPic(p)));
-        return results;
-    }
-
-    // 파일 업로드 배운 후 완성시킬 예정.
-
-    /**
-     * 하나의 사진 파일 저장
-     *
-     * @param multipartFile
-     * @return StoredFileInfo
-     */
-    private StoredFileInfo savePic(MultipartFile multipartFile) {
-
-
-        /* TODO: 1/9/24
-            차후 파일 업로드 배우면 수정.
-            --by Hyunmin */
-        // tmp value
-        return new StoredFileInfo("tmp", "tmp");
-    }
-
-    // 파일 업로드 배운 후 완성시킬 예정.
-
-    /**
-     * 2개 이상의 사진 파일 저장
-     * [savePic 내부 호출]
-     *
-     * @param multipartFiles
-     * @return List<StoredFileInfo>
-     */
-    private List<StoredFileInfo> savePic(List<MultipartFile> multipartFiles) {
-        List<StoredFileInfo> result = new ArrayList<>();
-        multipartFiles.forEach(file -> {
-            result.add(savePic(file));
-        });
-        return result;
-    }
 
     private Integer checkAddrInDb(String addr) {
         List<Integer> addrBy = productRepository.findAddrBy(CommonUtils.subEupmyun(addr));
@@ -370,12 +328,6 @@ public class ProductService {
         return addrBy.get(0);
     }
 
-    private void checkNullOrZeroIfCollection(Class<? extends RuntimeException> ex, String message, Object instance) {
-        CommonUtils.ifAnyNullThrow(ex, message, instance);
-        if (instance instanceof Collection<?>) {
-            CommonUtils.checkSizeIfUnderLimitNumThrow(ex, message,
-                    ((Collection<?>) instance).stream(), 1);
-        }
-    }
+
 
 }

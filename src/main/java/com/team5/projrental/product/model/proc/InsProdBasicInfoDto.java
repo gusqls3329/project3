@@ -22,7 +22,7 @@ public class InsProdBasicInfoDto {
     private Integer addr;
     private String restAddr;
     private StoredFileInfo mainPicObj; // #{mainPicObj.requestPic} #{mainPicObj.storedPic}
-    // todo 따로 setter 사용해야함.
+    // 따로 setter 사용해야함.
 
     private Integer price;
     private Integer rentalPrice;

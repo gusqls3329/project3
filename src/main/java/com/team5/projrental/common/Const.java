@@ -1,5 +1,6 @@
 package com.team5.projrental.common;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public interface Const {
@@ -16,6 +17,7 @@ public interface Const {
     String BAD_ADDRESS_INFO_EX_MESSAGE = "잘못된 주소 입니다.";
     String NO_SUCH_USER_EX_MESSAGE = "잘못된 유저 정보 입니다.";
     String NO_SUCH_PRODUCT_EX_MESSAGE = "조회된 상품이 없습니다.";
+    String NO_SUCH_PAYMENT_EX_MESSAGE = "조회된 결제 정보가 없습니다.";
     String BAD_INFO_EX_MESSAGE = "잘못된 정보 입니다.";
     String BAD_SORT_EX_MESSAGE = "SORT 는 1 또는 2 만 가능합니다.";
     String BAD_RENTAL_DEL_EX_MESSAGE = "거래중인 결제정보는 삭제하거나 숨길 수 없습니다.";
@@ -23,6 +25,19 @@ public interface Const {
     String BAD_DIV_INFO_EX_MESSAGE = "div 값이 잘못되었습니다.";
     //
 
+    /*
+        --------- STATUS MAP ---------
+     */
+    Map<Integer, String> status = Map.of(
+            -3, "cancel",
+            -2, "",
+            -1, "del",
+            0, "rent",
+            1, "succ",
+            2, "c-seller",
+            3, "c-buyer");
+
+    //
     /*
         --------- CONST VALUES ---------
      */
