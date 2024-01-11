@@ -51,7 +51,7 @@ public class ProductService {
                 CommonUtils.ifCategoryNotContainsThrowOrReturn(category));
         List<GetProductListResultDto> products = productRepository.findProductListBy(getProductListDto);
         // 결과물 없음 여부 체크
-        checkNullOrZero(ProductNotFoundException.class, PRODUCT_NOT_FOUND_EX_MESSAGE, products);
+        checkNullOrZeroIfCollection(ProductNotFoundException.class, PRODUCT_NOT_FOUND_EX_MESSAGE, products);
 
         // 검증 이상 무
         List<ProductListVo> result = new ArrayList<>();
@@ -370,10 +370,12 @@ public class ProductService {
         return addrBy.get(0);
     }
 
-    private <T>void checkNullOrZero(Class<? extends RuntimeException> ex, String message, Collection<T> collection) {
-        CommonUtils.ifAnyNullThrow(ex, message, collection);
-        CommonUtils.checkSizeIfUnderLimitNumThrow(ex, message,
-                collection.stream(), 1);
+    private void checkNullOrZeroIfCollection(Class<? extends RuntimeException> ex, String message, Object instance) {
+        CommonUtils.ifAnyNullThrow(ex, message, instance);
+        if (instance instanceof Collection<?>) {
+            CommonUtils.checkSizeIfUnderLimitNumThrow(ex, message,
+                    ((Collection<?>) instance).stream(), 1);
+        }
     }
 
 }

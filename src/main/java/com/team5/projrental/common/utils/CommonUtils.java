@@ -19,7 +19,7 @@ import static com.team5.projrental.common.Const.ILLEGAL_CATEGORY_EX_MESSAGE;
 
 @Component
 public class CommonUtils {
-    
+
     public static void ifFalseThrow(Class<? extends RuntimeException> ex, String message, boolean b) {
         if (!b) thrown(ex, message);
     }
@@ -113,11 +113,38 @@ public class CommonUtils {
         return (int) (price * percent * 0.01);
     }
 
+
     public static void ifAnyNullThrow(Class<? extends RuntimeException> ex, String message, Object... objs) {
         Arrays.stream(objs).forEach(o -> {
             if (o == null) {
                 thrown(ex, message);
             }
         });
+    }
+
+    public static void ifAnyNotNullThrow(Class<? extends RuntimeException> ex, String message, Object... objs) {
+        Arrays.stream(objs).forEach(o -> {
+            if (o != null) {
+                thrown(ex, message);
+            }
+        });
+    }
+
+    public static void ifAllNullThrow(Class<? extends RuntimeException> ex, String message, Object... objs) {
+        for (Object obj : objs) {
+            if (obj != null) {
+                return;
+            }
+        }
+        thrown(ex, message);
+    }
+
+    public static void ifAllNotNullThrow(Class<? extends RuntimeException> ex, String message, Object... objs) {
+        for (Object obj : objs) {
+            if (obj == null) {
+                return;
+            }
+        }
+        thrown(ex, message);
     }
 }
