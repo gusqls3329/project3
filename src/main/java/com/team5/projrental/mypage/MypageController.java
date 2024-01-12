@@ -3,6 +3,8 @@ package com.team5.projrental.mypage;
 import com.team5.projrental.mypage.model.PaymentSelDto;
 import com.team5.projrental.mypage.model.PaymentSelVo;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,10 +27,17 @@ public class MypageController {
             "<br>ibuyer에 loginedIuser가 입력되면 빌린 내역" +
             "<br>iuser에 loginedIuser가 입력되면 빌려준 내역" +
             "<br>role = 1 : loginedIuser가 빌린 내역, role = 2 : loginedIuser가 빌려준 내역")
+
+    @Parameters(value = {
+            @Parameter(name = "page", description = "페이지(defolt:0)"),
+            @Parameter(name = "loginedIuser", description = "로그인 유저PK"),
+            @Parameter(name = "role", description = "role : 1 = 빌린 내역, 2 = 빌려준 내역")})
     public List<PaymentSelVo> getPaymentList(@RequestParam(required = false, defaultValue = "0") int page,
                                              @RequestParam(name = "row_count", required = false, defaultValue = "16") int rowCount,
                                              @RequestParam(required = false) int loginedIuser,
-                                             @RequestParam(required = false) int role) {
+                                             @RequestParam(required = false) int role)
+
+ {
 
         PaymentSelDto dto = new PaymentSelDto();
         dto.setPage(page);
