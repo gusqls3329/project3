@@ -8,7 +8,6 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
     int insUser(UserSignupDto dto);
-
     SigninVo selSignin(SigninDto dto);
     FindUidVo selFindUid(FindUidDto phone);
     int upFindUpw(FindUpwDto dto);

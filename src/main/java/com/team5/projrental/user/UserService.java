@@ -21,11 +21,13 @@ public class UserService {
         String hashedPw = BCrypt.hashpw(dto.getUpw(), salt);
 
         dto.setUpw(hashedPw);
+        dto.setY(40);
+        dto.setX(40);
 
         int result = mapper.insUser(dto);
         log.debug("dto : {}", dto);
         if(result == 0) {
-            throw new BadInformationException("dfaada!!!");
+            return new ResVo(0);
         }
         return new ResVo(1);
     }

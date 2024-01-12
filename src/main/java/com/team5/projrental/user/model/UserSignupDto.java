@@ -18,6 +18,8 @@ public class UserSignupDto {
     private String pic;
     private String phone;
     private String email;
+    @JsonIgnore
     private double x;
+    @JsonIgnore
     private double y;
 }
