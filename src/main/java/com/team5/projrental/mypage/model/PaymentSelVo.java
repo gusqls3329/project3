@@ -5,8 +5,8 @@ import lombok.Data;
 @Data
 public class PaymentSelVo {
 
-    private int ibuyer;
-    private int iuser;
+    private int ibuyer; // 빌리는사람
+    private int iuser; //빌려주는사람
 
     private int iproduct; // 제품 PK
 

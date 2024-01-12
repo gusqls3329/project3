@@ -14,4 +14,9 @@ public class PaymentSelDto {
     private int loginedIuser; // 로그인 유저정보가 ibuyer에 조건으로 들어가면 빌린내역 seller에 들어가면 빌려준내역
 
     private int role; // 디폴트 1:일반유저 // 3차프로젝트때 2:기업  이렇게?
+
+
+    public void setPage(int page){
+        this.startIdx= (page-1)*this.rowCount;
+    }
 }
