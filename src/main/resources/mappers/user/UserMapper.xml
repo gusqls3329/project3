@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team5.projrental.user.UserMapper">
+    <insert id="insUser" useGeneratedKeys="true"  keyProperty="iuser">
+        INSERT INTO t_user
+        SET iaddr = #{iaddr}
+        , rest_addr = #{restAddr}
+        , uid = #{uid}
+        , upw = #{upw}
+        , nick = #{nick}
+        <if test=" pic != null and pic != '' ">
+            , stored_pic = #{pic}
+            , request_pic = #{pic}
+        </if>
+        , phone = #{phone}
+        , email = #{email}
+        , y = #{y}
+        , x = #{x}
+    </insert>
+
 
     <select id="selSignin">
         SELECT u.iuser, a.auth, u.upw, u.uid
@@ -88,10 +105,10 @@
     </delete>
 
     <select id="selUser">
-        SELECT u.y, u.x, u.nick, u.stored_pic, u.phone, u.email, u.raiting,CONCAT_WS(a.eupmyun,u.rest_addr)
+        SELECT u.y, u.x, u.nick, u.stored_pic, u.phone, u.email, u.raiting, CONCAT_WS(a.eupmyun,u.rest_addr)
         FROM t_user u
         JOIN t_eupmyun a
         ON a.ieupmyun= u.iaddr
-        WHERE u.iuser = 1
+        WHERE u.iuser = #{iuser}
     </select>
 </mapper>

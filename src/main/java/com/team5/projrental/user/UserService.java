@@ -1,5 +1,7 @@
 package com.team5.projrental.user;
 
+import com.team5.projrental.common.exception.BadInformationException;
+import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.user.model.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +15,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
     private final UserMapper mapper;
+
+    public ResVo postSignup(UserSignupDto dto) {
+        String salt = BCrypt.gensalt();
+        String hashedPw = BCrypt.hashpw(dto.getUpw(), salt);
+
+        dto.setUpw(hashedPw);
+
+        int result = mapper.insUser(dto);
+        log.debug("dto : {}", dto);
+        if(result == 0) {
+            throw new BadInformationException("dfaada!!!");
+        }
+        return new ResVo(1);
+    }
 
 
     public SigninVo postSignin(SigninDto dto) {

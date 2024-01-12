@@ -27,6 +27,11 @@ public class UserController {
             , @Parameter(name="email", description = "이메일 (형식 : aaa@naver.com)")
     })
     @PostMapping("/signup")*/
+    @PostMapping("/signup")
+    public ResVo postSignup(@RequestBody UserSignupDto dto) {
+        log.info("dto : {}", dto);
+        return service.postSignup(dto);
+    }
 
     @PostMapping
     @Operation(summary = "로그인", description = "유저 로그인")
