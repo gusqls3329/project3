@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team5.projrental.mypage.MypageMapper">
+
+    <select id="getPaymentList">
+        SELECT
+            A.iproduct,
+            A.title,
+            A.stored_pic AS productStoredPic,
+            A.request_pic AS productRequestPic,
+            A.deposit,
+            A.iuser,
+            C.ipayment,
+            C.istatus,
+            C.ibuyer,
+            C.price,
+            C.rental_duration AS rentalDuration,
+            C.rental_start_date AS rentalStartDate,
+            C.rental_end_date AS rentalEndDate,
+            C.created_at AS createdAt,
+            C.istatus AS cancel,
+            D.iuser AS targetIuser,
+            D.nick AS targetNick,
+            D.stored_pic AS userStoredPic,
+            D.request_pic AS userRequestPic
+        FROM t_product A
+        JOIN t_product_payment B
+        ON A.iproduct = B.iproduct
+        LEFT JOIN t_payment C
+        ON B.ipayment = C.ipayment
+        LEFT JOIN t_user D
+        ON A.iuser = D.iuser
+        <if test="role == 1"> <!--로그인 유저가 물건 빌린 내역 볼 때-->
+            where C.ibuyer = #{loginedIuser}
+        </if>
+        <if test="role ==2"> <!--로그인 유저가 물건 빌려준 내역 볼 때-->
+            where A.iuser = #{loginedIuser}
+        </if>
+        ORDER BY B.ipayment DESC
+<!--        <choose>-->
+<!--            <when test="role==1"> &lt;!&ndash;로그인 유저가 물건 빌린내역 보낼때&ndash;&gt;-->
+<!--                WHERE B.iseller = #{targetIuser} AND B.ibuyer = #{loginedIuser} &lt;!&ndash;targetIuser = 빌려주는 사람&ndash;&gt;-->
+<!--            </when>-->
+
+<!--            <when test="role==2"> &lt;!&ndash;로그인 유저가 물건 빌려준 내역 보낼때&ndash;&gt;-->
+<!--                WHERE B.iseller = #{loginedIuser} AND B.ibuyer = #{targetIuser} &lt;!&ndash;targetIuser = 빌리는 사람&ndash;&gt;-->
+<!--            </when>-->
+<!--        </choose>-->
+
+
+    </select>
+
+</mapper>
