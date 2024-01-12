@@ -30,10 +30,10 @@ class ProductMapperTest {
 
     @Autowired
     ProductMapper productMapper;
-    InsProdBasicInfoDto insProdBasicInfoDto = new InsProdBasicInfoDto(new ProductInsDto(1, "test", "test", "test", "test",
-            new MockMultipartFile("test", new byte[1]), List.of(new MockMultipartFile("test", new byte[1])), 100,
-            10, 80, LocalDate.of(2022, 11, 2), LocalDate.of(2024, 2, 2), LocalDate.of(2024, 4, 2), "mobile"),
-            34, 1.1, 2.2);
+    InsProdBasicInfoDto insProdBasicInfoDto = new InsProdBasicInfoDto(1, "test", "test", 40,
+            "test", new StoredFileInfo("test pic1", "test pic 2"), 100, 10,
+            80, LocalDate.of(2022, 11, 2), LocalDate.of(2024, 2, 2),
+            LocalDate.of(2024, 3, 3), 1, 1.1, 2.2);
 
 
     @Test
@@ -113,10 +113,10 @@ class ProductMapperTest {
     @Test
     void insProduct() {
 
-        int result = productMapper.insProduct(new InsProdBasicInfoDto(new ProductInsDto(1, "test", "test", "test", "test",
-                new MockMultipartFile("test", new byte[1]), List.of(new MockMultipartFile("test", new byte[1])), 100,
-                10, 80, LocalDate.of(2022, 11, 2), LocalDate.of(2024, 2, 2), LocalDate.of(2024, 4, 2), "mobile"),
-                34, 1.1, 2.2));
+        int result = productMapper.insProduct(new InsProdBasicInfoDto(1, "test", "test", 40,
+                "test", new StoredFileInfo("test pic1", "test pic 2"), 100, 10,
+                80, LocalDate.of(2022, 11, 2), LocalDate.of(2024, 2, 2),
+                LocalDate.of(2024, 3, 3), 1, 1.1, 2.2));
         assertThat(result).isEqualTo(1);
 
     }
@@ -187,7 +187,7 @@ class ProductMapperTest {
 
         productMapper.updateProduct(ProductUpdDto.builder().iproduct(3).iuser(3).rentalEndDate(LocalDate.of(2222, 2, 2)).build());
         product = productMapper.getProduct(new GetProductBaseDto(3, 3));
-        assertThat(product.getRentalEndDate()).isEqualTo(LocalDate.of(2222, 3, 3));
+        assertThat(product.getRentalEndDate()).isEqualTo(LocalDate.of(2222, 2, 2));
 
     }
 

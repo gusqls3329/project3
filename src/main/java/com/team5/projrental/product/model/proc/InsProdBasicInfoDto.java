@@ -5,12 +5,15 @@ import com.team5.projrental.common.exception.IllegalCategoryException;
 import com.team5.projrental.common.utils.CommonUtils;
 import com.team5.projrental.product.model.ProductInsDto;
 import com.team5.projrental.product.model.innermodel.StoredFileInfo;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.Map;
 
 @Data
+@NoArgsConstructor
 public class InsProdBasicInfoDto {
 
     // useAutoGenKey
@@ -33,6 +36,24 @@ public class InsProdBasicInfoDto {
     private Integer icategory;
     private Double x;
     private Double y;
+
+    public InsProdBasicInfoDto(Integer iuser, String title, String contents, Integer iaddr, String restAddr, StoredFileInfo mainPicObj, Integer price, Integer rentalPrice, Integer deposit, LocalDate buyDate, LocalDate rentalStartDate, LocalDate rentalEndDate, Integer icategory, Double x, Double y) {
+        this.iuser = iuser;
+        this.title = title;
+        this.contents = contents;
+        this.iaddr = iaddr;
+        this.restAddr = restAddr;
+        this.mainPicObj = mainPicObj;
+        this.price = price;
+        this.rentalPrice = rentalPrice;
+        this.deposit = deposit;
+        this.buyDate = buyDate;
+        this.rentalStartDate = rentalStartDate;
+        this.rentalEndDate = rentalEndDate;
+        this.icategory = icategory;
+        this.x = x;
+        this.y = y;
+    }
 
     public InsProdBasicInfoDto(ProductInsDto dto, Integer iaddr, Double x, Double y) {
         this.iuser = dto.getIuser();
