@@ -87,11 +87,11 @@
         where iuser = #{iuser}
     </delete>
 
-    <select id="delselUser">
-        SELECT u.y, u.x,CONCAT_WS(a.eupmyun,u.rest_addr) as addr, u.nick, u.stored_pic as storedPic, u.phone, u.email, u.raiting
+    <select id="selUser">
+        SELECT u.y, u.x, u.nick, u.stored_pic, u.phone, u.email, u.raiting,CONCAT_WS(a.eupmyun,u.rest_addr)
         FROM t_user u
         JOIN t_eupmyun a
         ON a.ieupmyun= u.iaddr
-        WHERE u.iuser = #{iuser}
+        WHERE u.iuser = 1
     </select>
 </mapper>
