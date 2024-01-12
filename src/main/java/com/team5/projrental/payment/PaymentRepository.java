@@ -18,6 +18,7 @@ public class PaymentRepository {
 
     private final PaymentMapper paymentMapper;
 
+
     public int savePayment(PaymentInsDto paymentInsDto) {
         return paymentMapper.insPayment(paymentInsDto);
     }

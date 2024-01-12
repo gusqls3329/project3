@@ -10,6 +10,19 @@ import java.util.List;
 @Mapper
 public interface ProductMapper {
 
+    //    for test
+    int getViewForTest(Integer iproduct);
+    //
+
+    //    for test
+    int getPicsCountForTest(Integer iproduct);
+    //
+
+
+    //    for test
+    List<Integer> getAllIpics(Integer iproduct);
+    //
+
     //
     int getRentalPricePerDay(Integer iproduct);
     //
@@ -20,7 +33,7 @@ public interface ProductMapper {
 
 
     //
-    int countView(Integer iproduct);
+    int countView(GetProductViewAopDto getProductViewAopDto);
     //
 
     List<GetProductListResultDto> getProductList(GetProductListDto getProductListDto);
@@ -32,11 +45,11 @@ public interface ProductMapper {
 
     int insProduct(InsProdBasicInfoDto insProdBasicInfoDto);
 
-    void insPics(InsProdPicsDto insProdPicsDto);
+    int insPics(InsProdPicsDto insProdPicsDto);
 
     List<Integer> getIEupmyun(List<String> eupmyun);
 
-    Integer deletePic(@Param("iproduct") Integer iproduct, @Param("delPics") List<Integer> delPic);
+    Integer deletePic(@Param("iproduct") Integer iproduct, @Param("delPics") List<Integer> delPics);
 
     UpdProdBasicDto getProductForUpdate(GetProductBaseDto getProductBaseDto);
 

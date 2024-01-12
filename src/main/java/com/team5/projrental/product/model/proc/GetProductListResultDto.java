@@ -23,5 +23,5 @@ public class GetProductListResultDto {
     private Integer prodLike;
 
     //
-    private String category;
+    private Integer icategory;
 }

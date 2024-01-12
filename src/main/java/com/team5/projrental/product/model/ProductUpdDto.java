@@ -3,7 +3,10 @@ package com.team5.projrental.product.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.team5.projrental.product.model.innermodel.StoredFileInfo;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,6 +14,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProductUpdDto {
 
     @NotNull

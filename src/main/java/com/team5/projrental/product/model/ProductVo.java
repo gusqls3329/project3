@@ -20,8 +20,8 @@ public class ProductVo extends ProductListVo{
     private List<PicSet> prodPics;
     private Integer deposit;
     private LocalDate buyDate;
-    private Boolean x;
-    private Boolean y;
+    private Double x;
+    private Double y;
 
     public ProductVo(GetProductResultDto dto) {
         super(dto);

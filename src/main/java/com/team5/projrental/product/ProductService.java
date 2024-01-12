@@ -154,7 +154,7 @@ public class ProductService {
         if (productRepository.saveProduct(insProdBasicInfoDto) == 1 && dto.getPics() != null) {
             // pics 에 insert 할 객체
             InsProdPicsDto insProdPicsDto = new InsProdPicsDto(insProdBasicInfoDto.getIproduct(), CommonUtils.savePic(dto.getPics()));
-            productRepository.savePics(insProdPicsDto);
+            if (productRepository.savePics(insProdPicsDto) == 0) throw new RuntimeException(SERVER_ERR_MESSAGE);
         }
 
         return new ResVo(insProdBasicInfoDto.getIproduct());
@@ -182,7 +182,8 @@ public class ProductService {
         if (dto.getAddr() != null) {
             dto.setIaddr(checkAddrInDb(dto.getAddr()));
         }
-        UpdProdBasicDto fromDb = productRepository.findProductByForUpdate(new GetProductBaseDto(CommonUtils.ifCategoryNotContainsThrowOrReturn(dto.getCategory()), dto.getIproduct()));
+        UpdProdBasicDto fromDb =
+                productRepository.findProductByForUpdate(new GetProductBaseDto(CommonUtils.ifCategoryNotContainsThrowOrReturn(dto.getCategory()), dto.getIproduct(), dto.getIuser()));
         // 병합
         Integer price = dto.getPrice() == null ? fromDb.getPrice() : dto.getPrice();
         UpdProdBasicDto mergedData = new UpdProdBasicDto(
@@ -233,7 +234,9 @@ public class ProductService {
 
         // 문제 없으면 추가 사진 insert
         if (!dto.getPics().isEmpty()) {
-            productRepository.savePics(new InsProdPicsDto(dto.getIproduct(), CommonUtils.savePic(dto.getPics())));
+            if (productRepository.savePics(new InsProdPicsDto(dto.getIproduct(), CommonUtils.savePic(dto.getPics()))) == 0) {
+                throw new RuntimeException(SERVER_ERR_MESSAGE);
+            }
         }
 
 
@@ -317,7 +320,6 @@ public class ProductService {
      */
 
 
-
     private Integer checkAddrInDb(String addr) {
         List<Integer> addrBy = productRepository.findAddrBy(CommonUtils.subEupmyun(addr));
         if (addrBy.isEmpty()) throw new BadAddressInfoException(BAD_ADDRESS_INFO_EX_MESSAGE);
@@ -325,7 +327,6 @@ public class ProductService {
                 addrBy.stream(), 1);
         return addrBy.get(0);
     }
-
 
 
 }

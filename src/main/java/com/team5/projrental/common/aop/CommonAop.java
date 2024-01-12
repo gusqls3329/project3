@@ -3,6 +3,7 @@ package com.team5.projrental.common.aop;
 import com.team5.projrental.common.threadpool.MyThreadPoolHolder;
 import com.team5.projrental.product.ProductRepository;
 import com.team5.projrental.product.model.ProductVo;
+import com.team5.projrental.product.model.proc.GetProductViewAopDto;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -31,7 +32,7 @@ public class CommonAop {
         log.debug("AOP Start");
         threadPool.execute(() -> {
             log.debug("thread name = {}", Thread.currentThread().getName());
-            log.debug(productRepository.countView(result.getIproduct()));
+            log.debug(productRepository.countView(new GetProductViewAopDto(result.getIproduct())));
         });
 
     }

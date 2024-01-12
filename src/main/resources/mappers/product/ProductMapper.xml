@@ -5,7 +5,29 @@
 <mapper namespace="com.team5.projrental.product.ProductMapper">
 
     <!--    -->
-    <select id="getPricePerDay">
+    <!--    for test-->
+    <select id="getViewForTest">
+        select view from t_product where iproduct = #{iproduct}
+    </select>
+    <!--    -->
+    <!--    for test-->
+    <select id="getPicsCountForTest">
+        select count(*) from t_pics where iproduct = #{iproduct}
+    </select>
+    <!--    -->
+    <!--    -->
+    <!--    -->
+    <!--    for test-->
+    <select id="getAllIpics">
+        select ipics from t_pics where iproduct = #{iproduct}
+    </select>
+    <!--    -->
+    <!--    -->
+
+
+
+    <!--    -->
+    <select id="getRentalPricePerDay">
         select rental_price from t_product where iproduct = #{iproduct}
     </select>
     <!--    -->
@@ -31,14 +53,15 @@
     </update>
     <!--    -->
 
+
     <select id="getProductList">
         select U.nick, U.stored_pic as userStoredPic, U.request_pic as userRequestPic,
-        P.iproduct, concat(S.sido, G.gungu, E.eupmyun,
+        P.iproduct, concat(S.sido, ' ', G.gungu, ' ', E.eupmyun, ' ',
         P.rest_addr) as addr, P.title, P.stored_pic as prodMainStoredPic, P.request_pic as prodMainRequestPic,
         P.rental_price as rentalPrice,
         P.rental_start_date as rentalStartDate, P.rental_end_date as rentalEndDate
         <if test="iuser != null">
-            , category
+            , icategory
         </if>
         <if test="sort == 1">
             , (select count(L.iproduct) from t_like L where L.iproduct = P.iproduct) as prodLike
@@ -49,7 +72,10 @@
         join t_gungu G on E.igungu = G.igungu
         join t_sido S on G.isido = S.isido
         <where>
-            P.icategory = #{icategory} and P.istatus = 0
+            P.istatus = 0
+            <if test="icategory != null and icategory != 0">
+                and P.icategory = #{icategory}
+            </if>
             <if test="search != null">
                 and P.title like concat('%', #{search}, '%')
             </if>
@@ -69,18 +95,23 @@
     </select>
 
     <select id="getProduct">
-        select U.nick, U.userStoredPic, U.userRequestPic,
-        P.iproduct, concat(S.sido, G.gungu, E.eupmyun, P.rest_addr) as addr, P.title, P.request_pic as prodMainRequestPic,
+        select U.nick, U.stored_pic as userStoredPic, U.request_pic as userRequestPic,
+        P.iproduct, concat(S.sido, ' ', G.gungu, ' ', E.eupmyun, ' ', P.rest_addr) as addr, P.title, P.stored_pic as
+        prodMainStoredPic,
         P.request_pic as prodMainRequestPic, P.rental_price as rentalPrice, P.rental_start_date as rentalStartDate,
         P.rental_end_date as rentalEndDate, (select count(L.iproduct) from t_like L where L.iproduct = P.iproduct) prodLike,
-        P.iuser, P.contents, P.deposit, P.buyDate, P,x, P,y
+        P.iuser, P.contents, P.deposit, P.buy_date as buyDate, P.x, P.y
         from t_product P
         join t_user U on P.iuser = U.iuser
         join t_eupmyun E on P.iaddr = E.ieupmyun
         join t_gungu G on E.igungu = G.igungu
         join t_sido S on G.isido = S.isido
         <where>
-            P.iproduct = #{iproduct} and U.iuser = #{iuser} and P.istatus = 0
+            P.iproduct = #{iproduct}
+            <if test="iuser != null and iuser != 0">
+                and U.iuser = #{iuser}
+            </if>
+            and P.istatus = 0
             <if test="icategory != null and icategory > 0">
                 and P.icategory = #{icategory}
             </if>
@@ -89,7 +120,7 @@
     </select>
 
     <select id="getProdEctPics">
-        select ipics, stored_pic, request_pic from t_pics
+        select ipics, stored_pic as prodStoredPic, request_pic as prodRequestPic from t_pics
         where iproduct = #{iproduct}
     </select>
 
@@ -123,8 +154,8 @@
         delete from t_pics
         <where>
             iproduct = #{iproduct} and ipics in (
-            <foreach collection="delpics" item="pic" separator=", ">
-                pic
+            <foreach collection="delPics" item="pic" separator=", ">
+                #{pic}
             </foreach>
             )
         </where>

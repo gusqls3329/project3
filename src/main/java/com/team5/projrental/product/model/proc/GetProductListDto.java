@@ -19,6 +19,7 @@ public class GetProductListDto {
         this.icategory = icategory;
     }
 
+
     public GetProductListDto(Integer iuser) {
         this.iuser = iuser;
     }

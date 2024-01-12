@@ -14,7 +14,7 @@ public class GetProductResultDto extends GetProductListResultDto{
     private String contents;
     private Integer deposit;
     private LocalDate buyDate;
-    private Boolean x;
-    private Boolean y;
+    private Double x;
+    private Double y;
 
 }

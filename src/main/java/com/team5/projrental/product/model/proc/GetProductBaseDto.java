@@ -9,4 +9,10 @@ import lombok.Getter;
 public class GetProductBaseDto {
     private Integer icategory;
     private Integer iproduct;
+    private Integer iuser;
+
+    public GetProductBaseDto(Integer icategory, Integer iproduct) {
+        this.icategory = icategory;
+        this.iproduct = iproduct;
+    }
 }

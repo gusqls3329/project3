@@ -32,8 +32,8 @@ public class ProductRepository {
     //
 
     //
-    public String countView(Integer iproduct) {
-        if (productMapper.countView(iproduct) == 1) {
+    public String countView(GetProductViewAopDto getProductViewAopDto) {
+        if (productMapper.countView(getProductViewAopDto) == 1) {
             return "SUCCEED";
         }
         return "FALSE";
@@ -56,8 +56,8 @@ public class ProductRepository {
         return productMapper.insProduct(insProdBasicInfoDto);
     }
 
-    public void savePics(InsProdPicsDto insProdPicsDto) {
-        productMapper.insPics(insProdPicsDto);
+    public int savePics(InsProdPicsDto insProdPicsDto) {
+        return productMapper.insPics(insProdPicsDto);
     }
 
     public List<Integer> findAddrBy(List<String> eupmyun) {

@@ -34,7 +34,7 @@ public class ProductInsDto {
     @Range(min = 100, max = Integer.MAX_VALUE)
     private Integer rentalPrice;
     @NotNull
-    @Range(min = 70, max = 100)
+    @Range(min = 50, max = 100)
     private Integer depositPer;
     private LocalDate buyDate;
     private LocalDate rentalStartDate;
