@@ -3,6 +3,7 @@ package com.team5.projrental.payment;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.payment.model.PaymentInsDto;
 import com.team5.projrental.payment.model.PaymentListVo;
+import com.team5.projrental.payment.model.PaymentVo;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,4 +39,13 @@ public class PaymentController {
                                              @RequestParam @Range(min = 1, max = 2) Integer role) {
         return paymentService.getAllPayment(iuser, role);
     }
+
+    @Validated
+    @GetMapping("/{iuser}/{ipayment}")
+    public PaymentVo getPayment(@PathVariable @Min(0) Integer iuser,
+                                @PathVariable @Min(0) Integer ipayment) {
+        return paymentService.getPayment(iuser, ipayment);
+
+    }
+
 }

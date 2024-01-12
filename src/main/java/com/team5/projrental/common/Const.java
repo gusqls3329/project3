@@ -1,6 +1,5 @@
 package com.team5.projrental.common;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public interface Const {
@@ -28,7 +27,7 @@ public interface Const {
     /*
         --------- STATUS MAP ---------
      */
-    Map<Integer, String> status = Map.of(
+    Map<Integer, String> STATUS = Map.of(
             -3, "cancel",
             -2, "",
             -1, "del",

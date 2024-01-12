@@ -157,7 +157,7 @@ public class CommonUtils {
         thrown(ex, message);
     }
 
-    public static void checkNullOrZeroIfCollection(Class<? extends RuntimeException> ex, String message, Object instance) {
+    public static void checkNullOrZeroIfCollectionThrow(Class<? extends RuntimeException> ex, String message, Object instance) {
         ifAnyNullThrow(ex, message, instance);
         if (instance instanceof Collection<?>) {
         checkSizeIfUnderLimitNumThrow(ex, message,
@@ -206,7 +206,6 @@ public class CommonUtils {
      */
     public static StoredFileInfo savePic(MultipartFile multipartFile) {
 
-
         /* TODO: 1/9/24
             차후 파일 업로드 배우면 수정.
             --by Hyunmin */
@@ -230,4 +229,6 @@ public class CommonUtils {
         });
         return result;
     }
+
+
 }

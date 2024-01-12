@@ -1,15 +1,14 @@
 package com.team5.projrental.payment;
 
+import com.team5.projrental.common.Flag;
 import com.team5.projrental.common.Role;
 import com.team5.projrental.common.exception.*;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.utils.CommonUtils;
 import com.team5.projrental.payment.model.PaymentInsDto;
 import com.team5.projrental.payment.model.PaymentListVo;
-import com.team5.projrental.payment.model.proc.DelPaymentDto;
-import com.team5.projrental.payment.model.proc.GetInfoForCheckIproductAndIuserResult;
-import com.team5.projrental.payment.model.proc.GetPaymentListDto;
-import com.team5.projrental.payment.model.proc.GetPaymentListResultDto;
+import com.team5.projrental.payment.model.PaymentVo;
+import com.team5.projrental.payment.model.proc.*;
 import com.team5.projrental.product.ProductRepository;
 import com.team5.projrental.product.model.innermodel.StoredFileInfo;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -140,15 +138,48 @@ public class PaymentService {
     public List<PaymentListVo> getAllPayment(Integer iuser, Integer role) {
         List<GetPaymentListResultDto> paymentBy = paymentRepository.findPaymentBy(new GetPaymentListDto(iuser, role));
         List<PaymentListVo> result = new ArrayList<>();
-        CommonUtils.checkNullOrZeroIfCollection(NoSuchPaymentException.class, NO_SUCH_PAYMENT_EX_MESSAGE, paymentBy);
+        CommonUtils.checkNullOrZeroIfCollectionThrow(NoSuchPaymentException.class, NO_SUCH_PAYMENT_EX_MESSAGE, paymentBy);
         paymentBy.forEach(p -> new PaymentListVo(
                 p.getIuser(), p.getNick(), CommonUtils.getPic(new StoredFileInfo(p.getRequestPic(), p.getStoredPic())),
-                p.getIpayment(), p.getIproduct(), status.get(p.getIstatus()), p.getRentalStartDate(), p.getRentalEndDate(),
+                p.getIpayment(), p.getIproduct(), STATUS.get(p.getIstatus()), p.getRentalStartDate(), p.getRentalEndDate(),
                 p.getRentalDuration(), p.getPrice(), p.getDeposit()
         ));
         return result;
     }
 
+
+    public PaymentVo getPayment(Integer iuser, Integer ipayment) {
+        // iuser 또는 ipayment 가 없으면 결과가 null일 것이므로 검증 필요 x
+
+        // 가져오기
+        List<GetPaymentListResultDto> paymentBy = paymentRepository.findPaymentBy(new GetPaymentListDto(iuser, ipayment, Flag.ONE.getValue()));
+        CommonUtils.checkNullOrZeroIfCollectionThrow(NoSuchPaymentException.class, NO_SUCH_PAYMENT_EX_MESSAGE,
+                paymentBy);
+
+        // 1 이상개인지 체크해야함
+        CommonUtils.checkSizeIfOverLimitNumThrow(BadInformationException.class, BAD_INFO_EX_MESSAGE,
+                paymentBy.stream(), 1);
+
+        GetPaymentListResultDto aPayment = paymentBy.get(0);
+
+
+        return new PaymentVo(aPayment.getIuser(),
+                aPayment.getNick(),
+                CommonUtils.getPic(new StoredFileInfo(aPayment.getRequestPic(), aPayment.getStoredPic())),
+                aPayment.getIpayment(),
+                aPayment.getIproduct(),
+                STATUS.get(aPayment.getIstatus()), // status resolver ?
+                aPayment.getRentalStartDate(),
+                aPayment.getRentalEndDate(),
+                aPayment.getRentalDuration(),
+                aPayment.getPrice(),
+                aPayment.getDeposit(),
+                aPayment.getPhone(),
+                PAYMENT_METHODS.get(aPayment.getIpayment()),
+                aPayment.getCode(),
+                aPayment.getCreatedAt()
+        );
+    }
 
     /*
     ------- Extracted Method -------

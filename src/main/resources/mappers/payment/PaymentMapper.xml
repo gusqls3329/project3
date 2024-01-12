@@ -33,23 +33,29 @@
         select U.iuser, U.nick, U.stored_pic as storedPic, U.request_pic as requestPic,
         PA.ipayment, P.iproduct, PA.istatus, PA.rental_start_date as rentalStartDate, PA.rental_end_date as rentalEndDate,
         PA.rental_duration as rentalDuration, PA.price, P.deposit
+        <if test="flag == 1">
+            , U.phone, PA.code, PA.created_at as createdAt
+        </if>
         from t_payment PA
         join t_product_payment PP on PA.ipayment = PP.ipayment
         join t_product P on PP.iproduct = P.iproduct
         join t_user U on U.iuser =
-        <if test="role = 1">
+        <if test="role != null and role = 1">
             P.iuser
         </if>
-        <if test="role = 2">
+        <if test="role != null and role = 2">
             PA.ibuyer
         </if>
         <where>
             PA.istatus in (-3, -2, 0, 1, 2, 3)
-            <if test="role = 1">
+            <if test="role != null and role = 1">
                 and PA.ibuyer = #{iuser}
             </if>
-            <if test="role = 2">
+            <if test="role != null and role = 2">
                 and P.iuser = #{iuser}
+            </if>
+            <if test="flag == 1">
+                U.iuser = #{iuser} and PA.ipayment = #{ipayment}
             </if>
         </where>
     </select>

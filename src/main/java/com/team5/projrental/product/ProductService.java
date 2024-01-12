@@ -9,10 +9,8 @@ import com.team5.projrental.product.model.innermodel.StoredFileInfo;
 import com.team5.projrental.product.model.proc.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -51,7 +49,7 @@ public class ProductService {
                 CommonUtils.ifCategoryNotContainsThrowOrReturn(category));
         List<GetProductListResultDto> products = productRepository.findProductListBy(getProductListDto);
         // 결과물 없음 여부 체크
-        CommonUtils.checkNullOrZeroIfCollection(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE, products);
+        CommonUtils.checkNullOrZeroIfCollectionThrow(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE, products);
 
         // 검증 이상 무
         List<ProductListVo> result = new ArrayList<>();
@@ -287,7 +285,7 @@ public class ProductService {
 
     public List<ProductUserVo> getUserProductList(Integer iuser, Integer page) {
         List<GetProductListResultDto> productListBy = productRepository.findProductListBy(new GetProductListDto(iuser));
-        CommonUtils.checkNullOrZeroIfCollection(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE, productListBy);
+        CommonUtils.checkNullOrZeroIfCollectionThrow(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE, productListBy);
 
         List<ProductUserVo> result = new ArrayList<>();
         productListBy.forEach(product -> {

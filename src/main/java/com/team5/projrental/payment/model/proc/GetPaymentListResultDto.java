@@ -3,6 +3,7 @@ package com.team5.projrental.payment.model.proc;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 public class GetPaymentListResultDto {
@@ -19,4 +20,8 @@ public class GetPaymentListResultDto {
     private Integer rentalDuration;
     private Integer price;
     private Integer deposit;
+    // for a payment
+    private String phone;
+    private String code;
+    private LocalDateTime createdAt;
 }
