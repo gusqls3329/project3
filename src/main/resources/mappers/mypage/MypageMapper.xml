@@ -33,7 +33,7 @@
         <if test="role == 1"> <!--로그인 유저가 물건 빌린 내역 볼 때-->
             where C.ibuyer = #{loginedIuser}
         </if>
-        <if test="role ==2"> <!--로그인 유저가 물건 빌려준 내역 볼 때-->
+        <if test="role == 2"> <!--로그인 유저가 물건 빌려준 내역 볼 때-->
             where A.iuser = #{loginedIuser}
         </if>
         ORDER BY B.ipayment DESC
