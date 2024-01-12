@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/user")
 public class UserController {
     private final UserService service;
-    /*@Operation(summary = "회원가입", description = "유저 회원가입")
+    @PostMapping("/signup")
+    @Operation(summary = "회원가입", description = "유저 회원가입")
     @Parameters(value = {
             @Parameter(name="addr", description = "동/면/읍까지의 주소")
             , @Parameter(name="restAddr", description = "나머지 주소")
@@ -26,8 +27,6 @@ public class UserController {
             , @Parameter(name="phone", description = "휴대폰 번호 (형식 : 010-1111-2222)")
             , @Parameter(name="email", description = "이메일 (형식 : aaa@naver.com)")
     })
-    @PostMapping("/signup")*/
-    @PostMapping("/signup")
     public ResVo postSignup(@RequestBody UserSignupDto dto) {
         log.info("dto : {}", dto);
         return service.postSignup(dto);
