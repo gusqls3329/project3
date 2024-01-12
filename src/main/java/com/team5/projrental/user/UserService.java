@@ -71,5 +71,9 @@ public class UserService {
         }
         return mapper.delUser(dto);
     }
+
+    public SelUserVo getUSer(int iuser) {
+        return mapper.selUser(iuser);
+    }
 }
 
