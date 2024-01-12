@@ -8,6 +8,7 @@ import com.team5.projrental.common.exception.IllegalPaymentMethodException;
 import com.team5.projrental.common.model.restapi.Addrs;
 import com.team5.projrental.common.model.restapi.Documents;
 import com.team5.projrental.product.model.innermodel.StoredFileInfo;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
@@ -178,7 +179,7 @@ public class CommonUtils {
         /* TODO: 1/9/24
             차후 파일 업로드 배우면 수정.
             --by Hyunmin */
-        return null;
+        return new FileSystemResource("test");
     }
 
     // 파일 업로드 배운 후 완성시킬 예정.

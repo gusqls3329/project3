@@ -103,11 +103,11 @@
 
     <insert id="insProduct" useGeneratedKeys="true" keyProperty="iproduct">
         insert into t_product
-        (iuser, title, contents, addr, rest_addr, stored_pic, request_pic,
-        price, rental_price, deposit, buy_date, rental_start_date, rental_end_date, x, y)
+        (iuser, title, contents, iaddr, rest_addr, stored_pic, request_pic,
+        price, rental_price, deposit, buy_date, rental_start_date, rental_end_date, icategory, x, y)
         values
-        (#{iuser}, #{title}, #{contents}, #{addr}, #{restAddr}, #{mainPicObj.storedPic}, #{mainPicObj.requestPic},
-        #{price}, #{rentalPrice}, #{deposit}, #{buyDate}, #{rentalStartDate}, #{rentalEndDate}, #{icategoty}, #{x}, #{y})
+        (#{iuser}, #{title}, #{contents}, #{iaddr}, #{restAddr}, #{mainPicObj.storedPic}, #{mainPicObj.requestPic},
+        #{price}, #{rentalPrice}, #{deposit}, #{buyDate}, #{rentalStartDate}, #{rentalEndDate}, #{icategory}, #{x}, #{y})
     </insert>
 
     <insert id="insPics">

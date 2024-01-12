@@ -157,7 +157,7 @@ public class ProductService {
             productRepository.savePics(insProdPicsDto);
         }
 
-        return new ResVo(1);
+        return new ResVo(insProdBasicInfoDto.getIproduct());
     }
 
 

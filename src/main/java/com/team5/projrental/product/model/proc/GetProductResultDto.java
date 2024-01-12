@@ -16,4 +16,5 @@ public class GetProductResultDto extends GetProductListResultDto{
     private LocalDate buyDate;
     private Boolean x;
     private Boolean y;
+
 }

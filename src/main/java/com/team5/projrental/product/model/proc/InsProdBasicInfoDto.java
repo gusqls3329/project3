@@ -19,7 +19,7 @@ public class InsProdBasicInfoDto {
     private Integer iuser;
     private String title;
     private String contents;
-    private Integer addr;
+    private Integer iaddr;
     private String restAddr;
     private StoredFileInfo mainPicObj; // #{mainPicObj.requestPic} #{mainPicObj.storedPic}
     // 따로 setter 사용해야함.
@@ -34,11 +34,11 @@ public class InsProdBasicInfoDto {
     private Double x;
     private Double y;
 
-    public InsProdBasicInfoDto(ProductInsDto dto, Integer addr, Double x, Double y) {
+    public InsProdBasicInfoDto(ProductInsDto dto, Integer iaddr, Double x, Double y) {
         this.iuser = dto.getIuser();
         this.title = dto.getTitle();
         this.contents = dto.getContents();
-        this.addr = addr;
+        this.iaddr = iaddr;
         this.restAddr = dto.getRestAddr();
         this.price = dto.getPrice();
         this.rentalPrice = dto.getRentalPrice();
