@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team5.projrental.user.UserMapper">
+
+    <select id="selSignin">
+        SELECT u.iuser, a.auth, u.upw, u.uid
+        FROM t_user u
+        JOIN t_auth a
+        ON a.iauth = u.iauth
+        WHERE u.uid = #{uid}
+    </select>
+
+    <select id="selFindUid">
+        SELECT uid
+        FROM t_user
+        WHERE phone = #{phone}
+    </select>
+
+    <update id="upFindUpw">
+        UPDATE t_user
+        SET upw = #{upw}
+        WHERE phone = #{phone}
+        and uid = #{uid}
+    </update>
+
+    <update id="changeUser">
+        UPDATE t_user
+        <set>
+            <if test="nick != null and nick != '' ">
+                nick =#{nick}
+            </if>
+            <if test="pic != null and pic != '' ">
+                ,stored_pic =#{pic}
+            </if>
+            <if test="upw != null and upw != '' ">
+                ,upw =#{upw}
+            </if>
+            <if test="phone != null and phone != '' ">
+                ,phone =#{phone}
+            </if>
+            <if test="iaddr != null and iaddr != '' ">
+                ,iaddr =#{iaddr}
+            </if>
+            <if test="restAddr != null and restAddr != '' ">
+                ,rest_addr =#{restAddr}
+            </if>
+            <if test="email != null and email != '' ">
+                ,email = #{email}
+            </if>
+        </set>
+        where iuser = #{iuser}
+    </update>
+
+    <delete id="delUser">
+        DELETE FROM t_user
+        WHERE iuser = #{iuser}
+        and uid = #{uid}
+        and phone = #{phone}
+    </delete>
+    <select id="seldelUserPay">
+        SELECT P.iproduct,U.iuser
+        FROM t_user U
+        LEFT JOIN t_product P
+        ON P.istatus IN (-1, -2)
+        JOIN t_product_payment PP
+        ON P.iproduct = PP.iproduct
+        JOIN t_payment PA
+        ON PP.ipayment = PA.ipayment AND PA.istatus IN (1, -1, -2, -3)
+        WHERE U.iuser = #{iuser}
+    </select>
+    <update id="delUpUserPay">
+        update t_payment
+        set ibuyer = null
+        where ibuyer = #{iuser}
+    </update>
+
+    <delete id="delUserProPic">
+        DELETE FROM t_pics
+        where iproduct = #{iproduct}
+    </delete>
+    <delete id="delUserPorc2">
+        DELETE FROM t_product_payment
+        where iproduct = #{iproduct}
+    </delete>
+    <delete id="delUserPorc">
+        DELETE FROM t_product
+        where iuser = #{iuser}
+    </delete>
+
+    <select id="delselUser">
+        SELECT u.y, u.x,CONCAT_WS(a.eupmyun,u.rest_addr) as addr, u.nick, u.stored_pic as storedPic, u.phone, u.email, u.raiting
+        FROM t_user u
+        JOIN t_eupmyun a
+        ON a.ieupmyun= u.iaddr
+        WHERE u.iuser = #{iuser}
+    </select>
+</mapper>
