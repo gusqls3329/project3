@@ -1,11 +1,15 @@
 package com.team5.projrental.common.aop;
 
+import com.team5.projrental.common.aop.anno.Retry;
+import com.team5.projrental.common.exception.RestApiException;
 import com.team5.projrental.common.threadpool.MyThreadPoolHolder;
 import com.team5.projrental.product.ProductRepository;
 import com.team5.projrental.product.model.ProductVo;
 import com.team5.projrental.product.model.proc.GetProductViewAopDto;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +28,12 @@ public class CommonAspect {
         this.threadPool = threadPool.getThreadPool();
     }
 
+
+    /**
+     * Product 의 view 를 ++ 하는 AOP (In DB)<br>
+     * Custom ThreadPool 사용
+     * @param result
+     */
     @AfterReturning(value = "@annotation(com.team5.projrental.common.aop.anno.CountView)",
             returning = "result")
     public void countView(ProductVo result) {
@@ -35,6 +45,29 @@ public class CommonAspect {
             log.debug(isSucceed);
         });
 
+    }
+
+    /**
+     * RuntimeException and extends 발생시 재시도 AOP
+     * @param joinPoint
+     * @param retry
+     * @return Object
+     * @throws Throwable
+     */
+    @Around("@annotation(retry)")
+    public Object retry(ProceedingJoinPoint joinPoint, Retry retry) throws Throwable {
+
+        RuntimeException ex = null;
+
+        for (int curTry = 1; curTry <= retry.value(); curTry++) {
+            try {
+                return joinPoint.proceed();
+            } catch (RuntimeException e) {
+                log.debug("try count = {} || {}", curTry, retry.value());
+                ex = e;
+            }
+        }
+        throw ex;
     }
 
 }

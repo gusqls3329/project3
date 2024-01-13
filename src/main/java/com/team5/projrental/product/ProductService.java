@@ -1,6 +1,7 @@
 package com.team5.projrental.product;
 
 import com.team5.projrental.common.aop.anno.CountView;
+import com.team5.projrental.common.aop.anno.Retry;
 import com.team5.projrental.common.exception.*;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.utils.CommonUtils;
@@ -112,6 +113,7 @@ public class ProductService {
      * @return ResVo
      */
     @Transactional
+    @Retry
     public ResVo postProduct(ProductInsDto dto) {
         /* TODO: 2024-01-10
             security 적용시 모든 iuser 가 있는부분 로직 변경, 모델 변경 해야함.
@@ -170,6 +172,7 @@ public class ProductService {
      * @return ResVo
      */
     @Transactional
+    @Retry
     public ResVo putProduct(ProductUpdDto dto) {
 
         // 삭제사진 필요시 삭제

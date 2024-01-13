@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team5.projrental.common.Const;
 import com.team5.projrental.common.exception.IllegalCategoryException;
 import com.team5.projrental.common.exception.IllegalPaymentMethodException;
+import com.team5.projrental.common.exception.RestApiException;
 import com.team5.projrental.common.model.restapi.Addrs;
 import com.team5.projrental.common.model.restapi.Documents;
 import com.team5.projrental.product.model.innermodel.StoredFileInfo;
@@ -102,13 +103,15 @@ public class CommonUtils {
         try {
             documents = om.readValue(result, Documents.class);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(Const.SERVER_ERR_MESSAGE);
+            throw new RestApiException(SERVER_ERR_MESSAGE);
         }
         Addrs addrs = documents.getDocuments().stream().filter(Objects::nonNull)
-                .findFirst().orElseThrow(() -> new RuntimeException(SERVER_ERR_MESSAGE));
+                .findFirst().orElseThrow(() -> new RestApiException(SERVER_ERR_MESSAGE));
         axisMap.put(AXIS_X, Double.parseDouble(addrs.getX()));
         axisMap.put(AXIS_Y, Double.parseDouble(addrs.getY()));
-
+        if (addrs.getX().isEmpty() || addrs.getY().isEmpty()) {
+            throw new RestApiException(SERVER_ERR_MESSAGE);
+        }
         return axisMap;
     }
 
