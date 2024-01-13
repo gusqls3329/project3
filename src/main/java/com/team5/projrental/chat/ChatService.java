@@ -84,6 +84,7 @@ public class ChatService {
         return new ResVo(dto.getSeq());
     }
 
+    //채팅방 입장시 메세지 내용 불러오기
     public List<ChatMsgSelVo> getMsgAll(ChatMsgSelDto dto){
         return mapper.selChatMsgAll(dto);
     }
@@ -96,6 +97,7 @@ public class ChatService {
         return new ResVo(delAffectedRows);
     }
 
+    // 채팅 입력
     public ChatSelVo postChat(ChatInsDto dto){
         Integer isExixtChat = mapper.selChatUserCheck(dto);
         log.info("dto: {}", dto);

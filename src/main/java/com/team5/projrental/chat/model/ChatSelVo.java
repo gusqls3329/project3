@@ -2,6 +2,7 @@ package com.team5.projrental.chat.model;
 
 import lombok.Data;
 
+// 채팅방 리스트
 @Data
 public class ChatSelVo {
     private int ichat; // 채팅방 PK

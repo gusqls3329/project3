@@ -24,6 +24,6 @@ public interface ChatMapper {
 
     int chatDelMsg(ChatMsgDelDto dto); // 메세지 삭제
 
-
+    //상대방의 firebaseToken값 필요. 나의 pic, iuser값 필요
     UserEntity selOtherPersonByLoginUser(ChatMsgInsDto dto);
 }
