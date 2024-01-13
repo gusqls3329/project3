@@ -1,5 +1,6 @@
 package com.team5.projrental.product;
 
+import com.team5.projrental.common.aop.anno.CountView;
 import com.team5.projrental.common.exception.*;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.utils.CommonUtils;
@@ -74,6 +75,7 @@ public class ProductService {
      * @param iproduct
      * @return ProductVo
      */
+    @CountView
     public ProductVo getProduct(String category, Integer iproduct) {
 
         // 사진을 '제외한' 모든 정보 획득 & 제공된 카테고리 검증 (category -> icategory)

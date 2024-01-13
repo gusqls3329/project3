@@ -5,7 +5,6 @@ import com.team5.projrental.product.ProductRepository;
 import com.team5.projrental.product.model.ProductVo;
 import com.team5.projrental.product.model.proc.GetProductViewAopDto;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
@@ -15,24 +14,25 @@ import java.util.concurrent.ExecutorService;
 @Aspect
 @Slf4j
 @Component
-public class CommonAop {
+public class CommonAspect {
 
     private final ProductRepository productRepository;
     private final ExecutorService threadPool;
 
-    public CommonAop(ProductRepository productRepository, MyThreadPoolHolder threadPool) {
+    public CommonAspect(ProductRepository productRepository, MyThreadPoolHolder threadPool) {
         this.productRepository = productRepository;
         this.threadPool = threadPool.getThreadPool();
     }
 
-    @AfterReturning(value = "execution(* com.team5.projrental.product.ProductService.getProduct(..))",
+    @AfterReturning(value = "@annotation(com.team5.projrental.common.aop.anno.CountView)",
             returning = "result")
     public void countView(ProductVo result) {
 
         log.debug("AOP Start");
         threadPool.execute(() -> {
             log.debug("thread name = {}", Thread.currentThread().getName());
-            log.debug(productRepository.countView(new GetProductViewAopDto(result.getIproduct())));
+            String isSucceed = productRepository.countView(new GetProductViewAopDto(result.getIproduct()));
+            log.debug(isSucceed);
         });
 
     }
