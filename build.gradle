@@ -38,6 +38,13 @@ dependencies {
 	// https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api
 	implementation 'io.jsonwebtoken:jjwt-api:0.12.3'*/
 
+	// https://mvnrepository.com/artifact/com.google.firebase/firebase-messaging
+	implementation group: 'com.google.firebase', name: 'firebase-messaging', version: '23.4.0'
+
+	// https://mvnrepository.com/artifact/com.google.firebase/firebase-admin
+	implementation group: 'com.google.firebase', name: 'firebase-admin', version: '9.2.0'
+
+
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'

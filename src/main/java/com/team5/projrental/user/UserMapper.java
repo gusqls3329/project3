@@ -20,4 +20,5 @@ public interface UserMapper {
     int delUserPorc(int iuser);
 
     SelUserVo selUser(int iuser);
+    UserEntity selChatUser(UserSelDto dto);
 }
