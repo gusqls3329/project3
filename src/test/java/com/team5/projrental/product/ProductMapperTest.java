@@ -193,6 +193,9 @@ class ProductMapperTest {
 
     @Test
     void getPicCount() {
+
+
+
     }
 
     @Test

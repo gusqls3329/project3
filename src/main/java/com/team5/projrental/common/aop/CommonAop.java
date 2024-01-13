@@ -27,7 +27,7 @@ public class CommonAop {
 
     @AfterReturning(value = "execution(* com.team5.projrental.product.ProductService.getProduct(..))",
             returning = "result")
-    public void countView(JoinPoint joinPoint, ProductVo result) {
+    public void countView(ProductVo result) {
 
         log.debug("AOP Start");
         threadPool.execute(() -> {
