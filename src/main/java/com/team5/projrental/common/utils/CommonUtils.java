@@ -69,15 +69,16 @@ public class CommonUtils {
         }
     }
 
-    private static void thrown(Class<? extends RuntimeException> ex, String message) {
-        try {
-            throw ex.getDeclaredConstructor(String.class).newInstance(message);
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
-    public static Map<String, Double> getAxis(String fullAddr) {
+
+    /**
+     * default 접근 제한자 사용, 동일 패키지의 AxisProvider 에서만 사용함.<br>
+     * ㄴ> 해당 유틸을 직접 사용하는것을 막기 위한 제약.<br>
+     * 외부에서 해당 기능이 필요할 경우 AxisProvider 를 DI 받아 사용해야 함.
+     * @param fullAddr
+     * @return Map<String, Double>
+     */
+    static Map<String, Double> getAxis(String fullAddr) {
         Map<String, Double> axisMap = new HashMap<>();
 
         StringBuilder sb = new StringBuilder();
@@ -233,5 +234,19 @@ public class CommonUtils {
         return result;
     }
 
+    //
+
+    /**
+     * 예외 throw 메소드 (내부)
+     * @param ex
+     * @param message
+     */
+    private static void thrown(Class<? extends RuntimeException> ex, String message) {
+        try {
+            throw ex.getDeclaredConstructor(String.class).newInstance(message);
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }
