@@ -2,7 +2,6 @@ package com.team5.projrental.common.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.team5.projrental.common.Const;
 import com.team5.projrental.common.exception.IllegalCategoryException;
 import com.team5.projrental.common.exception.IllegalPaymentMethodException;
 import com.team5.projrental.common.exception.RestApiException;

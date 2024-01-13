@@ -2,6 +2,7 @@ package com.team5.projrental.product;
 
 import com.team5.projrental.common.aop.anno.CountView;
 import com.team5.projrental.common.aop.anno.Retry;
+import com.team5.projrental.common.axisprovider.AxisProvider;
 import com.team5.projrental.common.exception.*;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.utils.CommonUtils;
@@ -28,6 +29,8 @@ public class ProductService {
         --by Hyunmin */
 
     private final ProductRepository productRepository;
+
+    private final AxisProvider axisProvider;
 
     /*
         ------- Logic -------
@@ -113,7 +116,6 @@ public class ProductService {
      * @return ResVo
      */
     @Transactional
-    @Retry
     public ResVo postProduct(ProductInsDto dto) {
         /* TODO: 2024-01-10
             security 적용시 모든 iuser 가 있는부분 로직 변경, 모델 변경 해야함.
@@ -151,7 +153,7 @@ public class ProductService {
 
 
         // logic
-        Map<String, Double> axis = CommonUtils.getAxis(dto.getAddr().concat(dto.getRestAddr()));
+        Map<String, Double> axis = axisProvider.getAxis(dto.getAddr().concat(dto.getRestAddr()));
         // insert 할 객체 준비 완.
         InsProdBasicInfoDto insProdBasicInfoDto = new InsProdBasicInfoDto(dto, addrBy, axis.get(AXIS_X), axis.get(AXIS_Y));
         insProdBasicInfoDto.setMainPicObj(CommonUtils.savePic(dto.getMainPic()));
@@ -172,7 +174,6 @@ public class ProductService {
      * @return ResVo
      */
     @Transactional
-    @Retry
     public ResVo putProduct(ProductUpdDto dto) {
 
         // 삭제사진 필요시 삭제
@@ -250,7 +251,7 @@ public class ProductService {
         dto.setDeposit(dto.getDepositPer() == null ? null : CommonUtils.getDepositFromPer(price, dto.getDeposit()));
         dto.setIcategory(CommonUtils.ifCategoryNotContainsThrowOrReturn(dto.getCategory()));
         if (dto.getAddr() != null && dto.getRestAddr() != null) {
-            Map<String, Double> axis = CommonUtils.getAxis(dto.getAddr().concat(dto.getRestAddr()));
+            Map<String, Double> axis = axisProvider.getAxis(dto.getAddr().concat(dto.getRestAddr()));
             dto.setX(axis.get(AXIS_X));
             dto.setY(axis.get(AXIS_Y));
         }
