@@ -3,7 +3,7 @@ package com.team5.projrental.product;
 import com.team5.projrental.common.aop.anno.CountView;
 import com.team5.projrental.common.exception.*;
 import com.team5.projrental.common.model.ResVo;
-import com.team5.projrental.common.utils.AxisProvider;
+import com.team5.projrental.common.utils.AxisGenerator;
 import com.team5.projrental.common.utils.CommonUtils;
 import com.team5.projrental.product.model.*;
 import com.team5.projrental.product.model.innermodel.PicSet;
@@ -29,7 +29,7 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    private final AxisProvider axisProvider;
+    private final AxisGenerator axisGenerator;
 
     /*
         ------- Logic -------
@@ -152,7 +152,7 @@ public class ProductService {
 
 
         // logic
-        Map<String, Double> axis = axisProvider.getAxis(dto.getAddr().concat(dto.getRestAddr()));
+        Map<String, Double> axis = axisGenerator.getAxis(dto.getAddr().concat(dto.getRestAddr()));
         // insert 할 객체 준비 완.
         InsProdBasicInfoDto insProdBasicInfoDto = new InsProdBasicInfoDto(dto, addrBy, axis.get(AXIS_X), axis.get(AXIS_Y));
         insProdBasicInfoDto.setMainPicObj(CommonUtils.savePic(dto.getMainPic()));
@@ -250,7 +250,7 @@ public class ProductService {
         dto.setDeposit(dto.getDepositPer() == null ? null : CommonUtils.getDepositFromPer(price, dto.getDeposit()));
         dto.setIcategory(CommonUtils.ifCategoryNotContainsThrowOrReturn(dto.getCategory()));
         if (dto.getAddr() != null && dto.getRestAddr() != null) {
-            Map<String, Double> axis = axisProvider.getAxis(dto.getAddr().concat(dto.getRestAddr()));
+            Map<String, Double> axis = axisGenerator.getAxis(dto.getAddr().concat(dto.getRestAddr()));
             dto.setX(axis.get(AXIS_X));
             dto.setY(axis.get(AXIS_Y));
         }

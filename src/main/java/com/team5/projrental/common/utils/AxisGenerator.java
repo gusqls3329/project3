@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 @Component
-public class AxisProvider {
+public class AxisGenerator {
 
     @Retry // default value = 3 (3 retry)
     public Map<String, Double> getAxis(String fullAddr) {

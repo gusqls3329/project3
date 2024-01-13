@@ -72,9 +72,9 @@ public class CommonUtils {
 
 
     /**
-     * default 접근 제한자 사용, 동일 패키지의 AxisProvider 에서만 사용함.<br>
+     * default 접근 제한자 사용, 동일 패키지의 AxisGenerator 에서만 사용함.<br>
      * ㄴ> 해당 유틸을 직접 사용하는것을 막기 위한 제약.<br>
-     * 외부에서 해당 기능이 필요할 경우 AxisProvider 를 DI 받아 사용해야 함.
+     * 외부에서 해당 기능이 필요할 경우 AxisGenerator 를 DI 받아 사용해야 함.
      * @param fullAddr
      * @return Map<String, Double>
      */
