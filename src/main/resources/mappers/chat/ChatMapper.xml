@@ -2,114 +2,127 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team5.projrental.chat.ChatMapper">
 
-    <!-- 채팅방 생성 -->
-    <insert id="insDm" useGeneratedKeys="true" keyProperty="idm"> <!--빈 방 생성-->
-        INSERT INTO t_dm <!-- 채팅방 생성 -->
-        SET last_msg = NULL <!-- 마지막 보낸 메세지가 없음-->
+    <insert id="insChat" useGeneratedKeys="true" keyProperty="iChat"> <!--빈 채팅방 생성-->
+        INSERT INTO t_chat
+        SET last_msg = NULL <!-- 마지막 보낸 메세지가 없음 -->
     </insert>
 
 
-    <!--채팅할 대상 선정 -->
-    <insert id="insDmUser">
-        INSERT INTO t_dm_user
-        SET idm = #{idm} <!-- 채팅방 번호 -->
-        , iuser = #{iuser} <!-- 상대 유저 PK-->
+    <insert id="insChatUser">
+        INSERT INTO t_chat_user
+        SET ichat = #{ichat},
+        iuser = #{iuser}
     </insert>
 
-    <!--메세지 입력-->
-    <insert id="insDmMsg">
-        <selectKey resultType="int" keyProperty="seq" order="BEFORE"> <!--BEFORE는 아래 셀렉트문 먼저 실행하고 selectKey에 있는 내용 실행한다는 뜻-->
-            SELECT IFNULL(MAX(seq), 0) + 1 <!-- IFNULL은 seq가 null이면 0 + 1해서 채팅방 번호 출력 예를들어 17이면 17+1 = 18로 채팅방 번호 생성-->
-            FROM t_dm_msg
-            WHERE idm = #{idm} <!-- 채팅방 번호 입력 -->
+
+    <insert id="insChatMsg">
+        <selectKey resultType="int" keyProperty="seq" order="BEFORE"> <!--BEFORE는 SELECT 먼저 실행하고 insert 실행한다는 뜻-->
+            SELECT IFNULL(MAX(seq), 0) + 1 <!-- IFNULL은 최초 메세지 보낼 때 seq가 null이면 0 + 1해서 0+1 = 1로 채팅 seq(PK)번호 생성-->
+            FROM t_chat_msg
+            WHERE ichat = #{ichat}
         </selectKey>
-        INSERT INTO t_dm_msg
-        SET
-          idm = #{idm} <!-- 채팅방 번호 -->
-        , seq = #{seq} <!-- 메세지 번호 -->
-        , iuser = #{loginedIuser} <!-- 메세지 보내는 사람 -->
-        , msg = #{msg} <!-- 메세지 내용-->
+        INSERT INTO t_chat_msg
+        SET ichat = #{ichat}, <!--채팅방 PK-->
+        seq = #{seq}, <!--메세지 PK-->
+        iuser = #{loginedIuser}, <!--메세지 보내는 사람-->
+        msg = #{msg} <!-- 메세지 내용-->
     </insert>
 
 
-    <!-- 우측상단 채팅 버튼 나의 채팅방 리스트 -->
-    <select id="selDmAll">
-        SELECT
-        A.idm, A.last_msg AS lastMsg, A.last_msg_at AS lastMsgAt <!-- 마지막 보낸 메세지 시간-->
-        ,D.iuser AS otherPersonIuser, D.nm AS otherPersonNm, D.pic AS otherPersonPic
-        FROM t_dm A <!-- 채팅 방 -->
-        INNER JOIN t_dm_user B <!-- 로그인한 유저-->
-        ON A.idm = B.idm
-        INNER JOIN t_dm_user C <!-- 로그인한 유저 제외한 나머지-->
-        ON B.idm = C.idm
+    <select id="selChatAll">
+        SELECT A.ichat, A.last_msg_at AS lastMsg,
+        D.iuser AS otherPersonIuser,
+        D.nm AS otherPersonNm,
+        D.pic AS otherPersonPic
+        FROM t_chat A
+        INNER JOIN t_chat_user B <!--로그인 한 유저-->
+        ON A.ichat = B.ichat
+        INNER JOIN t_chat_user C <!--나머지 유저-->
+        ON B.ichat = C.ichat
         INNER JOIN t_user D
         ON C.iuser = D.iuser
-        WHERE B.iuser = #{loginedIuser} <!-- 로그인 한 유저 인 조건 -->
-        AND C.iuser != #{loginedIuser} <!-- 로그인 한 유저 제외한 나머지 표현 -->
+        WHERE B.iuser = #{loginedIuser}
+        AND C.iuser != #{loginedIuser}
         ORDER BY A.last_msg_at DESC
         LIMIT #{startIdx}, #{rowCount}
     </select>
 
 
-    <!-- 채팅 리스트에 있는 채팅방 입장시 입력된 메세지 리스트 -->
-    <select id="selDmMsgAll">
+    <select id="selChatMsgAll">
         SELECT
-        A.seq, A.msg, A.created_at AS createdAt <!--채팅 순서(채팅 PK) 글삭제시 필요 / 내용 / 작성시간 -->
-        , B.iuser AS writerIuser, B.pic AS writerPic <!-- 작성자PK / 작성자 프로필사진-->
-        FROM t_dm_msg A <!-- 순서, 내용, 언제적었는지 나타내기 위해서 테이블 생성 -->
-        INNER JOIN t_user B <!-- 누가 쓴 글인지 나타내기 위해 조인-->
+        A.seq, A.msg, A.created_at AS createdAt,
+        B.iuser AS writerIuser, B.pic AS writerPic
+        FROM t_chat_msg A
+        INNER JOIN t_user B
         ON A.iuser = B.iuser
-        WHERE A.idm = #{idm} <!-- 메세지 방 번호 조건설정 -->
-        ORDER BY A.seq DESC <!-- 메세지 번호 최신순 정렬 -->
+        WHERE A.ichat =#{ichat}
+        ORDER BY A.seq DESC
         LIMIT #{startIdx}, #{rowCount}
     </select>
 
-    <!--메세지 삭제-->
-    <delete id="dmDelMsg">
-        DELETE t_dm_msg <!-- 채팅방에 있는 정보가 담겨있는 테이블 -->
-        WHERE seq = #{seq} and idm =#{idm} and iuser =#{iuser} <!-- 메세지번호, 방번호, 로그인유저 확인 -->
+
+    <delete id="chatDelMsg">
+        DELETE t_chat_msg
+        WHERE ichat = #{ichat} AND iuser =#{iuser}
     </delete>
 
 
-    <select id="selDmUserCheck">
-        SELECT idm
-        FROM t_dm_user
+    <select id="selChatUserCheck">
+        SELECT ichat
+        FROM t_chat_user
         WHERE iuser = #{loginedIuser} OR iuser #{otherPersonIuser}
-        GROUP BY idm
-        HAVING COUNT(idm) = 2
+        GROUP BY ichat
+        HAVING COUNT(ichat) = 2
     </select>
 
-        <update id="updDmLastMsg">
-        UPDATE t_dm
+
+    <update id="updChatLastMsg">
+        UPDATE t_chat
         SET last_msg = #{msg}
-        WHERE idm = #{idm}
+        WHERE ichat = #{ichat}
     </update>
 
-    <update id="updDmLastMsgAfterDelByLastMsg">
-        UPDATE t_dm A
+
+    <update id="updChatLastMsgAfterDelByLastMsg">
+        UPDATE t_chat A
         INNER JOIN (
-                SELECT idm, msg, created_at AS createdAt
-                FROM t_dm_msg
-                WHERE idm = #{idm}
-                ORDER BY seq DESC
-                LIMIT 1
+        SELECT ichat, msg, created_at AS createdAt
+        FROM t_chat_msg
+        WHERE ichat = #{ichat}
+        ORDER BY seq DESC
+        LIMIT 1
         ) B
-        ON A.idm = B.idm
-        SET A.last_msg = B.msg
-        , A.last_msg_at = B.created_at
-        WHERE A.idm = #{idm}
+        ON A.ichat = B.ichat
+        SET A.last_msg = B.msg,
+        A.last_msg_at = B.created_at
+        WHERE A.ichat = #{ichat}
     </update>
+
 
     <select id="selOtherPersonByLoginUser">
         SELECT
-            B.iuser,
-            B.pic,
-            B.firebase_token AS firebaseToken
-        FROM t_dm_user A
+        B.iuser,
+        B.pic,
+        B.firebase_token AS firebaseToken
+        FROM t_chat_user A
         INNER JOIN t_user B
         ON A.iuser = B.iuser
-        WHERE A.idm = #{idm}
+        WHERE A.ichat = #{ichat}
         AND A.iuser != #{loginedIuser}
     </select>
+
+
+    <update id="chatDel"> <!--숨김 처리-->
+        <!--<selectKey resultType="int" keyProperty="istatus" order="BEFORE">
+            SELECT
+            istatus
+            FROM chat_user
+            WHERE iuser =#{iuser} and ichat =#{ichat}
+        </selectKey>-->
+        UPDATE
+        chat_user
+        SET istatus = -1
+        WHERE iuser =#{iuser} AND ichat =#{ichat}
+    </update>
 
 </mapper>

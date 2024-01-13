@@ -8,15 +8,15 @@ import java.util.List;
 
 @Mapper
 public interface ChatMapper {
-    //-------------------------------- t_chat
-    int insChat(ChatInsDto dto); // 채팅 빈 방 생성
-    List<ChatSelVo> selChatAll(ChatSelDto dto); // 모든 채팅리스트
 
-    //-------------------------------- t_chat_user
-    int insChatUser(ChatUserInsDto dto);
+    int insChat(ChatInsDto dto); // 채팅 빈 방 생성
+    List<ChatSelVo> selChatAll(ChatSelDto dto); // 채팅리스트
+
+    int insChatUser(ChatUserInsDto dto); // 빈 채팅방에 유저 참여
+
+
     Integer selChatUserCheck(ChatInsDto dto);
 
-    //-------------------------------- t_chat_msg
     int insChatMsg(ChatMsgInsDto dto);
     List<ChatMsgSelVo> selChatMsgAll(ChatMsgSelDto dto);
     int updChatLastMsgAfterDelByLastMsg(ChatMsgDelDto dto);
