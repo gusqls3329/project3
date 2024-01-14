@@ -47,7 +47,7 @@ public class ProductService {
                                               String search,
                                               String category) {
         // sort 검증
-        if (sort != 1 && sort != 2) throw new BadInformationException(BAD_SORT_EX_MESSAGE);
+        if (sort != null && sort != 1 && sort != 2) throw new BadInformationException(BAD_SORT_EX_MESSAGE);
         // 카테고리 검증
         GetProductListDto getProductListDto = new GetProductListDto(sort, search,
                 CommonUtils.ifCategoryNotContainsThrowOrReturn(category));
