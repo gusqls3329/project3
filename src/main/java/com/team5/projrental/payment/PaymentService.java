@@ -55,10 +55,16 @@ public class PaymentService {
                 paymentInsDto.getRentalEndDate())) + 1);
         paymentInsDto.setPrice(rentalPrice * paymentInsDto.getRentalDuration());
         paymentInsDto.setCode(createCode());
+        paymentInsDto.setDeposit(CommonUtils.getDepositFromPer(paymentInsDto.getPrice(), paymentInsDto.getDepositPer()));
 
         // insert (select key 사용)
-        if (paymentRepository.savePayment(paymentInsDto) != 0 &&
-                productRepository.updateIpayment(paymentInsDto.getIproduct(), paymentInsDto.getIpayment()) != 0) {
+//        if (paymentRepository.savePayment(paymentInsDto) != 0 &&
+//                productRepository.updateIpayment(paymentInsDto.getIproduct(), paymentInsDto.getIpayment()) != 0) {
+//            if (paymentRepository.saveProductPayment(paymentInsDto.getIproduct(), paymentInsDto.getIpayment()) != 0) {
+//                return new ResVo(1);
+//            }
+//        }
+        if (paymentRepository.savePayment(paymentInsDto) != 0) {
             if (paymentRepository.saveProductPayment(paymentInsDto.getIproduct(), paymentInsDto.getIpayment()) != 0) {
                 return new ResVo(1);
             }
@@ -149,19 +155,16 @@ public class PaymentService {
 
 
     public PaymentVo getPayment(Integer iuser, Integer ipayment) {
-        // iuser 또는 ipayment 가 없으면 결과가 null일 것이므로 검증 필요 x
+        // iuser 또는 ipayment 가 없으면 결과가 size 0 일 것
 
         // 가져오기
-        List<GetPaymentListResultDto> paymentBy = paymentRepository.findPaymentBy(new GetPaymentListDto(iuser, ipayment, Flag.ONE.getValue()));
-        CommonUtils.checkNullOrZeroIfCollectionThrow(NoSuchPaymentException.class, NO_SUCH_PAYMENT_EX_MESSAGE,
-                paymentBy);
-
-        // 1 이상개인지 체크해야함
-        CommonUtils.checkSizeIfOverLimitNumThrow(BadInformationException.class, BAD_INFO_EX_MESSAGE,
-                paymentBy.stream(), 1);
-
-        GetPaymentListResultDto aPayment = paymentBy.get(0);
-
+        GetPaymentListResultDto aPayment;
+        try {
+            aPayment = paymentRepository.findPaymentBy(new GetPaymentListDto(iuser, ipayment,
+                    Flag.ONE.getValue())).get(0);
+        } catch (IndexOutOfBoundsException e) {
+            throw new NoSuchPaymentException(NO_SUCH_PAYMENT_EX_MESSAGE);
+        }
 
         return new PaymentVo(aPayment.getIuser(),
                 aPayment.getNick(),

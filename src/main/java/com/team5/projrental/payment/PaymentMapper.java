@@ -13,11 +13,14 @@ import java.util.List;
 
 @Mapper
 public interface PaymentMapper {
+    // for test
+    int getPaymentFromProductPayment(int iproduct, int ipayment);
+    int getProductFromProductPayment(int iproduct, int ipayment);
+    //
+
     int insPayment(PaymentInsDto paymentInsDto);
 
-
-
-    int insProductPayment(@Param("iproduct") Integer iproduct, @Param("ipayment") Integer ipayment);
+    int insProductPayment(Integer iproduct, Integer ipayment);
 
     GetInfoForCheckIproductAndIuserResult checkIuserAndIproduct(Integer ipayment);
 

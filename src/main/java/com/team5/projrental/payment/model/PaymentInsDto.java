@@ -7,10 +7,12 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
+import org.hibernate.validator.constraints.Range;
 
 import java.time.LocalDate;
 
 @Data
+@Builder
 public class PaymentInsDto {
     @NotNull
     @Min(0)
@@ -26,6 +28,10 @@ public class PaymentInsDto {
     @NotNull
     @FutureOrPresent
     private LocalDate rentalEndDate;
+    @NotNull
+    @Range(min = 50, max = 100)
+    private Integer depositPer;
+
 
     //
     @JsonIgnore
@@ -38,6 +44,8 @@ public class PaymentInsDto {
     private Integer price;
     @JsonIgnore
     private String code;
+    @JsonIgnore
+    private Integer deposit;
 
 
 }

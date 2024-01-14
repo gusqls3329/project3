@@ -210,16 +210,29 @@ class ProductMapperTest {
     void changeProdStatus() {
 
         productMapper.changeProdStatus(new DelProductBaseDto(1, 1, -1));
+        assertThat(productMapper.getIStatus(1)).isEqualTo(-1);
+        productMapper.changeProdStatus(new DelProductBaseDto(2, 2, -1));
+        assertThat(productMapper.getIStatus(2)).isEqualTo(-1);
 
+        productMapper.changeProdStatus(new DelProductBaseDto(3, 3, -2));
+        assertThat(productMapper.getIStatus(3)).isEqualTo(-2);
+
+        productMapper.changeProdStatus(new DelProductBaseDto(3, 3, -1));
+        assertThat(productMapper.getIStatus(3)).isEqualTo(-1);
 
     }
 
-    @Test
-    void updateIpayment() {
-    }
 
     @Test
     void checkIproduct() {
+
+        assertThat(productMapper.checkIproduct(1)).isEqualTo(1);
+        assertThat(productMapper.checkIproduct(2)).isEqualTo(1);
+        assertThat(productMapper.checkIproduct(3)).isEqualTo(1);
+        assertThat(productMapper.checkIproduct(4)).isEqualTo(1);
+        assertThat(productMapper.checkIproduct(5)).isEqualTo(1);
+        assertThat(productMapper.checkIproduct(6)).isEqualTo(0);
+
     }
 
 

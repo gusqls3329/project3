@@ -242,7 +242,7 @@
     <update id="changeProdStatus">
         update t_product
         set istatus = #{div}
-        where iproduct = #{iproduct} and iuser = #{iuser} and status
+        where iproduct = #{iproduct} and iuser = #{iuser} and istatus
         <if test="div == -1">
             != #{div}
         </if>

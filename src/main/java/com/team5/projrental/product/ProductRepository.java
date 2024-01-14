@@ -85,7 +85,5 @@ public class ProductRepository {
         return productMapper.changeProdStatus(delProductBaseDto);
     }
 
-    public int updateIpayment(Integer iproduct, Integer ipayment) {
-        return productMapper.updateIpayment(iproduct, ipayment);
-    }
+
 }

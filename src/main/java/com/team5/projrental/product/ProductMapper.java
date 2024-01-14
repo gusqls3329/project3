@@ -3,7 +3,6 @@ package com.team5.projrental.product;
 import com.team5.projrental.product.model.ProductUpdDto;
 import com.team5.projrental.product.model.proc.*;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -53,7 +52,7 @@ public interface ProductMapper {
 
     List<Integer> getIEupmyun(List<String> eupmyun);
 
-    Integer deletePic(@Param("iproduct") Integer iproduct, @Param("delPics") List<Integer> delPics);
+    Integer deletePic(Integer iproduct, List<Integer> delPics);
 
     UpdProdBasicDto getProductForUpdate(GetProductBaseDto getProductBaseDto);
 
@@ -62,8 +61,6 @@ public interface ProductMapper {
     int getPicCount(Integer iproduct);
 
     int changeProdStatus(DelProductBaseDto delProductBaseDto);
-
-    int updateIpayment(@Param("iproduct") Integer iproduct, @Param("ipayment") Integer ipayment);
 
     int checkIproduct(Integer iproduct);
 }
