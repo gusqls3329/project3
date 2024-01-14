@@ -201,10 +201,17 @@ class ProductMapperTest {
         productMapper.insPics(new InsProdPicsDto(1, List.of(new StoredFileInfo("test", "test"))));
         productMapper.insPics(new InsProdPicsDto(1, List.of(new StoredFileInfo("test", "test"))));
 
+        assertThat(productMapper.getPicCount(1)).isEqualTo(beforePicCount + 3);
+        assertThat(productMapper.getPicCount(2)).isEqualTo(0);
+
     }
 
     @Test
     void changeProdStatus() {
+
+        productMapper.changeProdStatus(new DelProductBaseDto(1, 1, -1));
+
+
     }
 
     @Test

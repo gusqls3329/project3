@@ -10,6 +10,10 @@ import java.util.List;
 @Mapper
 public interface ProductMapper {
 
+    // for test
+    int getIStatus(Integer iproduct);
+    //
+
     //    for test
     int getViewForTest(Integer iproduct);
     //

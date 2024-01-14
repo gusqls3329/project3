@@ -15,4 +15,8 @@ public class GetProductBaseDto {
         this.icategory = icategory;
         this.iproduct = iproduct;
     }
+
+    public GetProductBaseDto(Integer iproduct) {
+        this.iproduct = iproduct;
+    }
 }

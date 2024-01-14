@@ -6,6 +6,14 @@
 
     <!--    -->
     <!--    for test-->
+    <select id="getIStatus">
+        select istatus from t_product where iproduct = #{iproduct}
+    </select>
+    <!--    -->
+    <!--    -->
+
+    <!--    -->
+    <!--    for test-->
     <select id="getViewForTest">
         select view from t_product where iproduct = #{iproduct}
     </select>
@@ -23,7 +31,6 @@
     </select>
     <!--    -->
     <!--    -->
-
 
 
     <!--    -->
