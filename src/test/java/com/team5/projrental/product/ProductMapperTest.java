@@ -194,7 +194,12 @@ class ProductMapperTest {
     @Test
     void getPicCount() {
 
+        int beforePicCount = productMapper.getPicCount(1);
+        assertThat(beforePicCount).isEqualTo(2);
 
+        productMapper.insPics(new InsProdPicsDto(1, List.of(new StoredFileInfo("test", "test"))));
+        productMapper.insPics(new InsProdPicsDto(1, List.of(new StoredFileInfo("test", "test"))));
+        productMapper.insPics(new InsProdPicsDto(1, List.of(new StoredFileInfo("test", "test"))));
 
     }
 
