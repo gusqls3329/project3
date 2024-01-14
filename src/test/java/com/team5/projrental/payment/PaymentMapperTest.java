@@ -33,12 +33,7 @@ class PaymentMapperTest {
 
     @Test
     void insPayment() {
-/*
-        insert into t_payment (ibuyer, payment_method, rental_start_date, rental_end_date, rental_duration,
-        ipayment_method, price, code)
-        values (#{ibuyer}, #{paymentMethod}, #{rentalStartDate}, #{rentalEndDate}, #{rentalDuration},
-        #{ipaymentMethod}, #{price}, #{code}
- */
+
 
         int buyer = 2;
         int iproduct = 1;
