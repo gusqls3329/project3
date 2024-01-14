@@ -26,25 +26,22 @@ public class PaymentController {
     }
 
     @Validated
-    @DeleteMapping("/{ipay}/{iuser}")
+    @DeleteMapping("/{ipay}")
     public ResVo delPayment(@PathVariable("ipay") @Min(0) Integer ipayment,
-                            @PathVariable("iuser") @Min(0) Integer iuser,
                             @RequestParam @Range(min = 1, max = 3) Integer div) {
-        return paymentService.delPayment(ipayment, iuser, div);
+        return paymentService.delPayment(ipayment, div);
     }
 
     @Validated
-    @GetMapping("/{iuser}")
-    public List<PaymentListVo> getAllPayment(@PathVariable @Min(0) Integer iuser,
-                                             @RequestParam @Range(min = 1, max = 2) Integer role) {
-        return paymentService.getAllPayment(iuser, role);
+    @GetMapping
+    public List<PaymentListVo> getAllPayment(@RequestParam @Range(min = 1, max = 2) Integer role) {
+        return paymentService.getAllPayment(role);
     }
 
     @Validated
-    @GetMapping("/{iuser}/{ipayment}")
-    public PaymentVo getPayment(@PathVariable @Min(0) Integer iuser,
-                                @PathVariable @Min(0) Integer ipayment) {
-        return paymentService.getPayment(iuser, ipayment);
+    @GetMapping("/{ipayment}")
+    public PaymentVo getPayment(@PathVariable @Min(0) Integer ipayment) {
+        return paymentService.getPayment(ipayment);
 
     }
 

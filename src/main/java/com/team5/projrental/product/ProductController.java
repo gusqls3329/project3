@@ -52,17 +52,16 @@ public class ProductController {
     }
 
     @Validated
-    @DeleteMapping("/{iproduct}/{iuser}")
+    @DeleteMapping("/{iproduct}")
     public ResVo delProduct(@PathVariable @Min(1) Integer iproduct,
-                            @PathVariable @Min(1) Integer iuser,
                             @RequestParam @Range(min = 1, max = 1) Integer div) {
-        return productService.delProduct(iproduct, iuser, div);
+        return productService.delProduct(iproduct, div);
     }
 
     @Validated
-    @GetMapping("/list/{iuser}")
-    public List<ProductUserVo> getUserProductList(@PathVariable @Min(0) Integer iuser, @RequestParam @Min(0) Integer page) {
-        return productService.getUserProductList(iuser, page);
+    @GetMapping("/list")
+    public List<ProductUserVo> getUserProductList(@RequestParam @Min(0) Integer page) {
+        return productService.getUserProductList(page);
     }
 
 }

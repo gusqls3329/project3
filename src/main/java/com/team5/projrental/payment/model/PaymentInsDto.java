@@ -17,8 +17,9 @@ public class PaymentInsDto {
     @NotNull
     @Min(0)
     private Integer iproduct;
-    @NotNull
-    @Min(0)
+//    @NotNull
+//    @Min(0)
+    @JsonIgnore
     private Integer ibuyer;
     @NotEmpty
     private String paymentMethod;

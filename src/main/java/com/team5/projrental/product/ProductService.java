@@ -9,8 +9,11 @@ import com.team5.projrental.product.model.*;
 import com.team5.projrental.product.model.innermodel.PicSet;
 import com.team5.projrental.product.model.innermodel.StoredFileInfo;
 import com.team5.projrental.product.model.proc.*;
+import com.team5.projrental.security.AuthenticationFacade;
+import com.team5.projrental.security.model.SecurityPrincipal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +33,8 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     private final AxisGenerator axisGenerator;
+
+    private final AuthenticationFacade authenticationFacade;
 
     /*
         ------- Logic -------
@@ -121,6 +126,7 @@ public class ProductService {
             --by Hyunmin */
 
 
+
         // 사진 개수 검증 - 예외 코드, 메시지 를 위해 직접 검증 (!@Validated)
         if (dto.getPics() != null) {
             CommonUtils.checkSizeIfOverLimitNumThrow(IllegalProductPicsException.class, ILLEGAL_PRODUCT_PICS_EX_MESSAGE,
@@ -128,6 +134,7 @@ public class ProductService {
         }
 
         // iuser 있는지 체크
+        dto.setIuser(authenticationFacade.getLoginUserPk());
         CommonUtils.ifFalseThrow(NoSuchUserException.class, NO_SUCH_USER_EX_MESSAGE, productRepository.findIuserCountBy(dto.getIuser()));
 
         // 카테고리 검증 - 예외 코드, 메시지 를 위해 직접 검증 (!@Validated)
@@ -187,6 +194,9 @@ public class ProductService {
         if (dto.getAddr() != null) {
             dto.setIaddr(checkAddrInDb(dto.getAddr()));
         }
+
+        dto.setIuser(authenticationFacade.getLoginUserPk());
+
         UpdProdBasicDto fromDb =
                 productRepository.findProductByForUpdate(new GetProductBaseDto(CommonUtils.ifCategoryNotContainsThrowOrReturn(dto.getCategory()), dto.getIproduct(), dto.getIuser()));
         // 병합
@@ -277,12 +287,11 @@ public class ProductService {
      * 결과가 0 이면 -> 잘못된 정보 기입됨. ex 발생.
      *
      * @param iproduct
-     * @param iuser
      * @param div
      * @return ResVo
      */
-    public ResVo delProduct(Integer iproduct, Integer iuser, Integer div) {
-
+    public ResVo delProduct(Integer iproduct, Integer div) {
+        int iuser = authenticationFacade.getLoginUserPk();
         DelProductBaseDto delProductBaseDto = new DelProductBaseDto(iproduct, iuser, div * -1);
         if (productRepository.updateProductStatus(delProductBaseDto) == 0) {
             throw new BadInformationException(BAD_INFO_EX_MESSAGE);
@@ -291,7 +300,8 @@ public class ProductService {
         return new ResVo(1);
     }
 
-    public List<ProductUserVo> getUserProductList(Integer iuser, Integer page) {
+    public List<ProductUserVo> getUserProductList(Integer page) {
+        int iuser = authenticationFacade.getLoginUserPk();
         List<GetProductListResultDto> productListBy = productRepository.findProductListBy(new GetProductListDto(iuser));
         CommonUtils.checkNullOrZeroIfCollectionThrow(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE, productListBy);
 

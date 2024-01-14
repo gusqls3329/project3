@@ -22,8 +22,9 @@ public class ProductUpdDto {
     @NotNull
     @Min(1)
     private Integer iproduct;
-    @NotNull
-    @Min(1)
+//    @NotNull
+//    @Min(1)
+    @JsonIgnore
     private Integer iuser;
     private String category;
     private String addr;

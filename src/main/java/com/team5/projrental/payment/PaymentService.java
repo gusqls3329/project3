@@ -11,6 +11,7 @@ import com.team5.projrental.payment.model.PaymentVo;
 import com.team5.projrental.payment.model.proc.*;
 import com.team5.projrental.product.ProductRepository;
 import com.team5.projrental.product.model.innermodel.StoredFileInfo;
+import com.team5.projrental.security.AuthenticationFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,7 @@ public class PaymentService {
         --by Hyunmin */
     private final PaymentRepository paymentRepository;
     private final ProductRepository productRepository;
+    private final AuthenticationFacade authenticationFacade;
 
     @Transactional
     public ResVo postPayment(PaymentInsDto paymentInsDto) {
@@ -43,6 +45,7 @@ public class PaymentService {
         if (rentalPrice == 0) {
             throw new NoSuchProductException(NO_SUCH_PRODUCT_EX_MESSAGE);
         }
+        paymentInsDto.setIbuyer(authenticationFacade.getLoginUserPk());
         CommonUtils.ifFalseThrow(NoSuchUserException.class, NO_SUCH_USER_EX_MESSAGE,
                 productRepository.findIuserCountBy(paymentInsDto.getIbuyer()));
         CommonUtils.ifBeforeThrow(BadDateInfoException.class, RENTAL_END_DATE_MUST_BE_AFTER_THAN_RENTAL_START_DATE_EX_MESSAGE,
@@ -103,11 +106,10 @@ public class PaymentService {
      * 3: ex (거래중이면 삭제 불가능)
      *
      * @param ipayment
-     * @param iuser
      * @param div
      * @return ResVo
      */
-    public ResVo delPayment(Integer ipayment, Integer iuser, Integer div) {
+    public ResVo delPayment(Integer ipayment, Integer div) {
 
         // 데이터 검증
 //        CommonUtils.ifFalseThrow(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE,
@@ -119,6 +121,7 @@ public class PaymentService {
         if (checkResult.getRentalEndDate() == null) {
             throw new NoSuchProductException(NO_SUCH_PRODUCT_EX_MESSAGE);
         }
+        int iuser = authenticationFacade.getLoginUserPk();
         if (checkResult.getISeller() != iuser && checkResult.getIBuyer() != iuser) {
             throw new NoSuchUserException(NO_SUCH_USER_EX_MESSAGE);
         }
@@ -141,7 +144,8 @@ public class PaymentService {
         return new ResVo(paymentRepository.deletePayment(delPaymentDto));
     }
 
-    public List<PaymentListVo> getAllPayment(Integer iuser, Integer role) {
+    public List<PaymentListVo> getAllPayment(Integer role) {
+        int iuser = authenticationFacade.getLoginUserPk();
         List<GetPaymentListResultDto> paymentBy = paymentRepository.findPaymentBy(new GetPaymentListDto(iuser, role));
         List<PaymentListVo> result = new ArrayList<>();
         CommonUtils.checkNullOrZeroIfCollectionThrow(NoSuchPaymentException.class, NO_SUCH_PAYMENT_EX_MESSAGE, paymentBy);
@@ -154,11 +158,12 @@ public class PaymentService {
     }
 
 
-    public PaymentVo getPayment(Integer iuser, Integer ipayment) {
+    public PaymentVo getPayment(Integer ipayment) {
         // iuser 또는 ipayment 가 없으면 결과가 size 0 일 것
 
         // 가져오기
         GetPaymentListResultDto aPayment;
+        int iuser = authenticationFacade.getLoginUserPk();
         try {
             aPayment = paymentRepository.findPaymentBy(new GetPaymentListDto(iuser, ipayment,
                     Flag.ONE.getValue())).get(0);
@@ -186,7 +191,7 @@ public class PaymentService {
 
     /*
     ------- Extracted Method -------
-*/
+    */
     private String createCode() {
 
         String systemCurrent = String.valueOf(System.currentTimeMillis());

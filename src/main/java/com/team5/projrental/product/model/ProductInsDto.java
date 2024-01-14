@@ -1,5 +1,6 @@
 package com.team5.projrental.product.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,7 +15,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductInsDto {
-    @NotNull
+//    @NotNull
+    @JsonIgnore
     private Integer iuser;
     @NotBlank
     private String title;
