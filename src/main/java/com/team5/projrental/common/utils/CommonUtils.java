@@ -2,12 +2,14 @@ package com.team5.projrental.common.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.team5.projrental.common.aop.anno.Retry;
 import com.team5.projrental.common.exception.IllegalCategoryException;
 import com.team5.projrental.common.exception.IllegalPaymentMethodException;
 import com.team5.projrental.common.exception.RestApiException;
 import com.team5.projrental.common.model.restapi.Addrs;
 import com.team5.projrental.common.model.restapi.Documents;
 import com.team5.projrental.product.model.innermodel.StoredFileInfo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
@@ -20,10 +22,12 @@ import java.util.*;
 import java.util.stream.Stream;
 
 import static com.team5.projrental.common.Const.*;
-import static com.team5.projrental.common.Const.ILLEGAL_CATEGORY_EX_MESSAGE;
 
 @Component
+@Slf4j
 public class CommonUtils {
+
+
 
     public static void ifFalseThrow(Class<? extends RuntimeException> ex, String message, boolean b) {
         if (!b) thrown(ex, message);
@@ -49,6 +53,7 @@ public class CommonUtils {
         return categories.keySet().stream().filter(k -> categories.get(k).equals(category))
                 .findAny().orElseThrow(() -> new IllegalCategoryException(ILLEGAL_CATEGORY_EX_MESSAGE));
     }
+
     public static Integer ifPaymentMethodNotContainsThrowOrReturn(String paymentMethod) {
         Map<Integer, String> paymentMethods = PAYMENT_METHODS;
         return paymentMethods.keySet().stream().filter(k -> paymentMethods.get(k).equals(paymentMethod))
@@ -69,51 +74,6 @@ public class CommonUtils {
         }
     }
 
-
-
-    /**
-     * default 접근 제한자 사용, 동일 패키지의 AxisGenerator 에서만 사용함.<br>
-     * ㄴ> 해당 유틸을 직접 사용하는것을 막기 위한 제약.<br>
-     * 외부에서 해당 기능이 필요할 경우 AxisGenerator 를 DI 받아 사용해야 함.
-     * @param fullAddr
-     * @return Map<String, Double>
-     */
-    static Map<String, Double> getAxis(String fullAddr) {
-        Map<String, Double> axisMap = new HashMap<>();
-
-        StringBuilder sb = new StringBuilder();
-        sb.append("?query=").append(fullAddr);
-        String query = sb.toString();
-        String url = "https://dapi.kakao.com/v2/local/search/address";
-        String headerKey = "Authorization";
-        String headerValue = "KakaoAK 7b5a7755251df2d95b48052980a5c025";
-
-        RestClient restClient = RestClient.builder()
-                .baseUrl(url)
-                .build();
-
-        String result = restClient.get()
-                .uri(query)
-                .header(headerKey, headerValue)
-                .retrieve()
-                .body(String.class);
-
-        Documents documents;
-        ObjectMapper om = new ObjectMapper();
-        try {
-            documents = om.readValue(result, Documents.class);
-        } catch (JsonProcessingException e) {
-            throw new RestApiException(SERVER_ERR_MESSAGE);
-        }
-        Addrs addrs = documents.getDocuments().stream().filter(Objects::nonNull)
-                .findFirst().orElseThrow(() -> new RestApiException(SERVER_ERR_MESSAGE));
-        axisMap.put(AXIS_X, Double.parseDouble(addrs.getX()));
-        axisMap.put(AXIS_Y, Double.parseDouble(addrs.getY()));
-        if (addrs.getX().isEmpty() || addrs.getY().isEmpty()) {
-            throw new RestApiException(SERVER_ERR_MESSAGE);
-        }
-        return axisMap;
-    }
 
     public static List<String> subEupmyun(String fullAddr) {
         List<String> result = new ArrayList<>();
@@ -164,7 +124,7 @@ public class CommonUtils {
     public static void checkNullOrZeroIfCollectionThrow(Class<? extends RuntimeException> ex, String message, Object instance) {
         ifAnyNullThrow(ex, message, instance);
         if (instance instanceof Collection<?>) {
-        checkSizeIfUnderLimitNumThrow(ex, message,
+            checkSizeIfUnderLimitNumThrow(ex, message,
                     ((Collection<?>) instance).stream(), 1);
         }
     }
@@ -238,6 +198,7 @@ public class CommonUtils {
 
     /**
      * 예외 throw 메소드 (내부)
+     *
      * @param ex
      * @param message
      */
