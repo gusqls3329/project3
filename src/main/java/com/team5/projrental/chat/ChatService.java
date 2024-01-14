@@ -65,8 +65,10 @@ public class ChatService {
                         .build();
 
                 Message message = Message.builder()
+                        .putData("type", "dm")
+                        .putData("json", body)
                         .setToken(otherPerson.getFirebaseToken())
-                        .setNotification(noti)
+                        //.setNotification(noti) 이거 넣으면 채팅 입력시 메세지가 중복해서 2개씩 표현됨
                         .build();
 
                 FirebaseMessaging.getInstance().sendAsync(message);
@@ -75,8 +77,8 @@ public class ChatService {
                 // 스레드 - 동작단위 (게임 예 : 총게임에 캐릭터 한명한명)
                 // 메인스레드는 통신하지 말것
 
-                /*FirebaseMessaging fm = FirebaseMessaging.getInstance(); // 싱글톤
-                fm.sendAsync(message);*/
+                FirebaseMessaging fm = FirebaseMessaging.getInstance(); // 싱글톤
+                fm.sendAsync(message);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -105,15 +107,11 @@ public class ChatService {
             return null;
         }
 
-        mapper.insChat(dto);
-        ChatUserInsDto insDto = new ChatUserInsDto();
-        insDto.setIchat(dto.getIchat());
-        insDto.setIuser(dto.getOtherPersonIuser());
-        mapper.insChatUser(insDto);
+        int chataffectedrows = mapper.insChat(dto);
+        int chatUserAffectedRows = mapper.insChatUser(dto);
 
         UserSelDto usDto = new UserSelDto();
         usDto.setIuser(dto.getOtherPersonIuser());
-
         UserEntity entity = userMapper.selChatUser(usDto);
 
         ChatSelVo vo = new ChatSelVo();

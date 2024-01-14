@@ -12,7 +12,7 @@ public interface ChatMapper {
     int insChat(ChatInsDto dto); // 채팅 빈 방 생성
     List<ChatSelVo> selChatAll(ChatSelDto dto); // 채팅리스트
 
-    int insChatUser(ChatUserInsDto dto); // 빈 채팅방에 유저 참여
+    int insChatUser(ChatInsDto dto); // 빈 채팅방에 유저 참여
 
 
     Integer selChatUserCheck(ChatInsDto dto);
