@@ -118,7 +118,7 @@ public class PaymentService {
 //                productRepository.findIuserCountBy(iuser));
 
         GetInfoForCheckIproductAndIuserResult checkResult = paymentRepository.checkIuserAndIproduct(ipayment);
-        if (checkResult.getRentalEndDate() == null) {
+        if (checkResult == null) {
             throw new NoSuchProductException(NO_SUCH_PRODUCT_EX_MESSAGE);
         }
         int iuser = authenticationFacade.getLoginUserPk();
@@ -136,12 +136,16 @@ public class PaymentService {
         }
 
 
+        // 변경할 istatus 생성
+        Integer istatusForUpdate = divResolver(div, checkResult.getIstatus(), iuser == checkResult.getIBuyer() ? Role.BUYER :
+                iuser == checkResult.getISeller() ? Role.SELLER : null);
         // 객체 생성
-        DelPaymentDto delPaymentDto = new DelPaymentDto(ipayment, divResolver(div, checkResult.getIstatus(), iuser == checkResult.getIBuyer() ? Role.BUYER :
-                iuser == checkResult.getISeller() ? Role.SELLER : null));
+        DelPaymentDto delPaymentDto = new DelPaymentDto(ipayment, istatusForUpdate);
 
-
-        return new ResVo(paymentRepository.deletePayment(delPaymentDto));
+        if (paymentRepository.deletePayment(delPaymentDto) != 0) {
+            throw new RuntimeException(SERVER_ERR_MESSAGE);
+        }
+        return new ResVo(istatusForUpdate);
     }
 
     public List<PaymentListVo> getAllPayment(Integer role) {
@@ -150,7 +154,7 @@ public class PaymentService {
         List<PaymentListVo> result = new ArrayList<>();
         CommonUtils.checkNullOrZeroIfCollectionThrow(NoSuchPaymentException.class, NO_SUCH_PAYMENT_EX_MESSAGE, paymentBy);
         paymentBy.forEach(p -> new PaymentListVo(
-                p.getIuser(), p.getNick(), CommonUtils.getPic(new StoredFileInfo(p.getRequestPic(), p.getStoredPic())),
+                p.getNick(), CommonUtils.getPic(new StoredFileInfo(p.getRequestPic(), p.getStoredPic())),
                 p.getIpayment(), p.getIproduct(), STATUS.get(p.getIstatus()), p.getRentalStartDate(), p.getRentalEndDate(),
                 p.getRentalDuration(), p.getPrice(), p.getDeposit()
         ));
@@ -171,7 +175,7 @@ public class PaymentService {
             throw new NoSuchPaymentException(NO_SUCH_PAYMENT_EX_MESSAGE);
         }
 
-        return new PaymentVo(aPayment.getIuser(),
+        return new PaymentVo(
                 aPayment.getNick(),
                 CommonUtils.getPic(new StoredFileInfo(aPayment.getRequestPic(), aPayment.getStoredPic())),
                 aPayment.getIpayment(),

@@ -1,14 +1,12 @@
 package com.team5.projrental.payment;
 
 import com.team5.projrental.common.Flag;
-import com.team5.projrental.common.utils.CommonUtils;
 import com.team5.projrental.payment.model.PaymentInsDto;
 import com.team5.projrental.payment.model.proc.DelPaymentDto;
 import com.team5.projrental.payment.model.proc.GetInfoForCheckIproductAndIuserResult;
 import com.team5.projrental.payment.model.proc.GetPaymentListDto;
 import com.team5.projrental.payment.model.proc.GetPaymentListResultDto;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +54,6 @@ class PaymentMapperTest {
 
         // 조회한 상대가 나와야 함
         GetPaymentListResultDto getPaymentListResultDto = paymentMapper.getPaymentList(new GetPaymentListDto(1, Flag.ONE.getValue(), ipayment)).get(0);
-        assertThat(dto.getIbuyer()).isEqualTo(getPaymentListResultDto.getIuser());
         assertThat(dto.getIpayment()).isEqualTo(getPaymentListResultDto.getIpayment());
         assertThat(dto.getCode()).isEqualTo(getPaymentListResultDto.getCode());
         assertThat("인사이드아웃").isEqualTo(getPaymentListResultDto.getNick());
@@ -146,7 +143,6 @@ class PaymentMapperTest {
 
         List<GetPaymentListResultDto> paymentList = paymentMapper.getPaymentList(new GetPaymentListDto(1, 1));
         assertThat(paymentList.size()).isEqualTo(1);
-        assertThat(paymentList.get(0).getIuser()).isEqualTo(3);
         assertThat(paymentList.get(0).getNick()).isEqualTo("비락");
         assertThat(paymentList.get(0).getIpayment()).isEqualTo(3);
         assertThat(paymentList.get(0).getIproduct()).isEqualTo(3);
@@ -157,7 +153,6 @@ class PaymentMapperTest {
 
         List<GetPaymentListResultDto> paymentList2 = paymentMapper.getPaymentList(new GetPaymentListDto(1, 2));
         assertThat(paymentList2.size()).isEqualTo(1);
-        assertThat(paymentList2.get(0).getIuser()).isEqualTo(2);
         assertThat(paymentList2.get(0).getNick()).isEqualTo("인사이드아웃");
         assertThat(paymentList2.get(0).getIpayment()).isEqualTo(5);
         assertThat(paymentList2.get(0).getIproduct()).isEqualTo(1);

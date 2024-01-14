@@ -40,7 +40,7 @@
     </update>
 
     <select id="getPaymentList">
-        select U.iuser, U.nick, U.stored_pic as storedPic, U.request_pic as requestPic,
+        select U.nick, U.stored_pic as storedPic, U.request_pic as requestPic,
         PA.ipayment, P.iproduct, PA.istatus, PA.rental_start_date as rentalStartDate, PA.rental_end_date as rentalEndDate,
         PA.rental_duration as rentalDuration, PA.price, P.deposit
         <if test="flag == 1">
