@@ -10,15 +10,15 @@ import com.team5.projrental.product.model.innermodel.PicSet;
 import com.team5.projrental.product.model.innermodel.StoredFileInfo;
 import com.team5.projrental.product.model.proc.*;
 import com.team5.projrental.security.AuthenticationFacade;
-import com.team5.projrental.security.model.SecurityPrincipal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import static com.team5.projrental.common.Const.*;
 
@@ -26,8 +26,11 @@ import static com.team5.projrental.common.Const.*;
 @Slf4j
 @RequiredArgsConstructor
 public class ProductService {
+
     /* TODO: 1/11/24
-        페이징
+        1. 페이징,
+        2. istatus -4 (기간 지남) 추가된것 처리 (기간지남과 후기2개가 등록되어 만료됨을 구분),
+        3. 스케쥴러로 매일 자정에 기간지남으로 변경하는것 (rental_end_date 를 기준으로) 구현
         --by Hyunmin */
 
     private final ProductRepository productRepository;
