@@ -1,12 +1,10 @@
 package com.team5.projrental.product;
 
-import com.team5.projrental.common.Const;
 import com.team5.projrental.common.exception.BadInformationException;
 import com.team5.projrental.common.exception.NoSuchProductException;
-import com.team5.projrental.common.exception.checked.NotContainsDotException;
+import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.utils.AxisGenerator;
 import com.team5.projrental.common.utils.MyFileUtils;
-import com.team5.projrental.product.model.ProductInsDto;
 import com.team5.projrental.product.model.ProductListVo;
 import com.team5.projrental.product.model.innermodel.StoredFileInfo;
 import com.team5.projrental.product.model.proc.GetProductListResultDto;
@@ -16,15 +14,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -76,44 +69,20 @@ class ProductServiceTest {
 
 
     @Test
-    void postProduct() throws IOException {
-
-        // 문제 없는 데이터 생성
-
-        MockMultipartFile mockMultipartFile1 = new MockMultipartFile("test", "test", "testm",
-                new FileInputStream("test"));
-        MockMultipartFile mockMultipartFile2 = new MockMultipartFile("test", "test", "testm",
-                new FileInputStream("test"));
-        ProductInsDto productInsDto = new ProductInsDto();
-        productInsDto.setIcategory(1);
-        productInsDto.setBuyDate(LocalDate.of(2000, 1, 1));
-        productInsDto.setRentalStartDate(LocalDate.of(2025, 1, 1));
-        productInsDto.setRentalEndDate(LocalDate.of(2026, 1, 1));
-        productInsDto.setPics(List.of(mockMultipartFile1, mockMultipartFile2));
-
-        try {
-            when(myFileUtils.savePic(List.of(mockMultipartFile1, mockMultipartFile2), Const.CATEGORY_PRODUCT_SUB)).thenReturn(null);
-        } catch (NotContainsDotException ignored) {
-        }
-        when(productRepository.savePics(any())).thenReturn(1);
-        when(productRepository.findAddrBy(any())).thenReturn(List.of(13));
-        when(axisGenerator.getAxis(any())).thenReturn(Map.of("test", 1.1, "test2", 2.2));
-        when(authenticationFacade.getLoginUserPk()).thenReturn(1);
-        when(productRepository.findIuserCountBy(any())).thenReturn(true);
-        when(productRepository.saveProduct(any())).thenReturn(1);
-//        productService.postProduct();
-
-    }
-
-    @Test
-    void putProduct() {
-    }
-
-    @Test
     void delProduct() {
+
+        when(authenticationFacade.getLoginUserPk()).thenReturn(1);
+        when(productRepository.updateProductStatus(any())).thenReturn(1);
+
+
+        ResVo resVo = productService.delProduct(1, 1);
+        assertThat(resVo.getResult()).isEqualTo(1);
+
+        when(productRepository.updateProductStatus(any())).thenReturn(0);
+        assertThatThrownBy(() -> productService.delProduct(1, 1))
+                .isInstanceOf(BadInformationException.class);
+
+
     }
 
-    @Test
-    void getUserProductList() {
-    }
 }

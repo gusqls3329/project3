@@ -317,7 +317,7 @@ public class ProductService {
             throw new BadInformationException(BAD_INFO_EX_MESSAGE);
         }
 
-        return new ResVo(1);
+        return new ResVo(SUCCESS);
     }
 
     public List<ProductUserVo> getUserProductList(Integer page) {
