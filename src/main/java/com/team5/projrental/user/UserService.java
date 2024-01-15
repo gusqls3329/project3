@@ -142,22 +142,27 @@ public class UserService {
         inDto.setUid(dto.getUid());
         inDto.setUpw(dto.getUpw());
         UserEntity entity = mapper.selSignin(inDto);
-        String hashedPw = entity.getUpw();
-        boolean checkPw = BCrypt.checkpw(dto.getUpw(), hashedPw);
-        if (checkPw == true) {
-            List<SeldelUserPayDto> payDtos = mapper.seldelUserPay(entity.getIuser());
-            for (SeldelUserPayDto list : payDtos) {
-                mapper.delUserProPic(list.getIproduct());
-                mapper.delUserPorc2(list.getIproduct());
-                mapper.delUserPorc(list.getIuser());
-                mapper.delUpUserPay(list.getIuser());
+
+        if (loginUserPk == entity.getIuser()) {
+            String hashedPw = entity.getUpw();
+            boolean checkPw = BCrypt.checkpw(dto.getUpw(), hashedPw);
+            if (checkPw == true) {
+                List<SeldelUserPayDto> payDtos = mapper.seldelUserPay(entity.getIuser());
+                for (SeldelUserPayDto list : payDtos) {
+                    mapper.delUserProPic(list.getIproduct());
+                    mapper.delUserPorc2(list.getIproduct());
+                    mapper.delUserPorc(list.getIuser());
+                    mapper.delUpUserPay(list.getIuser());
+                }
             }
+            int result = mapper.delUser(dto);
+            if (result == 1) {
+                return Const.SUCCESS;
+            }
+            return Const.FAIL;
+        } else {
+            return Const.FAIL;
         }
-        int result = mapper.delUser(dto);
-        if(result == 1) {
-            return Const.SUCCESS;
-        }
-        return Const.FAIL;
     }
 
     public SelUserVo getUSer(int iuser) {
