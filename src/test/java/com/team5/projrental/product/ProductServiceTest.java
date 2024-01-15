@@ -1,6 +1,7 @@
 package com.team5.projrental.product;
 
 import com.team5.projrental.common.utils.AxisGenerator;
+import com.team5.projrental.common.utils.FileUtils;
 import com.team5.projrental.security.AuthenticationFacade;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,6 +21,9 @@ class ProductServiceTest {
     AxisGenerator axisGenerator;
     @MockBean
     AuthenticationFacade authenticationFacade;
+
+    @MockBean
+    FileUtils fileUtils;
 
     @Autowired
     ProductService productService;

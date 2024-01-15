@@ -20,7 +20,7 @@
 
 
     <select id="selSignin">
-        SELECT u.iuser, a.auth, u.upw, u.uid
+        SELECT u.iuser, a.auth, u.upw, u.uid, firebase_token AS firebaseToken
         FROM t_user u
         JOIN t_auth a
         ON a.iauth = u.iauth
@@ -28,7 +28,7 @@
     </select>
 
     <select id="selFindUid">
-        SELECT uid
+        SELECT uid, iuser
         FROM t_user
         WHERE phone = #{phone}
     </select>

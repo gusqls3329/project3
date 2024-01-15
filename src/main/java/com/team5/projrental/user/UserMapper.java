@@ -8,7 +8,9 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
     int insUser(UserSignupDto dto);
-    SigninVo selSignin(SigninDto dto);
+    UserEntity selSignin(SigninDto dto);
+    int updUserFirebaseToken(UserFirebaseTokenPatchDto dto);
+
     FindUidVo selFindUid(FindUidDto phone);
     int upFindUpw(FindUpwDto dto);
     int changeUser(ChangeUserDto dto);

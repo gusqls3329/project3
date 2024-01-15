@@ -1,8 +1,10 @@
 package com.team5.projrental.product;
 
+import com.team5.projrental.common.Const;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.product.model.*;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.Range;
@@ -22,9 +24,10 @@ public class ProductController {
     @GetMapping("{category}")
     public List<ProductListVo> getProductList(@RequestParam(required = false) Integer sort,
                                               @RequestParam(required = false) String search,
-                                              @PathVariable String category) {
+                                              @RequestParam int page,
+                                              @PathVariable int icategory) {
 
-        return productService.getProductList(sort, search, category);
+        return productService.getProductList(sort, search, icategory, (page - 1) * Const.PROD_PER_PAGE);
     }
 
     @Validated
@@ -60,8 +63,8 @@ public class ProductController {
 
     @Validated
     @GetMapping("/list")
-    public List<ProductUserVo> getUserProductList(@RequestParam @Min(0) Integer page) {
-        return productService.getUserProductList(page);
+    public List<ProductUserVo> getUserProductList(@RequestParam @Min(1) @NotNull Integer page) {
+        return productService.getUserProductList((page - 1) * Const.PROD_PER_PAGE);
     }
 
 }

@@ -15,7 +15,6 @@ import java.util.List;
 public class ProductVo extends ProductListVo{
 
     // 추가필드만 작성
-    private Integer iuser;
     private String contents;
     private List<PicSet> prodPics;
     private Integer deposit;
@@ -25,7 +24,7 @@ public class ProductVo extends ProductListVo{
 
     public ProductVo(GetProductResultDto dto) {
         super(dto);
-        this.iuser = dto.getIuser();
+
         this.contents = dto.getContents();
         this.deposit = dto.getDeposit();
         this.buyDate = dto.getBuyDate();

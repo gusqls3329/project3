@@ -40,9 +40,19 @@
     </update>
 
     <select id="getPaymentList">
-        select U.nick, U.stored_pic as storedPic, U.request_pic as requestPic,
-        PA.ipayment, P.iproduct, PA.istatus, PA.rental_start_date as rentalStartDate, PA.rental_end_date as rentalEndDate,
-        PA.rental_duration as rentalDuration, PA.price, P.deposit
+        select
+        U.iuser,
+        U.nick,
+        U.stored_pic as storedPic,
+        U.request_pic as requestPic,
+        PA.ipayment,
+        P.iproduct,
+        PA.istatus,
+        PA.rental_start_date as rentalStartDate,
+        PA.rental_end_date as rentalEndDate,
+        PA.rental_duration as rentalDuration,
+        PA.price,
+        P.deposit
         <if test="flag == 1">
             , U.phone, PA.code, PA.created_at as createdAt
         </if>
@@ -71,5 +81,13 @@
                 and U.iuser != #{iuser} and PA.ipayment = #{ipayment}
             </if>
         </where>
+        <if test="page != null and page != 0 and paymentPerPage != null and paymentPerPage != 0">
+            limit #{page}, #{paymentPerPage}
+        </if>
     </select>
+
+    <update id="updateIstatusOverRentalEndDate">
+        update t_payment set istatus = -4
+        where rental_end_date <![CDATA[<]]> #{now} and istatus in (0, 2, 3)
+    </update>
 </mapper>

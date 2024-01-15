@@ -9,6 +9,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 public class PaymentListVo {
+    private Integer iuser;
     private String nick;
     private Resource userPic;
 

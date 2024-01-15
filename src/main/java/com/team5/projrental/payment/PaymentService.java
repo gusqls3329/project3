@@ -5,6 +5,7 @@ import com.team5.projrental.common.Role;
 import com.team5.projrental.common.exception.*;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.utils.CommonUtils;
+import com.team5.projrental.common.utils.FileUtils;
 import com.team5.projrental.payment.model.PaymentInsDto;
 import com.team5.projrental.payment.model.PaymentListVo;
 import com.team5.projrental.payment.model.PaymentVo;
@@ -33,13 +34,14 @@ import static com.team5.projrental.common.Const.*;
 @RequiredArgsConstructor
 public class PaymentService {
     /* TODO: 1/11/24
-        1. 페이징,
-        2. istatus -4 (기간 지남) 추가된것 처리 (기간지남과 후기2개가 등록되어 만료됨을 구분),
-        3. 스케쥴러로 매일 자정에 기간지남으로 변경하는것 (rental_end_date 를 기준으로) 구현
+        1. 페이징, -> 완
+        2. istatus -4 (기간 지남) 추가된것 처리 (기간지남과 후기2개가 등록되어 만료됨을 구분), -> 완
+        3. 스케쥴러로 매일 자정에 기간지남으로 변경하는것 (rental_end_date 를 기준으로) 구현 -> 완
         --by Hyunmin */
     private final PaymentRepository paymentRepository;
     private final ProductRepository productRepository;
     private final AuthenticationFacade authenticationFacade;
+    private final FileUtils fileUtils;
 
     @Transactional
     public ResVo postPayment(PaymentInsDto paymentInsDto) {
@@ -153,16 +155,17 @@ public class PaymentService {
         return new ResVo(istatusForUpdate);
     }
 
-    public List<PaymentListVo> getAllPayment(Integer role) {
+    public List<PaymentListVo> getAllPayment(Integer role, int page) {
         int iuser = authenticationFacade.getLoginUserPk();
-        List<GetPaymentListResultDto> paymentBy = paymentRepository.findPaymentBy(new GetPaymentListDto(iuser, role));
+        List<GetPaymentListResultDto> paymentBy = paymentRepository.findPaymentBy(new GetPaymentListDto(iuser, role, page));
         List<PaymentListVo> result = new ArrayList<>();
         CommonUtils.checkNullOrZeroIfCollectionThrow(NoSuchPaymentException.class, NO_SUCH_PAYMENT_EX_MESSAGE, paymentBy);
-        paymentBy.forEach(p -> new PaymentListVo(
-                p.getNick(), CommonUtils.getPic(new StoredFileInfo(p.getRequestPic(), p.getStoredPic())),
+        paymentBy.forEach(p -> result.add(new PaymentListVo(
+                p.getIuser(), p.getNick(), fileUtils.getPic(new StoredFileInfo(p.getRequestPic(), p.getStoredPic())),
                 p.getIpayment(), p.getIproduct(), STATUS.get(p.getIstatus()), p.getRentalStartDate(), p.getRentalEndDate(),
-                p.getRentalDuration(), p.getPrice(), p.getDeposit()
+                p.getRentalDuration(), p.getPrice(), p.getDeposit())
         ));
+
         return result;
     }
 
@@ -181,8 +184,9 @@ public class PaymentService {
         }
 
         return new PaymentVo(
+                aPayment.getIuser(),
                 aPayment.getNick(),
-                CommonUtils.getPic(new StoredFileInfo(aPayment.getRequestPic(), aPayment.getStoredPic())),
+                fileUtils.getPic(new StoredFileInfo(aPayment.getRequestPic(), aPayment.getStoredPic())),
                 aPayment.getIpayment(),
                 aPayment.getIproduct(),
                 STATUS.get(aPayment.getIstatus()), // status resolver ?
@@ -212,7 +216,22 @@ public class PaymentService {
 
     }
 
+
     private Integer divResolver(Integer div, Integer istatus, Role role) {
+        /*
+        0: 활성화 상태
+        1: 거래 완료됨
+
+        -1: 삭제됨
+        -2: 숨김
+        -3: 취소됨
+        -4: 기간지남
+
+        논리적 삭제 가능 숫자: 1, -2, -3
+        숨김 가능 숫자: 1, -3
+        취소 요청시:
+            Role.buyer ->
+         */
         if (role == null) throw new BadInformationException(BAD_INFO_EX_MESSAGE);
         if (div == 1 || div == 2) {
             if (istatus == -3 || istatus == 1 || (div == 1 && istatus == -2)) {
@@ -220,7 +239,7 @@ public class PaymentService {
             }
         }
         if (div == 3) {
-            if (istatus == 0) {
+            if (istatus == 0 || istatus == -4) {
                 if (role == Role.BUYER) {
                     return 2;
                 }

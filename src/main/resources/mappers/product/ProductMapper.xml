@@ -4,6 +4,7 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team5.projrental.product.ProductMapper">
 
+
     <!--    -->
     <!--    for test-->
     <select id="getIStatus">
@@ -62,7 +63,7 @@
 
 
     <select id="getProductList">
-        select U.nick, U.stored_pic as userStoredPic, U.request_pic as userRequestPic,
+        select U.iuser, U.nick, U.stored_pic as userStoredPic, U.request_pic as userRequestPic,
         P.iproduct, concat(S.sido, ' ', G.gungu, ' ', E.eupmyun, ' ',
         P.rest_addr) as addr, P.title, P.stored_pic as prodMainStoredPic, P.request_pic as prodMainRequestPic,
         P.rental_price as rentalPrice,
@@ -99,10 +100,15 @@
         <if test="sort == null">
             order by P.iproduct desc
         </if>
+        <if test="page != null and page != 0 and prodPerPage != null and prodPerPage != 0">
+            limit #{page}, #{prodPerPage}
+        </if>
+
+
     </select>
 
     <select id="getProduct">
-        select U.nick, U.stored_pic as userStoredPic, U.request_pic as userRequestPic,
+        select U.iuser, U.nick, U.stored_pic as userStoredPic, U.request_pic as userRequestPic,
         P.iproduct, concat(S.sido, ' ', G.gungu, ' ', E.eupmyun, ' ', P.rest_addr) as addr, P.title, P.stored_pic as
         prodMainStoredPic,
         P.request_pic as prodMainRequestPic, P.rental_price as rentalPrice, P.rental_start_date as rentalStartDate,
@@ -254,5 +260,6 @@
     <update id="updateIpayment">
         update t_product set ipayment = #{ipayment} where iproduct = #{iproduct}
     </update>
+
 
 </mapper>

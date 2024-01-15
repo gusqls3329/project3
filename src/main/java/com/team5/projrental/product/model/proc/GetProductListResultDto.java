@@ -7,7 +7,7 @@ import java.time.LocalDate;
 @Data
 public class GetProductListResultDto {
 
-
+    private Integer iuser;
     private String nick;
     private String userStoredPic;
     private String userRequestPic;
