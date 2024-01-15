@@ -1,0 +1,33 @@
+app: #속성을 바꿀 수 있는 부분 들은 상수 처럼 쓰기 편하도록 만들어놓음
+  jwt:
+    secret: ${key} #JWT를 만들 때 쓰는 키, 길이가 짧으면 에러터짐
+    header-scheme-name: authorization
+    token-type: Bearer
+    access token-expiry: 7200000 #단위 : 밀리세컨드 7200000은 7200초(2시간) 엑세스 토큰
+    refresh-token-expiry: 1296000000 # 15일 리프레시 토큰
+
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/projrental
+    username: root
+    password: green502
+#
+mybatis:
+  mapper-locations: mappers/**/*.xml
+springdoc:
+  swagger-ui:
+    path: /swagger.html
+#fcm:
+#  certification: serviceAccountKey.json
+logging:
+  level:
+    -com.team5.projrental: DEBUG
+server:
+  tomcat:
+    threads:
+      max: 200
+
+
+file:
+  base-package: D:/projrental/download/pics/
