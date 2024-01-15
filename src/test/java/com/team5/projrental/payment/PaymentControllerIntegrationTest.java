@@ -78,7 +78,7 @@ class PaymentControllerIntegrationTest {
     @Test
     void postPayment() throws Exception {
 
-//
+
         PaymentInsDto dto = PaymentInsDto.builder()
                 .iproduct(1)
                 .paymentMethod("credit-card")
