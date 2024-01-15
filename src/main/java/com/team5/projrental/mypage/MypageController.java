@@ -1,7 +1,6 @@
 package com.team5.projrental.mypage;
 
-import com.team5.projrental.mypage.model.PaymentSelDto;
-import com.team5.projrental.mypage.model.PaymentSelVo;
+import com.team5.projrental.mypage.model.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -46,5 +45,13 @@ public class MypageController {
         dto.setRole(role);
 
         return service.paymentList(dto);
+    }
+
+    public List<MyBuyReviewListSelVo> getReview(MyBuyReviewListSelDto dto) {
+        return service.selIbuyerReviewList(dto);
+    }
+
+    public List<MyFavListSelVo> getFavList(MyFavListSelDto dto) {
+        return service.selMyFavList(dto);
     }
 }
