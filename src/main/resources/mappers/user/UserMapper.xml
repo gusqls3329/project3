@@ -27,6 +27,12 @@
         WHERE u.uid = #{uid}
     </select>
 
+    <update id="updUserFirebaseToken">
+        UPDATE t_user
+        SET firebase_token = #{firebaseToken}
+        WHERE iuser = #{iuser}
+    </update>
+
     <select id="selFindUid">
         SELECT uid, iuser
         FROM t_user

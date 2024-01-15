@@ -35,7 +35,7 @@ public class UserMapperTest {
         SigninDto indto = new SigninDto();
         indto.setUpw(dto.getUpw());
         indto.setUid(dto.getUid());
-        SigninVo vo =  mapper.selSignin(indto);
+        UserEntity vo =  mapper.selSignin(indto);
         assertEquals(vo.getIuser(),dto.getIuser());
         log.info("iuser:{}",vo.getIuser());
         SelUserVo selVo = mapper.selUser(vo.getIuser());
@@ -51,13 +51,13 @@ public class UserMapperTest {
         dto.setUid("happy");
         dto.setUpw("1212");
 
-        SigninVo vo = mapper.selSignin(dto);
+        UserEntity vo = mapper.selSignin(dto);
         assertEquals(vo.getIuser(),2);
         assertEquals(vo.getUid(),dto.getUid());
 
         dto.setUid("maru");
         dto.setUpw("1212");
-        SigninVo vo2 = mapper.selSignin(dto);
+        UserEntity vo2 = mapper.selSignin(dto);
         assertEquals(vo2.getIuser(),1);
         assertEquals(vo2.getUid(),dto.getUid());
     }
@@ -87,7 +87,7 @@ public class UserMapperTest {
         SigninDto indto = new SigninDto();
         indto.setUpw(dto.getUpw());
         indto.setUid(dto.getUid());
-        SigninVo vo = mapper.selSignin(indto);
+        UserEntity vo = mapper.selSignin(indto);
         assertEquals(vo.getIuser(),1);
         SelUserVo selvo = mapper.selUser(vo.getIuser());
         assertEquals(selvo.getPhone(),dto.getPhone());
@@ -103,7 +103,7 @@ public class UserMapperTest {
         SigninDto indto1 = new SigninDto();
         indto1.setUpw(dto.getUpw());
         indto1.setUid(dto.getUid());
-        SigninVo vo1 = mapper.selSignin(indto1);
+        UserEntity vo1 = mapper.selSignin(indto1);
         assertEquals(vo1.getIuser(),3);
         SelUserVo selvo1 = mapper.selUser(vo1.getIuser());
         assertEquals(selvo1.getPhone(),dto.getPhone());

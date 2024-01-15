@@ -4,6 +4,7 @@ import com.team5.projrental.common.Const;
 import com.team5.projrental.common.SecurityProperties;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.utils.CookieUtils;
+import com.team5.projrental.security.AuthenticationFacade;
 import com.team5.projrental.security.JwtTokenProvider;
 import com.team5.projrental.security.SecurityUserDetails;
 import com.team5.projrental.security.model.SecurityPrincipal;
@@ -29,6 +30,7 @@ public class UserService {
     private final JwtTokenProvider jwtTokenProvider;
     private final SecurityProperties securityProperties;
     private final CookieUtils cookieUtils;
+    private final AuthenticationFacade authenticationFacade;
 
     public int postSignup(UserSignupDto dto) {
         String hashedPw = passwordEncoder.encode(dto.getUpw());
@@ -96,6 +98,8 @@ public class UserService {
     }
 
     public int patchUserFirebaseToken(UserFirebaseTokenPatchDto dto) { //FirebaseToken을 발급 : Firebase방식 : 메시지를 보낼때 ip대신 고유값(Firebase)을 가지고 있는사람에게 메시지 전달
+        int loginUserPk = authenticationFacade.getLoginUserPk();
+        dto.setIuser(loginUserPk);
         int result = mapper.updUserFirebaseToken(dto);
         if(result == 1) {
             return Const.SUCCESS;
@@ -120,6 +124,9 @@ public class UserService {
     }
 
     public int putUser(ChangeUserDto dto) {
+        int loginUserPk = authenticationFacade.getLoginUserPk();
+        dto.setIuser(loginUserPk);
+
         String hashedPw = BCrypt.hashpw(dto.getUpw(), BCrypt.gensalt());
         dto.setUpw(hashedPw);
         int result =  mapper.changeUser(dto);
@@ -130,6 +137,9 @@ public class UserService {
     }
 
     public int patchUser(DelUserDto dto) {
+        int loginUserPk = authenticationFacade.getLoginUserPk();
+        dto.setIuser(loginUserPk);
+
         SigninDto inDto = new SigninDto();
         inDto.setUid(dto.getUid());
         inDto.setUpw(dto.getUpw());
@@ -153,6 +163,11 @@ public class UserService {
     }
 
     public SelUserVo getUSer(int iuser) {
+        if(iuser == 0){
+            int loginUserPk = authenticationFacade.getLoginUserPk();
+            iuser = loginUserPk;
+            return mapper.selUser(iuser);
+        }
         return mapper.selUser(iuser);
     }
 }

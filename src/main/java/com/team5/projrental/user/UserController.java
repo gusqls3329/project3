@@ -108,7 +108,7 @@ public class UserController {
             @Parameter(name = "iuser", description = "유저 Pk값")
     })
     @GetMapping
-    public SelUserVo getUSer(@RequestParam(required = false) int iuser) {
+    public SelUserVo getUSer(@RequestParam(value = "tar", required = false) int iuser) {
         return service.getUSer(iuser);
     }
 }
