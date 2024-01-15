@@ -24,6 +24,7 @@ public interface Const {
     String BAD_DIV_INFO_EX_MESSAGE = "div 값이 잘못되었습니다.";
     String LOGIN_NO_UID = "아이디가 존재하지 않습니다";
     String LOGIN_DIFF_UPW = "비밀번호가 틀렸습니다";
+    int SUCCESS = 1;
     //
 
     /*
@@ -61,6 +62,9 @@ public interface Const {
             1, "credit-card",
             2, "kakao-pay");
 
+    /*
+        --------- CATEGORIES ---------
+    */
 
 
 
