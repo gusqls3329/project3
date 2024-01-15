@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Component
-public class myFileUtils {
+public class MyFileUtils {
 
     @Value("${file.base-package}")
     private String basePackage;

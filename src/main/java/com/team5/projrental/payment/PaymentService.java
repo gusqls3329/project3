@@ -5,7 +5,7 @@ import com.team5.projrental.common.Role;
 import com.team5.projrental.common.exception.*;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.utils.CommonUtils;
-import com.team5.projrental.common.utils.myFileUtils;
+import com.team5.projrental.common.utils.MyFileUtils;
 import com.team5.projrental.payment.model.PaymentInsDto;
 import com.team5.projrental.payment.model.PaymentListVo;
 import com.team5.projrental.payment.model.PaymentVo;
@@ -41,7 +41,7 @@ public class PaymentService {
     private final PaymentRepository paymentRepository;
     private final ProductRepository productRepository;
     private final AuthenticationFacade authenticationFacade;
-    private final myFileUtils myFileUtils;
+    private final MyFileUtils myFileUtils;
 
     @Transactional
     public ResVo postPayment(PaymentInsDto paymentInsDto) {

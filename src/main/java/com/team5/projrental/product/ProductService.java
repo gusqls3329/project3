@@ -6,7 +6,7 @@ import com.team5.projrental.common.exception.checked.NotContainsDotException;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.utils.AxisGenerator;
 import com.team5.projrental.common.utils.CommonUtils;
-import com.team5.projrental.common.utils.myFileUtils;
+import com.team5.projrental.common.utils.MyFileUtils;
 import com.team5.projrental.product.model.*;
 import com.team5.projrental.product.model.innermodel.PicSet;
 import com.team5.projrental.product.model.innermodel.StoredFileInfo;
@@ -41,7 +41,7 @@ public class ProductService {
 
     private final AuthenticationFacade authenticationFacade;
 
-    private final myFileUtils myFileUtils;
+    private final MyFileUtils myFileUtils;
 
     /*
         ------- Logic -------

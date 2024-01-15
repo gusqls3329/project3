@@ -5,7 +5,7 @@ import com.team5.projrental.common.exception.BadInformationException;
 import com.team5.projrental.common.exception.NoSuchProductException;
 import com.team5.projrental.common.exception.checked.NotContainsDotException;
 import com.team5.projrental.common.utils.AxisGenerator;
-import com.team5.projrental.common.utils.myFileUtils;
+import com.team5.projrental.common.utils.MyFileUtils;
 import com.team5.projrental.product.model.ProductInsDto;
 import com.team5.projrental.product.model.ProductListVo;
 import com.team5.projrental.product.model.innermodel.StoredFileInfo;
@@ -42,7 +42,7 @@ class ProductServiceTest {
     AuthenticationFacade authenticationFacade;
 
     @MockBean
-    myFileUtils myFileUtils;
+    MyFileUtils myFileUtils;
 
     @Autowired
     ProductService productService;

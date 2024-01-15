@@ -6,10 +6,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -47,12 +44,12 @@ public class MypageController {
         return service.paymentList(dto);
     }
 
-    @GetMapping("{iuser}/fav")
-    public List<MyBuyReviewListSelVo> getReview(MyBuyReviewListSelDto dto) {
+    @GetMapping("/review")
+    public List<MyBuyReviewListSelVo> getReview(@PathVariable int iuser, MyBuyReviewListSelDto dto) {
         return service.selIbuyerReviewList(dto);
     }
 
-    @GetMapping("{iuser}/review")
+    @GetMapping("/fav")
     public List<MyFavListSelVo> getFavList(MyFavListSelDto dto) {
         return service.selMyFavList(dto);
     }
