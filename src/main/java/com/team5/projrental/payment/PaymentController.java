@@ -22,7 +22,7 @@ public class PaymentController {
     private final PaymentService paymentService;
 
     @PostMapping
-    public ResVo postPayment(@Validated PaymentInsDto paymentInsDto) {
+    public ResVo postPayment(@Validated @RequestBody PaymentInsDto paymentInsDto) {
         return paymentService.postPayment(paymentInsDto);
     }
 

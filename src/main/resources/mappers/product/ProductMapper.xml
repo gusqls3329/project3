@@ -64,8 +64,8 @@
 
     <select id="getProductList">
         select U.iuser, U.nick, U.stored_pic as userStoredPic, U.request_pic as userRequestPic,
-        P.iproduct, concat(S.sido, ' ', G.gungu, ' ', E.eupmyun, ' ',
-        P.rest_addr) as addr, P.title, P.stored_pic as prodMainStoredPic, P.request_pic as prodMainRequestPic,
+        P.iproduct, concat(P.addr, ' ', P.rest_addr) as addr, P.title, P.stored_pic as prodMainStoredPic, P.request_pic as
+        prodMainRequestPic,
         P.rental_price as rentalPrice,
         P.rental_start_date as rentalStartDate, P.rental_end_date as rentalEndDate
         <if test="iuser != null">
@@ -76,9 +76,6 @@
         </if>
         from t_product P
         join t_user U on P.iuser = U.iuser
-        join t_eupmyun E on P.iaddr = E.ieupmyun
-        join t_gungu G on E.igungu = G.igungu
-        join t_sido S on G.isido = S.isido
         <where>
             P.istatus = 0
             <if test="icategory != null and icategory != 0">
@@ -109,16 +106,13 @@
 
     <select id="getProduct">
         select U.iuser, U.nick, U.stored_pic as userStoredPic, U.request_pic as userRequestPic,
-        P.iproduct, concat(S.sido, ' ', G.gungu, ' ', E.eupmyun, ' ', P.rest_addr) as addr, P.title, P.stored_pic as
+        P.iproduct, concat(P.addr, ' ', P.rest_addr) as addr, P.title, P.stored_pic as
         prodMainStoredPic,
         P.request_pic as prodMainRequestPic, P.rental_price as rentalPrice, P.rental_start_date as rentalStartDate,
         P.rental_end_date as rentalEndDate, (select count(L.iproduct) from t_like L where L.iproduct = P.iproduct) prodLike,
         P.iuser, P.contents, P.deposit, P.buy_date as buyDate, P.x, P.y
         from t_product P
         join t_user U on P.iuser = U.iuser
-        join t_eupmyun E on P.iaddr = E.ieupmyun
-        join t_gungu G on E.igungu = G.igungu
-        join t_sido S on G.isido = S.isido
         <where>
             P.iproduct = #{iproduct}
             <if test="iuser != null and iuser != 0">
@@ -137,20 +131,20 @@
         where iproduct = #{iproduct}
     </select>
 
-    <select id="getIEupmyun">
-        select ieupmyun from t_eupmyun where eupmyun in (
-        <foreach collection="eupmyun" item="eup" separator=", ">
-            #{eup}
-        </foreach>
-        )
-    </select>
+<!--    <select id="getIEupmyun">-->
+<!--        select ieupmyun from t_eupmyun where eupmyun in (-->
+<!--        <foreach collection="eupmyun" item="eup" separator=", ">-->
+<!--            #{eup}-->
+<!--        </foreach>-->
+<!--        )-->
+<!--    </select>-->
 
     <insert id="insProduct" useGeneratedKeys="true" keyProperty="iproduct">
         insert into t_product
-        (iuser, title, contents, iaddr, rest_addr, stored_pic, request_pic,
+        (iuser, title, contents, addr, rest_addr, stored_pic, request_pic,
         price, rental_price, deposit, buy_date, rental_start_date, rental_end_date, icategory, x, y)
         values
-        (#{iuser}, #{title}, #{contents}, #{iaddr}, #{restAddr}, #{mainPicObj.storedPic}, #{mainPicObj.requestPic},
+        (#{iuser}, #{title}, #{contents}, #{addr}, #{restAddr}, #{mainPicObj.storedPic}, #{mainPicObj.requestPic},
         #{price}, #{rentalPrice}, #{deposit}, #{buyDate}, #{rentalStartDate}, #{rentalEndDate}, #{icategory}, #{x}, #{y})
     </insert>
 
@@ -191,8 +185,8 @@
             <if test="icategory != null">
                 icategory = #{icategory}
             </if>
-            <if test="iaddr != null">
-                , iaddr = #{iaddr}
+            <if test="addr != null">
+                , addr = #{addr}
             </if>
             <if test="restAddr != null">
                 , rest_addr = #{restAddr}

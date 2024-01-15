@@ -53,8 +53,6 @@ public class ProductUpdDto {
     @JsonIgnore
     private StoredFileInfo storedMainPic;
     @JsonIgnore
-    private Integer iaddr;
-    @JsonIgnore
     private Integer icategory;
     @JsonIgnore
     private Integer deposit;

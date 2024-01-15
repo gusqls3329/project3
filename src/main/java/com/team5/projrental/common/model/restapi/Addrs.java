@@ -6,4 +6,5 @@ import lombok.Data;
 public class Addrs {
     private String x;
     private String y;
+    private String address_name;
 }

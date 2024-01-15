@@ -50,7 +50,7 @@ public interface ProductMapper {
 
     int insPics(InsProdPicsDto insProdPicsDto);
 
-    List<Integer> getIEupmyun(List<String> eupmyun);
+//    List<Integer> getIEupmyun(List<String> eupmyun);
 
     Integer deletePic(Integer iproduct, List<Integer> delPics);
 

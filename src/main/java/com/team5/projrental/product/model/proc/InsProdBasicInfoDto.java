@@ -21,7 +21,7 @@ public class InsProdBasicInfoDto {
     private Integer iuser;
     private String title;
     private String contents;
-    private Integer iaddr;
+    private String addr;
     private String restAddr;
     private StoredFileInfo mainPicObj; // #{mainPicObj.requestPic} #{mainPicObj.storedPic}
     // 따로 setter 사용해야함.
@@ -36,11 +36,12 @@ public class InsProdBasicInfoDto {
     private Double x;
     private Double y;
 
-    public InsProdBasicInfoDto(Integer iuser, String title, String contents, Integer iaddr, String restAddr, StoredFileInfo mainPicObj, Integer price, Integer rentalPrice, Integer deposit, LocalDate buyDate, LocalDate rentalStartDate, LocalDate rentalEndDate, Integer icategory, Double x, Double y) {
+    public InsProdBasicInfoDto(Integer iuser, String title, String contents, String addr, String restAddr,
+                               StoredFileInfo mainPicObj, Integer price, Integer rentalPrice, Integer deposit, LocalDate buyDate, LocalDate rentalStartDate, LocalDate rentalEndDate, Integer icategory, Double x, Double y) {
         this.iuser = iuser;
         this.title = title;
         this.contents = contents;
-        this.iaddr = iaddr;
+        this.addr = addr;
         this.restAddr = restAddr;
         this.mainPicObj = mainPicObj;
         this.price = price;
@@ -54,11 +55,11 @@ public class InsProdBasicInfoDto {
         this.y = y;
     }
 
-    public InsProdBasicInfoDto(ProductInsDto dto, Integer iaddr, Double x, Double y) {
+    public InsProdBasicInfoDto(ProductInsDto dto, String addr, Double x, Double y) {
         this.iuser = dto.getIuser();
         this.title = dto.getTitle();
         this.contents = dto.getContents();
-        this.iaddr = iaddr;
+        this.addr = addr;
         this.restAddr = dto.getRestAddr();
         this.price = dto.getPrice();
         this.rentalPrice = dto.getRentalPrice();

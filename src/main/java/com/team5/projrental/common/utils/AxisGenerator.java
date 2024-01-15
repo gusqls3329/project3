@@ -3,6 +3,7 @@ package com.team5.projrental.common.utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team5.projrental.common.aop.anno.Retry;
+import com.team5.projrental.common.exception.BadAddressInfoException;
 import com.team5.projrental.common.exception.RestApiException;
 import com.team5.projrental.common.model.restapi.Addrs;
 import com.team5.projrental.common.model.restapi.Documents;
@@ -28,18 +29,18 @@ public class AxisGenerator {
     /**
      * 해당 기능이 필요할 경우 AxisGenerator 를 DI 받아 사용해야 함.
      * ㄴ> @Retry 어노테이션을 적용하기 위함.
-     * @param fullAddr
+     * @param addr
      * @return Map<String, Double>
      */
     @Retry(5)
-    public Map<String, Double> getAxis(String fullAddr) {
-        fullAddr = fullAddr.contains("%") ? fullAddr.replaceAll("%", " ") :
-                fullAddr.contains("-") ? fullAddr.replaceAll("-", " ") : fullAddr;
+    public Addrs getAxis(String addr) {
+        addr = addr.contains("%") ? addr.replaceAll("%", " ") :
+                addr.contains("-") ? addr.replaceAll("-", " ") : addr;
 
         Map<String, Double> axisMap = new HashMap<>();
-        log.debug("fullAddr = {}", fullAddr);
+        log.debug("addr = {}", addr);
         StringBuilder sb = new StringBuilder();
-        sb.append("?query=").append(fullAddr);
+        sb.append("?query=").append(addr);
         String query = sb.toString();
         String url = "https://dapi.kakao.com/v2/local/search/address";
         String headerKey = "Authorization";
@@ -64,14 +65,13 @@ public class AxisGenerator {
             throw new RestApiException(SERVER_ERR_MESSAGE);
         }
         Addrs addrs = documents.getDocuments().stream().filter(Objects::nonNull)
-                .findFirst().orElseThrow(() -> new RestApiException(SERVER_ERR_MESSAGE));
+                .findFirst().orElseThrow(() -> new BadAddressInfoException(BAD_ADDRESS_INFO_EX_MESSAGE));
         if (addrs.getX().isEmpty() || addrs.getY().isEmpty()) {
             throw new RestApiException(SERVER_ERR_MESSAGE);
         }
-        axisMap.put(AXIS_X, Double.parseDouble(addrs.getX()));
-        axisMap.put(AXIS_Y, Double.parseDouble(addrs.getY()));
 
-        return axisMap;
+
+        return addrs;
     }
 
 }

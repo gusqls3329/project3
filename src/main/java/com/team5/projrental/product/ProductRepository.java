@@ -60,9 +60,9 @@ public class ProductRepository {
         return productMapper.insPics(insProdPicsDto);
     }
 
-    public List<Integer> findAddrBy(List<String> eupmyun) {
-        return productMapper.getIEupmyun(eupmyun);
-    }
+//    public List<Integer> findAddrBy(List<String> eupmyun) {
+//        return productMapper.getIEupmyun(eupmyun);
+//    }
 
     public Integer deletePics(Integer iproduct, List<Integer> delPic) {
         return productMapper.deletePic(iproduct, delPic);

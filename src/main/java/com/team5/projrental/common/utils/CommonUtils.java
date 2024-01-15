@@ -71,12 +71,12 @@ public class CommonUtils {
     }
 
 
-    public static List<String> subEupmyun(String addr) {
-        List<String> result = new ArrayList<>();
-        Arrays.stream(addr.split(" ")).filter(s -> s.contains("읍") || s.contains("동") || s.contains("면"))
-                .forEach(result::add);
-        return result;
-    }
+//    public static List<String> subEupmyun(String addr) {
+//        List<String> result = new ArrayList<>();
+//        Arrays.stream(addr.split(" ")).filter(s -> s.contains("읍") || s.contains("동") || s.contains("면"))
+//                .forEach(result::add);
+//        return result;
+//    }
 
     public static Integer getDepositFromPer(Integer price, Integer percent) {
         return (int) (price * percent * 0.01);

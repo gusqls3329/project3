@@ -4,6 +4,7 @@ import com.team5.projrental.common.aop.anno.CountView;
 import com.team5.projrental.common.exception.*;
 import com.team5.projrental.common.exception.checked.NotContainsDotException;
 import com.team5.projrental.common.model.ResVo;
+import com.team5.projrental.common.model.restapi.Addrs;
 import com.team5.projrental.common.utils.AxisGenerator;
 import com.team5.projrental.common.utils.CommonUtils;
 import com.team5.projrental.common.utils.MyFileUtils;
@@ -20,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static com.team5.projrental.common.Const.*;
 
@@ -162,14 +162,16 @@ public class ProductService {
         // 날짜 검증 끝
 
 
-        // 주소 검증 (ieupmyun)
-        Integer addrBy = checkAddrInDb(dto.getAddr());
+
+
 
 
         // logic
-        Map<String, Double> axis = axisGenerator.getAxis(dto.getAddr().concat(dto.getRestAddr()));
+        // 주소 검증
+        Addrs addrs = axisGenerator.getAxis(dto.getAddr().concat(dto.getRestAddr()));
         // insert 할 객체 준비 완.
-        InsProdBasicInfoDto insProdBasicInfoDto = new InsProdBasicInfoDto(dto, addrBy, axis.get(AXIS_X), axis.get(AXIS_Y));
+        InsProdBasicInfoDto insProdBasicInfoDto = new InsProdBasicInfoDto(dto, addrs.getAddress_name(), Double.parseDouble(addrs.getX()),
+                Double.parseDouble(addrs.getY()));
         try {
             insProdBasicInfoDto.setMainPicObj(myFileUtils.savePic(dto.getMainPic(), CATEGORY_PRODUCT_MAIN));
 
@@ -206,10 +208,6 @@ public class ProductService {
         }
         // 병합하지 않아도 되는 데이터 검증
 
-        // 주소 검증
-        if (dto.getAddr() != null) {
-            dto.setIaddr(checkAddrInDb(dto.getAddr()));
-        }
 
         dto.setIuser(authenticationFacade.getLoginUserPk());
         // 카테고리 검증
@@ -273,14 +271,17 @@ public class ProductService {
                 }
             }
 
-
+            // 주소 검증
+            Addrs addrs = null;
+            if (dto.getAddr() != null) {
+                addrs = axisGenerator.getAxis(dto.getAddr());
+            }
             // update 할 객체 세팅
             dto.setStoredMainPic(dto.getMainPic() == null ? null : myFileUtils.savePic(dto.getMainPic(), CATEGORY_PRODUCT_MAIN));
             dto.setDeposit(dto.getDepositPer() == null ? null : CommonUtils.getDepositFromPer(price, dto.getDeposit()));
-            if (dto.getAddr() != null && dto.getRestAddr() != null) {
-                Map<String, Double> axis = axisGenerator.getAxis(dto.getAddr().concat(dto.getRestAddr()));
-                dto.setX(axis.get(AXIS_X));
-                dto.setY(axis.get(AXIS_Y));
+            if (dto.getAddr() != null && dto.getRestAddr() != null && addrs != null) {
+                dto.setX(Double.parseDouble(addrs.getX()));
+                dto.setY(Double.parseDouble(addrs.getY()));
             }
         } catch (NotContainsDotException e) {
             throw new BadMainPicException(BAD_PIC_EX_MESSAGE);
@@ -355,13 +356,13 @@ public class ProductService {
      */
 
 
-    private Integer checkAddrInDb(String addr) {
-        List<Integer> addrBy = productRepository.findAddrBy(CommonUtils.subEupmyun(addr));
-        if (addrBy.isEmpty()) throw new BadAddressInfoException(BAD_ADDRESS_INFO_EX_MESSAGE);
-        CommonUtils.checkSizeIfOverLimitNumThrow(BadAddressInfoException.class, BAD_ADDRESS_INFO_EX_MESSAGE,
-                addrBy.stream(), 1);
-        return addrBy.get(0);
-    }
+//    private Integer checkAddrInDb(String addr) {
+//        List<Integer> addrBy = productRepository.findAddrBy(CommonUtils.subEupmyun(addr));
+//        if (addrBy.isEmpty()) throw new BadAddressInfoException(BAD_ADDRESS_INFO_EX_MESSAGE);
+//        CommonUtils.checkSizeIfOverLimitNumThrow(BadAddressInfoException.class, BAD_ADDRESS_INFO_EX_MESSAGE,
+//                addrBy.stream(), 1);
+//        return addrBy.get(0);
+//    }
 
 
 }

@@ -16,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,15 +37,13 @@ class PaymentControllerIntegrationTest {
     @Autowired
     ObjectMapper objectMapper;
 
-    @Value("${app.jwt.header-scheme-name}")
-    String authHeaderKey;
-
     String authValue;
 
 
     @BeforeEach
     void before() throws Exception {
-
+        System.out.println("mockMvc = " + mockMvc);
+        System.out.println("objectMapper = " + objectMapper);
         UserSignupDto userSignupDto = new UserSignupDto();
         userSignupDto.setAddr("대구 달서구 용산1동");
         userSignupDto.setRestAddr("아아아");
@@ -53,12 +52,13 @@ class PaymentControllerIntegrationTest {
         userSignupDto.setNick("test");
         userSignupDto.setPhone("010-1111-1124");
         userSignupDto.setEmail("efa@gejrrr.com");
-
-        mockMvc.perform(
+        String result2 = objectMapper.writeValueAsString(userSignupDto);
+        ResultActions perform = mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/user/signup")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(userSignupDto))
-        ).andExpect(MockMvcResultMatchers.status().isOk());
+                        .content(result2));
+
+//        perform.andExpect(MockMvcResultMatchers.status().isOk());
 
         SigninDto signinDto = new SigninDto();
         signinDto.setUid("test");
@@ -71,7 +71,8 @@ class PaymentControllerIntegrationTest {
                         .content(objectMapper.writeValueAsString(signinDto))
         ).andReturn();
 
-        this.authValue = objectMapper.readValue(result.getResponse().getContentAsString(), SigninVo.class).getAccessToken();
+        this.authValue =
+                "Bearer " + objectMapper.readValue(result.getResponse().getContentAsString(), SigninVo.class).getAccessToken();
 
     }
 
@@ -80,18 +81,20 @@ class PaymentControllerIntegrationTest {
 
 
         PaymentInsDto dto = PaymentInsDto.builder()
-                .iproduct(1)
+                .iproduct(2)
                 .paymentMethod("credit-card")
                 .rentalStartDate(LocalDate.of(2025, 1, 2))
                 .rentalEndDate(LocalDate.of(2025, 3, 3))
-                .deposit(50)
+                .depositPer(51)
                 .build();
 
-
+        String json = objectMapper.writeValueAsString(dto);
         MvcResult result = mockMvc.perform(
-                        MockMvcRequestBuilders.post("/api/pay").contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(dto))
-                                .header(this.authHeaderKey, this.authValue)
+                        MockMvcRequestBuilders.post("/api/pay")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(json)
+                                .header("Authorization",
+                                        this.authValue)
                 ).andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(print())
                 .andReturn();

@@ -1,10 +1,14 @@
 package com.team5.projrental.product;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.team5.projrental.common.utils.AxisGenerator;
+import com.team5.projrental.common.utils.CommonUtils;
 import com.team5.projrental.product.model.ProductUpdDto;
 import com.team5.projrental.product.model.innermodel.StoredFileInfo;
 import com.team5.projrental.product.model.proc.*;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +28,12 @@ class ProductMapperTest {
 
     @Autowired
     ProductMapper productMapper;
-    InsProdBasicInfoDto insProdBasicInfoDto = new InsProdBasicInfoDto(1, "test", "test", 40,
+    InsProdBasicInfoDto insProdBasicInfoDto = new InsProdBasicInfoDto(1, "test", "test", "test",
             "test", new StoredFileInfo("test pic1", "test pic 2"), 100, 10,
             80, LocalDate.of(2022, 11, 2), LocalDate.of(2024, 2, 2),
             LocalDate.of(2024, 3, 3), 1, 1.1, 2.2);
+
+
 
 
     @Test
@@ -116,7 +122,7 @@ class ProductMapperTest {
     @Test
     void insProduct() {
 
-        int result = productMapper.insProduct(new InsProdBasicInfoDto(1, "test", "test", 40,
+        int result = productMapper.insProduct(new InsProdBasicInfoDto(1, "test", "test", "test",
                 "test", new StoredFileInfo("test pic1", "test pic 2"), 100, 10,
                 80, LocalDate.of(2022, 11, 2), LocalDate.of(2024, 2, 2),
                 LocalDate.of(2024, 3, 3), 1, 1.1, 2.2));
@@ -135,18 +141,6 @@ class ProductMapperTest {
 
     }
 
-    @Test
-    void getIEupmyun() {
-
-        List<Integer> iEupmyun = productMapper.getIEupmyun(List.of("깃허브동", "박동", "ㅁ잗맫라읍", "라면", "ㅏㅈㅁ대ㅔㄹ잗래면", "ㅏㄹ잳라ㅏㅐㄷ읍", "압량읍"));
-        assertThat(iEupmyun.size()).isEqualTo(1);
-
-        List<Integer> iEupmyun2 = productMapper.getIEupmyun(List.of("깃허브동", "용산동", "박동", "ㅁ잗맫라읍", "라면", "ㅏㅈㅁ대ㅔㄹ잗래면", "ㅏㄹ잳라ㅏㅐㄷ읍",
-                "압량읍"));
-        assertThat(iEupmyun2.size()).isEqualTo(2);
-
-
-    }
 
     @Test
     void deletePic() {
@@ -251,7 +245,7 @@ class ProductMapperTest {
             assertThat(dto.getY()).isEqualTo(1.1);
         }
         assertThat(product.getNick()).isEqualTo("마루야노올자");
-        assertThat(product.getAddr()).isEqualTo("경상남도 창원시 마산합포구 가포동 test addres1");
+        assertThat(product.getAddr()).isEqualTo("대구 달서구 본리동 test addres1");
         assertThat(product.getRentalPrice()).isEqualTo(10000);
         assertThat(product.getTitle()).isEqualTo("test prod1");
         assertThat(product.getUserStoredPic()).isNull();

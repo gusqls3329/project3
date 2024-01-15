@@ -46,12 +46,12 @@ public class ProductController {
     -> addr + restAddr 기준으로 x, y 좌표 획득 -> insert model 객체 생성 -> insert
      */
     @PostMapping
-    public ResVo postProduct(@Validated ProductInsDto dto) {
+    public ResVo postProduct(@Validated @RequestBody ProductInsDto dto) {
         return productService.postProduct(dto);
     }
 
     @PutMapping
-    public ResVo putProduct(@Validated ProductUpdDto dto) {
+    public ResVo putProduct(@Validated @RequestBody ProductUpdDto dto) {
         return productService.putProduct(dto);
     }
 

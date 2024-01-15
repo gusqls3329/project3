@@ -3,7 +3,7 @@
 <mapper namespace="com.team5.projrental.user.UserMapper">
     <insert id="insUser" useGeneratedKeys="true"  keyProperty="iuser">
         INSERT INTO t_user
-        SET iaddr = #{iaddr}
+        SET addr = #{addr}
         , rest_addr = #{restAddr}
         , uid = #{uid}
         , upw = #{upw}

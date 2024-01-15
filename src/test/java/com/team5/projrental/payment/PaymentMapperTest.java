@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -178,7 +179,7 @@ class PaymentMapperTest {
                     .ibuyer(buyer)
                     .rentalDuration(3)
                     .price(10)
-                    .code("test")
+                    .code("test" + UUID.randomUUID().toString().substring(0, 10))
                     .ipaymentMethod(2)
                     .rentalStartDate(LocalDate.of(2023, 12, 1))
                     .rentalEndDate(endDate)

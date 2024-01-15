@@ -9,7 +9,6 @@ import lombok.Setter;
 public class UserSignupDto {
     @JsonIgnore
     private int iuser;
-    private int iaddr;
     private String addr;
     private String restAddr;
     private String uid;
