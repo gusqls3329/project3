@@ -34,8 +34,8 @@ import static com.team5.projrental.common.Const.*;
 public class PaymentService {
     /* TODO: 1/11/24
         1. 페이징,
-        2. istatus -4 (기간 지남) 추가된것 처리 (기간지남과 후기2개가 등록되어 만료됨을 구분),
-        3. 스케쥴러로 매일 자정에 기간지남으로 변경하는것 (rental_end_date 를 기준으로) 구현
+        2. istatus -4 (기간 지남) 추가된것 처리 (기간지남과 후기2개가 등록되어 만료됨을 구분), -> 완
+        3. 스케쥴러로 매일 자정에 기간지남으로 변경하는것 (rental_end_date 를 기준으로) 구현 -> 완
         --by Hyunmin */
     private final PaymentRepository paymentRepository;
     private final ProductRepository productRepository;
@@ -212,7 +212,22 @@ public class PaymentService {
 
     }
 
+
     private Integer divResolver(Integer div, Integer istatus, Role role) {
+        /*
+        0: 활성화 상태
+        1: 거래 완료됨
+
+        -1: 삭제됨
+        -2: 숨김
+        -3: 취소됨
+        -4: 기간지남
+
+        논리적 삭제 가능 숫자: 1, -2, -3
+        숨김 가능 숫자: 1, -3
+        취소 요청시:
+            Role.buyer ->
+         */
         if (role == null) throw new BadInformationException(BAD_INFO_EX_MESSAGE);
         if (div == 1 || div == 2) {
             if (istatus == -3 || istatus == 1 || (div == 1 && istatus == -2)) {
@@ -220,7 +235,7 @@ public class PaymentService {
             }
         }
         if (div == 3) {
-            if (istatus == 0) {
+            if (istatus == 0 || istatus == -4) {
                 if (role == Role.BUYER) {
                     return 2;
                 }

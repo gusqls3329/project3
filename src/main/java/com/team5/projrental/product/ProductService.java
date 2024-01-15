@@ -29,8 +29,8 @@ public class ProductService {
 
     /* TODO: 1/11/24
         1. 페이징,
-        2. istatus -4 (기간 지남) 추가된것 처리 (기간지남과 후기2개가 등록되어 만료됨을 구분),
-        3. 스케쥴러로 매일 자정에 기간지남으로 변경하는것 (rental_end_date 를 기준으로) 구현
+        2. istatus -4 (기간 지남) 추가된것 처리 (기간지남과 후기2개가 등록되어 만료됨을 구분), -> 완
+        3. 스케쥴러로 매일 자정에 기간지남으로 변경하는것 (rental_end_date 를 기준으로) 구현 -> 완
         --by Hyunmin */
 
     private final ProductRepository productRepository;
