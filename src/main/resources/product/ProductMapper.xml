@@ -62,7 +62,7 @@
 
 
     <select id="getProductList">
-        select U.nick, U.stored_pic as userStoredPic, U.request_pic as userRequestPic,
+        select U.iuser, U.nick, U.stored_pic as userStoredPic, U.request_pic as userRequestPic,
         P.iproduct, concat(S.sido, ' ', G.gungu, ' ', E.eupmyun, ' ',
         P.rest_addr) as addr, P.title, P.stored_pic as prodMainStoredPic, P.request_pic as prodMainRequestPic,
         P.rental_price as rentalPrice,
@@ -102,7 +102,7 @@
     </select>
 
     <select id="getProduct">
-        select U.nick, U.stored_pic as userStoredPic, U.request_pic as userRequestPic,
+        select U.iuser, U.nick, U.stored_pic as userStoredPic, U.request_pic as userRequestPic,
         P.iproduct, concat(S.sido, ' ', G.gungu, ' ', E.eupmyun, ' ', P.rest_addr) as addr, P.title, P.stored_pic as
         prodMainStoredPic,
         P.request_pic as prodMainRequestPic, P.rental_price as rentalPrice, P.rental_start_date as rentalStartDate,

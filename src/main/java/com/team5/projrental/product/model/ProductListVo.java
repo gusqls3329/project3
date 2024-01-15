@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class ProductListVo {
 
-
+    private Integer iuser;
     private String nick;
     private Resource userPic;
 
@@ -26,6 +26,7 @@ public class ProductListVo {
     private Integer prodLike;
 
     public ProductListVo(GetProductListResultDto dto) {
+        this.iuser = dto.getIuser();
         this.nick = dto.getNick();
         this.iproduct = dto.getIproduct();
         this.title = dto.getTitle();
@@ -37,6 +38,7 @@ public class ProductListVo {
     }
 
     public ProductListVo(GetProductResultDto dto) {
+        this.iuser = dto.getIuser();
         this.nick = dto.getNick();
         this.iproduct = dto.getIproduct();
         this.title = dto.getTitle();

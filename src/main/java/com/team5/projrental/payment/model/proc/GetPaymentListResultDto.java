@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class GetPaymentListResultDto {
-//    private Integer iuser;
+    private Integer iuser;
     private String nick;
     private String storedPic;
     private String requestPic;

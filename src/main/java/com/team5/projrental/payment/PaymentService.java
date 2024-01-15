@@ -158,11 +158,12 @@ public class PaymentService {
         List<GetPaymentListResultDto> paymentBy = paymentRepository.findPaymentBy(new GetPaymentListDto(iuser, role));
         List<PaymentListVo> result = new ArrayList<>();
         CommonUtils.checkNullOrZeroIfCollectionThrow(NoSuchPaymentException.class, NO_SUCH_PAYMENT_EX_MESSAGE, paymentBy);
-        paymentBy.forEach(p -> new PaymentListVo(
-                p.getNick(), CommonUtils.getPic(new StoredFileInfo(p.getRequestPic(), p.getStoredPic())),
+        paymentBy.forEach(p -> result.add(new PaymentListVo(
+                p.getIuser(), p.getNick(), CommonUtils.getPic(new StoredFileInfo(p.getRequestPic(), p.getStoredPic())),
                 p.getIpayment(), p.getIproduct(), STATUS.get(p.getIstatus()), p.getRentalStartDate(), p.getRentalEndDate(),
-                p.getRentalDuration(), p.getPrice(), p.getDeposit()
+                p.getRentalDuration(), p.getPrice(), p.getDeposit())
         ));
+
         return result;
     }
 
@@ -181,6 +182,7 @@ public class PaymentService {
         }
 
         return new PaymentVo(
+                aPayment.getIuser(),
                 aPayment.getNick(),
                 CommonUtils.getPic(new StoredFileInfo(aPayment.getRequestPic(), aPayment.getStoredPic())),
                 aPayment.getIpayment(),

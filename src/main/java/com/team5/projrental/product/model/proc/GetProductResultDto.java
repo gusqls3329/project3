@@ -12,7 +12,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetProductResultDto extends GetProductListResultDto{
-    private Integer iuser;
     private String contents;
     private Integer deposit;
     private LocalDate buyDate;
