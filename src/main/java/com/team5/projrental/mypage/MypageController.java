@@ -47,10 +47,12 @@ public class MypageController {
         return service.paymentList(dto);
     }
 
+    @GetMapping("{iuser}/fav")
     public List<MyBuyReviewListSelVo> getReview(MyBuyReviewListSelDto dto) {
         return service.selIbuyerReviewList(dto);
     }
 
+    @GetMapping("{iuser}/review")
     public List<MyFavListSelVo> getFavList(MyFavListSelDto dto) {
         return service.selMyFavList(dto);
     }
