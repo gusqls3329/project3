@@ -1,5 +1,6 @@
 package com.team5.projrental.product;
 
+import com.team5.projrental.common.Const;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.product.model.*;
 import jakarta.validation.constraints.Min;
@@ -22,9 +23,10 @@ public class ProductController {
     @GetMapping("{category}")
     public List<ProductListVo> getProductList(@RequestParam(required = false) Integer sort,
                                               @RequestParam(required = false) String search,
-                                              @PathVariable String category) {
+                                              @RequestParam int page,
+                                              @PathVariable int icategory) {
 
-        return productService.getProductList(sort, search, category);
+        return productService.getProductList(sort, search, icategory, (page - 1) * Const.PROD_PER_PAGE);
     }
 
     @Validated

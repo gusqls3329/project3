@@ -1,11 +1,14 @@
 package com.team5.projrental.payment.model.proc;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 public class GetPaymentListResultDto {
     private Integer iuser;
     private String nick;

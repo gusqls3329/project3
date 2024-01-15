@@ -143,6 +143,7 @@ class PaymentMapperTest {
 
         List<GetPaymentListResultDto> paymentList = paymentMapper.getPaymentList(new GetPaymentListDto(1, 1));
         assertThat(paymentList.size()).isEqualTo(1);
+        assertThat(paymentList.get(0).getIuser()).isEqualTo(3);
         assertThat(paymentList.get(0).getNick()).isEqualTo("비락");
         assertThat(paymentList.get(0).getIpayment()).isEqualTo(3);
         assertThat(paymentList.get(0).getIproduct()).isEqualTo(3);
@@ -153,6 +154,7 @@ class PaymentMapperTest {
 
         List<GetPaymentListResultDto> paymentList2 = paymentMapper.getPaymentList(new GetPaymentListDto(1, 2));
         assertThat(paymentList2.size()).isEqualTo(1);
+        assertThat(paymentList2.get(0).getIuser()).isEqualTo(2);
         assertThat(paymentList2.get(0).getNick()).isEqualTo("인사이드아웃");
         assertThat(paymentList2.get(0).getIpayment()).isEqualTo(5);
         assertThat(paymentList2.get(0).getIproduct()).isEqualTo(1);

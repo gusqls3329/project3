@@ -5,6 +5,7 @@ import com.team5.projrental.common.Role;
 import com.team5.projrental.common.exception.*;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.utils.CommonUtils;
+import com.team5.projrental.common.utils.FileUtils;
 import com.team5.projrental.payment.model.PaymentInsDto;
 import com.team5.projrental.payment.model.PaymentListVo;
 import com.team5.projrental.payment.model.PaymentVo;
@@ -40,6 +41,7 @@ public class PaymentService {
     private final PaymentRepository paymentRepository;
     private final ProductRepository productRepository;
     private final AuthenticationFacade authenticationFacade;
+    private final FileUtils fileUtils;
 
     @Transactional
     public ResVo postPayment(PaymentInsDto paymentInsDto) {
@@ -159,7 +161,7 @@ public class PaymentService {
         List<PaymentListVo> result = new ArrayList<>();
         CommonUtils.checkNullOrZeroIfCollectionThrow(NoSuchPaymentException.class, NO_SUCH_PAYMENT_EX_MESSAGE, paymentBy);
         paymentBy.forEach(p -> result.add(new PaymentListVo(
-                p.getIuser(), p.getNick(), CommonUtils.getPic(new StoredFileInfo(p.getRequestPic(), p.getStoredPic())),
+                p.getIuser(), p.getNick(), fileUtils.getPic(new StoredFileInfo(p.getRequestPic(), p.getStoredPic())),
                 p.getIpayment(), p.getIproduct(), STATUS.get(p.getIstatus()), p.getRentalStartDate(), p.getRentalEndDate(),
                 p.getRentalDuration(), p.getPrice(), p.getDeposit())
         ));
@@ -184,7 +186,7 @@ public class PaymentService {
         return new PaymentVo(
                 aPayment.getIuser(),
                 aPayment.getNick(),
-                CommonUtils.getPic(new StoredFileInfo(aPayment.getRequestPic(), aPayment.getStoredPic())),
+                fileUtils.getPic(new StoredFileInfo(aPayment.getRequestPic(), aPayment.getStoredPic())),
                 aPayment.getIpayment(),
                 aPayment.getIproduct(),
                 STATUS.get(aPayment.getIstatus()), // status resolver ?

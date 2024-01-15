@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.lang.reflect.InvocationTargetException;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Stream;
@@ -122,70 +123,6 @@ public class CommonUtils {
         }
     }
 
-
-    // 파일 업로드 배운 후 완성시킬 예정.
-
-    /**
-     * 하나의 사진 파일 조회
-     *
-     * @param pic
-     * @return Resource
-     */
-    public static Resource getPic(StoredFileInfo pic) {
-        /* TODO: 1/9/24
-            차후 파일 업로드 배우면 수정.
-            --by Hyunmin */
-        return new FileSystemResource("test");
-    }
-
-    // 파일 업로드 배운 후 완성시킬 예정.
-
-    /**
-     * 2개 이상의 사진 파일 조회
-     * [getPic 내부 호출]
-     *
-     * @param pic
-     * @return List<Resource>
-     */
-    public static List<Resource> getPic(List<StoredFileInfo> pic) {
-        List<Resource> results = new ArrayList<>();
-        pic.forEach(p -> results.add(getPic(p)));
-        return results;
-    }
-
-    // 파일 업로드 배운 후 완성시킬 예정.
-
-    /**
-     * 하나의 사진 파일 저장
-     *
-     * @param multipartFile
-     * @return StoredFileInfo
-     */
-    public static StoredFileInfo savePic(MultipartFile multipartFile) {
-
-        /* TODO: 1/9/24
-            차후 파일 업로드 배우면 수정.
-            --by Hyunmin */
-        // tmp value
-        return new StoredFileInfo("tmp", "tmp");
-    }
-
-    // 파일 업로드 배운 후 완성시킬 예정.
-
-    /**
-     * 2개 이상의 사진 파일 저장
-     * [savePic 내부 호출]
-     *
-     * @param multipartFiles
-     * @return List<StoredFileInfo>
-     */
-    public static List<StoredFileInfo> savePic(List<MultipartFile> multipartFiles) {
-        List<StoredFileInfo> result = new ArrayList<>();
-        multipartFiles.forEach(file -> {
-            result.add(savePic(file));
-        });
-        return result;
-    }
 
     //
 

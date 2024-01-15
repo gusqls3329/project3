@@ -67,6 +67,13 @@ class ProductMapperTest {
         Assertions.assertThat(productList.size()).isEqualTo(1);
         checkProductInfoByIproductIsOne(productList.get(0));
 
+        assertThat(productList.get(0).getIuser()).isEqualTo(1);
+        assertThat(productList.get(0).getTitle()).isEqualTo("test prod1");
+        assertThat(productList.get(0).getRentalPrice()).isEqualTo(10000);
+        assertThat(productList.get(0).getIproduct()).isEqualTo(1);
+
+
+
         int result = productMapper.insProduct(this.insProdBasicInfoDto);
         assertThat(result).isEqualTo(1);
         List<GetProductListResultDto> productList1 = productMapper.getProductList(new GetProductListDto(1));
@@ -76,6 +83,8 @@ class ProductMapperTest {
         assertThat(productList2.get(0).getIproduct()).isEqualTo(4);
         List<GetProductListResultDto> productList3 = productMapper.getProductList(new GetProductListDto(null, null, 1));
         assertThat(productList3.size()).isEqualTo(4);
+
+
     }
 
     @Test
