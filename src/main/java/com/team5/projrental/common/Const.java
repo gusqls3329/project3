@@ -66,7 +66,9 @@ public interface Const {
         --------- CATEGORIES ---------
     */
 
-
+    String CATEGORY_USER = "user";
+    String CATEGORY_PRODUCT_SUB = "prod";
+    String CATEGORY_PRODUCT_MAIN = "prod/main";
 
 
 
