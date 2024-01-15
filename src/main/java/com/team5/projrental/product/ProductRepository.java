@@ -14,7 +14,7 @@ public class ProductRepository {
     private final ProductMapper productMapper;
 
     //
-    public int findRentalPriceBy(Integer iproduct) {
+    public Integer findRentalPriceBy(Integer iproduct) {
         return productMapper.getRentalPricePerDay(iproduct);
     }
     //

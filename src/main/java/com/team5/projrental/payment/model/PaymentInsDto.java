@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @Builder
 public class PaymentInsDto {
     @NotNull
-    @Min(0)
+    @Min(1)
     private Integer iproduct;
 //    @NotNull
 //    @Min(0)

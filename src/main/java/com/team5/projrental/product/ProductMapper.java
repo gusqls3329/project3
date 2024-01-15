@@ -27,7 +27,7 @@ public interface ProductMapper {
     //
 
     //
-    int getRentalPricePerDay(Integer iproduct);
+    Integer getRentalPricePerDay(Integer iproduct);
     //
 
     //

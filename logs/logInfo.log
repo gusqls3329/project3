@@ -1700,3 +1700,365 @@ java.sql.SQLIntegrityConstraintViolationException: (conn=415) Cannot add or upda
 	at java.base/java.lang.Thread.run(Thread.java:833)
 [2024-01-15 18:22:14 [32mINFO [0;39m SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-1 - Shutdown initiated...[0;39m
 [2024-01-15 18:22:14 [32mINFO [0;39m SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-1 - Shutdown completed.[0;39m
+[2024-01-15 20:08:34 INFO  background-preinit] [org.hibernate.validator.internal.util.Version] HV000001: Hibernate Validator 8.0.1.Final
+[2024-01-15 20:08:34 INFO  Test worker] [com.team5.projrental.payment.PaymentControllerIntegrationTest] Starting PaymentControllerIntegrationTest using Java 17.0.8.1 with PID 97447 (started by yulecho in /Users/yulecho/study/javaSpring_infRun/projrental2)
+[2024-01-15 20:08:34 DEBUG Test worker] [com.team5.projrental.payment.PaymentControllerIntegrationTest] Running with Spring Boot v3.2.1, Spring v6.1.2
+[2024-01-15 20:08:34 INFO  Test worker] [com.team5.projrental.payment.PaymentControllerIntegrationTest] No active profile set, falling back to 1 default profile: "default"
+[2024-01-15 20:08:35 INFO  Test worker] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] Tomcat initialized with port 0 (http)
+[2024-01-15 20:08:35 INFO  Test worker] [org.apache.coyote.http11.Http11NioProtocol] Initializing ProtocolHandler ["http-nio-auto-1"]
+[2024-01-15 20:08:35 INFO  Test worker] [org.apache.catalina.core.StandardService] Starting service [Tomcat]
+[2024-01-15 20:08:35 INFO  Test worker] [org.apache.catalina.core.StandardEngine] Starting Servlet engine: [Apache Tomcat/10.1.17]
+[2024-01-15 20:08:35 INFO  Test worker] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] Initializing Spring embedded WebApplicationContext
+[2024-01-15 20:08:35 INFO  Test worker] [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext] Root WebApplicationContext: initialization completed in 813 ms
+[2024-01-15 20:08:35 DEBUG Test worker] [com.team5.projrental.common.security.filter.JwtAuthenticationFilter] Filter 'jwtAuthenticationFilter' configured for use
+[2024-01-15 20:08:35 WARN  Test worker] [org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration] 
+
+Using generated security password: 6fd77e1c-789f-4d55-a48c-9dc2d6a8e09b
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+[2024-01-15 20:08:35 INFO  Test worker] [org.springframework.security.web.DefaultSecurityFilterChain] Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@69944a90, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@1ed52f44, org.springframework.security.web.context.SecurityContextHolderFilter@6109d880, org.springframework.security.web.header.HeaderWriterFilter@18f8e2e0, org.springframework.web.filter.CorsFilter@771afdd5, org.springframework.security.web.authentication.logout.LogoutFilter@6942ee48, com.team5.projrental.common.security.filter.JwtAuthenticationFilter@2fb48970, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6f976c, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1324e70a, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@3abadb65, org.springframework.security.web.session.SessionManagementFilter@6c56fff, org.springframework.security.web.access.ExceptionTranslationFilter@6abb44cb, org.springframework.security.web.access.intercept.AuthorizationFilter@119f072c]
+[2024-01-15 20:08:36 DEBUG Test worker] [com.team5.projrental.common.security.filter.JwtAuthenticationFilter] Filter 'jwtAuthenticationFilter' configured for use
+[2024-01-15 20:08:36 INFO  Test worker] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] Initializing Spring TestDispatcherServlet ''
+[2024-01-15 20:08:36 INFO  Test worker] [org.springframework.test.web.servlet.TestDispatcherServlet] Initializing Servlet ''
+[2024-01-15 20:08:36 INFO  Test worker] [org.springframework.test.web.servlet.TestDispatcherServlet] Completed initialization in 1 ms
+[2024-01-15 20:08:36 INFO  Test worker] [org.apache.coyote.http11.Http11NioProtocol] Starting ProtocolHandler ["http-nio-auto-1"]
+[2024-01-15 20:08:36 INFO  Test worker] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] Tomcat started on port 50462 (http) with context path ''
+[2024-01-15 20:08:36 INFO  Test worker] [com.team5.projrental.payment.PaymentControllerIntegrationTest] Started PaymentControllerIntegrationTest in 1.707 seconds (process running for 2.311)
+[2024-01-15 20:08:36 INFO  Test worker] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Starting...
+[2024-01-15 20:08:37 ERROR Test worker] [com.zaxxer.hikari.pool.HikariPool] HikariPool-1 - Exception during pool initialization.
+java.sql.SQLException: RSA public key is not available client side (option serverRsaPublicKeyFile not set)
+	at org.mariadb.jdbc.plugin.authentication.standard.CachingSha2PasswordPlugin.process(CachingSha2PasswordPlugin.java:145)
+	at org.mariadb.jdbc.client.impl.ConnectionHelper.authenticationHandler(ConnectionHelper.java:258)
+	at org.mariadb.jdbc.client.impl.StandardClient.<init>(StandardClient.java:192)
+	at org.mariadb.jdbc.Driver.connect(Driver.java:70)
+	at org.mariadb.jdbc.Driver.connect(Driver.java:101)
+	at org.mariadb.jdbc.Driver.connect(Driver.java:27)
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:138)
+	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:359)
+	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:201)
+	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:470)
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:561)
+	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:100)
+	at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:112)
+	at org.springframework.jdbc.datasource.DataSourceTransactionManager.doBegin(DataSourceTransactionManager.java:269)
+	at org.springframework.transaction.support.AbstractPlatformTransactionManager.startTransaction(AbstractPlatformTransactionManager.java:531)
+	at org.springframework.transaction.support.AbstractPlatformTransactionManager.getTransaction(AbstractPlatformTransactionManager.java:405)
+	at org.springframework.test.context.transaction.TransactionContext.startTransaction(TransactionContext.java:103)
+	at org.springframework.test.context.transaction.TransactionalTestExecutionListener.beforeTestMethod(TransactionalTestExecutionListener.java:235)
+	at org.springframework.test.context.TestContextManager.beforeTestMethod(TestContextManager.java:320)
+	at org.springframework.test.context.junit.jupiter.SpringExtension.beforeEach(SpringExtension.java:240)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeBeforeEachCallbacks$2(TestMethodTestDescriptor.java:167)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeBeforeMethodsOrCallbacksUntilExceptionOccurs$6(TestMethodTestDescriptor.java:203)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeBeforeMethodsOrCallbacksUntilExceptionOccurs(TestMethodTestDescriptor.java:203)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeBeforeEachCallbacks(TestMethodTestDescriptor.java:166)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:133)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:69)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:151)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:107)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:88)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:67)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:52)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:86)
+	at org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:86)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor$CollectAllTestClassesExecutor.processAllTestClasses(JUnitPlatformTestClassProcessor.java:119)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor$CollectAllTestClassesExecutor.access$000(JUnitPlatformTestClassProcessor.java:94)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor.stop(JUnitPlatformTestClassProcessor.java:89)
+	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.stop(SuiteTestClassProcessor.java:62)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:36)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.internal.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:33)
+	at org.gradle.internal.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:94)
+	at jdk.proxy1/jdk.proxy1.$Proxy2.stop(Unknown Source)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker$3.run(TestWorker.java:193)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.executeAndMaintainThreadName(TestWorker.java:129)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.execute(TestWorker.java:100)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.execute(TestWorker.java:60)
+	at org.gradle.process.internal.worker.child.ActionExecutionWorker.execute(ActionExecutionWorker.java:56)
+	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:113)
+	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:65)
+	at worker.org.gradle.process.internal.worker.GradleWorkerMain.run(GradleWorkerMain.java:69)
+	at worker.org.gradle.process.internal.worker.GradleWorkerMain.main(GradleWorkerMain.java:74)
+[2024-01-15 20:08:37 WARN  Test worker] [org.springframework.test.context.TestContextManager] Caught exception while invoking 'beforeTestMethod' callback on TestExecutionListener [org.springframework.test.context.transaction.TransactionalTestExecutionListener] for test method [void com.team5.projrental.payment.PaymentControllerIntegrationTest.postPayment() throws java.lang.Exception] and test instance [com.team5.projrental.payment.PaymentControllerIntegrationTest@25a2c4dc]
+org.springframework.transaction.CannotCreateTransactionException: Could not open JDBC Connection for transaction
+	at org.springframework.jdbc.datasource.DataSourceTransactionManager.doBegin(DataSourceTransactionManager.java:313)
+	at org.springframework.transaction.support.AbstractPlatformTransactionManager.startTransaction(AbstractPlatformTransactionManager.java:531)
+	at org.springframework.transaction.support.AbstractPlatformTransactionManager.getTransaction(AbstractPlatformTransactionManager.java:405)
+	at org.springframework.test.context.transaction.TransactionContext.startTransaction(TransactionContext.java:103)
+	at org.springframework.test.context.transaction.TransactionalTestExecutionListener.beforeTestMethod(TransactionalTestExecutionListener.java:235)
+	at org.springframework.test.context.TestContextManager.beforeTestMethod(TestContextManager.java:320)
+	at org.springframework.test.context.junit.jupiter.SpringExtension.beforeEach(SpringExtension.java:240)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeBeforeEachCallbacks$2(TestMethodTestDescriptor.java:167)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeBeforeMethodsOrCallbacksUntilExceptionOccurs$6(TestMethodTestDescriptor.java:203)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeBeforeMethodsOrCallbacksUntilExceptionOccurs(TestMethodTestDescriptor.java:203)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeBeforeEachCallbacks(TestMethodTestDescriptor.java:166)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:133)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:69)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:151)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:107)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:88)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:67)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:52)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:86)
+	at org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:86)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor$CollectAllTestClassesExecutor.processAllTestClasses(JUnitPlatformTestClassProcessor.java:119)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor$CollectAllTestClassesExecutor.access$000(JUnitPlatformTestClassProcessor.java:94)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor.stop(JUnitPlatformTestClassProcessor.java:89)
+	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.stop(SuiteTestClassProcessor.java:62)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:36)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.internal.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:33)
+	at org.gradle.internal.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:94)
+	at jdk.proxy1/jdk.proxy1.$Proxy2.stop(Unknown Source)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker$3.run(TestWorker.java:193)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.executeAndMaintainThreadName(TestWorker.java:129)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.execute(TestWorker.java:100)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.execute(TestWorker.java:60)
+	at org.gradle.process.internal.worker.child.ActionExecutionWorker.execute(ActionExecutionWorker.java:56)
+	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:113)
+	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:65)
+	at worker.org.gradle.process.internal.worker.GradleWorkerMain.run(GradleWorkerMain.java:69)
+	at worker.org.gradle.process.internal.worker.GradleWorkerMain.main(GradleWorkerMain.java:74)
+Caused by: java.sql.SQLException: RSA public key is not available client side (option serverRsaPublicKeyFile not set)
+	at org.mariadb.jdbc.plugin.authentication.standard.CachingSha2PasswordPlugin.process(CachingSha2PasswordPlugin.java:145)
+	at org.mariadb.jdbc.client.impl.ConnectionHelper.authenticationHandler(ConnectionHelper.java:258)
+	at org.mariadb.jdbc.client.impl.StandardClient.<init>(StandardClient.java:192)
+	at org.mariadb.jdbc.Driver.connect(Driver.java:70)
+	at org.mariadb.jdbc.Driver.connect(Driver.java:101)
+	at org.mariadb.jdbc.Driver.connect(Driver.java:27)
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:138)
+	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:359)
+	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:201)
+	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:470)
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:561)
+	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:100)
+	at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:112)
+	at org.springframework.jdbc.datasource.DataSourceTransactionManager.doBegin(DataSourceTransactionManager.java:269)
+	... 74 common frames omitted
+[2024-01-15 20:09:30 INFO  background-preinit] [org.hibernate.validator.internal.util.Version] HV000001: Hibernate Validator 8.0.1.Final
+[2024-01-15 20:09:30 INFO  Test worker] [com.team5.projrental.payment.PaymentControllerIntegrationTest] Starting PaymentControllerIntegrationTest using Java 17.0.8.1 with PID 97471 (started by yulecho in /Users/yulecho/study/javaSpring_infRun/projrental2)
+[2024-01-15 20:09:30 DEBUG Test worker] [com.team5.projrental.payment.PaymentControllerIntegrationTest] Running with Spring Boot v3.2.1, Spring v6.1.2
+[2024-01-15 20:09:30 INFO  Test worker] [com.team5.projrental.payment.PaymentControllerIntegrationTest] No active profile set, falling back to 1 default profile: "default"
+[2024-01-15 20:09:31 INFO  Test worker] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] Tomcat initialized with port 0 (http)
+[2024-01-15 20:09:31 INFO  Test worker] [org.apache.coyote.http11.Http11NioProtocol] Initializing ProtocolHandler ["http-nio-auto-1"]
+[2024-01-15 20:09:31 INFO  Test worker] [org.apache.catalina.core.StandardService] Starting service [Tomcat]
+[2024-01-15 20:09:31 INFO  Test worker] [org.apache.catalina.core.StandardEngine] Starting Servlet engine: [Apache Tomcat/10.1.17]
+[2024-01-15 20:09:31 INFO  Test worker] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] Initializing Spring embedded WebApplicationContext
+[2024-01-15 20:09:31 INFO  Test worker] [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext] Root WebApplicationContext: initialization completed in 789 ms
+[2024-01-15 20:09:31 DEBUG Test worker] [com.team5.projrental.common.security.filter.JwtAuthenticationFilter] Filter 'jwtAuthenticationFilter' configured for use
+[2024-01-15 20:09:31 WARN  Test worker] [org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration] 
+
+Using generated security password: 8f53068d-7e4c-402e-a4dd-b3785b6b5c49
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+[2024-01-15 20:09:32 INFO  Test worker] [org.springframework.security.web.DefaultSecurityFilterChain] Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@504c415c, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@6c9e74f3, org.springframework.security.web.context.SecurityContextHolderFilter@45451333, org.springframework.security.web.header.HeaderWriterFilter@19213a74, org.springframework.web.filter.CorsFilter@813ab53, org.springframework.security.web.authentication.logout.LogoutFilter@67d180e4, com.team5.projrental.common.security.filter.JwtAuthenticationFilter@1c90029b, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3f033664, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6abd8bcd, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5030997b, org.springframework.security.web.session.SessionManagementFilter@719bb60d, org.springframework.security.web.access.ExceptionTranslationFilter@2dd08ff1, org.springframework.security.web.access.intercept.AuthorizationFilter@4f356b98]
+[2024-01-15 20:09:32 DEBUG Test worker] [com.team5.projrental.common.security.filter.JwtAuthenticationFilter] Filter 'jwtAuthenticationFilter' configured for use
+[2024-01-15 20:09:32 INFO  Test worker] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] Initializing Spring TestDispatcherServlet ''
+[2024-01-15 20:09:32 INFO  Test worker] [org.springframework.test.web.servlet.TestDispatcherServlet] Initializing Servlet ''
+[2024-01-15 20:09:32 INFO  Test worker] [org.springframework.test.web.servlet.TestDispatcherServlet] Completed initialization in 1 ms
+[2024-01-15 20:09:32 INFO  Test worker] [org.apache.coyote.http11.Http11NioProtocol] Starting ProtocolHandler ["http-nio-auto-1"]
+[2024-01-15 20:09:32 INFO  Test worker] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] Tomcat started on port 50478 (http) with context path ''
+[2024-01-15 20:09:32 INFO  Test worker] [com.team5.projrental.payment.PaymentControllerIntegrationTest] Started PaymentControllerIntegrationTest in 1.667 seconds (process running for 2.227)
+[2024-01-15 20:09:32 INFO  Test worker] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Starting...
+[2024-01-15 20:09:32 INFO  Test worker] [com.zaxxer.hikari.pool.HikariPool] HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7602c65d
+[2024-01-15 20:09:32 INFO  Test worker] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Start completed.
+[2024-01-15 20:09:32 DEBUG Test worker] [com.team5.projrental.product.ProductMapper.getRentalPricePerDay] ==>  Preparing: select rental_price from t_product where iproduct = ?
+[2024-01-15 20:09:32 DEBUG Test worker] [com.team5.projrental.product.ProductMapper.getRentalPricePerDay] ==> Parameters: null
+[2024-01-15 20:09:33 DEBUG Test worker] [com.team5.projrental.product.ProductMapper.getRentalPricePerDay] <==      Total: 0
+[2024-01-15 20:09:33 INFO  SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Shutdown initiated...
+[2024-01-15 20:09:33 INFO  SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Shutdown completed.
+[2024-01-15 20:11:48 INFO  background-preinit] [org.hibernate.validator.internal.util.Version] HV000001: Hibernate Validator 8.0.1.Final
+[2024-01-15 20:11:48 INFO  Test worker] [com.team5.projrental.payment.PaymentControllerIntegrationTest] Starting PaymentControllerIntegrationTest using Java 17.0.8.1 with PID 97512 (started by yulecho in /Users/yulecho/study/javaSpring_infRun/projrental2)
+[2024-01-15 20:11:48 DEBUG Test worker] [com.team5.projrental.payment.PaymentControllerIntegrationTest] Running with Spring Boot v3.2.1, Spring v6.1.2
+[2024-01-15 20:11:48 INFO  Test worker] [com.team5.projrental.payment.PaymentControllerIntegrationTest] No active profile set, falling back to 1 default profile: "default"
+[2024-01-15 20:11:49 INFO  Test worker] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] Tomcat initialized with port 0 (http)
+[2024-01-15 20:11:49 INFO  Test worker] [org.apache.coyote.http11.Http11NioProtocol] Initializing ProtocolHandler ["http-nio-auto-1"]
+[2024-01-15 20:11:49 INFO  Test worker] [org.apache.catalina.core.StandardService] Starting service [Tomcat]
+[2024-01-15 20:11:49 INFO  Test worker] [org.apache.catalina.core.StandardEngine] Starting Servlet engine: [Apache Tomcat/10.1.17]
+[2024-01-15 20:11:49 INFO  Test worker] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] Initializing Spring embedded WebApplicationContext
+[2024-01-15 20:11:49 INFO  Test worker] [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext] Root WebApplicationContext: initialization completed in 795 ms
+[2024-01-15 20:11:49 DEBUG Test worker] [com.team5.projrental.common.security.filter.JwtAuthenticationFilter] Filter 'jwtAuthenticationFilter' configured for use
+[2024-01-15 20:11:49 WARN  Test worker] [org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration] 
+
+Using generated security password: 54f697de-671a-4983-9247-080b644fd827
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+[2024-01-15 20:11:49 INFO  Test worker] [org.springframework.security.web.DefaultSecurityFilterChain] Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@504c415c, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@6c9e74f3, org.springframework.security.web.context.SecurityContextHolderFilter@45451333, org.springframework.security.web.header.HeaderWriterFilter@19213a74, org.springframework.web.filter.CorsFilter@813ab53, org.springframework.security.web.authentication.logout.LogoutFilter@67d180e4, com.team5.projrental.common.security.filter.JwtAuthenticationFilter@1c90029b, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3f033664, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6abd8bcd, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5030997b, org.springframework.security.web.session.SessionManagementFilter@719bb60d, org.springframework.security.web.access.ExceptionTranslationFilter@2dd08ff1, org.springframework.security.web.access.intercept.AuthorizationFilter@4f356b98]
+[2024-01-15 20:11:50 DEBUG Test worker] [com.team5.projrental.common.security.filter.JwtAuthenticationFilter] Filter 'jwtAuthenticationFilter' configured for use
+[2024-01-15 20:11:50 INFO  Test worker] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] Initializing Spring TestDispatcherServlet ''
+[2024-01-15 20:11:50 INFO  Test worker] [org.springframework.test.web.servlet.TestDispatcherServlet] Initializing Servlet ''
+[2024-01-15 20:11:50 INFO  Test worker] [org.springframework.test.web.servlet.TestDispatcherServlet] Completed initialization in 1 ms
+[2024-01-15 20:11:50 INFO  Test worker] [org.apache.coyote.http11.Http11NioProtocol] Starting ProtocolHandler ["http-nio-auto-1"]
+[2024-01-15 20:11:50 INFO  Test worker] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] Tomcat started on port 50502 (http) with context path ''
+[2024-01-15 20:11:50 INFO  Test worker] [com.team5.projrental.payment.PaymentControllerIntegrationTest] Started PaymentControllerIntegrationTest in 1.677 seconds (process running for 2.227)
+[2024-01-15 20:11:50 INFO  Test worker] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Starting...
+[2024-01-15 20:11:50 INFO  Test worker] [com.zaxxer.hikari.pool.HikariPool] HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7602c65d
+[2024-01-15 20:11:50 INFO  Test worker] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Start completed.
+[2024-01-15 20:11:50 DEBUG Test worker] [com.team5.projrental.product.ProductMapper.getRentalPricePerDay] ==>  Preparing: select rental_price from t_product where iproduct = ?
+[2024-01-15 20:11:50 DEBUG Test worker] [com.team5.projrental.product.ProductMapper.getRentalPricePerDay] ==> Parameters: null
+[2024-01-15 20:11:50 DEBUG Test worker] [com.team5.projrental.product.ProductMapper.getRentalPricePerDay] <==      Total: 0
+[2024-01-15 20:11:50 INFO  SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Shutdown initiated...
+[2024-01-15 20:11:50 INFO  SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Shutdown completed.
+[2024-01-15 20:16:55 INFO  background-preinit] [org.hibernate.validator.internal.util.Version] HV000001: Hibernate Validator 8.0.1.Final
+[2024-01-15 20:16:55 INFO  Test worker] [com.team5.projrental.payment.PaymentControllerIntegrationTest] Starting PaymentControllerIntegrationTest using Java 17.0.8.1 with PID 97590 (started by yulecho in /Users/yulecho/study/javaSpring_infRun/projrental2)
+[2024-01-15 20:16:55 DEBUG Test worker] [com.team5.projrental.payment.PaymentControllerIntegrationTest] Running with Spring Boot v3.2.1, Spring v6.1.2
+[2024-01-15 20:16:55 INFO  Test worker] [com.team5.projrental.payment.PaymentControllerIntegrationTest] No active profile set, falling back to 1 default profile: "default"
+[2024-01-15 20:16:56 INFO  Test worker] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] Tomcat initialized with port 0 (http)
+[2024-01-15 20:16:56 INFO  Test worker] [org.apache.coyote.http11.Http11NioProtocol] Initializing ProtocolHandler ["http-nio-auto-1"]
+[2024-01-15 20:16:56 INFO  Test worker] [org.apache.catalina.core.StandardService] Starting service [Tomcat]
+[2024-01-15 20:16:56 INFO  Test worker] [org.apache.catalina.core.StandardEngine] Starting Servlet engine: [Apache Tomcat/10.1.17]
+[2024-01-15 20:16:56 INFO  Test worker] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] Initializing Spring embedded WebApplicationContext
+[2024-01-15 20:16:56 INFO  Test worker] [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext] Root WebApplicationContext: initialization completed in 832 ms
+[2024-01-15 20:16:56 DEBUG Test worker] [com.team5.projrental.common.security.filter.JwtAuthenticationFilter] Filter 'jwtAuthenticationFilter' configured for use
+[2024-01-15 20:16:56 WARN  Test worker] [org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration] 
+
+Using generated security password: 59ee9ae0-be13-4bdb-b36f-df6d24ef74f5
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+[2024-01-15 20:16:56 INFO  Test worker] [org.springframework.security.web.DefaultSecurityFilterChain] Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@504c415c, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@6c9e74f3, org.springframework.security.web.context.SecurityContextHolderFilter@45451333, org.springframework.security.web.header.HeaderWriterFilter@19213a74, org.springframework.web.filter.CorsFilter@813ab53, org.springframework.security.web.authentication.logout.LogoutFilter@67d180e4, com.team5.projrental.common.security.filter.JwtAuthenticationFilter@1c90029b, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3f033664, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6abd8bcd, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5030997b, org.springframework.security.web.session.SessionManagementFilter@719bb60d, org.springframework.security.web.access.ExceptionTranslationFilter@2dd08ff1, org.springframework.security.web.access.intercept.AuthorizationFilter@4f356b98]
+[2024-01-15 20:16:57 DEBUG Test worker] [com.team5.projrental.common.security.filter.JwtAuthenticationFilter] Filter 'jwtAuthenticationFilter' configured for use
+[2024-01-15 20:16:57 INFO  Test worker] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] Initializing Spring TestDispatcherServlet ''
+[2024-01-15 20:16:57 INFO  Test worker] [org.springframework.test.web.servlet.TestDispatcherServlet] Initializing Servlet ''
+[2024-01-15 20:16:57 INFO  Test worker] [org.springframework.test.web.servlet.TestDispatcherServlet] Completed initialization in 0 ms
+[2024-01-15 20:16:57 INFO  Test worker] [org.apache.coyote.http11.Http11NioProtocol] Starting ProtocolHandler ["http-nio-auto-1"]
+[2024-01-15 20:16:57 INFO  Test worker] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] Tomcat started on port 50551 (http) with context path ''
+[2024-01-15 20:16:57 INFO  Test worker] [com.team5.projrental.payment.PaymentControllerIntegrationTest] Started PaymentControllerIntegrationTest in 1.773 seconds (process running for 2.614)
+[2024-01-15 20:16:57 INFO  Test worker] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Starting...
+[2024-01-15 20:16:57 INFO  Test worker] [com.zaxxer.hikari.pool.HikariPool] HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7602c65d
+[2024-01-15 20:16:57 INFO  Test worker] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Start completed.
+[2024-01-15 20:17:48 INFO  background-preinit] [org.hibernate.validator.internal.util.Version] HV000001: Hibernate Validator 8.0.1.Final
+[2024-01-15 20:17:48 INFO  Test worker] [com.team5.projrental.payment.PaymentControllerIntegrationTest] Starting PaymentControllerIntegrationTest using Java 17.0.8.1 with PID 97599 (started by yulecho in /Users/yulecho/study/javaSpring_infRun/projrental2)
+[2024-01-15 20:17:48 DEBUG Test worker] [com.team5.projrental.payment.PaymentControllerIntegrationTest] Running with Spring Boot v3.2.1, Spring v6.1.2
+[2024-01-15 20:17:48 INFO  Test worker] [com.team5.projrental.payment.PaymentControllerIntegrationTest] No active profile set, falling back to 1 default profile: "default"
+[2024-01-15 20:17:49 INFO  Test worker] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] Tomcat initialized with port 0 (http)
+[2024-01-15 20:17:49 INFO  Test worker] [org.apache.coyote.http11.Http11NioProtocol] Initializing ProtocolHandler ["http-nio-auto-1"]
+[2024-01-15 20:17:49 INFO  Test worker] [org.apache.catalina.core.StandardService] Starting service [Tomcat]
+[2024-01-15 20:17:49 INFO  Test worker] [org.apache.catalina.core.StandardEngine] Starting Servlet engine: [Apache Tomcat/10.1.17]
+[2024-01-15 20:17:49 INFO  Test worker] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] Initializing Spring embedded WebApplicationContext
+[2024-01-15 20:17:49 INFO  Test worker] [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext] Root WebApplicationContext: initialization completed in 836 ms
+[2024-01-15 20:17:49 DEBUG Test worker] [com.team5.projrental.common.security.filter.JwtAuthenticationFilter] Filter 'jwtAuthenticationFilter' configured for use
+[2024-01-15 20:17:50 WARN  Test worker] [org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration] 
+
+Using generated security password: 76899112-4155-412a-bd1e-eddf531c1ecc
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+[2024-01-15 20:17:50 INFO  Test worker] [org.springframework.security.web.DefaultSecurityFilterChain] Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@504c415c, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@6c9e74f3, org.springframework.security.web.context.SecurityContextHolderFilter@45451333, org.springframework.security.web.header.HeaderWriterFilter@19213a74, org.springframework.web.filter.CorsFilter@813ab53, org.springframework.security.web.authentication.logout.LogoutFilter@67d180e4, com.team5.projrental.common.security.filter.JwtAuthenticationFilter@1c90029b, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3f033664, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6abd8bcd, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5030997b, org.springframework.security.web.session.SessionManagementFilter@719bb60d, org.springframework.security.web.access.ExceptionTranslationFilter@2dd08ff1, org.springframework.security.web.access.intercept.AuthorizationFilter@4f356b98]
+[2024-01-15 20:17:50 DEBUG Test worker] [com.team5.projrental.common.security.filter.JwtAuthenticationFilter] Filter 'jwtAuthenticationFilter' configured for use
+[2024-01-15 20:17:50 INFO  Test worker] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] Initializing Spring TestDispatcherServlet ''
+[2024-01-15 20:17:50 INFO  Test worker] [org.springframework.test.web.servlet.TestDispatcherServlet] Initializing Servlet ''
+[2024-01-15 20:17:50 INFO  Test worker] [org.springframework.test.web.servlet.TestDispatcherServlet] Completed initialization in 1 ms
+[2024-01-15 20:17:50 INFO  Test worker] [org.apache.coyote.http11.Http11NioProtocol] Starting ProtocolHandler ["http-nio-auto-1"]
+[2024-01-15 20:17:50 INFO  Test worker] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] Tomcat started on port 50573 (http) with context path ''
+[2024-01-15 20:17:50 INFO  Test worker] [com.team5.projrental.payment.PaymentControllerIntegrationTest] Started PaymentControllerIntegrationTest in 1.772 seconds (process running for 2.396)
+[2024-01-15 20:17:50 INFO  Test worker] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Starting...
+[2024-01-15 20:17:50 INFO  Test worker] [com.zaxxer.hikari.pool.HikariPool] HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7602c65d
+[2024-01-15 20:17:50 INFO  Test worker] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Start completed.
+[2024-01-15 20:18:18 INFO  background-preinit] [org.hibernate.validator.internal.util.Version] HV000001: Hibernate Validator 8.0.1.Final
+[2024-01-15 20:18:18 INFO  Test worker] [com.team5.projrental.payment.PaymentControllerIntegrationTest] Starting PaymentControllerIntegrationTest using Java 17.0.8.1 with PID 97620 (started by yulecho in /Users/yulecho/study/javaSpring_infRun/projrental2)
+[2024-01-15 20:18:18 DEBUG Test worker] [com.team5.projrental.payment.PaymentControllerIntegrationTest] Running with Spring Boot v3.2.1, Spring v6.1.2
+[2024-01-15 20:18:18 INFO  Test worker] [com.team5.projrental.payment.PaymentControllerIntegrationTest] No active profile set, falling back to 1 default profile: "default"
+[2024-01-15 20:18:19 INFO  Test worker] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] Tomcat initialized with port 0 (http)
+[2024-01-15 20:18:19 INFO  Test worker] [org.apache.coyote.http11.Http11NioProtocol] Initializing ProtocolHandler ["http-nio-auto-1"]
+[2024-01-15 20:18:19 INFO  Test worker] [org.apache.catalina.core.StandardService] Starting service [Tomcat]
+[2024-01-15 20:18:19 INFO  Test worker] [org.apache.catalina.core.StandardEngine] Starting Servlet engine: [Apache Tomcat/10.1.17]
+[2024-01-15 20:18:19 INFO  Test worker] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] Initializing Spring embedded WebApplicationContext
+[2024-01-15 20:18:19 INFO  Test worker] [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext] Root WebApplicationContext: initialization completed in 782 ms
+[2024-01-15 20:18:19 DEBUG Test worker] [com.team5.projrental.common.security.filter.JwtAuthenticationFilter] Filter 'jwtAuthenticationFilter' configured for use
+[2024-01-15 20:18:20 WARN  Test worker] [org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration] 
+
+Using generated security password: 97ca5acb-e9ea-45fa-89fc-97e1975655b0
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+[2024-01-15 20:18:20 INFO  Test worker] [org.springframework.security.web.DefaultSecurityFilterChain] Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@1ab85862, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@504c415c, org.springframework.security.web.context.SecurityContextHolderFilter@49639118, org.springframework.security.web.header.HeaderWriterFilter@3bf26810, org.springframework.web.filter.CorsFilter@6c9e74f3, org.springframework.security.web.authentication.logout.LogoutFilter@7816454d, com.team5.projrental.common.security.filter.JwtAuthenticationFilter@147c00aa, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6942ee48, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@3f033664, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@813ab53, org.springframework.security.web.session.SessionManagementFilter@30a791a6, org.springframework.security.web.access.ExceptionTranslationFilter@5454be, org.springframework.security.web.access.intercept.AuthorizationFilter@1325f967]
+[2024-01-15 20:18:20 DEBUG Test worker] [com.team5.projrental.common.security.filter.JwtAuthenticationFilter] Filter 'jwtAuthenticationFilter' configured for use
+[2024-01-15 20:18:20 INFO  Test worker] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] Initializing Spring TestDispatcherServlet ''
+[2024-01-15 20:18:20 INFO  Test worker] [org.springframework.test.web.servlet.TestDispatcherServlet] Initializing Servlet ''
+[2024-01-15 20:18:20 INFO  Test worker] [org.springframework.test.web.servlet.TestDispatcherServlet] Completed initialization in 0 ms
+[2024-01-15 20:18:20 INFO  Test worker] [org.apache.coyote.http11.Http11NioProtocol] Starting ProtocolHandler ["http-nio-auto-1"]
+[2024-01-15 20:18:20 INFO  Test worker] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] Tomcat started on port 50589 (http) with context path ''
+[2024-01-15 20:18:20 INFO  Test worker] [com.team5.projrental.payment.PaymentControllerIntegrationTest] Started PaymentControllerIntegrationTest in 1.674 seconds (process running for 2.236)
+[2024-01-15 20:18:20 INFO  Test worker] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Starting...
+[2024-01-15 20:18:20 INFO  Test worker] [com.zaxxer.hikari.pool.HikariPool] HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@31a80c88
+[2024-01-15 20:18:20 INFO  Test worker] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Start completed.
+[2024-01-15 20:18:21 WARN  Test worker] [org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver] Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public com.team5.projrental.common.model.ResVo com.team5.projrental.payment.PaymentController.postPayment(com.team5.projrental.payment.model.PaymentInsDto) with 5 errors: [Field error in object 'paymentInsDto' on field 'paymentMethod': rejected value [null]; codes [NotEmpty.paymentInsDto.paymentMethod,NotEmpty.paymentMethod,NotEmpty.java.lang.String,NotEmpty]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [paymentInsDto.paymentMethod,paymentMethod]; arguments []; default message [paymentMethod]]; default message [must not be empty]] [Field error in object 'paymentInsDto' on field 'iproduct': rejected value [null]; codes [NotNull.paymentInsDto.iproduct,NotNull.iproduct,NotNull.java.lang.Integer,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [paymentInsDto.iproduct,iproduct]; arguments []; default message [iproduct]]; default message [must not be null]] [Field error in object 'paymentInsDto' on field 'rentalEndDate': rejected value [null]; codes [NotNull.paymentInsDto.rentalEndDate,NotNull.rentalEndDate,NotNull.java.time.LocalDate,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [paymentInsDto.rentalEndDate,rentalEndDate]; arguments []; default message [rentalEndDate]]; default message [must not be null]] [Field error in object 'paymentInsDto' on field 'rentalStartDate': rejected value [null]; codes [NotNull.paymentInsDto.rentalStartDate,NotNull.rentalStartDate,NotNull.java.time.LocalDate,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [paymentInsDto.rentalStartDate,rentalStartDate]; arguments []; default message [rentalStartDate]]; default message [must not be null]] [Field error in object 'paymentInsDto' on field 'depositPer': rejected value [null]; codes [NotNull.paymentInsDto.depositPer,NotNull.depositPer,NotNull.java.lang.Integer,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [paymentInsDto.depositPer,depositPer]; arguments []; default message [depositPer]]; default message [must not be null]] ]
+[2024-01-15 20:18:21 INFO  SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Shutdown initiated...
+[2024-01-15 20:18:21 INFO  SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Shutdown completed.

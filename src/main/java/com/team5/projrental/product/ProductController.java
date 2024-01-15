@@ -22,17 +22,18 @@ public class ProductController {
 
     private final ProductService productService;
 
-    @GetMapping("{category}")
+    @Validated
+    @GetMapping("{icategory}")
     public List<ProductListVo> getProductList(@RequestParam(required = false) Integer sort,
                                               @RequestParam(required = false) String search,
-                                              @RequestParam int page,
-                                              @PathVariable int icategory) {
+                                              @RequestParam @Min(1) int page,
+                                              @PathVariable @Min(1) int icategory) {
 
         return productService.getProductList(sort, search, icategory, (page - 1) * Const.PROD_PER_PAGE);
     }
 
     @Validated
-    @GetMapping("/api/prod/{category}/{iproduct}")
+    @GetMapping("/api/prod/{icategory}/{iproduct}")
     public ProductVo getProduct(@PathVariable @Min(1) Integer icategory, @PathVariable @Min(1) Integer iproduct) {
         return productService.getProduct(icategory, iproduct);
     }

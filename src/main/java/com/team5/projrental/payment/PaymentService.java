@@ -47,9 +47,9 @@ public class PaymentService {
     public ResVo postPayment(PaymentInsDto paymentInsDto) {
 
         // 1일당 가격 가져오기
-        int rentalPrice = productRepository.findRentalPriceBy(paymentInsDto.getIproduct());
+        Integer rentalPrice = productRepository.findRentalPriceBy(paymentInsDto.getIproduct());
         // request 데이터 검증
-        if (rentalPrice == 0) {
+        if (rentalPrice == null || rentalPrice == 0) {
             throw new NoSuchProductException(NO_SUCH_PRODUCT_EX_MESSAGE);
         }
         paymentInsDto.setIbuyer(authenticationFacade.getLoginUserPk());

@@ -71,9 +71,9 @@ public class CommonUtils {
     }
 
 
-    public static List<String> subEupmyun(String fullAddr) {
+    public static List<String> subEupmyun(String addr) {
         List<String> result = new ArrayList<>();
-        Arrays.stream(fullAddr.split(" ")).filter(s -> s.contains("읍") || s.contains("동") || s.contains("면"))
+        Arrays.stream(addr.split(" ")).filter(s -> s.contains("읍") || s.contains("동") || s.contains("면"))
                 .forEach(result::add);
         return result;
     }
