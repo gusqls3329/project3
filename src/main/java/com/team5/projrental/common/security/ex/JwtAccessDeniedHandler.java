@@ -1,4 +1,4 @@
-package com.team5.projrental.security.ex;
+package com.team5.projrental.common.security.ex;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

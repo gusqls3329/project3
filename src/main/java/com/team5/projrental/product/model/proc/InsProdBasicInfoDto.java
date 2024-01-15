@@ -66,7 +66,7 @@ public class InsProdBasicInfoDto {
         this.buyDate = dto.getBuyDate();
         this.rentalStartDate = dto.getRentalStartDate();
         this.rentalEndDate = dto.getRentalEndDate();
-        this.icategory = parseCategory(dto.getCategory());
+        this.icategory = dto.getIcategory();
         this.x = x;
         this.y = y;
     }

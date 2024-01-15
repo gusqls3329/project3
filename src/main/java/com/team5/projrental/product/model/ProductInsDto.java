@@ -1,6 +1,7 @@
 package com.team5.projrental.product.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -42,7 +43,9 @@ public class ProductInsDto {
     private LocalDate buyDate;
     private LocalDate rentalStartDate;
     private LocalDate rentalEndDate;
-    @NotBlank
-    private String category;
+    @NotNull
+    @Min(1)
+    private Integer icategory;
+
 
 }

@@ -6,12 +6,12 @@ import com.team5.projrental.common.exception.checked.NotContainsDotException;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.utils.AxisGenerator;
 import com.team5.projrental.common.utils.CommonUtils;
-import com.team5.projrental.common.utils.FileUtils;
+import com.team5.projrental.common.utils.myFileUtils;
 import com.team5.projrental.product.model.*;
 import com.team5.projrental.product.model.innermodel.PicSet;
 import com.team5.projrental.product.model.innermodel.StoredFileInfo;
 import com.team5.projrental.product.model.proc.*;
-import com.team5.projrental.security.AuthenticationFacade;
+import com.team5.projrental.common.security.AuthenticationFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -41,7 +41,7 @@ public class ProductService {
 
     private final AuthenticationFacade authenticationFacade;
 
-    private final FileUtils fileUtils;
+    private final myFileUtils myFileUtils;
 
     /*
         ------- Logic -------
@@ -75,10 +75,10 @@ public class ProductService {
             ProductListVo productListVo = new ProductListVo(product);
 
             productListVo.setUserPic(
-                    fileUtils.getPic(new StoredFileInfo(product.getUserRequestPic(), product.getUserStoredPic()))
+                    myFileUtils.getPic(new StoredFileInfo(product.getUserRequestPic(), product.getUserStoredPic()))
             );
             productListVo.setProdPic(
-                    fileUtils.getPic(new StoredFileInfo(product.getProdMainRequestPic(), product.getProdMainStoredPic()))
+                    myFileUtils.getPic(new StoredFileInfo(product.getProdMainRequestPic(), product.getProdMainStoredPic()))
             );
             result.add(productListVo);
         });
@@ -93,11 +93,11 @@ public class ProductService {
      * @return ProductVo
      */
     @CountView
-    public ProductVo getProduct(String category, Integer iproduct) {
+    public ProductVo getProduct(Integer icategory, Integer iproduct) {
 
         // 사진을 '제외한' 모든 정보 획득 & 제공된 카테고리 검증 (category -> icategory)
         GetProductResultDto productBy = productRepository.findProductBy(
-                new GetProductBaseDto(CommonUtils.ifCategoryNotContainsThrowOrReturn(category), iproduct)
+                new GetProductBaseDto(icategory, iproduct)
         );
         // 결과물 없음 여부 검증
         CommonUtils.ifAnyNullThrow(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE, productBy);
@@ -113,7 +113,7 @@ public class ProductService {
         }
 
         List<PicSet> resultEctPic = new ArrayList<>();
-        ectPics.forEach(p -> resultEctPic.add(new PicSet(fileUtils.getPic(new StoredFileInfo(p.getProdRequestPic(), p.getProdStoredPic())), p.getIpics())));
+        ectPics.forEach(p -> resultEctPic.add(new PicSet(myFileUtils.getPic(new StoredFileInfo(p.getProdRequestPic(), p.getProdStoredPic())), p.getIpics())));
         result.setProdPics(resultEctPic);
         return result;
     }
@@ -146,7 +146,7 @@ public class ProductService {
         CommonUtils.ifFalseThrow(NoSuchUserException.class, NO_SUCH_USER_EX_MESSAGE, productRepository.findIuserCountBy(dto.getIuser()));
 
         // 카테고리 검증 - 예외 코드, 메시지 를 위해 직접 검증 (!@Validated)
-        CommonUtils.ifCategoryNotContainsThrowOrReturn(dto.getCategory());
+        CommonUtils.ifCategoryNotContainsThrowOrReturn(dto.getIcategory());
 
         // 날짜 검증 시작  - 예외 코드, 메시지 를 위해 직접 검증 (!@Validated)
         CommonUtils.ifAfterThrow(
@@ -171,18 +171,21 @@ public class ProductService {
         // insert 할 객체 준비 완.
         InsProdBasicInfoDto insProdBasicInfoDto = new InsProdBasicInfoDto(dto, addrBy, axis.get(AXIS_X), axis.get(AXIS_Y));
         try {
-            insProdBasicInfoDto.setMainPicObj(fileUtils.savePic(dto.getMainPic(), CATEGORY_PRODUCT_MAIN));
+            insProdBasicInfoDto.setMainPicObj(myFileUtils.savePic(dto.getMainPic(), CATEGORY_PRODUCT_MAIN));
 
-            if (productRepository.saveProduct(insProdBasicInfoDto) == 1 && !dto.getPics().isEmpty()) {
-                // pics 에 insert 할 객체
-                InsProdPicsDto insProdPicsDto = new InsProdPicsDto(insProdBasicInfoDto.getIproduct(),
-                        fileUtils.savePic(dto.getPics(), CATEGORY_PRODUCT_SUB));
-                if (productRepository.savePics(insProdPicsDto) == 0) throw new RuntimeException(SERVER_ERR_MESSAGE);
+            if (productRepository.saveProduct(insProdBasicInfoDto) == 1) {
+                if (!dto.getPics().isEmpty()) {
+                    // pics 에 insert 할 객체
+                    InsProdPicsDto insProdPicsDto = new InsProdPicsDto(insProdBasicInfoDto.getIproduct(),
+                            myFileUtils.savePic(dto.getPics(), CATEGORY_PRODUCT_SUB));
+                    if (productRepository.savePics(insProdPicsDto) == 0) throw new RuntimeException(SERVER_ERR_MESSAGE);
+                }
+                return new ResVo(insProdBasicInfoDto.getIproduct());
             }
         } catch (NotContainsDotException e) {
             throw new BadMainPicException(BAD_PIC_EX_MESSAGE);
         }
-        return new ResVo(insProdBasicInfoDto.getIproduct());
+        throw new RuntimeException(SERVER_ERR_MESSAGE);
     }
 
 
@@ -209,9 +212,10 @@ public class ProductService {
         }
 
         dto.setIuser(authenticationFacade.getLoginUserPk());
-
+        // 카테고리 검증
+        CommonUtils.ifCategoryNotContainsThrowOrReturn(dto.getIcategory());
         UpdProdBasicDto fromDb =
-                productRepository.findProductByForUpdate(new GetProductBaseDto(CommonUtils.ifCategoryNotContainsThrowOrReturn(dto.getCategory()), dto.getIproduct(), dto.getIuser()));
+                productRepository.findProductByForUpdate(new GetProductBaseDto(dto.getIcategory(), dto.getIproduct(), dto.getIuser()));
         // 병합
         Integer price = dto.getPrice() == null ? fromDb.getPrice() : dto.getPrice();
         UpdProdBasicDto mergedData = new UpdProdBasicDto(
@@ -264,16 +268,15 @@ public class ProductService {
             // 문제 없으면 추가 사진 insert
             if (!dto.getPics().isEmpty()) {
                 if (productRepository.savePics(new InsProdPicsDto(dto.getIproduct(),
-                        fileUtils.savePic(dto.getPics(), CATEGORY_PRODUCT_SUB))) == 0) {
+                        myFileUtils.savePic(dto.getPics(), CATEGORY_PRODUCT_SUB))) == 0) {
                     throw new RuntimeException(SERVER_ERR_MESSAGE);
                 }
             }
 
 
             // update 할 객체 세팅
-            dto.setStoredMainPic(dto.getMainPic() == null ? null : fileUtils.savePic(dto.getMainPic(), CATEGORY_PRODUCT_MAIN));
+            dto.setStoredMainPic(dto.getMainPic() == null ? null : myFileUtils.savePic(dto.getMainPic(), CATEGORY_PRODUCT_MAIN));
             dto.setDeposit(dto.getDepositPer() == null ? null : CommonUtils.getDepositFromPer(price, dto.getDeposit()));
-            dto.setIcategory(CommonUtils.ifCategoryNotContainsThrowOrReturn(dto.getCategory()));
             if (dto.getAddr() != null && dto.getRestAddr() != null) {
                 Map<String, Double> axis = axisGenerator.getAxis(dto.getAddr().concat(dto.getRestAddr()));
                 dto.setX(axis.get(AXIS_X));
@@ -327,10 +330,10 @@ public class ProductService {
             ProductUserVo productListVo = new ProductUserVo(product);
 
             productListVo.setUserPic(
-                    fileUtils.getPic(new StoredFileInfo(product.getUserRequestPic(), product.getUserStoredPic()))
+                    myFileUtils.getPic(new StoredFileInfo(product.getUserRequestPic(), product.getUserStoredPic()))
             );
             productListVo.setProdPic(
-                    fileUtils.getPic(new StoredFileInfo(product.getProdMainRequestPic(), product.getProdMainStoredPic()))
+                    myFileUtils.getPic(new StoredFileInfo(product.getProdMainRequestPic(), product.getProdMainStoredPic()))
             );
             result.add(productListVo);
         });

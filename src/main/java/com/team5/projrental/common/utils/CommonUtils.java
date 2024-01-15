@@ -22,7 +22,6 @@ import static com.team5.projrental.common.Const.*;
 public class CommonUtils {
 
 
-
     public static void ifFalseThrow(Class<? extends RuntimeException> ex, String message, boolean b) {
         if (!b) thrown(ex, message);
     }
@@ -42,10 +41,13 @@ public class CommonUtils {
         }
     }
 
-    public static Integer ifCategoryNotContainsThrowOrReturn(String category) {
-        Map<Integer, String> categories = CATEGORIES;
-        return categories.keySet().stream().filter(k -> categories.get(k).equals(category))
-                .findAny().orElseThrow(() -> new IllegalCategoryException(ILLEGAL_CATEGORY_EX_MESSAGE));
+    public static void ifCategoryNotContainsThrowOrReturn(Integer icategory) {
+//        Map<Integer, String> categories = CATEGORIES;
+//        return categories.keySet().stream().filter(k -> categories.get(k).equals(category))
+//                .findAny().orElseThrow(() -> new IllegalCategoryException(ILLEGAL_CATEGORY_EX_MESSAGE));
+        boolean contains = CATEGORIES.keySet().contains(icategory);
+        if (contains) return;
+        thrown(IllegalCategoryException.class, ILLEGAL_CATEGORY_EX_MESSAGE);
     }
 
     public static Integer ifPaymentMethodNotContainsThrowOrReturn(String paymentMethod) {

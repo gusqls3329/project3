@@ -1,4 +1,4 @@
-package com.team5.projrental.security.model;
+package com.team5.projrental.common.security.model;
 
 import lombok.*;
 
