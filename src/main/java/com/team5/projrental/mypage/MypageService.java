@@ -1,7 +1,6 @@
 package com.team5.projrental.mypage;
 
-import com.team5.projrental.mypage.model.PaymentSelDto;
-import com.team5.projrental.mypage.model.PaymentSelVo;
+import com.team5.projrental.mypage.model.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,4 +15,14 @@ public class MypageService {
 
         return mapper.getPaymentList(dto);
     }
+
+    public List<MyBuyReviewListSelVo> selIbuyerReviewList(MyBuyReviewListSelDto dto){
+        return mapper.getIbuyerReviewList(dto);
+    }
+
+    public List<MyFavListSelVo> selMyFavList(MyFavListSelDto dto) {
+        return mapper.getFavList(dto);
+    }
+
+
 }
