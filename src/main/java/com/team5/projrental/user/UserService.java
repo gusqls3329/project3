@@ -5,6 +5,7 @@ import com.team5.projrental.user.model.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,10 +15,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
     private final UserMapper mapper;
+    private final PasswordEncoder passwordEncoder;
 
     public ResVo postSignup(UserSignupDto dto) {
-        String salt = BCrypt.gensalt();
-        String hashedPw = BCrypt.hashpw(dto.getUpw(), salt);
+        String hashedPw = passwordEncoder.encode(dto.getUpw());
 
         dto.setUpw(hashedPw);
         dto.setY(40);

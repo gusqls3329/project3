@@ -28,7 +28,7 @@
     </select>
 
     <select id="selFindUid">
-        SELECT uid
+        SELECT uid, iuser
         FROM t_user
         WHERE phone = #{phone}
     </select>
