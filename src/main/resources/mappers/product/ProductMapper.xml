@@ -67,7 +67,7 @@
         P.iproduct, concat(P.addr, ' ', P.rest_addr) as addr, P.title, P.stored_pic as prodMainStoredPic, P.request_pic as
         prodMainRequestPic,
         P.rental_price as rentalPrice,
-        P.rental_start_date as rentalStartDate, P.rental_end_date as rentalEndDate
+        P.rental_start_date as rentalStartDate, P.rental_end_date as rentalEndDate, COUNT(L.iproduct) as prodLike
         <if test="iuser != null">
             , icategory
         </if>
@@ -76,6 +76,7 @@
         </if>
         from t_product P
         join t_user U on P.iuser = U.iuser
+        left join t_like L on P.iproduct = L.iproduct
         <where>
             P.istatus = 0
             <if test="icategory != null and icategory != 0">
@@ -110,9 +111,10 @@
         prodMainStoredPic,
         P.request_pic as prodMainRequestPic, P.rental_price as rentalPrice, P.rental_start_date as rentalStartDate,
         P.rental_end_date as rentalEndDate, (select count(L.iproduct) from t_like L where L.iproduct = P.iproduct) prodLike,
-        P.iuser, P.contents, P.deposit, P.buy_date as buyDate, P.x, P.y
+        P.iuser, P.contents, P.deposit, P.buy_date as buyDate, COUNT(L.iproduct) as prodLike, P.x, P.y
         from t_product P
         join t_user U on P.iuser = U.iuser
+        left join t_like L on P.iproduct = L.iproduct
         <where>
             P.iproduct = #{iproduct}
             <if test="iuser != null and iuser != 0">
