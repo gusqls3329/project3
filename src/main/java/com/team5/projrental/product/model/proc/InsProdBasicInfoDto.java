@@ -5,7 +5,6 @@ import com.team5.projrental.common.exception.IllegalCategoryException;
 import com.team5.projrental.common.utils.CommonUtils;
 import com.team5.projrental.product.model.ProductInsDto;
 import com.team5.projrental.product.model.innermodel.StoredFileInfo;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

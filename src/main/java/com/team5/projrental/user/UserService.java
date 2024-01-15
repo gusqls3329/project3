@@ -1,6 +1,5 @@
 package com.team5.projrental.user;
 
-import com.team5.projrental.common.exception.BadInformationException;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.user.model.*;
 import lombok.RequiredArgsConstructor;

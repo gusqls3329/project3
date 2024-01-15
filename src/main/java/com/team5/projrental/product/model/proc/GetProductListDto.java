@@ -1,6 +1,5 @@
 package com.team5.projrental.product.model.proc;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

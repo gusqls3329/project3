@@ -3,7 +3,6 @@ package com.team5.projrental.product.model.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Normalized;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

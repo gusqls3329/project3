@@ -1,4 +1,4 @@
-//package com.team5.projrental.common;
+package com.team5.projrental.common;//package com.team5.projrental.common;
 //
 //import com.google.auth.oauth2.GoogleCredentials;
 //import com.google.firebase.FirebaseApp;

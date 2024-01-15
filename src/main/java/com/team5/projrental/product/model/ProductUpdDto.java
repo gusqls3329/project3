@@ -2,7 +2,9 @@ package com.team5.projrental.product.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.team5.projrental.product.model.innermodel.StoredFileInfo;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

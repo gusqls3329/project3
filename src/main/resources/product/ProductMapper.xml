@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team5.projrental.product.ProductMapper">
+
+    <!--    -->
+    <!--    for test-->
+    <select id="getIStatus">
+        select istatus from t_product where iproduct = #{iproduct}
+    </select>
+    <!--    -->
+    <!--    -->
+
+    <!--    -->
+    <!--    for test-->
+    <select id="getViewForTest">
+        select view from t_product where iproduct = #{iproduct}
+    </select>
+    <!--    -->
+    <!--    for test-->
+    <select id="getPicsCountForTest">
+        select count(*) from t_pics where iproduct = #{iproduct}
+    </select>
+    <!--    -->
+    <!--    -->
+    <!--    -->
+    <!--    for test-->
+    <select id="getAllIpics">
+        select ipics from t_pics where iproduct = #{iproduct}
+    </select>
+    <!--    -->
+    <!--    -->
+
+
+    <!--    -->
+    <select id="getRentalPricePerDay">
+        select rental_price from t_product where iproduct = #{iproduct}
+    </select>
+    <!--    -->
+
+
+    <!--    -->
+    <select id="checkIuser">
+        select count(iuser) from t_user where iuser = #{iuser}
+    </select>
+
+    <select id="checkIproduct">
+        select count(iproduct) from t_product where iproduct = #{iproduct}
+    </select>
+
+    <!--    -->
+
+    <!--    -->
+    <update id="countView">
+        <selectKey keyProperty="beforeView" resultType="java.lang.Integer" order="BEFORE">
+            select view from t_product where iproduct = #{iproduct}
+        </selectKey>
+        update t_product set view = 1 + #{beforeView} where iproduct = #{iproduct}
+    </update>
+    <!--    -->
+
+
+    <select id="getProductList">
+        select U.nick, U.stored_pic as userStoredPic, U.request_pic as userRequestPic,
+        P.iproduct, concat(S.sido, ' ', G.gungu, ' ', E.eupmyun, ' ',
+        P.rest_addr) as addr, P.title, P.stored_pic as prodMainStoredPic, P.request_pic as prodMainRequestPic,
+        P.rental_price as rentalPrice,
+        P.rental_start_date as rentalStartDate, P.rental_end_date as rentalEndDate
+        <if test="iuser != null">
+            , icategory
+        </if>
+        <if test="sort == 1">
+            , (select count(L.iproduct) from t_like L where L.iproduct = P.iproduct) as prodLike
+        </if>
+        from t_product P
+        join t_user U on P.iuser = U.iuser
+        join t_eupmyun E on P.iaddr = E.ieupmyun
+        join t_gungu G on E.igungu = G.igungu
+        join t_sido S on G.isido = S.isido
+        <where>
+            P.istatus = 0
+            <if test="icategory != null and icategory != 0">
+                and P.icategory = #{icategory}
+            </if>
+            <if test="search != null">
+                and P.title like concat('%', #{search}, '%')
+            </if>
+            <if test="iuser != null">
+                and P.iuser = #{iuser}
+            </if>
+        </where>
+        <if test="sort == 2">
+            order by P.view desc
+        </if>
+        <if test="sort == 1">
+            order by prodLike desc
+        </if>
+        <if test="sort == null">
+            order by P.iproduct desc
+        </if>
+    </select>
+
+    <select id="getProduct">
+        select U.nick, U.stored_pic as userStoredPic, U.request_pic as userRequestPic,
+        P.iproduct, concat(S.sido, ' ', G.gungu, ' ', E.eupmyun, ' ', P.rest_addr) as addr, P.title, P.stored_pic as
+        prodMainStoredPic,
+        P.request_pic as prodMainRequestPic, P.rental_price as rentalPrice, P.rental_start_date as rentalStartDate,
+        P.rental_end_date as rentalEndDate, (select count(L.iproduct) from t_like L where L.iproduct = P.iproduct) prodLike,
+        P.iuser, P.contents, P.deposit, P.buy_date as buyDate, P.x, P.y
+        from t_product P
+        join t_user U on P.iuser = U.iuser
+        join t_eupmyun E on P.iaddr = E.ieupmyun
+        join t_gungu G on E.igungu = G.igungu
+        join t_sido S on G.isido = S.isido
+        <where>
+            P.iproduct = #{iproduct}
+            <if test="iuser != null and iuser != 0">
+                and U.iuser = #{iuser}
+            </if>
+            and P.istatus = 0
+            <if test="icategory != null and icategory > 0">
+                and P.icategory = #{icategory}
+            </if>
+        </where>
+
+    </select>
+
+    <select id="getProdEctPics">
+        select ipics, stored_pic as prodStoredPic, request_pic as prodRequestPic from t_pics
+        where iproduct = #{iproduct}
+    </select>
+
+    <select id="getIEupmyun">
+        select ieupmyun from t_eupmyun where eupmyun in (
+        <foreach collection="eupmyun" item="eup" separator=", ">
+            #{eup}
+        </foreach>
+        )
+    </select>
+
+    <insert id="insProduct" useGeneratedKeys="true" keyProperty="iproduct">
+        insert into t_product
+        (iuser, title, contents, iaddr, rest_addr, stored_pic, request_pic,
+        price, rental_price, deposit, buy_date, rental_start_date, rental_end_date, icategory, x, y)
+        values
+        (#{iuser}, #{title}, #{contents}, #{iaddr}, #{restAddr}, #{mainPicObj.storedPic}, #{mainPicObj.requestPic},
+        #{price}, #{rentalPrice}, #{deposit}, #{buyDate}, #{rentalStartDate}, #{rentalEndDate}, #{icategory}, #{x}, #{y})
+    </insert>
+
+    <insert id="insPics">
+        insert into t_pics (iproduct, stored_pic, request_pic)
+        values
+        <foreach collection="pics" item="pic" separator=", ">
+            (#{iproduct}, #{pic.storedPic}, #{pic.requestPic})
+        </foreach>
+
+    </insert>
+
+    <delete id="deletePic">
+        delete from t_pics
+        <where>
+            iproduct = #{iproduct} and ipics in (
+            <foreach collection="delPics" item="pic" separator=", ">
+                #{pic}
+            </foreach>
+            )
+        </where>
+    </delete>
+
+    <select id="getProductForUpdate">
+        select P.price, P.buy_date as buyDate, P.rental_start_date as rentalStartDate, P.rental_end_date as rentalEndDate
+        from t_product P
+        where P.iproduct = #{iproduct} and P.icategory = #{icategory} and P.istatus = 0
+
+    </select>
+
+    <select id="getPicCount">
+        select count(iproduct) from t_pics where iproduct = #{iproduct}
+    </select>
+
+    <update id="updateProduct">
+        update t_product
+        <set>
+            <if test="icategory != null">
+                icategory = #{icategory}
+            </if>
+            <if test="iaddr != null">
+                , iaddr = #{iaddr}
+            </if>
+            <if test="restAddr != null">
+                , rest_addr = #{restAddr}
+            </if>
+            <if test="title != null">
+                , title = #{title}
+            </if>
+            <if test="contents != null">
+                , contents = #{contents}
+            </if>
+            <if test="storedMainPic != null">
+                , stored_pic = #{storedMainPic.storedPic}, request_pic = #{storedMainPic.requestPic}
+            </if>
+            <if test="price != null">
+                , price = #{price}
+            </if>
+            <if test="rentalPrice != null">
+                , rental_price = #{rental_price}
+            </if>
+            <if test="deposit != null">
+                , deposit = #{deposit}
+            </if>
+            <if test="buyDate != null">
+                , buy_date = #{buyDate}
+            </if>
+            <if test="rentalStartDate != null">
+                , rental_start_date = #{rentalStartDate}
+            </if>
+            <if test="rentalEndDate != null">
+                , rental_end_date = #{rentalEndDate}
+            </if>
+            <if test="x != null">
+                , x = #{x}
+            </if>
+            <if test="y != null">
+                , y = #{y}
+            </if>
+        </set>
+        where iproduct = #{iproduct} and iuser = #{iuser}
+
+    </update>
+
+    <!--
+
+
+        삭제를 거래중이면 불가능하게? -> 별로인듯 함 그냥 -1 처리 해 두기만 하면 판매자 정보를 join 으로 조회할 수 있음.
+
+        div * -1
+        -1 -> -1이 아닌곳을 -1 로
+        -2 -> 0인 곳을 -2 로 update
+        결과가 0 이면 -> 잘못된 정보 기입됨. ex 발생.
+    -->
+    <update id="changeProdStatus">
+        update t_product
+        set istatus = #{div}
+        where iproduct = #{iproduct} and iuser = #{iuser} and istatus
+        <if test="div == -1">
+            != #{div}
+        </if>
+        <if test="div == -2">
+            = 0
+        </if>
+    </update>
+
+    <update id="updateIpayment">
+        update t_product set ipayment = #{ipayment} where iproduct = #{iproduct}
+    </update>
+
+</mapper>

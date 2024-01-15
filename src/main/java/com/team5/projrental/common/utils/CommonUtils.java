@@ -1,19 +1,12 @@
 package com.team5.projrental.common.utils;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.team5.projrental.common.aop.anno.Retry;
 import com.team5.projrental.common.exception.IllegalCategoryException;
 import com.team5.projrental.common.exception.IllegalPaymentMethodException;
-import com.team5.projrental.common.exception.RestApiException;
-import com.team5.projrental.common.model.restapi.Addrs;
-import com.team5.projrental.common.model.restapi.Documents;
 import com.team5.projrental.product.model.innermodel.StoredFileInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestClient;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.lang.reflect.InvocationTargetException;

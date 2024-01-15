@@ -1,6 +1,5 @@
 package com.team5.projrental.payment.model;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.core.io.Resource;

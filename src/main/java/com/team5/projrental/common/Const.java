@@ -47,8 +47,21 @@ public interface Const {
     /*
         --------- CATEGORIES ---------
     */
-    Map<Integer, String> CATEGORIES = Map.of(1, "mobile", 2, "home-appliance", 3, "game",
-            4, "laptop", 5, "camera", 6, "ect");
+    Map<Integer, String> CATEGORIES = Map.of(
+            1, "mobile",
+            2, "home-appliance",
+            3, "game",
+            4, "laptop",
+            5, "camera",
+            6, "ect");
 
-    Map<Integer, String> PAYMENT_METHODS = Map.of(1, "credit-card", 2, "kakao-pay");
+    Map<Integer, String> PAYMENT_METHODS = Map.of(
+            1, "credit-card",
+            2, "kakao-pay");
+
+
+
+
+
+
 }

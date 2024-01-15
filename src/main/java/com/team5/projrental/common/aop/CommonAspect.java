@@ -1,7 +1,6 @@
 package com.team5.projrental.common.aop;
 
 import com.team5.projrental.common.aop.anno.Retry;
-import com.team5.projrental.common.exception.RestApiException;
 import com.team5.projrental.common.threadpool.MyThreadPoolHolder;
 import com.team5.projrental.product.ProductRepository;
 import com.team5.projrental.product.model.ProductVo;
@@ -13,6 +12,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.concurrent.ExecutorService;
 
 @Aspect
@@ -32,6 +32,7 @@ public class CommonAspect {
     /**
      * Product 의 view 를 ++ 하는 AOP (In DB)<br>
      * Custom ThreadPool 사용
+     *
      * @param result
      */
     @AfterReturning(value = "@annotation(com.team5.projrental.common.aop.anno.CountView)",
@@ -49,6 +50,7 @@ public class CommonAspect {
 
     /**
      * RuntimeException and extends 발생시 재시도 AOP
+     *
      * @param joinPoint
      * @param retry
      * @return Object
@@ -68,6 +70,16 @@ public class CommonAspect {
             }
         }
         throw ex;
+    }
+
+    @Around(value = "execution(* com.team5.projrental.payment.PaymentRepository.updateStatusIfOverRentalEndDate(..))" +
+            "&& args(now)")
+    public int doLog(ProceedingJoinPoint joinPoint, LocalDate now) throws Throwable {
+
+        int changedColumn = (int) joinPoint.proceed();
+        log.debug("[Scheduler] [updateStatusIfOverRentalEndDate] now = {} changedColumn = {}",
+                now, changedColumn);
+        return changedColumn;
     }
 
 }

@@ -1,7 +1,5 @@
 package com.team5.projrental.product.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.team5.projrental.product.model.innermodel.PicSet;
 import com.team5.projrental.product.model.proc.GetProductListResultDto;
 import com.team5.projrental.product.model.proc.GetProductResultDto;
 import lombok.Data;
