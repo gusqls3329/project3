@@ -28,7 +28,7 @@ public class PaymentController {
 
     @Validated
     @DeleteMapping("/{ipay}")
-    public ResVo delPayment(@PathVariable("ipay") @Min(0) Integer ipayment,
+    public ResVo delPayment(@PathVariable("ipay") @Min(1) Integer ipayment,
                             @RequestParam @Range(min = 1, max = 3) Integer div) {
         return paymentService.delPayment(ipayment, div);
     }
@@ -42,7 +42,7 @@ public class PaymentController {
 
     @Validated
     @GetMapping("/{ipayment}")
-    public PaymentVo getPayment(@PathVariable @Min(0) Integer ipayment) {
+    public PaymentVo getPayment(@PathVariable @Min(1) Integer ipayment) {
         return paymentService.getPayment(ipayment);
 
     }

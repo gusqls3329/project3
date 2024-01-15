@@ -4,6 +4,7 @@ import com.team5.projrental.common.Const;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.product.model.*;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.Range;
@@ -62,7 +63,7 @@ public class ProductController {
 
     @Validated
     @GetMapping("/list")
-    public List<ProductUserVo> getUserProductList(@RequestParam @Min(1) int page) {
+    public List<ProductUserVo> getUserProductList(@RequestParam @Min(1) @NotNull Integer page) {
         return productService.getUserProductList((page - 1) * Const.PROD_PER_PAGE);
     }
 

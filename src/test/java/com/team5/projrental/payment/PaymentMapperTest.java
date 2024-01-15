@@ -53,7 +53,8 @@ class PaymentMapperTest {
         paymentMapper.insProductPayment(dto.getIproduct(), dto.getIpayment());
 
         // 조회한 상대가 나와야 함
-        GetPaymentListResultDto getPaymentListResultDto = paymentMapper.getPaymentList(new GetPaymentListDto(1, Flag.ONE.getValue(), ipayment)).get(0);
+        Integer iuser = 1;
+        GetPaymentListResultDto getPaymentListResultDto = paymentMapper.getPaymentList(new GetPaymentListDto(iuser, Flag.ONE.getValue(), ipayment)).get(0);
         assertThat(dto.getIpayment()).isEqualTo(getPaymentListResultDto.getIpayment());
         assertThat(dto.getCode()).isEqualTo(getPaymentListResultDto.getCode());
         assertThat("인사이드아웃").isEqualTo(getPaymentListResultDto.getNick());
@@ -141,7 +142,7 @@ class PaymentMapperTest {
     @Test
     void getPaymentList() {
 
-        List<GetPaymentListResultDto> paymentList = paymentMapper.getPaymentList(new GetPaymentListDto(1, 1));
+        List<GetPaymentListResultDto> paymentList = paymentMapper.getPaymentList(new GetPaymentListDto(1, 1, 0, true));
         assertThat(paymentList.size()).isEqualTo(1);
         assertThat(paymentList.get(0).getIuser()).isEqualTo(3);
         assertThat(paymentList.get(0).getNick()).isEqualTo("비락");
@@ -152,7 +153,7 @@ class PaymentMapperTest {
         assertThat(paymentList.get(0).getPrice()).isEqualTo(40000);
         assertThat(paymentList.get(0).getDeposit()).isEqualTo(700000);
 
-        List<GetPaymentListResultDto> paymentList2 = paymentMapper.getPaymentList(new GetPaymentListDto(1, 2));
+        List<GetPaymentListResultDto> paymentList2 = paymentMapper.getPaymentList(new GetPaymentListDto(1, 2, 0, true));
         assertThat(paymentList2.size()).isEqualTo(1);
         assertThat(paymentList2.get(0).getIuser()).isEqualTo(2);
         assertThat(paymentList2.get(0).getNick()).isEqualTo("인사이드아웃");
@@ -166,8 +167,8 @@ class PaymentMapperTest {
 
         //
 
-        int beforeRole1 = paymentMapper.getPaymentList(new GetPaymentListDto(2, 1)).size();
-        int beforeRole2 = paymentMapper.getPaymentList(new GetPaymentListDto(1, 2)).size();
+        int beforeRole1 = paymentMapper.getPaymentList(new GetPaymentListDto(2, 1, 0, true)).size();
+        int beforeRole2 = paymentMapper.getPaymentList(new GetPaymentListDto(1, 2, 0, true)).size();
         for (int i = 1; i < 5; i++) {
             int buyer = 2;
             int iproduct = 1;
@@ -185,8 +186,8 @@ class PaymentMapperTest {
             paymentMapper.insPayment(dto);
             paymentMapper.insProductPayment(dto.getIproduct(), dto.getIpayment());
 
-            assertThat(paymentMapper.getPaymentList(new GetPaymentListDto(2, 1)).size()).isEqualTo(i + beforeRole1);
-            assertThat(paymentMapper.getPaymentList(new GetPaymentListDto(1, 2)).size()).isEqualTo(i + beforeRole2);
+            assertThat(paymentMapper.getPaymentList(new GetPaymentListDto(2, 1, 0, true)).size()).isEqualTo(i + beforeRole1);
+            assertThat(paymentMapper.getPaymentList(new GetPaymentListDto(1, 2, 0, true)).size()).isEqualTo(i + beforeRole2);
 
         }
 

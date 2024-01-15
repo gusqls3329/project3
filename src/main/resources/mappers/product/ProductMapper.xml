@@ -100,7 +100,9 @@
         <if test="sort == null">
             order by P.iproduct desc
         </if>
-        limit #{page}, #{prodPerPage}
+        <if test="page != null and page != 0 and prodPerPage != null and prodPerPage != 0">
+            limit #{page}, #{prodPerPage}
+        </if>
 
 
     </select>

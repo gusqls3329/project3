@@ -12,10 +12,10 @@ public class GetProductListDto {
     private String search;
     private Integer icategory;
     private Integer iuser;
-    private int prodPerPage;
-    private int page;
+    private Integer prodPerPage;
+    private Integer page;
 
-    public GetProductListDto(Integer sort, String search, Integer icategory, int page) {
+    public GetProductListDto(Integer sort, String search, Integer icategory, Integer page) {
         this.sort = sort;
         this.search = search;
         this.icategory = icategory;
@@ -24,9 +24,10 @@ public class GetProductListDto {
     }
 
 
-    public GetProductListDto(Integer iuser, int page) {
+    public GetProductListDto(Integer iuser, Integer page) {
         this.iuser = iuser;
         this.page = page;
         this.prodPerPage = Const.PROD_PER_PAGE;
     }
+
 }

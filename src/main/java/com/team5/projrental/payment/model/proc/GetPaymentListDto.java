@@ -16,7 +16,7 @@ public class GetPaymentListDto {
     private int page;
     private int paymentPerPage;
 
-    public GetPaymentListDto(int iuser, Integer role, int page) {
+    public GetPaymentListDto(int iuser, Integer role, int page, boolean hasRole) {
         this.iuser = iuser;
         this.role = role;
         this.page = page;
@@ -28,6 +28,7 @@ public class GetPaymentListDto {
         this.flag = flag;
         this.ipayment = ipayment;
     }
+
 
 
 }
