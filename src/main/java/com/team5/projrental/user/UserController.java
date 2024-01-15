@@ -5,6 +5,8 @@ import com.team5.projrental.user.model.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +31,7 @@ public class UserController {
     })
     public ResVo postSignup(@RequestBody UserSignupDto dto) {
         log.info("dto : {}", dto);
-        return service.postSignup(dto);
+        return new ResVo(service.postSignup(dto));
     }
 
     @PostMapping
@@ -38,8 +40,23 @@ public class UserController {
             @Parameter(name = "uid", description = "아이디")
             , @Parameter(name = "upw", description = "비밀번호")
     })
-    public SigninVo postSignin(@RequestBody SigninDto dto) {
-        return service.postSignin(dto);
+    public SigninVo postSignin(HttpServletResponse res, @RequestBody SigninDto dto) {
+        return service.postSignin(res, dto);
+    }
+
+    @PostMapping("/signout")
+    public ResVo getSignOut(HttpServletResponse res){
+        return new ResVo(service.getSignOut(res));
+    }
+
+    @GetMapping("/refrech-token")
+    public SigninVo getRefrechToken(HttpServletRequest req){
+        return service.getRefrechToken(req);
+    }
+
+    @PatchMapping("/firebase-token")
+    public ResVo patchUserFirebaseToken(@RequestBody UserFirebaseTokenPatchDto dto) {
+        return new ResVo(service.patchUserFirebaseToken(dto));
     }
 
     @Operation(summary = "아이디 찾기", description = "유저 아이디 찾기")
@@ -91,7 +108,7 @@ public class UserController {
             @Parameter(name = "iuser", description = "유저 Pk값")
     })
     @GetMapping
-    public SelUserVo getUSer(int iuser) {
+    public SelUserVo getUSer(@RequestParam(required = false) int iuser) {
         return service.getUSer(iuser);
     }
 }
