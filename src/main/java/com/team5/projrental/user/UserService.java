@@ -2,19 +2,17 @@ package com.team5.projrental.user;
 
 import com.team5.projrental.common.Const;
 import com.team5.projrental.common.SecurityProperties;
-import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.utils.CookieUtils;
-import com.team5.projrental.security.AuthenticationFacade;
-import com.team5.projrental.security.JwtTokenProvider;
-import com.team5.projrental.security.SecurityUserDetails;
-import com.team5.projrental.security.model.SecurityPrincipal;
+import com.team5.projrental.common.security.AuthenticationFacade;
+import com.team5.projrental.common.security.JwtTokenProvider;
+import com.team5.projrental.common.security.SecurityUserDetails;
+import com.team5.projrental.common.security.model.SecurityPrincipal;
 import com.team5.projrental.user.model.*;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.units.qual.C;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -144,22 +142,27 @@ public class UserService {
         inDto.setUid(dto.getUid());
         inDto.setUpw(dto.getUpw());
         UserEntity entity = mapper.selSignin(inDto);
-        String hashedPw = entity.getUpw();
-        boolean checkPw = BCrypt.checkpw(dto.getUpw(), hashedPw);
-        if (checkPw == true) {
-            List<SeldelUserPayDto> payDtos = mapper.seldelUserPay(entity.getIuser());
-            for (SeldelUserPayDto list : payDtos) {
-                mapper.delUserProPic(list.getIproduct());
-                mapper.delUserPorc2(list.getIproduct());
-                mapper.delUserPorc(list.getIuser());
-                mapper.delUpUserPay(list.getIuser());
+
+        if (loginUserPk == entity.getIuser()) {
+            String hashedPw = entity.getUpw();
+            boolean checkPw = BCrypt.checkpw(dto.getUpw(), hashedPw);
+            if (checkPw == true) {
+                List<SeldelUserPayDto> payDtos = mapper.seldelUserPay(entity.getIuser());
+                for (SeldelUserPayDto list : payDtos) {
+                    mapper.delUserProPic(list.getIproduct());
+                    mapper.delUserPorc2(list.getIproduct());
+                    mapper.delUserPorc(list.getIuser());
+                    mapper.delUpUserPay(list.getIuser());
+                }
             }
+            int result = mapper.delUser(dto);
+            if (result == 1) {
+                return Const.SUCCESS;
+            }
+            return Const.FAIL;
+        } else {
+            return Const.FAIL;
         }
-        int result = mapper.delUser(dto);
-        if(result == 1) {
-            return Const.SUCCESS;
-        }
-        return Const.FAIL;
     }
 
     public SelUserVo getUSer(int iuser) {

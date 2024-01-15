@@ -1,6 +1,6 @@
-package com.team5.projrental.security.filter;
+package com.team5.projrental.common.security.filter;
 
-import com.team5.projrental.security.JwtTokenProvider;
+import com.team5.projrental.common.security.JwtTokenProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

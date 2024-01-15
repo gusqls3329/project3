@@ -1,10 +1,10 @@
-package com.team5.projrental.security;
+package com.team5.projrental.common.security;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team5.projrental.common.Const;
 import com.team5.projrental.common.SecurityProperties;
-import com.team5.projrental.security.model.SecurityPrincipal;
+import com.team5.projrental.common.security.model.SecurityPrincipal;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

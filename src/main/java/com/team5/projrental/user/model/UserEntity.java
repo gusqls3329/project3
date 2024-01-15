@@ -11,6 +11,6 @@ public class UserEntity {
     private String pic;
     private String firebaseToken;
     private String auth;
-    //private String createdAt;
-    //private String updatedAt;
+    private String createdAt;
+    private String updatedAt;
 }

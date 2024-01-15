@@ -1,6 +1,6 @@
-package com.team5.projrental.security;
+package com.team5.projrental.common.security;
 
-import com.team5.projrental.security.model.SecurityPrincipal;
+import com.team5.projrental.common.security.model.SecurityPrincipal;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

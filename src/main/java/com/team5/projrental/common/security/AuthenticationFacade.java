@@ -1,4 +1,4 @@
-package com.team5.projrental.security;
+package com.team5.projrental.common.security;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;

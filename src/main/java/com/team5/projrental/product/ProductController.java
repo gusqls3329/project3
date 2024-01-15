@@ -1,6 +1,7 @@
 package com.team5.projrental.product;
 
 import com.team5.projrental.common.Const;
+import com.team5.projrental.common.model.ErrorResultVo;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.product.model.*;
 import jakarta.validation.constraints.Min;
@@ -32,8 +33,8 @@ public class ProductController {
 
     @Validated
     @GetMapping("/api/prod/{category}/{iproduct}")
-    public ProductVo getProduct(@PathVariable String category, @PathVariable @Min(1) Integer iproduct) {
-        return productService.getProduct(category, iproduct);
+    public ProductVo getProduct(@PathVariable @Min(1) Integer icategory, @PathVariable @Min(1) Integer iproduct) {
+        return productService.getProduct(icategory, iproduct);
     }
 
     /*
@@ -66,5 +67,4 @@ public class ProductController {
     public List<ProductUserVo> getUserProductList(@RequestParam @Min(1) @NotNull Integer page) {
         return productService.getUserProductList((page - 1) * Const.PROD_PER_PAGE);
     }
-
 }
