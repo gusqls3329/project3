@@ -81,6 +81,7 @@
                 and U.iuser != #{iuser} and PA.ipayment = #{ipayment}
             </if>
         </where>
+        limit #{page}, #{paymentPerPage}
     </select>
 
     <update id="updateIstatusOverRentalEndDate">

@@ -1,5 +1,6 @@
 package com.team5.projrental.payment;
 
+import com.team5.projrental.common.Const;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.payment.model.PaymentInsDto;
 import com.team5.projrental.payment.model.PaymentListVo;
@@ -34,8 +35,9 @@ public class PaymentController {
 
     @Validated
     @GetMapping
-    public List<PaymentListVo> getAllPayment(@RequestParam @Range(min = 1, max = 2) Integer role) {
-        return paymentService.getAllPayment(role);
+    public List<PaymentListVo> getAllPayment(@RequestParam @Range(min = 1, max = 2) Integer role,
+                                             @RequestParam @Min(1) int page) {
+        return paymentService.getAllPayment(role, (page - 1) * Const.PROD_PER_PAGE);
     }
 
     @Validated

@@ -24,10 +24,12 @@ public interface Const {
     String BAD_DIV_INFO_EX_MESSAGE = "div 값이 잘못되었습니다.";
     String BAD_PIC_EX_MESSAGE = "사진이 존재하지 않습니다.";
     int PROD_PER_PAGE = 16;
+    int PAY_PER_PAGE = 16;
     //
     String LOGIN_NO_UID = "아이디가 존재하지 않습니다";
     String LOGIN_DIFF_UPW = "비밀번호가 틀렸습니다";
     int SUCCESS = 1;
+    int FAIL = 0;
     //
 
     /*

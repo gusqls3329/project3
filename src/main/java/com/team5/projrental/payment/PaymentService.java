@@ -155,9 +155,9 @@ public class PaymentService {
         return new ResVo(istatusForUpdate);
     }
 
-    public List<PaymentListVo> getAllPayment(Integer role) {
+    public List<PaymentListVo> getAllPayment(Integer role, int page) {
         int iuser = authenticationFacade.getLoginUserPk();
-        List<GetPaymentListResultDto> paymentBy = paymentRepository.findPaymentBy(new GetPaymentListDto(iuser, role));
+        List<GetPaymentListResultDto> paymentBy = paymentRepository.findPaymentBy(new GetPaymentListDto(iuser, role, page));
         List<PaymentListVo> result = new ArrayList<>();
         CommonUtils.checkNullOrZeroIfCollectionThrow(NoSuchPaymentException.class, NO_SUCH_PAYMENT_EX_MESSAGE, paymentBy);
         paymentBy.forEach(p -> result.add(new PaymentListVo(

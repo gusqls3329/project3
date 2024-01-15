@@ -62,8 +62,8 @@ public class ProductController {
 
     @Validated
     @GetMapping("/list")
-    public List<ProductUserVo> getUserProductList(@RequestParam @Min(0) Integer page) {
-        return productService.getUserProductList(page);
+    public List<ProductUserVo> getUserProductList(@RequestParam @Min(1) int page) {
+        return productService.getUserProductList((page - 1) * Const.PROD_PER_PAGE);
     }
 
 }

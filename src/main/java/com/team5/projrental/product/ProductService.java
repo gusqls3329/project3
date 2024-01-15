@@ -319,7 +319,7 @@ public class ProductService {
 
     public List<ProductUserVo> getUserProductList(Integer page) {
         int iuser = authenticationFacade.getLoginUserPk();
-        List<GetProductListResultDto> productListBy = productRepository.findProductListBy(new GetProductListDto(iuser));
+        List<GetProductListResultDto> productListBy = productRepository.findProductListBy(new GetProductListDto(iuser, page));
         CommonUtils.checkNullOrZeroIfCollectionThrow(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE, productListBy);
 
         List<ProductUserVo> result = new ArrayList<>();
