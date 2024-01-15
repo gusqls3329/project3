@@ -1,10 +1,16 @@
 package com.team5.projrental.payment;
 
+import com.team5.projrental.common.exception.BadDateInfoException;
+import com.team5.projrental.common.exception.NoSuchProductException;
+import com.team5.projrental.common.exception.NoSuchUserException;
+import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.security.AuthenticationFacade;
 import com.team5.projrental.common.utils.MyFileUtils;
 import com.team5.projrental.payment.model.PaymentInsDto;
+import com.team5.projrental.payment.model.proc.GetInfoForCheckIproductAndIuserResult;
 import com.team5.projrental.product.ProductRepository;
 import com.team5.projrental.product.ProductService;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -15,6 +21,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 
@@ -38,7 +45,7 @@ class PaymentServiceTest {
 
     @Test
     void postPayment() {
-        PaymentInsDto mockDate = PaymentInsDto.builder()
+        PaymentInsDto mockData = PaymentInsDto.builder()
                 .iproduct(1)
                 .paymentMethod("kakao-pay")
                 .rentalStartDate(LocalDate.of(2025, 1, 1))
@@ -46,14 +53,42 @@ class PaymentServiceTest {
                 .depositPer(80).build();
 
         when(productRepository.findRentalPriceBy(any())).thenReturn(1000);
+        when(authenticationFacade.getLoginUserPk()).thenReturn(3);
+        when(productRepository.findIuserCountBy(any())).thenReturn(true);
+        when(paymentRepository.savePayment(any())).thenReturn(1);
+        when(paymentRepository.saveProductPayment(any(), any())).thenReturn(1);
 
 
+        ResVo resVo = paymentService.postPayment(mockData);
+        assertThat(resVo.getResult()).isEqualTo(1);
 
-        paymentService.postPayment(mockDate);
+        PaymentInsDto mockData2 = PaymentInsDto.builder()
+                .iproduct(1)
+                .paymentMethod("kakao-pay")
+                .rentalStartDate(LocalDate.of(2025, 1, 1))
+                .rentalEndDate(LocalDate.of(2024, 3, 3))
+                .depositPer(80).build();
+
+        assertThatThrownBy(() -> paymentService.postPayment(mockData2))
+                .isInstanceOf(BadDateInfoException.class);
+
+        when(productRepository.findIuserCountBy(any())).thenReturn(false);
+        assertThatThrownBy(() -> paymentService.postPayment(mockData2))
+                .isInstanceOf(NoSuchUserException.class);
+        when(productRepository.findRentalPriceBy(any())).thenReturn(0);
+        assertThatThrownBy(() -> paymentService.postPayment(mockData2))
+                .isInstanceOf(NoSuchProductException.class);
     }
 
     @Test
     void delPayment() {
+        GetInfoForCheckIproductAndIuserResult obj1 =
+                new GetInfoForCheckIproductAndIuserResult(1, LocalDate.of(2025, 1, 1), 1, 2);
+
+        when(authenticationFacade.getLoginUserPk()).thenReturn(1);
+        when(paymentRepository.checkIuserAndIproduct(any())).thenReturn(obj1);
+
+
     }
 
     @Test

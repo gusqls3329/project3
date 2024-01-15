@@ -76,7 +76,7 @@ public class PaymentService {
 //        }
         if (paymentRepository.savePayment(paymentInsDto) != 0) {
             if (paymentRepository.saveProductPayment(paymentInsDto.getIproduct(), paymentInsDto.getIpayment()) != 0) {
-                return new ResVo(1);
+                return new ResVo(SUCCESS);
             }
         }
 
