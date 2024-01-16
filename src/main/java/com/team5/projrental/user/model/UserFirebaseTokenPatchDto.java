@@ -7,5 +7,6 @@ import lombok.Data;
 public class UserFirebaseTokenPatchDto {
     @JsonIgnore
     private int iuser;
+
     private String firebaseToken;
 }

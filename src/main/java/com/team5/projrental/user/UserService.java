@@ -42,9 +42,11 @@ public class UserService {
 
 
         dto.setUpw(hashedPw);
-//        dto.setY(40);
-//        dto.setX(40);
+
+
+
                                             // 대구 달서구 용산1동 -> x: xxx.xxxxx y: xx.xxxxx address_name: 대구 달서구 용산1동
+
         Addrs addrs = axisGenerator.getAxis(dto.getAddr());
         CommonUtils.ifAnyNullThrow(BadAddressInfoException.class, BAD_ADDRESS_INFO_EX_MESSAGE,
                 addrs, addrs.getAddress_name(), addrs.getX(), addrs.getY());
@@ -143,6 +145,14 @@ public class UserService {
         int loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setIuser(loginUserPk);
 
+        if(dto.getAddr() != null && dto.getAddr() != "") {
+            Addrs addrs = axisGenerator.getAxis(dto.getAddr());
+            CommonUtils.ifAnyNullThrow(BadAddressInfoException.class, BAD_ADDRESS_INFO_EX_MESSAGE,
+                    addrs, addrs.getAddress_name(), addrs.getX(), addrs.getY());
+            dto.setX(Double.parseDouble(addrs.getX()));
+            dto.setY(Double.parseDouble(addrs.getY()));
+            dto.setAddr(addrs.getAddress_name());
+        }
 
         String hashedPw = BCrypt.hashpw(dto.getUpw(), BCrypt.gensalt());
         dto.setUpw(hashedPw);
@@ -156,7 +166,7 @@ public class UserService {
     public int patchUser(DelUserDto dto) {
         int loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setIuser(loginUserPk);
-
+        log.info("loginUserPk :{}",loginUserPk);
         SigninDto inDto = new SigninDto();
         inDto.setUid(dto.getUid());
         inDto.setUpw(dto.getUpw());
