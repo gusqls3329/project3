@@ -12161,3 +12161,440 @@ This generated password is for development use only. Your security configuration
 [2024-01-16 15:21:15 [32mINFO [0;39m restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] [36mTomcat started on port 8080 (http) with context path ''[0;39m
 [2024-01-16 15:21:15 [32mINFO [0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mStarted ProjrentalApplication in 0.589 seconds (process running for 1921.094)[0;39m
 [2024-01-16 15:21:15 [32mINFO [0;39m restartedMain] [org.springframework.boot.devtools.autoconfigure.ConditionEvaluationDeltaLoggingListener] [36mCondition evaluation unchanged[0;39m
+[2024-01-16 15:54:24 [32mINFO [0;39m background-preinit] [org.hibernate.validator.internal.util.Version] [36mHV000001: Hibernate Validator 8.0.1.Final[0;39m
+[2024-01-16 15:54:24 [32mINFO [0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mStarting ProjrentalApplication using Java 17.0.8.1 with PID 8392 (D:\spring\projectrental\build\classes\java\main started by Administrator in D:\spring\projectrental)[0;39m
+[2024-01-16 15:54:24 [32mDEBUG[0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mRunning with Spring Boot v3.2.1, Spring v6.1.2[0;39m
+[2024-01-16 15:54:24 [32mINFO [0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mNo active profile set, falling back to 1 default profile: "default"[0;39m
+[2024-01-16 15:54:24 [32mINFO [0;39m restartedMain] [org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor] [36mDevtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable[0;39m
+[2024-01-16 15:54:24 [32mINFO [0;39m restartedMain] [org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor] [36mFor additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'[0;39m
+[2024-01-16 15:54:25 [32mINFO [0;39m restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] [36mTomcat initialized with port 8080 (http)[0;39m
+[2024-01-16 15:54:25 [32mINFO [0;39m restartedMain] [org.apache.coyote.http11.Http11NioProtocol] [36mInitializing ProtocolHandler ["http-nio-8080"][0;39m
+[2024-01-16 15:54:25 [32mINFO [0;39m restartedMain] [org.apache.catalina.core.StandardService] [36mStarting service [Tomcat][0;39m
+[2024-01-16 15:54:25 [32mINFO [0;39m restartedMain] [org.apache.catalina.core.StandardEngine] [36mStarting Servlet engine: [Apache Tomcat/10.1.17][0;39m
+[2024-01-16 15:54:25 [32mINFO [0;39m restartedMain] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] [36mInitializing Spring embedded WebApplicationContext[0;39m
+[2024-01-16 15:54:25 [32mINFO [0;39m restartedMain] [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext] [36mRoot WebApplicationContext: initialization completed in 1152 ms[0;39m
+[2024-01-16 15:54:25 [32mINFO [0;39m restartedMain] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-1 - Starting...[0;39m
+[2024-01-16 15:54:25 [32mINFO [0;39m restartedMain] [com.zaxxer.hikari.pool.HikariPool] [36mHikariPool-1 - Added connection org.mariadb.jdbc.Connection@37cea6fa[0;39m
+[2024-01-16 15:54:25 [32mINFO [0;39m restartedMain] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-1 - Start completed.[0;39m
+[2024-01-16 15:54:25 [32mINFO [0;39m restartedMain] [org.springframework.boot.autoconfigure.h2.H2ConsoleAutoConfiguration] [36mH2 console available at '/h2-console'. Database available at 'jdbc:mariadb://localhost/projrental?user=root&password=***'[0;39m
+[2024-01-16 15:54:25 [32mDEBUG[0;39m restartedMain] [com.team5.projrental.common.security.filter.JwtAuthenticationFilter] [36mFilter 'jwtAuthenticationFilter' configured for use[0;39m
+[2024-01-16 15:54:26 [33mWARN [0;39m restartedMain] [org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration] [36m
+
+Using generated security password: 9e4ddd0c-f78d-49ba-819c-b2e034bdda6a
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+[0;39m
+[2024-01-16 15:54:26 [32mINFO [0;39m restartedMain] [org.springframework.security.web.DefaultSecurityFilterChain] [36mWill secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@d2852e, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@783401a2, org.springframework.security.web.context.SecurityContextHolderFilter@5f68ee8b, org.springframework.security.web.header.HeaderWriterFilter@49c4ba49, org.springframework.web.filter.CorsFilter@7020fe0, org.springframework.security.web.authentication.logout.LogoutFilter@521ffada, com.team5.projrental.common.security.filter.JwtAuthenticationFilter@43045fb6, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@51c10797, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@4d583666, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@673afb96, org.springframework.security.web.session.SessionManagementFilter@2df089a0, org.springframework.security.web.access.ExceptionTranslationFilter@34b9c5fe, org.springframework.security.web.access.intercept.AuthorizationFilter@128da88c][0;39m
+[2024-01-16 15:54:26 [32mINFO [0;39m restartedMain] [org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer] [36mLiveReload server is running on port 35729[0;39m
+[2024-01-16 15:54:26 [32mINFO [0;39m restartedMain] [org.apache.coyote.http11.Http11NioProtocol] [36mStarting ProtocolHandler ["http-nio-8080"][0;39m
+[2024-01-16 15:54:26 [32mINFO [0;39m restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] [36mTomcat started on port 8080 (http) with context path ''[0;39m
+[2024-01-16 15:54:26 [32mINFO [0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mStarted ProjrentalApplication in 2.698 seconds (process running for 3.104)[0;39m
+[2024-01-16 15:55:09 [32mINFO [0;39m http-nio-8080-exec-1] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] [36mInitializing Spring DispatcherServlet 'dispatcherServlet'[0;39m
+[2024-01-16 15:55:09 [32mINFO [0;39m http-nio-8080-exec-1] [org.springframework.web.servlet.DispatcherServlet] [36mInitializing Servlet 'dispatcherServlet'[0;39m
+[2024-01-16 15:55:09 [32mINFO [0;39m http-nio-8080-exec-1] [org.springframework.web.servlet.DispatcherServlet] [36mCompleted initialization in 1 ms[0;39m
+[2024-01-16 15:55:10 [32mINFO [0;39m http-nio-8080-exec-6] [org.springdoc.api.AbstractOpenApiResource] [36mInit duration for springdoc-openapi is: 266 ms[0;39m
+[2024-01-16 15:55:18 [33mWARN [0;39m http-nio-8080-exec-9] [org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver] [36mResolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [1] in public com.team5.projrental.user.model.SigninVo com.team5.projrental.user.UserController.postSignin(jakarta.servlet.http.HttpServletResponse,com.team5.projrental.user.model.SigninDto) with 2 errors: [Field error in object 'signinDto' on field 'uid': rejected value [mic1]; codes [Length.signinDto.uid,Length.uid,Length.java.lang.String,Length]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [signinDto.uid,uid]; arguments []; default message [uid],15,8]; default message [길이가 8에서 15 사이여야 합니다]] [Field error in object 'signinDto' on field 'upw': rejected value [1212]; codes [Length.signinDto.upw,Length.upw,Length.java.lang.String,Length]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [signinDto.upw,upw]; arguments []; default message [upw],20,8]; default message [길이가 8에서 20 사이여야 합니다]] ][0;39m
+[2024-01-16 15:57:30 [32mDEBUG[0;39m http-nio-8080-exec-8] [com.team5.projrental.user.UserMapper.upFindUpw] [36m==>  Preparing: UPDATE t_user SET upw = ? WHERE phone = ? and uid = ?[0;39m
+[2024-01-16 15:57:30 [32mDEBUG[0;39m http-nio-8080-exec-8] [com.team5.projrental.user.UserMapper.upFindUpw] [36m==> Parameters: $2a$10$vz1tbUloxwedIYPRedZ5U.4zUWQaQXM.M0fy.jCMhGFAYj92pFYBa(String), 010-9876-5432(String), qweqwe11(String)[0;39m
+[2024-01-16 15:57:30 [32mDEBUG[0;39m http-nio-8080-exec-8] [com.team5.projrental.user.UserMapper.upFindUpw] [36m<==    Updates: 1[0;39m
+[2024-01-16 15:57:43 [32mDEBUG[0;39m http-nio-8080-exec-2] [com.team5.projrental.user.UserMapper.upFindUpw] [36m==>  Preparing: UPDATE t_user SET upw = ? WHERE phone = ? and uid = ?[0;39m
+[2024-01-16 15:57:43 [32mDEBUG[0;39m http-nio-8080-exec-2] [com.team5.projrental.user.UserMapper.upFindUpw] [36m==> Parameters: $2a$10$9wox6JJX7.rRZ.YfuHh3/.dM0eCgAThKjudhixQCtnPQ4v0E8Q9ee(String), 010-4563-9872(String), qweqwe22(String)[0;39m
+[2024-01-16 15:57:43 [32mDEBUG[0;39m http-nio-8080-exec-2] [com.team5.projrental.user.UserMapper.upFindUpw] [36m<==    Updates: 1[0;39m
+[2024-01-16 15:57:54 [32mDEBUG[0;39m http-nio-8080-exec-10] [com.team5.projrental.user.UserMapper.upFindUpw] [36m==>  Preparing: UPDATE t_user SET upw = ? WHERE phone = ? and uid = ?[0;39m
+[2024-01-16 15:57:54 [32mDEBUG[0;39m http-nio-8080-exec-10] [com.team5.projrental.user.UserMapper.upFindUpw] [36m==> Parameters: $2a$10$eMYFww7Neq1xVR9t1JwUyeAj71SsRg6uEHnMWNqc7YzKtK6hMh7uK(String), 010-9999-8888(String), qweqwe33(String)[0;39m
+[2024-01-16 15:57:54 [32mDEBUG[0;39m http-nio-8080-exec-10] [com.team5.projrental.user.UserMapper.upFindUpw] [36m<==    Updates: 1[0;39m
+[2024-01-16 15:58:02 [32mDEBUG[0;39m http-nio-8080-exec-1] [com.team5.projrental.user.UserMapper.upFindUpw] [36m==>  Preparing: UPDATE t_user SET upw = ? WHERE phone = ? and uid = ?[0;39m
+[2024-01-16 15:58:02 [32mDEBUG[0;39m http-nio-8080-exec-1] [com.team5.projrental.user.UserMapper.upFindUpw] [36m==> Parameters: $2a$10$OxveefSO8q8ATNSWLvSz/euTHXRYaCxxKcKDXdIjCQycgKwYt18fG(String), 010-7777-6666(String), qweqwe44(String)[0;39m
+[2024-01-16 15:58:02 [32mDEBUG[0;39m http-nio-8080-exec-1] [com.team5.projrental.user.UserMapper.upFindUpw] [36m<==    Updates: 1[0;39m
+[2024-01-16 15:58:11 [32mDEBUG[0;39m http-nio-8080-exec-4] [com.team5.projrental.user.UserMapper.upFindUpw] [36m==>  Preparing: UPDATE t_user SET upw = ? WHERE phone = ? and uid = ?[0;39m
+[2024-01-16 15:58:11 [32mDEBUG[0;39m http-nio-8080-exec-4] [com.team5.projrental.user.UserMapper.upFindUpw] [36m==> Parameters: $2a$10$TbqOdZ0GBvjHwybdc1vG9uXlrM090GbJdn/BQXntTC2AzK.cVryqK(String), 010-1234-5678(String), qweqwe55(String)[0;39m
+[2024-01-16 15:58:11 [32mDEBUG[0;39m http-nio-8080-exec-4] [com.team5.projrental.user.UserMapper.upFindUpw] [36m<==    Updates: 1[0;39m
+[2024-01-16 15:58:17 [32mINFO [0;39m SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-1 - Shutdown initiated...[0;39m
+[2024-01-16 15:58:17 [32mINFO [0;39m SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-1 - Shutdown completed.[0;39m
+[2024-01-16 15:58:19 [32mINFO [0;39m background-preinit] [org.hibernate.validator.internal.util.Version] [36mHV000001: Hibernate Validator 8.0.1.Final[0;39m
+[2024-01-16 15:58:19 [32mINFO [0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mStarting ProjrentalApplication using Java 17.0.8.1 with PID 9200 (D:\spring\projectrental\build\classes\java\main started by Administrator in D:\spring\projectrental)[0;39m
+[2024-01-16 15:58:19 [32mDEBUG[0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mRunning with Spring Boot v3.2.1, Spring v6.1.2[0;39m
+[2024-01-16 15:58:19 [32mINFO [0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mNo active profile set, falling back to 1 default profile: "default"[0;39m
+[2024-01-16 15:58:19 [32mINFO [0;39m restartedMain] [org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor] [36mDevtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable[0;39m
+[2024-01-16 15:58:19 [32mINFO [0;39m restartedMain] [org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor] [36mFor additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'[0;39m
+[2024-01-16 15:58:20 [32mINFO [0;39m restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] [36mTomcat initialized with port 8080 (http)[0;39m
+[2024-01-16 15:58:20 [32mINFO [0;39m restartedMain] [org.apache.coyote.http11.Http11NioProtocol] [36mInitializing ProtocolHandler ["http-nio-8080"][0;39m
+[2024-01-16 15:58:20 [32mINFO [0;39m restartedMain] [org.apache.catalina.core.StandardService] [36mStarting service [Tomcat][0;39m
+[2024-01-16 15:58:20 [32mINFO [0;39m restartedMain] [org.apache.catalina.core.StandardEngine] [36mStarting Servlet engine: [Apache Tomcat/10.1.17][0;39m
+[2024-01-16 15:58:20 [32mINFO [0;39m restartedMain] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] [36mInitializing Spring embedded WebApplicationContext[0;39m
+[2024-01-16 15:58:20 [32mINFO [0;39m restartedMain] [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext] [36mRoot WebApplicationContext: initialization completed in 1065 ms[0;39m
+[2024-01-16 15:58:20 [32mINFO [0;39m restartedMain] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-1 - Starting...[0;39m
+[2024-01-16 15:58:20 [32mINFO [0;39m restartedMain] [com.zaxxer.hikari.pool.HikariPool] [36mHikariPool-1 - Added connection org.mariadb.jdbc.Connection@230e074a[0;39m
+[2024-01-16 15:58:20 [32mINFO [0;39m restartedMain] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-1 - Start completed.[0;39m
+[2024-01-16 15:58:20 [32mINFO [0;39m restartedMain] [org.springframework.boot.autoconfigure.h2.H2ConsoleAutoConfiguration] [36mH2 console available at '/h2-console'. Database available at 'jdbc:mariadb://localhost/projrental?user=root&password=***'[0;39m
+[2024-01-16 15:58:21 [32mDEBUG[0;39m restartedMain] [com.team5.projrental.common.security.filter.JwtAuthenticationFilter] [36mFilter 'jwtAuthenticationFilter' configured for use[0;39m
+[2024-01-16 15:58:21 [33mWARN [0;39m restartedMain] [org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration] [36m
+
+Using generated security password: d547bd10-a5fa-487b-8715-cef3dcb8e0a2
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+[0;39m
+[2024-01-16 15:58:21 [32mINFO [0;39m restartedMain] [org.springframework.security.web.DefaultSecurityFilterChain] [36mWill secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@2f39ec2a, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@d2852e, org.springframework.security.web.context.SecurityContextHolderFilter@2cb60677, org.springframework.security.web.header.HeaderWriterFilter@1b6ec7fc, org.springframework.web.filter.CorsFilter@783401a2, org.springframework.security.web.authentication.logout.LogoutFilter@5e52f5f7, com.team5.projrental.common.security.filter.JwtAuthenticationFilter@2f3a2542, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@76fcd14f, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@51c10797, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@7020fe0, org.springframework.security.web.session.SessionManagementFilter@332800ba, org.springframework.security.web.access.ExceptionTranslationFilter@5cae64e, org.springframework.security.web.access.intercept.AuthorizationFilter@b4e6a1c][0;39m
+[2024-01-16 15:58:21 [32mINFO [0;39m restartedMain] [org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer] [36mLiveReload server is running on port 35729[0;39m
+[2024-01-16 15:58:21 [32mINFO [0;39m restartedMain] [org.apache.coyote.http11.Http11NioProtocol] [36mStarting ProtocolHandler ["http-nio-8080"][0;39m
+[2024-01-16 15:58:21 [32mINFO [0;39m restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] [36mTomcat started on port 8080 (http) with context path ''[0;39m
+[2024-01-16 15:58:21 [32mINFO [0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mStarted ProjrentalApplication in 2.396 seconds (process running for 2.843)[0;39m
+[2024-01-16 15:58:22 [32mINFO [0;39m http-nio-8080-exec-1] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] [36mInitializing Spring DispatcherServlet 'dispatcherServlet'[0;39m
+[2024-01-16 15:58:22 [32mINFO [0;39m http-nio-8080-exec-1] [org.springframework.web.servlet.DispatcherServlet] [36mInitializing Servlet 'dispatcherServlet'[0;39m
+[2024-01-16 15:58:22 [32mINFO [0;39m http-nio-8080-exec-1] [org.springframework.web.servlet.DispatcherServlet] [36mCompleted initialization in 0 ms[0;39m
+[2024-01-16 15:58:22 [32mINFO [0;39m http-nio-8080-exec-4] [org.springdoc.api.AbstractOpenApiResource] [36mInit duration for springdoc-openapi is: 261 ms[0;39m
+[2024-01-16 15:58:34 [32mDEBUG[0;39m http-nio-8080-exec-3] [com.team5.projrental.user.UserMapper.selSignin] [36m==>  Preparing: SELECT u.iuser, a.auth, u.upw, u.uid, firebase_token AS firebaseToken FROM t_user u JOIN t_auth a ON a.iauth = u.iauth WHERE u.uid = ?[0;39m
+[2024-01-16 15:58:34 [32mDEBUG[0;39m http-nio-8080-exec-3] [com.team5.projrental.user.UserMapper.selSignin] [36m==> Parameters: qweqwe11(String)[0;39m
+[2024-01-16 15:58:34 [32mDEBUG[0;39m http-nio-8080-exec-3] [com.team5.projrental.user.UserMapper.selSignin] [36m<==      Total: 1[0;39m
+[2024-01-16 15:59:03 [33mWARN [0;39m http-nio-8080-exec-10] [org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver] [36mResolved [jakarta.validation.UnexpectedTypeException: HV000030: No validator could be found for constraint 'org.hibernate.validator.constraints.Length' validating type 'java.lang.Integer'. Check configuration for 'otherPersonIuser'][0;39m
+[2024-01-16 16:01:38 [32mINFO [0;39m SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-1 - Shutdown initiated...[0;39m
+[2024-01-16 16:01:38 [32mINFO [0;39m SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-1 - Shutdown completed.[0;39m
+[2024-01-16 16:01:40 [32mINFO [0;39m background-preinit] [org.hibernate.validator.internal.util.Version] [36mHV000001: Hibernate Validator 8.0.1.Final[0;39m
+[2024-01-16 16:01:40 [32mINFO [0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mStarting ProjrentalApplication using Java 17.0.8.1 with PID 12468 (D:\spring\projectrental\build\classes\java\main started by Administrator in D:\spring\projectrental)[0;39m
+[2024-01-16 16:01:40 [32mDEBUG[0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mRunning with Spring Boot v3.2.1, Spring v6.1.2[0;39m
+[2024-01-16 16:01:40 [32mINFO [0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mNo active profile set, falling back to 1 default profile: "default"[0;39m
+[2024-01-16 16:01:40 [32mINFO [0;39m restartedMain] [org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor] [36mDevtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable[0;39m
+[2024-01-16 16:01:40 [32mINFO [0;39m restartedMain] [org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor] [36mFor additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'[0;39m
+[2024-01-16 16:01:41 [32mINFO [0;39m restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] [36mTomcat initialized with port 8080 (http)[0;39m
+[2024-01-16 16:01:41 [32mINFO [0;39m restartedMain] [org.apache.coyote.http11.Http11NioProtocol] [36mInitializing ProtocolHandler ["http-nio-8080"][0;39m
+[2024-01-16 16:01:41 [32mINFO [0;39m restartedMain] [org.apache.catalina.core.StandardService] [36mStarting service [Tomcat][0;39m
+[2024-01-16 16:01:41 [32mINFO [0;39m restartedMain] [org.apache.catalina.core.StandardEngine] [36mStarting Servlet engine: [Apache Tomcat/10.1.17][0;39m
+[2024-01-16 16:01:41 [32mINFO [0;39m restartedMain] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] [36mInitializing Spring embedded WebApplicationContext[0;39m
+[2024-01-16 16:01:41 [32mINFO [0;39m restartedMain] [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext] [36mRoot WebApplicationContext: initialization completed in 1054 ms[0;39m
+[2024-01-16 16:01:41 [32mINFO [0;39m restartedMain] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-1 - Starting...[0;39m
+[2024-01-16 16:01:42 [32mINFO [0;39m restartedMain] [com.zaxxer.hikari.pool.HikariPool] [36mHikariPool-1 - Added connection org.mariadb.jdbc.Connection@9ca4d75[0;39m
+[2024-01-16 16:01:42 [32mINFO [0;39m restartedMain] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-1 - Start completed.[0;39m
+[2024-01-16 16:01:42 [32mINFO [0;39m restartedMain] [org.springframework.boot.autoconfigure.h2.H2ConsoleAutoConfiguration] [36mH2 console available at '/h2-console'. Database available at 'jdbc:mariadb://localhost/projrental?user=root&password=***'[0;39m
+[2024-01-16 16:01:42 [32mDEBUG[0;39m restartedMain] [com.team5.projrental.common.security.filter.JwtAuthenticationFilter] [36mFilter 'jwtAuthenticationFilter' configured for use[0;39m
+[2024-01-16 16:01:42 [33mWARN [0;39m restartedMain] [org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration] [36m
+
+Using generated security password: fea26039-f258-41e0-9348-25e87a273fd2
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+[0;39m
+[2024-01-16 16:01:42 [32mINFO [0;39m restartedMain] [org.springframework.security.web.DefaultSecurityFilterChain] [36mWill secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@45dcc3da, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@735fcc02, org.springframework.security.web.context.SecurityContextHolderFilter@4e7f08c9, org.springframework.security.web.header.HeaderWriterFilter@44b2bae3, org.springframework.web.filter.CorsFilter@21ffa187, org.springframework.security.web.authentication.logout.LogoutFilter@16055e9c, com.team5.projrental.common.security.filter.JwtAuthenticationFilter@40add9c2, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@567f0c86, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7a094b31, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@3e65c44e, org.springframework.security.web.session.SessionManagementFilter@628a6cc, org.springframework.security.web.access.ExceptionTranslationFilter@623f10af, org.springframework.security.web.access.intercept.AuthorizationFilter@3d3de9ff][0;39m
+[2024-01-16 16:01:42 [32mINFO [0;39m restartedMain] [org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer] [36mLiveReload server is running on port 35729[0;39m
+[2024-01-16 16:01:42 [32mINFO [0;39m restartedMain] [org.apache.coyote.http11.Http11NioProtocol] [36mStarting ProtocolHandler ["http-nio-8080"][0;39m
+[2024-01-16 16:01:42 [32mINFO [0;39m restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] [36mTomcat started on port 8080 (http) with context path ''[0;39m
+[2024-01-16 16:01:42 [32mINFO [0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mStarted ProjrentalApplication in 2.379 seconds (process running for 2.856)[0;39m
+[2024-01-16 16:01:46 [32mINFO [0;39m http-nio-8080-exec-1] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] [36mInitializing Spring DispatcherServlet 'dispatcherServlet'[0;39m
+[2024-01-16 16:01:46 [32mINFO [0;39m http-nio-8080-exec-1] [org.springframework.web.servlet.DispatcherServlet] [36mInitializing Servlet 'dispatcherServlet'[0;39m
+[2024-01-16 16:01:46 [32mINFO [0;39m http-nio-8080-exec-1] [org.springframework.web.servlet.DispatcherServlet] [36mCompleted initialization in 1 ms[0;39m
+[2024-01-16 16:01:46 [32mINFO [0;39m http-nio-8080-exec-4] [org.springdoc.api.AbstractOpenApiResource] [36mInit duration for springdoc-openapi is: 267 ms[0;39m
+[2024-01-16 16:01:57 [32mDEBUG[0;39m http-nio-8080-exec-5] [com.team5.projrental.user.UserMapper.selSignin] [36m==>  Preparing: SELECT u.iuser, a.auth, u.upw, u.uid, firebase_token AS firebaseToken FROM t_user u JOIN t_auth a ON a.iauth = u.iauth WHERE u.uid = ?[0;39m
+[2024-01-16 16:01:57 [32mDEBUG[0;39m http-nio-8080-exec-5] [com.team5.projrental.user.UserMapper.selSignin] [36m==> Parameters: qweqwe11(String)[0;39m
+[2024-01-16 16:01:57 [32mDEBUG[0;39m http-nio-8080-exec-5] [com.team5.projrental.user.UserMapper.selSignin] [36m<==      Total: 1[0;39m
+[2024-01-16 16:02:35 [33mWARN [0;39m http-nio-8080-exec-6] [org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver] [36mResolved [jakarta.validation.UnexpectedTypeException: HV000030: No validator could be found for constraint 'org.hibernate.validator.constraints.Length' validating type 'java.lang.Integer'. Check configuration for 'otherPersonIuser'][0;39m
+[2024-01-16 16:04:16 [32mINFO [0;39m SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-1 - Shutdown initiated...[0;39m
+[2024-01-16 16:04:16 [32mINFO [0;39m SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-1 - Shutdown completed.[0;39m
+[2024-01-16 16:04:19 [32mINFO [0;39m background-preinit] [org.hibernate.validator.internal.util.Version] [36mHV000001: Hibernate Validator 8.0.1.Final[0;39m
+[2024-01-16 16:04:19 [32mINFO [0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mStarting ProjrentalApplication using Java 17.0.8.1 with PID 8392 (D:\spring\projectrental\build\classes\java\main started by Administrator in D:\spring\projectrental)[0;39m
+[2024-01-16 16:04:19 [32mDEBUG[0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mRunning with Spring Boot v3.2.1, Spring v6.1.2[0;39m
+[2024-01-16 16:04:19 [32mINFO [0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mNo active profile set, falling back to 1 default profile: "default"[0;39m
+[2024-01-16 16:04:19 [32mINFO [0;39m restartedMain] [org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor] [36mDevtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable[0;39m
+[2024-01-16 16:04:19 [32mINFO [0;39m restartedMain] [org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor] [36mFor additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'[0;39m
+[2024-01-16 16:04:20 [32mINFO [0;39m restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] [36mTomcat initialized with port 8080 (http)[0;39m
+[2024-01-16 16:04:20 [32mINFO [0;39m restartedMain] [org.apache.coyote.http11.Http11NioProtocol] [36mInitializing ProtocolHandler ["http-nio-8080"][0;39m
+[2024-01-16 16:04:20 [32mINFO [0;39m restartedMain] [org.apache.catalina.core.StandardService] [36mStarting service [Tomcat][0;39m
+[2024-01-16 16:04:20 [32mINFO [0;39m restartedMain] [org.apache.catalina.core.StandardEngine] [36mStarting Servlet engine: [Apache Tomcat/10.1.17][0;39m
+[2024-01-16 16:04:20 [32mINFO [0;39m restartedMain] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] [36mInitializing Spring embedded WebApplicationContext[0;39m
+[2024-01-16 16:04:20 [32mINFO [0;39m restartedMain] [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext] [36mRoot WebApplicationContext: initialization completed in 1045 ms[0;39m
+[2024-01-16 16:04:20 [32mINFO [0;39m restartedMain] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-1 - Starting...[0;39m
+[2024-01-16 16:04:20 [32mINFO [0;39m restartedMain] [com.zaxxer.hikari.pool.HikariPool] [36mHikariPool-1 - Added connection org.mariadb.jdbc.Connection@69a35ded[0;39m
+[2024-01-16 16:04:20 [32mINFO [0;39m restartedMain] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-1 - Start completed.[0;39m
+[2024-01-16 16:04:20 [32mINFO [0;39m restartedMain] [org.springframework.boot.autoconfigure.h2.H2ConsoleAutoConfiguration] [36mH2 console available at '/h2-console'. Database available at 'jdbc:mariadb://localhost/projrental?user=root&password=***'[0;39m
+[2024-01-16 16:04:20 [32mDEBUG[0;39m restartedMain] [com.team5.projrental.common.security.filter.JwtAuthenticationFilter] [36mFilter 'jwtAuthenticationFilter' configured for use[0;39m
+[2024-01-16 16:04:20 [33mWARN [0;39m restartedMain] [org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration] [36m
+
+Using generated security password: ab9476e4-e4b6-47e7-8fc2-bb199b2ecc15
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+[0;39m
+[2024-01-16 16:04:20 [32mINFO [0;39m restartedMain] [org.springframework.security.web.DefaultSecurityFilterChain] [36mWill secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@14216482, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@45dcc3da, org.springframework.security.web.context.SecurityContextHolderFilter@3a5efef, org.springframework.security.web.header.HeaderWriterFilter@78a5990c, org.springframework.web.filter.CorsFilter@735fcc02, org.springframework.security.web.authentication.logout.LogoutFilter@45a5f1d4, com.team5.projrental.common.security.filter.JwtAuthenticationFilter@1431cf14, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@d22d90c, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@567f0c86, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@21ffa187, org.springframework.security.web.session.SessionManagementFilter@5e9270b2, org.springframework.security.web.access.ExceptionTranslationFilter@1f9477ec, org.springframework.security.web.access.intercept.AuthorizationFilter@2f633ad1][0;39m
+[2024-01-16 16:04:21 [32mINFO [0;39m restartedMain] [org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer] [36mLiveReload server is running on port 35729[0;39m
+[2024-01-16 16:04:21 [32mINFO [0;39m restartedMain] [org.apache.coyote.http11.Http11NioProtocol] [36mStarting ProtocolHandler ["http-nio-8080"][0;39m
+[2024-01-16 16:04:21 [32mINFO [0;39m restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] [36mTomcat started on port 8080 (http) with context path ''[0;39m
+[2024-01-16 16:04:21 [32mINFO [0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mStarted ProjrentalApplication in 2.299 seconds (process running for 2.714)[0;39m
+[2024-01-16 16:04:28 [32mINFO [0;39m http-nio-8080-exec-1] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] [36mInitializing Spring DispatcherServlet 'dispatcherServlet'[0;39m
+[2024-01-16 16:04:28 [32mINFO [0;39m http-nio-8080-exec-1] [org.springframework.web.servlet.DispatcherServlet] [36mInitializing Servlet 'dispatcherServlet'[0;39m
+[2024-01-16 16:04:28 [32mINFO [0;39m http-nio-8080-exec-1] [org.springframework.web.servlet.DispatcherServlet] [36mCompleted initialization in 1 ms[0;39m
+[2024-01-16 16:04:28 [33mWARN [0;39m http-nio-8080-exec-1] [org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver] [36mResolved [jakarta.validation.UnexpectedTypeException: HV000030: No validator could be found for constraint 'org.hibernate.validator.constraints.Length' validating type 'java.lang.Integer'. Check configuration for 'ichat'][0;39m
+[2024-01-16 16:04:48 [32mINFO [0;39m SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-1 - Shutdown initiated...[0;39m
+[2024-01-16 16:04:48 [32mINFO [0;39m SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-1 - Shutdown completed.[0;39m
+[2024-01-16 16:04:51 [32mINFO [0;39m background-preinit] [org.hibernate.validator.internal.util.Version] [36mHV000001: Hibernate Validator 8.0.1.Final[0;39m
+[2024-01-16 16:04:51 [32mINFO [0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mStarting ProjrentalApplication using Java 17.0.8.1 with PID 4196 (D:\spring\projectrental\build\classes\java\main started by Administrator in D:\spring\projectrental)[0;39m
+[2024-01-16 16:04:51 [32mDEBUG[0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mRunning with Spring Boot v3.2.1, Spring v6.1.2[0;39m
+[2024-01-16 16:04:51 [32mINFO [0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mNo active profile set, falling back to 1 default profile: "default"[0;39m
+[2024-01-16 16:04:51 [32mINFO [0;39m restartedMain] [org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor] [36mDevtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable[0;39m
+[2024-01-16 16:04:51 [32mINFO [0;39m restartedMain] [org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor] [36mFor additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'[0;39m
+[2024-01-16 16:04:52 [32mINFO [0;39m restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] [36mTomcat initialized with port 8080 (http)[0;39m
+[2024-01-16 16:04:52 [32mINFO [0;39m restartedMain] [org.apache.coyote.http11.Http11NioProtocol] [36mInitializing ProtocolHandler ["http-nio-8080"][0;39m
+[2024-01-16 16:04:52 [32mINFO [0;39m restartedMain] [org.apache.catalina.core.StandardService] [36mStarting service [Tomcat][0;39m
+[2024-01-16 16:04:52 [32mINFO [0;39m restartedMain] [org.apache.catalina.core.StandardEngine] [36mStarting Servlet engine: [Apache Tomcat/10.1.17][0;39m
+[2024-01-16 16:04:52 [32mINFO [0;39m restartedMain] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] [36mInitializing Spring embedded WebApplicationContext[0;39m
+[2024-01-16 16:04:52 [32mINFO [0;39m restartedMain] [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext] [36mRoot WebApplicationContext: initialization completed in 1062 ms[0;39m
+[2024-01-16 16:04:52 [32mINFO [0;39m restartedMain] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-1 - Starting...[0;39m
+[2024-01-16 16:04:52 [32mINFO [0;39m restartedMain] [com.zaxxer.hikari.pool.HikariPool] [36mHikariPool-1 - Added connection org.mariadb.jdbc.Connection@1371e6e6[0;39m
+[2024-01-16 16:04:52 [32mINFO [0;39m restartedMain] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-1 - Start completed.[0;39m
+[2024-01-16 16:04:52 [32mINFO [0;39m restartedMain] [org.springframework.boot.autoconfigure.h2.H2ConsoleAutoConfiguration] [36mH2 console available at '/h2-console'. Database available at 'jdbc:mariadb://localhost/projrental?user=root&password=***'[0;39m
+[2024-01-16 16:04:52 [32mDEBUG[0;39m restartedMain] [com.team5.projrental.common.security.filter.JwtAuthenticationFilter] [36mFilter 'jwtAuthenticationFilter' configured for use[0;39m
+[2024-01-16 16:04:52 [33mWARN [0;39m restartedMain] [org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration] [36m
+
+Using generated security password: f59c6a52-04bb-4937-a31b-2850ba0cb342
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+[0;39m
+[2024-01-16 16:04:53 [32mINFO [0;39m restartedMain] [org.springframework.security.web.DefaultSecurityFilterChain] [36mWill secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@735fcc02, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@21ffa187, org.springframework.security.web.context.SecurityContextHolderFilter@d22d90c, org.springframework.security.web.header.HeaderWriterFilter@5e9270b2, org.springframework.web.filter.CorsFilter@3e65c44e, org.springframework.security.web.authentication.logout.LogoutFilter@139f3dcb, com.team5.projrental.common.security.filter.JwtAuthenticationFilter@a4ea152, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@7a094b31, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@4c862df9, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@1d04124b, org.springframework.security.web.session.SessionManagementFilter@529132fc, org.springframework.security.web.access.ExceptionTranslationFilter@2ddea793, org.springframework.security.web.access.intercept.AuthorizationFilter@14216482][0;39m
+[2024-01-16 16:04:53 [32mINFO [0;39m restartedMain] [org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer] [36mLiveReload server is running on port 35729[0;39m
+[2024-01-16 16:04:53 [32mINFO [0;39m restartedMain] [org.apache.coyote.http11.Http11NioProtocol] [36mStarting ProtocolHandler ["http-nio-8080"][0;39m
+[2024-01-16 16:04:53 [32mINFO [0;39m restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] [36mTomcat started on port 8080 (http) with context path ''[0;39m
+[2024-01-16 16:04:53 [32mINFO [0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mStarted ProjrentalApplication in 2.365 seconds (process running for 2.782)[0;39m
+[2024-01-16 16:04:55 [32mINFO [0;39m http-nio-8080-exec-1] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] [36mInitializing Spring DispatcherServlet 'dispatcherServlet'[0;39m
+[2024-01-16 16:04:55 [32mINFO [0;39m http-nio-8080-exec-1] [org.springframework.web.servlet.DispatcherServlet] [36mInitializing Servlet 'dispatcherServlet'[0;39m
+[2024-01-16 16:04:55 [32mINFO [0;39m http-nio-8080-exec-1] [org.springframework.web.servlet.DispatcherServlet] [36mCompleted initialization in 1 ms[0;39m
+[2024-01-16 16:04:55 [33mWARN [0;39m http-nio-8080-exec-1] [org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver] [36mResolved [jakarta.validation.UnexpectedTypeException: HV000030: No validator could be found for constraint 'org.hibernate.validator.constraints.Length' validating type 'java.lang.Integer'. Check configuration for 'iproduct'][0;39m
+[2024-01-16 16:05:05 [32mINFO [0;39m SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-1 - Shutdown initiated...[0;39m
+[2024-01-16 16:05:05 [32mINFO [0;39m SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-1 - Shutdown completed.[0;39m
+[2024-01-16 16:05:07 [32mINFO [0;39m background-preinit] [org.hibernate.validator.internal.util.Version] [36mHV000001: Hibernate Validator 8.0.1.Final[0;39m
+[2024-01-16 16:05:07 [32mINFO [0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mStarting ProjrentalApplication using Java 17.0.8.1 with PID 10664 (D:\spring\projectrental\build\classes\java\main started by Administrator in D:\spring\projectrental)[0;39m
+[2024-01-16 16:05:07 [32mDEBUG[0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mRunning with Spring Boot v3.2.1, Spring v6.1.2[0;39m
+[2024-01-16 16:05:07 [32mINFO [0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mNo active profile set, falling back to 1 default profile: "default"[0;39m
+[2024-01-16 16:05:08 [32mINFO [0;39m restartedMain] [org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor] [36mDevtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable[0;39m
+[2024-01-16 16:05:08 [32mINFO [0;39m restartedMain] [org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor] [36mFor additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'[0;39m
+[2024-01-16 16:05:09 [32mINFO [0;39m restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] [36mTomcat initialized with port 8080 (http)[0;39m
+[2024-01-16 16:05:09 [32mINFO [0;39m restartedMain] [org.apache.coyote.http11.Http11NioProtocol] [36mInitializing ProtocolHandler ["http-nio-8080"][0;39m
+[2024-01-16 16:05:09 [32mINFO [0;39m restartedMain] [org.apache.catalina.core.StandardService] [36mStarting service [Tomcat][0;39m
+[2024-01-16 16:05:09 [32mINFO [0;39m restartedMain] [org.apache.catalina.core.StandardEngine] [36mStarting Servlet engine: [Apache Tomcat/10.1.17][0;39m
+[2024-01-16 16:05:09 [32mINFO [0;39m restartedMain] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] [36mInitializing Spring embedded WebApplicationContext[0;39m
+[2024-01-16 16:05:09 [32mINFO [0;39m restartedMain] [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext] [36mRoot WebApplicationContext: initialization completed in 1065 ms[0;39m
+[2024-01-16 16:05:09 [32mINFO [0;39m restartedMain] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-1 - Starting...[0;39m
+[2024-01-16 16:05:09 [32mINFO [0;39m restartedMain] [com.zaxxer.hikari.pool.HikariPool] [36mHikariPool-1 - Added connection org.mariadb.jdbc.Connection@18ef0bc9[0;39m
+[2024-01-16 16:05:09 [32mINFO [0;39m restartedMain] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-1 - Start completed.[0;39m
+[2024-01-16 16:05:09 [32mINFO [0;39m restartedMain] [org.springframework.boot.autoconfigure.h2.H2ConsoleAutoConfiguration] [36mH2 console available at '/h2-console'. Database available at 'jdbc:mariadb://localhost/projrental?user=root&password=***'[0;39m
+[2024-01-16 16:05:09 [32mDEBUG[0;39m restartedMain] [com.team5.projrental.common.security.filter.JwtAuthenticationFilter] [36mFilter 'jwtAuthenticationFilter' configured for use[0;39m
+[2024-01-16 16:05:09 [33mWARN [0;39m restartedMain] [org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration] [36m
+
+Using generated security password: ae0f5959-d5e9-471d-80f4-616a78d35461
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+[0;39m
+[2024-01-16 16:05:09 [32mINFO [0;39m restartedMain] [org.springframework.security.web.DefaultSecurityFilterChain] [36mWill secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@b4e6a1c, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@128da88c, org.springframework.security.web.context.SecurityContextHolderFilter@2df089a0, org.springframework.security.web.header.HeaderWriterFilter@34b9c5fe, org.springframework.web.filter.CorsFilter@2f39ec2a, org.springframework.security.web.authentication.logout.LogoutFilter@3cbb1ae7, com.team5.projrental.common.security.filter.JwtAuthenticationFilter@64e4fe46, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2cb60677, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5f68ee8b, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@d2852e, org.springframework.security.web.session.SessionManagementFilter@1b6ec7fc, org.springframework.security.web.access.ExceptionTranslationFilter@2f8fcd12, org.springframework.security.web.access.intercept.AuthorizationFilter@39709f28][0;39m
+[2024-01-16 16:05:09 [32mINFO [0;39m restartedMain] [org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer] [36mLiveReload server is running on port 35729[0;39m
+[2024-01-16 16:05:09 [32mINFO [0;39m restartedMain] [org.apache.coyote.http11.Http11NioProtocol] [36mStarting ProtocolHandler ["http-nio-8080"][0;39m
+[2024-01-16 16:05:10 [32mINFO [0;39m restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] [36mTomcat started on port 8080 (http) with context path ''[0;39m
+[2024-01-16 16:05:10 [32mINFO [0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mStarted ProjrentalApplication in 2.357 seconds (process running for 2.773)[0;39m
+[2024-01-16 16:05:10 [32mINFO [0;39m http-nio-8080-exec-1] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] [36mInitializing Spring DispatcherServlet 'dispatcherServlet'[0;39m
+[2024-01-16 16:05:10 [32mINFO [0;39m http-nio-8080-exec-1] [org.springframework.web.servlet.DispatcherServlet] [36mInitializing Servlet 'dispatcherServlet'[0;39m
+[2024-01-16 16:05:10 [32mINFO [0;39m http-nio-8080-exec-1] [org.springframework.web.servlet.DispatcherServlet] [36mCompleted initialization in 1 ms[0;39m
+[2024-01-16 16:05:10 [32mINFO [0;39m http-nio-8080-exec-9] [org.springdoc.api.AbstractOpenApiResource] [36mInit duration for springdoc-openapi is: 259 ms[0;39m
+[2024-01-16 16:05:22 [32mDEBUG[0;39m http-nio-8080-exec-10] [com.team5.projrental.user.UserMapper.selSignin] [36m==>  Preparing: SELECT u.iuser, a.auth, u.upw, u.uid, firebase_token AS firebaseToken FROM t_user u JOIN t_auth a ON a.iauth = u.iauth WHERE u.uid = ?[0;39m
+[2024-01-16 16:05:22 [32mDEBUG[0;39m http-nio-8080-exec-10] [com.team5.projrental.user.UserMapper.selSignin] [36m==> Parameters: qweqwe11(String)[0;39m
+[2024-01-16 16:05:22 [32mDEBUG[0;39m http-nio-8080-exec-10] [com.team5.projrental.user.UserMapper.selSignin] [36m<==      Total: 1[0;39m
+[2024-01-16 16:05:39 [32mDEBUG[0;39m http-nio-8080-exec-6] [com.team5.projrental.chat.ChatMapper.selChatUserCheck] [36m==>  Preparing: SELECT ichat FROM t_chat_user WHERE iuser = ? OR iuser =? GROUP BY ichat HAVING COUNT(ichat) = 2[0;39m
+[2024-01-16 16:05:39 [32mDEBUG[0;39m http-nio-8080-exec-6] [com.team5.projrental.chat.ChatMapper.selChatUserCheck] [36m==> Parameters: 0(Integer), 5(Integer)[0;39m
+[2024-01-16 16:05:39 [32mDEBUG[0;39m http-nio-8080-exec-6] [com.team5.projrental.chat.ChatMapper.selChatUserCheck] [36m<==      Total: 0[0;39m
+[2024-01-16 16:05:39 [32mINFO [0;39m http-nio-8080-exec-6] [com.team5.projrental.chat.ChatService] [36mdto: ChatInsDto(ichat=1, iproduct=5, loginedIuser=0, otherPersonIuser=5)[0;39m
+[2024-01-16 16:05:39 [32mDEBUG[0;39m http-nio-8080-exec-6] [com.team5.projrental.chat.ChatMapper.insChat] [36m==>  Preparing: INSERT INTO t_chat SET last_msg = NULL[0;39m
+[2024-01-16 16:05:39 [32mDEBUG[0;39m http-nio-8080-exec-6] [com.team5.projrental.chat.ChatMapper.insChat] [36m==> Parameters: [0;39m
+[2024-01-16 16:05:39 [33mWARN [0;39m http-nio-8080-exec-6] [org.mariadb.jdbc.message.server.ErrorPacket] [36mError: 1364-HY000: Field 'iproduct' doesn't have a default value[0;39m
+[2024-01-16 16:05:39 [33mWARN [0;39m http-nio-8080-exec-6] [org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver] [36mResolved [org.springframework.dao.DataIntegrityViolationException: <EOL><EOL>### Error updating database.  Cause: java.sql.SQLException: (conn=394) Field 'iproduct' doesn't have a default value<EOL><EOL>### The error may exist in file [D:\spring\projectrental\build\resources\main\mappers\chat\ChatMapper.xml]<EOL><EOL>### The error may involve defaultParameterMap<EOL><EOL>### The error occurred while setting parameters<EOL><EOL>### SQL: INSERT INTO t_chat         SET last_msg = NULL<EOL><EOL>### Cause: java.sql.SQLException: (conn=394) Field 'iproduct' doesn't have a default value<EOL>; (conn=394) Field 'iproduct' doesn't have a default value][0;39m
+[2024-01-16 16:07:23 [32mINFO [0;39m File Watcher] [org.springframework.boot.devtools.autoconfigure.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener] [36mRestarting due to 8 class path changes (0 additions, 0 deletions, 8 modifications)[0;39m
+[2024-01-16 16:07:23 [32mINFO [0;39m Thread-5] [org.apache.coyote.http11.Http11NioProtocol] [36mStopping ProtocolHandler ["http-nio-8080"][0;39m
+[2024-01-16 16:07:23 [32mINFO [0;39m Thread-5] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-1 - Shutdown initiated...[0;39m
+[2024-01-16 16:07:23 [32mINFO [0;39m Thread-5] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-1 - Shutdown completed.[0;39m
+[2024-01-16 16:07:23 [32mINFO [0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mStarting ProjrentalApplication using Java 17.0.8.1 with PID 10664 (D:\spring\projectrental\build\classes\java\main started by Administrator in D:\spring\projectrental)[0;39m
+[2024-01-16 16:07:23 [32mDEBUG[0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mRunning with Spring Boot v3.2.1, Spring v6.1.2[0;39m
+[2024-01-16 16:07:23 [32mINFO [0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mNo active profile set, falling back to 1 default profile: "default"[0;39m
+[2024-01-16 16:07:23 [32mINFO [0;39m restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] [36mTomcat initialized with port 8080 (http)[0;39m
+[2024-01-16 16:07:23 [32mINFO [0;39m restartedMain] [org.apache.coyote.http11.Http11NioProtocol] [36mInitializing ProtocolHandler ["http-nio-8080"][0;39m
+[2024-01-16 16:07:23 [32mINFO [0;39m restartedMain] [org.apache.catalina.core.StandardService] [36mStarting service [Tomcat][0;39m
+[2024-01-16 16:07:23 [32mINFO [0;39m restartedMain] [org.apache.catalina.core.StandardEngine] [36mStarting Servlet engine: [Apache Tomcat/10.1.17][0;39m
+[2024-01-16 16:07:23 [32mINFO [0;39m restartedMain] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] [36mInitializing Spring embedded WebApplicationContext[0;39m
+[2024-01-16 16:07:23 [32mINFO [0;39m restartedMain] [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext] [36mRoot WebApplicationContext: initialization completed in 276 ms[0;39m
+[2024-01-16 16:07:23 [32mINFO [0;39m restartedMain] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-2 - Starting...[0;39m
+[2024-01-16 16:07:23 [32mINFO [0;39m restartedMain] [com.zaxxer.hikari.pool.HikariPool] [36mHikariPool-2 - Added connection org.mariadb.jdbc.Connection@186c4ad7[0;39m
+[2024-01-16 16:07:23 [32mINFO [0;39m restartedMain] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-2 - Start completed.[0;39m
+[2024-01-16 16:07:23 [32mINFO [0;39m restartedMain] [org.springframework.boot.autoconfigure.h2.H2ConsoleAutoConfiguration] [36mH2 console available at '/h2-console'. Database available at 'jdbc:mariadb://localhost/projrental?user=root&password=***'[0;39m
+[2024-01-16 16:07:23 [32mDEBUG[0;39m restartedMain] [com.team5.projrental.common.security.filter.JwtAuthenticationFilter] [36mFilter 'jwtAuthenticationFilter' configured for use[0;39m
+[2024-01-16 16:07:24 [33mWARN [0;39m restartedMain] [org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration] [36m
+
+Using generated security password: df74b115-4b7a-4d81-8e5e-1a8352fb1a97
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+[0;39m
+[2024-01-16 16:07:24 [32mINFO [0;39m restartedMain] [org.springframework.security.web.DefaultSecurityFilterChain] [36mWill secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@286acbd5, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@548f0d29, org.springframework.security.web.context.SecurityContextHolderFilter@2acb1162, org.springframework.security.web.header.HeaderWriterFilter@2eff0651, org.springframework.web.filter.CorsFilter@6c83dcbd, org.springframework.security.web.authentication.logout.LogoutFilter@3808822b, com.team5.projrental.common.security.filter.JwtAuthenticationFilter@2669e815, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1dbc00d0, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@4b2750b8, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@3ce0bf1b, org.springframework.security.web.session.SessionManagementFilter@32666f5c, org.springframework.security.web.access.ExceptionTranslationFilter@3ea12c3f, org.springframework.security.web.access.intercept.AuthorizationFilter@349c85eb][0;39m
+[2024-01-16 16:07:24 [32mINFO [0;39m restartedMain] [org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer] [36mLiveReload server is running on port 35729[0;39m
+[2024-01-16 16:07:24 [32mINFO [0;39m restartedMain] [org.apache.coyote.http11.Http11NioProtocol] [36mStarting ProtocolHandler ["http-nio-8080"][0;39m
+[2024-01-16 16:07:24 [32mINFO [0;39m restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] [36mTomcat started on port 8080 (http) with context path ''[0;39m
+[2024-01-16 16:07:24 [32mINFO [0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mStarted ProjrentalApplication in 0.626 seconds (process running for 136.982)[0;39m
+[2024-01-16 16:07:24 [32mINFO [0;39m restartedMain] [org.springframework.boot.devtools.autoconfigure.ConditionEvaluationDeltaLoggingListener] [36mCondition evaluation unchanged[0;39m
+[2024-01-16 16:07:49 [32mINFO [0;39m SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-2 - Shutdown initiated...[0;39m
+[2024-01-16 16:07:49 [32mINFO [0;39m SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-2 - Shutdown completed.[0;39m
+[2024-01-16 16:07:51 [32mINFO [0;39m background-preinit] [org.hibernate.validator.internal.util.Version] [36mHV000001: Hibernate Validator 8.0.1.Final[0;39m
+[2024-01-16 16:07:51 [32mINFO [0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mStarting ProjrentalApplication using Java 17.0.8.1 with PID 13276 (D:\spring\projectrental\build\classes\java\main started by Administrator in D:\spring\projectrental)[0;39m
+[2024-01-16 16:07:51 [32mDEBUG[0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mRunning with Spring Boot v3.2.1, Spring v6.1.2[0;39m
+[2024-01-16 16:07:51 [32mINFO [0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mNo active profile set, falling back to 1 default profile: "default"[0;39m
+[2024-01-16 16:07:51 [32mINFO [0;39m restartedMain] [org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor] [36mDevtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable[0;39m
+[2024-01-16 16:07:51 [32mINFO [0;39m restartedMain] [org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor] [36mFor additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'[0;39m
+[2024-01-16 16:07:52 [32mINFO [0;39m restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] [36mTomcat initialized with port 8080 (http)[0;39m
+[2024-01-16 16:07:52 [32mINFO [0;39m restartedMain] [org.apache.coyote.http11.Http11NioProtocol] [36mInitializing ProtocolHandler ["http-nio-8080"][0;39m
+[2024-01-16 16:07:52 [32mINFO [0;39m restartedMain] [org.apache.catalina.core.StandardService] [36mStarting service [Tomcat][0;39m
+[2024-01-16 16:07:52 [32mINFO [0;39m restartedMain] [org.apache.catalina.core.StandardEngine] [36mStarting Servlet engine: [Apache Tomcat/10.1.17][0;39m
+[2024-01-16 16:07:52 [32mINFO [0;39m restartedMain] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] [36mInitializing Spring embedded WebApplicationContext[0;39m
+[2024-01-16 16:07:52 [32mINFO [0;39m restartedMain] [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext] [36mRoot WebApplicationContext: initialization completed in 1113 ms[0;39m
+[2024-01-16 16:07:52 [32mINFO [0;39m restartedMain] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-1 - Starting...[0;39m
+[2024-01-16 16:07:52 [32mINFO [0;39m restartedMain] [com.zaxxer.hikari.pool.HikariPool] [36mHikariPool-1 - Added connection org.mariadb.jdbc.Connection@5bd9e1b0[0;39m
+[2024-01-16 16:07:52 [32mINFO [0;39m restartedMain] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-1 - Start completed.[0;39m
+[2024-01-16 16:07:52 [32mINFO [0;39m restartedMain] [org.springframework.boot.autoconfigure.h2.H2ConsoleAutoConfiguration] [36mH2 console available at '/h2-console'. Database available at 'jdbc:mariadb://localhost/projrental?user=root&password=***'[0;39m
+[2024-01-16 16:07:52 [32mDEBUG[0;39m restartedMain] [com.team5.projrental.common.security.filter.JwtAuthenticationFilter] [36mFilter 'jwtAuthenticationFilter' configured for use[0;39m
+[2024-01-16 16:07:53 [33mWARN [0;39m restartedMain] [org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration] [36m
+
+Using generated security password: 436f860e-fef9-4ec1-8811-559882962bd2
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+[0;39m
+[2024-01-16 16:07:53 [32mINFO [0;39m restartedMain] [org.springframework.security.web.DefaultSecurityFilterChain] [36mWill secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@1cc6605b, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@b4e6a1c, org.springframework.security.web.context.SecurityContextHolderFilter@332800ba, org.springframework.security.web.header.HeaderWriterFilter@5cae64e, org.springframework.web.filter.CorsFilter@128da88c, org.springframework.security.web.authentication.logout.LogoutFilter@6a6cc5b2, com.team5.projrental.common.security.filter.JwtAuthenticationFilter@12bfcdae, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@404ceac5, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@2cb60677, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@2f39ec2a, org.springframework.security.web.session.SessionManagementFilter@658f6926, org.springframework.security.web.access.ExceptionTranslationFilter@5ccda1e8, org.springframework.security.web.access.intercept.AuthorizationFilter@359589f0][0;39m
+[2024-01-16 16:07:53 [32mINFO [0;39m restartedMain] [org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer] [36mLiveReload server is running on port 35729[0;39m
+[2024-01-16 16:07:53 [32mINFO [0;39m restartedMain] [org.apache.coyote.http11.Http11NioProtocol] [36mStarting ProtocolHandler ["http-nio-8080"][0;39m
+[2024-01-16 16:07:53 [32mINFO [0;39m restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] [36mTomcat started on port 8080 (http) with context path ''[0;39m
+[2024-01-16 16:07:53 [32mINFO [0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mStarted ProjrentalApplication in 2.472 seconds (process running for 2.877)[0;39m
+[2024-01-16 16:07:57 [32mINFO [0;39m http-nio-8080-exec-1] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] [36mInitializing Spring DispatcherServlet 'dispatcherServlet'[0;39m
+[2024-01-16 16:07:57 [32mINFO [0;39m http-nio-8080-exec-1] [org.springframework.web.servlet.DispatcherServlet] [36mInitializing Servlet 'dispatcherServlet'[0;39m
+[2024-01-16 16:07:57 [32mINFO [0;39m http-nio-8080-exec-1] [org.springframework.web.servlet.DispatcherServlet] [36mCompleted initialization in 1 ms[0;39m
+[2024-01-16 16:07:57 [32mDEBUG[0;39m http-nio-8080-exec-1] [com.team5.projrental.chat.ChatMapper.selChatUserCheck] [36m==>  Preparing: SELECT t_ichat FROM t_chat_user WHERE iuser = ? OR iuser =? GROUP BY ichat HAVING COUNT(ichat) = 2[0;39m
+[2024-01-16 16:07:57 [32mDEBUG[0;39m http-nio-8080-exec-1] [com.team5.projrental.chat.ChatMapper.selChatUserCheck] [36m==> Parameters: 0(Integer), 5(Integer)[0;39m
+[2024-01-16 16:07:57 [33mWARN [0;39m http-nio-8080-exec-1] [org.mariadb.jdbc.message.server.ErrorPacket] [36mError: 1054-42S22: Unknown column 't_ichat' in 'field list'[0;39m
+[2024-01-16 16:07:57 [33mWARN [0;39m http-nio-8080-exec-1] [org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver] [36mResolved [org.springframework.jdbc.BadSqlGrammarException: <EOL><EOL>### Error querying database.  Cause: java.sql.SQLSyntaxErrorException: (conn=414) Unknown column 't_ichat' in 'field list'<EOL><EOL>### The error may exist in file [D:\spring\projectrental\build\resources\main\mappers\chat\ChatMapper.xml]<EOL><EOL>### The error may involve defaultParameterMap<EOL><EOL>### The error occurred while setting parameters<EOL><EOL>### SQL: SELECT t_ichat         FROM t_chat_user         WHERE iuser = ? OR iuser =?         GROUP BY ichat         HAVING COUNT(ichat) = 2<EOL><EOL>### Cause: java.sql.SQLSyntaxErrorException: (conn=414) Unknown column 't_ichat' in 'field list'<EOL>; bad SQL grammar []][0;39m
+[2024-01-16 16:09:36 [32mINFO [0;39m File Watcher] [org.springframework.boot.devtools.autoconfigure.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener] [36mRestarting due to 8 class path changes (0 additions, 0 deletions, 8 modifications)[0;39m
+[2024-01-16 16:09:36 [32mINFO [0;39m Thread-5] [org.apache.coyote.http11.Http11NioProtocol] [36mStopping ProtocolHandler ["http-nio-8080"][0;39m
+[2024-01-16 16:09:36 [32mINFO [0;39m Thread-5] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-1 - Shutdown initiated...[0;39m
+[2024-01-16 16:09:36 [32mINFO [0;39m Thread-5] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-1 - Shutdown completed.[0;39m
+[2024-01-16 16:09:36 [32mINFO [0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mStarting ProjrentalApplication using Java 17.0.8.1 with PID 13276 (D:\spring\projectrental\build\classes\java\main started by Administrator in D:\spring\projectrental)[0;39m
+[2024-01-16 16:09:36 [32mDEBUG[0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mRunning with Spring Boot v3.2.1, Spring v6.1.2[0;39m
+[2024-01-16 16:09:36 [32mINFO [0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mNo active profile set, falling back to 1 default profile: "default"[0;39m
+[2024-01-16 16:09:36 [32mINFO [0;39m restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] [36mTomcat initialized with port 8080 (http)[0;39m
+[2024-01-16 16:09:36 [32mINFO [0;39m restartedMain] [org.apache.coyote.http11.Http11NioProtocol] [36mInitializing ProtocolHandler ["http-nio-8080"][0;39m
+[2024-01-16 16:09:36 [32mINFO [0;39m restartedMain] [org.apache.catalina.core.StandardService] [36mStarting service [Tomcat][0;39m
+[2024-01-16 16:09:36 [32mINFO [0;39m restartedMain] [org.apache.catalina.core.StandardEngine] [36mStarting Servlet engine: [Apache Tomcat/10.1.17][0;39m
+[2024-01-16 16:09:36 [32mINFO [0;39m restartedMain] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] [36mInitializing Spring embedded WebApplicationContext[0;39m
+[2024-01-16 16:09:36 [32mINFO [0;39m restartedMain] [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext] [36mRoot WebApplicationContext: initialization completed in 283 ms[0;39m
+[2024-01-16 16:09:36 [32mINFO [0;39m restartedMain] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-2 - Starting...[0;39m
+[2024-01-16 16:09:36 [32mINFO [0;39m restartedMain] [com.zaxxer.hikari.pool.HikariPool] [36mHikariPool-2 - Added connection org.mariadb.jdbc.Connection@5cc7fe0d[0;39m
+[2024-01-16 16:09:36 [32mINFO [0;39m restartedMain] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-2 - Start completed.[0;39m
+[2024-01-16 16:09:36 [32mINFO [0;39m restartedMain] [org.springframework.boot.autoconfigure.h2.H2ConsoleAutoConfiguration] [36mH2 console available at '/h2-console'. Database available at 'jdbc:mariadb://localhost/projrental?user=root&password=***'[0;39m
+[2024-01-16 16:09:36 [32mDEBUG[0;39m restartedMain] [com.team5.projrental.common.security.filter.JwtAuthenticationFilter] [36mFilter 'jwtAuthenticationFilter' configured for use[0;39m
+[2024-01-16 16:09:37 [33mWARN [0;39m restartedMain] [org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration] [36m
+
+Using generated security password: e00737cd-5293-4329-ae25-c65cc94084b6
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+[0;39m
+[2024-01-16 16:09:37 [32mINFO [0;39m restartedMain] [org.springframework.security.web.DefaultSecurityFilterChain] [36mWill secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@7335dfab, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@be410de, org.springframework.security.web.context.SecurityContextHolderFilter@248dd165, org.springframework.security.web.header.HeaderWriterFilter@271f118, org.springframework.web.filter.CorsFilter@1a971b7b, org.springframework.security.web.authentication.logout.LogoutFilter@d2ea0eb, com.team5.projrental.common.security.filter.JwtAuthenticationFilter@4da93067, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@e113b64, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@3e5e28f, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@4c2cbf8b, org.springframework.security.web.session.SessionManagementFilter@58f3861e, org.springframework.security.web.access.ExceptionTranslationFilter@ef49848, org.springframework.security.web.access.intercept.AuthorizationFilter@26be1a78][0;39m
+[2024-01-16 16:09:37 [32mINFO [0;39m restartedMain] [org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer] [36mLiveReload server is running on port 35729[0;39m
+[2024-01-16 16:09:37 [32mINFO [0;39m restartedMain] [org.apache.coyote.http11.Http11NioProtocol] [36mStarting ProtocolHandler ["http-nio-8080"][0;39m
+[2024-01-16 16:09:37 [32mINFO [0;39m restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] [36mTomcat started on port 8080 (http) with context path ''[0;39m
+[2024-01-16 16:09:37 [32mINFO [0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mStarted ProjrentalApplication in 0.876 seconds (process running for 106.536)[0;39m
+[2024-01-16 16:09:37 [32mINFO [0;39m restartedMain] [org.springframework.boot.devtools.autoconfigure.ConditionEvaluationDeltaLoggingListener] [36mCondition evaluation unchanged[0;39m
+[2024-01-16 16:09:42 [32mINFO [0;39m File Watcher] [org.springframework.boot.devtools.autoconfigure.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener] [36mRestarting due to 8 class path changes (0 additions, 0 deletions, 8 modifications)[0;39m
+[2024-01-16 16:09:42 [32mINFO [0;39m Thread-7] [org.apache.coyote.http11.Http11NioProtocol] [36mStopping ProtocolHandler ["http-nio-8080"][0;39m
+[2024-01-16 16:09:42 [32mINFO [0;39m Thread-7] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-2 - Shutdown initiated...[0;39m
+[2024-01-16 16:09:42 [32mINFO [0;39m Thread-7] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-2 - Shutdown completed.[0;39m
+[2024-01-16 16:09:43 [32mINFO [0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mStarting ProjrentalApplication using Java 17.0.8.1 with PID 13276 (D:\spring\projectrental\build\classes\java\main started by Administrator in D:\spring\projectrental)[0;39m
+[2024-01-16 16:09:43 [32mDEBUG[0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mRunning with Spring Boot v3.2.1, Spring v6.1.2[0;39m
+[2024-01-16 16:09:43 [32mINFO [0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mNo active profile set, falling back to 1 default profile: "default"[0;39m
+[2024-01-16 16:09:43 [32mINFO [0;39m restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] [36mTomcat initialized with port 8080 (http)[0;39m
+[2024-01-16 16:09:43 [32mINFO [0;39m restartedMain] [org.apache.coyote.http11.Http11NioProtocol] [36mInitializing ProtocolHandler ["http-nio-8080"][0;39m
+[2024-01-16 16:09:43 [32mINFO [0;39m restartedMain] [org.apache.catalina.core.StandardService] [36mStarting service [Tomcat][0;39m
+[2024-01-16 16:09:43 [32mINFO [0;39m restartedMain] [org.apache.catalina.core.StandardEngine] [36mStarting Servlet engine: [Apache Tomcat/10.1.17][0;39m
+[2024-01-16 16:09:43 [32mINFO [0;39m restartedMain] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] [36mInitializing Spring embedded WebApplicationContext[0;39m
+[2024-01-16 16:09:43 [32mINFO [0;39m restartedMain] [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext] [36mRoot WebApplicationContext: initialization completed in 244 ms[0;39m
+[2024-01-16 16:09:43 [32mINFO [0;39m restartedMain] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-3 - Starting...[0;39m
+[2024-01-16 16:09:43 [32mINFO [0;39m restartedMain] [com.zaxxer.hikari.pool.HikariPool] [36mHikariPool-3 - Added connection org.mariadb.jdbc.Connection@53382068[0;39m
+[2024-01-16 16:09:43 [32mINFO [0;39m restartedMain] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-3 - Start completed.[0;39m
+[2024-01-16 16:09:43 [32mINFO [0;39m restartedMain] [org.springframework.boot.autoconfigure.h2.H2ConsoleAutoConfiguration] [36mH2 console available at '/h2-console'. Database available at 'jdbc:mariadb://localhost/projrental?user=root&password=***'[0;39m
+[2024-01-16 16:09:43 [32mDEBUG[0;39m restartedMain] [com.team5.projrental.common.security.filter.JwtAuthenticationFilter] [36mFilter 'jwtAuthenticationFilter' configured for use[0;39m
+[2024-01-16 16:09:43 [33mWARN [0;39m restartedMain] [org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration] [36m
+
+Using generated security password: df1b5357-2cbd-4de6-9cde-c37b1a0e1e86
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+[0;39m
+[2024-01-16 16:09:43 [32mINFO [0;39m restartedMain] [org.springframework.security.web.DefaultSecurityFilterChain] [36mWill secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@5c2e35dc, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@36f0402, org.springframework.security.web.context.SecurityContextHolderFilter@22e403a7, org.springframework.security.web.header.HeaderWriterFilter@31464b0d, org.springframework.web.filter.CorsFilter@f5891c7, org.springframework.security.web.authentication.logout.LogoutFilter@357d4c6f, com.team5.projrental.common.security.filter.JwtAuthenticationFilter@62fa1ca9, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@88d2b55, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@b90076a, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@f764666, org.springframework.security.web.session.SessionManagementFilter@46cf5cbf, org.springframework.security.web.access.ExceptionTranslationFilter@65f9e741, org.springframework.security.web.access.intercept.AuthorizationFilter@5febf8a2][0;39m
+[2024-01-16 16:09:43 [32mINFO [0;39m restartedMain] [org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer] [36mLiveReload server is running on port 35729[0;39m
+[2024-01-16 16:09:43 [32mINFO [0;39m restartedMain] [org.apache.coyote.http11.Http11NioProtocol] [36mStarting ProtocolHandler ["http-nio-8080"][0;39m
+[2024-01-16 16:09:43 [32mINFO [0;39m restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] [36mTomcat started on port 8080 (http) with context path ''[0;39m
+[2024-01-16 16:09:43 [32mINFO [0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mStarted ProjrentalApplication in 0.591 seconds (process running for 112.739)[0;39m
+[2024-01-16 16:09:43 [32mINFO [0;39m restartedMain] [org.springframework.boot.devtools.autoconfigure.ConditionEvaluationDeltaLoggingListener] [36mCondition evaluation unchanged[0;39m
+[2024-01-16 16:09:52 [32mINFO [0;39m File Watcher] [org.springframework.boot.devtools.autoconfigure.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener] [36mRestarting due to 8 class path changes (0 additions, 0 deletions, 8 modifications)[0;39m
+[2024-01-16 16:09:52 [32mINFO [0;39m Thread-11] [org.apache.coyote.http11.Http11NioProtocol] [36mStopping ProtocolHandler ["http-nio-8080"][0;39m
+[2024-01-16 16:09:52 [32mINFO [0;39m Thread-11] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-3 - Shutdown initiated...[0;39m
+[2024-01-16 16:09:52 [32mINFO [0;39m Thread-11] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-3 - Shutdown completed.[0;39m
+[2024-01-16 16:09:52 [32mINFO [0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mStarting ProjrentalApplication using Java 17.0.8.1 with PID 13276 (D:\spring\projectrental\build\classes\java\main started by Administrator in D:\spring\projectrental)[0;39m
+[2024-01-16 16:09:52 [32mDEBUG[0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mRunning with Spring Boot v3.2.1, Spring v6.1.2[0;39m
+[2024-01-16 16:09:52 [32mINFO [0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mNo active profile set, falling back to 1 default profile: "default"[0;39m
+[2024-01-16 16:09:52 [32mINFO [0;39m restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] [36mTomcat initialized with port 8080 (http)[0;39m
+[2024-01-16 16:09:52 [32mINFO [0;39m restartedMain] [org.apache.coyote.http11.Http11NioProtocol] [36mInitializing ProtocolHandler ["http-nio-8080"][0;39m
+[2024-01-16 16:09:52 [32mINFO [0;39m restartedMain] [org.apache.catalina.core.StandardService] [36mStarting service [Tomcat][0;39m
+[2024-01-16 16:09:52 [32mINFO [0;39m restartedMain] [org.apache.catalina.core.StandardEngine] [36mStarting Servlet engine: [Apache Tomcat/10.1.17][0;39m
+[2024-01-16 16:09:52 [32mINFO [0;39m restartedMain] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] [36mInitializing Spring embedded WebApplicationContext[0;39m
+[2024-01-16 16:09:52 [32mINFO [0;39m restartedMain] [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext] [36mRoot WebApplicationContext: initialization completed in 257 ms[0;39m
+[2024-01-16 16:09:52 [32mINFO [0;39m restartedMain] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-4 - Starting...[0;39m
+[2024-01-16 16:09:52 [32mINFO [0;39m restartedMain] [com.zaxxer.hikari.pool.HikariPool] [36mHikariPool-4 - Added connection org.mariadb.jdbc.Connection@781f8101[0;39m
+[2024-01-16 16:09:52 [32mINFO [0;39m restartedMain] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-4 - Start completed.[0;39m
+[2024-01-16 16:09:52 [32mINFO [0;39m restartedMain] [org.springframework.boot.autoconfigure.h2.H2ConsoleAutoConfiguration] [36mH2 console available at '/h2-console'. Database available at 'jdbc:mariadb://localhost/projrental?user=root&password=***'[0;39m
+[2024-01-16 16:09:52 [32mDEBUG[0;39m restartedMain] [com.team5.projrental.common.security.filter.JwtAuthenticationFilter] [36mFilter 'jwtAuthenticationFilter' configured for use[0;39m
+[2024-01-16 16:09:52 [33mWARN [0;39m restartedMain] [org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration] [36m
+
+Using generated security password: de655067-1910-4e31-bcca-ffe478fa677f
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+[0;39m
+[2024-01-16 16:09:52 [32mINFO [0;39m restartedMain] [org.springframework.security.web.DefaultSecurityFilterChain] [36mWill secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@622ec12c, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@6592ef0e, org.springframework.security.web.context.SecurityContextHolderFilter@6c51b2e1, org.springframework.security.web.header.HeaderWriterFilter@695a1afb, org.springframework.web.filter.CorsFilter@2ebe4dae, org.springframework.security.web.authentication.logout.LogoutFilter@24f469fe, com.team5.projrental.common.security.filter.JwtAuthenticationFilter@34697466, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6a49be6d, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@53fdec1d, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@55c835b6, org.springframework.security.web.session.SessionManagementFilter@1f21332e, org.springframework.security.web.access.ExceptionTranslationFilter@34264709, org.springframework.security.web.access.intercept.AuthorizationFilter@3f4888bf][0;39m
+[2024-01-16 16:09:52 [32mINFO [0;39m restartedMain] [org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer] [36mLiveReload server is running on port 35729[0;39m
+[2024-01-16 16:09:52 [32mINFO [0;39m restartedMain] [org.apache.coyote.http11.Http11NioProtocol] [36mStarting ProtocolHandler ["http-nio-8080"][0;39m
+[2024-01-16 16:09:52 [32mINFO [0;39m restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] [36mTomcat started on port 8080 (http) with context path ''[0;39m
+[2024-01-16 16:09:52 [32mINFO [0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mStarted ProjrentalApplication in 0.6 seconds (process running for 121.965)[0;39m
+[2024-01-16 16:09:52 [32mINFO [0;39m restartedMain] [org.springframework.boot.devtools.autoconfigure.ConditionEvaluationDeltaLoggingListener] [36mCondition evaluation unchanged[0;39m
+[2024-01-16 16:10:16 [32mINFO [0;39m SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-4 - Shutdown initiated...[0;39m
+[2024-01-16 16:10:16 [32mINFO [0;39m SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-4 - Shutdown completed.[0;39m
+[2024-01-16 16:10:18 [32mINFO [0;39m background-preinit] [org.hibernate.validator.internal.util.Version] [36mHV000001: Hibernate Validator 8.0.1.Final[0;39m
+[2024-01-16 16:10:18 [32mINFO [0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mStarting ProjrentalApplication using Java 17.0.8.1 with PID 11028 (D:\spring\projectrental\build\classes\java\main started by Administrator in D:\spring\projectrental)[0;39m
+[2024-01-16 16:10:18 [32mDEBUG[0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mRunning with Spring Boot v3.2.1, Spring v6.1.2[0;39m
+[2024-01-16 16:10:18 [32mINFO [0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mNo active profile set, falling back to 1 default profile: "default"[0;39m
+[2024-01-16 16:10:18 [32mINFO [0;39m restartedMain] [org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor] [36mDevtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable[0;39m
+[2024-01-16 16:10:18 [32mINFO [0;39m restartedMain] [org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor] [36mFor additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'[0;39m
+[2024-01-16 16:10:19 [32mINFO [0;39m restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] [36mTomcat initialized with port 8080 (http)[0;39m
+[2024-01-16 16:10:19 [32mINFO [0;39m restartedMain] [org.apache.coyote.http11.Http11NioProtocol] [36mInitializing ProtocolHandler ["http-nio-8080"][0;39m
+[2024-01-16 16:10:19 [32mINFO [0;39m restartedMain] [org.apache.catalina.core.StandardService] [36mStarting service [Tomcat][0;39m
+[2024-01-16 16:10:19 [32mINFO [0;39m restartedMain] [org.apache.catalina.core.StandardEngine] [36mStarting Servlet engine: [Apache Tomcat/10.1.17][0;39m
+[2024-01-16 16:10:19 [32mINFO [0;39m restartedMain] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] [36mInitializing Spring embedded WebApplicationContext[0;39m
+[2024-01-16 16:10:19 [32mINFO [0;39m restartedMain] [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext] [36mRoot WebApplicationContext: initialization completed in 1122 ms[0;39m
+[2024-01-16 16:10:19 [32mINFO [0;39m restartedMain] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-1 - Starting...[0;39m
+[2024-01-16 16:10:19 [32mINFO [0;39m restartedMain] [com.zaxxer.hikari.pool.HikariPool] [36mHikariPool-1 - Added connection org.mariadb.jdbc.Connection@2d57a339[0;39m
+[2024-01-16 16:10:19 [32mINFO [0;39m restartedMain] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-1 - Start completed.[0;39m
+[2024-01-16 16:10:19 [32mINFO [0;39m restartedMain] [org.springframework.boot.autoconfigure.h2.H2ConsoleAutoConfiguration] [36mH2 console available at '/h2-console'. Database available at 'jdbc:mariadb://localhost/projrental?user=root&password=***'[0;39m
+[2024-01-16 16:10:19 [32mDEBUG[0;39m restartedMain] [com.team5.projrental.common.security.filter.JwtAuthenticationFilter] [36mFilter 'jwtAuthenticationFilter' configured for use[0;39m
+[2024-01-16 16:10:19 [33mWARN [0;39m restartedMain] [org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration] [36m
+
+Using generated security password: 5f9496c9-87d0-4c15-9082-e798820c679c
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+[0;39m
+[2024-01-16 16:10:19 [32mINFO [0;39m restartedMain] [org.springframework.security.web.DefaultSecurityFilterChain] [36mWill secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@1d04124b, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@10b6e235, org.springframework.security.web.context.SecurityContextHolderFilter@4c862df9, org.springframework.security.web.header.HeaderWriterFilter@3a5efef, org.springframework.web.filter.CorsFilter@4c198a3d, org.springframework.security.web.authentication.logout.LogoutFilter@60b78600, com.team5.projrental.common.security.filter.JwtAuthenticationFilter@4584c0ad, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@79c25a88, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@4922d642, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5c4e7044, org.springframework.security.web.session.SessionManagementFilter@d22d90c, org.springframework.security.web.access.ExceptionTranslationFilter@5e9270b2, org.springframework.security.web.access.intercept.AuthorizationFilter@21ffa187][0;39m
+[2024-01-16 16:10:20 [32mINFO [0;39m restartedMain] [org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer] [36mLiveReload server is running on port 35729[0;39m
+[2024-01-16 16:10:20 [32mINFO [0;39m restartedMain] [org.apache.coyote.http11.Http11NioProtocol] [36mStarting ProtocolHandler ["http-nio-8080"][0;39m
+[2024-01-16 16:10:20 [32mINFO [0;39m restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] [36mTomcat started on port 8080 (http) with context path ''[0;39m
+[2024-01-16 16:10:20 [32mINFO [0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mStarted ProjrentalApplication in 2.51 seconds (process running for 2.957)[0;39m
+[2024-01-16 16:10:23 [32mINFO [0;39m http-nio-8080-exec-1] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] [36mInitializing Spring DispatcherServlet 'dispatcherServlet'[0;39m
+[2024-01-16 16:10:23 [32mINFO [0;39m http-nio-8080-exec-1] [org.springframework.web.servlet.DispatcherServlet] [36mInitializing Servlet 'dispatcherServlet'[0;39m
+[2024-01-16 16:10:23 [32mINFO [0;39m http-nio-8080-exec-1] [org.springframework.web.servlet.DispatcherServlet] [36mCompleted initialization in 1 ms[0;39m
+[2024-01-16 16:10:23 [32mDEBUG[0;39m http-nio-8080-exec-1] [com.team5.projrental.chat.ChatMapper.selChatUserCheck] [36m==>  Preparing: SELECT ichat FROM t_chat_user WHERE iuser = ? OR iuser =? GROUP BY ichat HAVING COUNT(ichat) = 2[0;39m
+[2024-01-16 16:10:23 [32mDEBUG[0;39m http-nio-8080-exec-1] [com.team5.projrental.chat.ChatMapper.selChatUserCheck] [36m==> Parameters: 0(Integer), 5(Integer)[0;39m
+[2024-01-16 16:10:23 [32mDEBUG[0;39m http-nio-8080-exec-1] [com.team5.projrental.chat.ChatMapper.selChatUserCheck] [36m<==      Total: 0[0;39m
+[2024-01-16 16:10:23 [32mINFO [0;39m http-nio-8080-exec-1] [com.team5.projrental.chat.ChatService] [36mdto: ChatInsDto(ichat=1, iproduct=5, loginedIuser=0, otherPersonIuser=5)[0;39m
+[2024-01-16 16:10:23 [32mDEBUG[0;39m http-nio-8080-exec-1] [com.team5.projrental.chat.ChatMapper.insChat] [36m==>  Preparing: INSERT INTO t_chat SET last_msg = NULL[0;39m
+[2024-01-16 16:10:23 [32mDEBUG[0;39m http-nio-8080-exec-1] [com.team5.projrental.chat.ChatMapper.insChat] [36m==> Parameters: [0;39m
+[2024-01-16 16:10:23 [33mWARN [0;39m http-nio-8080-exec-1] [org.mariadb.jdbc.message.server.ErrorPacket] [36mError: 1364-HY000: Field 'iproduct' doesn't have a default value[0;39m
+[2024-01-16 16:10:23 [33mWARN [0;39m http-nio-8080-exec-1] [org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver] [36mResolved [org.springframework.dao.DataIntegrityViolationException: <EOL><EOL>### Error updating database.  Cause: java.sql.SQLException: (conn=454) Field 'iproduct' doesn't have a default value<EOL><EOL>### The error may exist in file [D:\spring\projectrental\build\resources\main\mappers\chat\ChatMapper.xml]<EOL><EOL>### The error may involve defaultParameterMap<EOL><EOL>### The error occurred while setting parameters<EOL><EOL>### SQL: INSERT INTO t_chat         SET last_msg = NULL<EOL><EOL>### Cause: java.sql.SQLException: (conn=454) Field 'iproduct' doesn't have a default value<EOL>; (conn=454) Field 'iproduct' doesn't have a default value][0;39m
+[2024-01-16 16:11:44 [32mINFO [0;39m SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-1 - Shutdown initiated...[0;39m
+[2024-01-16 16:11:44 [32mINFO [0;39m SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-1 - Shutdown completed.[0;39m

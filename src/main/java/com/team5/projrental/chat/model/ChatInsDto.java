@@ -7,16 +7,12 @@ import org.hibernate.validator.constraints.Length;
 @Data
 public class ChatInsDto {
 
-    @Length(min = 1)
     private int ichat;
 
-    @Length(min = 1)
     private int iproduct;
 
     @JsonIgnore
-    @Length(min = 1)
     private int loginedIuser;
 
-    @Length(min = 1)
     private int otherPersonIuser;
 }

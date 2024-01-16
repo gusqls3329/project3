@@ -121,7 +121,7 @@
             WHERE iuser =#{iuser} and ichat =#{ichat}
         </selectKey>-->
         UPDATE
-        chat_user
+        t_chat_user
         SET istatus = -1
         WHERE iuser =#{iuser} AND ichat =#{ichat}
     </update>

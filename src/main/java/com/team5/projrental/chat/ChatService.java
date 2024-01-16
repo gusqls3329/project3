@@ -112,19 +112,22 @@ public class ChatService {
         int loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setLoginedIuser(loginUserPk);
         mapper.insChat(dto);
+
         mapper.insChatUser(ChatUserInsDto.builder()
                         .ichat(dto.getIchat())
                         .iuser(loginUserPk)
                 .build());
 
-
-
-
+        mapper.insChatUser(ChatUserInsDto.builder()
+                        .ichat(dto.getIchat())
+                        .iuser(dto.getOtherPersonIuser())
+                .build());
 
 
         UserSelDto usDto = new UserSelDto();
         usDto.setIuser(dto.getOtherPersonIuser());
-        UserEntity entity = userMapper.selUser(usDto);
+
+        UserEntity entity = userMapper.selChatUser(usDto);
 
         ChatSelVo vo = new ChatSelVo();
         vo.setIchat(dto.getIchat());
