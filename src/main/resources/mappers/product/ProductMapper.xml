@@ -69,7 +69,7 @@
         P.rental_price as rentalPrice,
         P.rental_start_date as rentalStartDate, P.rental_end_date as rentalEndDate, COUNT(L.iproduct) as prodLike
         <if test="iuser != null">
-            , category
+            , C.category
         </if>
         <if test="sort == 1">
             , (select count(L.iproduct) from t_like L where L.iproduct = P.iproduct) as prodLike
@@ -77,6 +77,9 @@
         from t_product P
         join t_user U on P.iuser = U.iuser
         left join t_like L on P.iproduct = L.iproduct
+        <if test="iuser != null">
+            join t_category C on P.icategory = C.icategory
+        </if>
         <where>
             P.istatus = 0
             <if test="icategory != null and icategory != 0">
@@ -89,6 +92,7 @@
                 and P.iuser = #{iuser}
             </if>
         </where>
+        group by P.iproduct
         <if test="sort == 2">
             order by P.view desc
         </if>

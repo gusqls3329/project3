@@ -27,7 +27,6 @@ import static org.assertj.core.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Transactional
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class PaymentControllerIntegrationTest {
@@ -47,22 +46,23 @@ class PaymentControllerIntegrationTest {
         UserSignupDto userSignupDto = new UserSignupDto();
         userSignupDto.setAddr("대구 달서구 용산1동");
         userSignupDto.setRestAddr("아아아");
-        userSignupDto.setUid("test");
-        userSignupDto.setUpw("test");
-        userSignupDto.setNick("test");
+        userSignupDto.setUid("test111111");
+        userSignupDto.setUpw("test111111");
+        userSignupDto.setNick("test111111");
         userSignupDto.setPhone("010-1111-1124");
         userSignupDto.setEmail("efa@gejrrr.com");
         String result2 = objectMapper.writeValueAsString(userSignupDto);
         ResultActions perform = mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/user/signup")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(result2));
+                        .content(result2))
+                .andExpect(MockMvcResultMatchers.status().isOk());
 
 //        perform.andExpect(MockMvcResultMatchers.status().isOk());
 
         SigninDto signinDto = new SigninDto();
-        signinDto.setUid("test");
-        signinDto.setUpw("test");
+        signinDto.setUid("test111111");
+        signinDto.setUpw("test111111");
 
 
         MvcResult result = mockMvc.perform(
