@@ -24,5 +24,5 @@ public interface UserMapper {
     SelUserVo selUser(int iuser);
     UserEntity selChatUser(UserSelDto dto);
 
-    Integer signinId(String uid);
+    SignUpExceptVo signinId();
 }

@@ -40,11 +40,10 @@ public class UserService {
     private final AxisGenerator axisGenerator;
 
     public int postSignup(UserSignupDto dto) {
-        Integer checkUid = mapper.signinId(dto.getUid());
-//        if (checkUid != 0) {
-//            throw new BadIdInfoException(BAD_ID_EX_MESSAGE);
-//        }
-        CommonUtils.ifObjNullOrZeroThrow(BadIdInfoException.class, BAD_ID_EX_MESSAGE, checkUid);
+
+        SignUpExceptVo checkUid = mapper.signinId();
+        boolean a =checkUid.getNick() != dto.getNick();
+        //CommonUtils.ifObjNullOrZeroThrow(BadIdInfoException.class, BAD_ID_EX_MESSAGE, checkUid.getUid());
 
             String hashedPw = passwordEncoder.encode(dto.getUpw());
             dto.setUpw(hashedPw);

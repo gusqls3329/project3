@@ -122,9 +122,12 @@
     </select>
 
     <!--예외처리-->
-     <select id="signinId">
-         SELECT COUNT(iuser)
+     <select id="signin">
+         SELECT Count(uid), nick, email, phone
          from t_user
-         WHERE uid = #{uid}
+         where uid = #{uid}
+         or nick = #{nick}
+         or email = #{email}
+         or phone = #{phone}
      </select>
 </mapper>
