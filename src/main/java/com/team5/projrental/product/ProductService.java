@@ -29,9 +29,6 @@ import static com.team5.projrental.common.Const.*;
 @RequiredArgsConstructor
 public class ProductService {
 
-    /* TODO: 1/11/24
-        수정 - 전부 null 이면 예외 발생 시키기
-        --by Hyunmin */
 
     private final ProductRepository productRepository;
 
@@ -197,6 +194,16 @@ public class ProductService {
      */
     @Transactional
     public ResVo putProduct(ProductUpdDto dto) {
+
+        // 수정할 모든 데이터가 null 이면 예외
+        CommonUtils.ifAllNullThrow(BadInformationException.class, ALL_INFO_NOT_EXISTS_EX_MESSAGE,
+                dto.getIcategory(),dto.getAddr(),
+                dto.getRestAddr(),dto.getTitle(),
+                dto.getContents(),dto.getMainPic(),
+                dto.getPics(), dto.getPrice(),
+                dto.getRentalPrice(), dto.getDeposit(),
+                dto.getBuyDate(), dto.getRentalStartDate(),
+                dto.getRentalEndDate(), dto.getDelPics());
 
         // 삭제사진 필요시 삭제
         if (!dto.getDelPics().isEmpty()) {
