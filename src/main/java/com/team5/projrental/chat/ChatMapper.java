@@ -2,6 +2,7 @@ package com.team5.projrental.chat;
 
 import com.team5.projrental.chat.model.*;
 import com.team5.projrental.user.model.UserEntity;
+import com.team5.projrental.user.model.UserSelDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -26,4 +27,7 @@ public interface ChatMapper {
 
     //상대방의 firebaseToken값 필요. 나의 pic, iuser값 필요
     UserEntity selOtherPersonByLoginUser(ChatMsgInsDto dto);
+
+    UserEntity selChatUser(UserSelDto dto);
+
 }
