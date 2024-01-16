@@ -84,19 +84,13 @@
         and phone = #{phone}
     </delete>
     <select id="seldelUserPay">
-        SELECT P.iproduct, U.iuser, P.istatus as pistatus, k.istatus , k.ibuyer, k.ipayment
-        FROM t_user U
-        LEFT JOIN t_product P
-        ON U.iuser = P.iuser AND P.istatus IN (-1, -2)
-        LEFT JOIN
-        (SELECT PA.istatus, PP.iproduct, PA.ipayment, PA.ibuyer
-        from t_product_payment PP
-        JOIN t_payment PA
-        ON PP.ipayment = PA.ipayment AND PA.istatus IN (1, -1, -2, -3)
-        ) k
-        ON P.iproduct = k.iproduct
-        WHERE U.iuser = #{iuser}
-        or k.ibuyer =#{iuser}
+        select P.iproduct, U.iuser, P.istatus as pistatus, PA.istatus , PA.ibuyer, PA.ipayment
+        from t_product P
+        join t_user U on P.iuser = U.iuser and P.istatus IN (-1, -2)
+        left join t_product_payment PP on PP.iproduct = P.iproduct
+        left join t_payment PA on PA.ipayment = PP.ipayment  AND PA.istatus IN (1, -1, -2, -3)
+        where P.iuser = #{iuser}
+        or PA.ibuyer = #{iuser}
     </select>
     <update id="delUpUserPay">
         update t_payment
