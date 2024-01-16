@@ -12,7 +12,7 @@
     <insert id="insChatUser">
         INSERT INTO t_chat_user
         SET ichat = #{ichat},
-        iuser = #{iuser}
+            iuser = #{iuser}
     </insert>
 
 

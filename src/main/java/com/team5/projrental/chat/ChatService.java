@@ -109,31 +109,29 @@ public class ChatService {
         if (isExixtChat!=null){
             return null;
         }
-
-        int chataffectedrows = mapper.insChat(dto);
-        int chatUserAffectedRows = mapper.insChatUser(dto);
-
         int loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setLoginedIuser(loginUserPk);
-        ChatUserInsDto insDto2 = new ChatUserInsDto();
-        insDto2.setIchat(dto.getIchat());
-        insDto2.setIuser(loginUserPk);
+        mapper.insChat(dto);
+        mapper.insChatUser(ChatUserInsDto.builder()
+                        .ichat(dto.getIchat())
+                        .iuser(loginUserPk)
+                .build());
 
-        ChatUserInsDto insDto1 = new ChatUserInsDto();
-        insDto1.setIchat(dto.getIchat());
-        insDto1.setIuser(dto.getOtherPersonIuser());
+
+
+
 
 
         UserSelDto usDto = new UserSelDto();
         usDto.setIuser(dto.getOtherPersonIuser());
-        //UserEntity entity = userMapper.selUser(usDto);
+        UserEntity entity = userMapper.selUser(usDto);
 
         ChatSelVo vo = new ChatSelVo();
         vo.setIchat(dto.getIchat());
-        //vo.setIproduct(dto.getIproduct());
-        /*vo.setOtherPersonIuser(entity.getIuser());
+        vo.setIproduct(dto.getIproduct());
+        vo.setOtherPersonIuser(entity.getIuser());
         vo.setOtherPersonNm(entity.getNm());
-        vo.setOtherPersonPic(entity.getPic());*/
+        vo.setOtherPersonPic(entity.getPic());
         return vo;
     }
 

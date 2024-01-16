@@ -21,7 +21,7 @@ public class MypageService {
 
         return mapper.getPaymentList(dto);
     }
-//하이
+
     public List<MyBuyReviewListSelVo> selIbuyerReviewList(MyBuyReviewListSelDto dto){
         int loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setIbuyer(loginUserPk);
