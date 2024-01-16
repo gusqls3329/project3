@@ -3,6 +3,7 @@ package com.team5.projrental.user;
 import com.team5.projrental.common.Const;
 import com.team5.projrental.common.SecurityProperties;
 import com.team5.projrental.common.exception.BadAddressInfoException;
+import com.team5.projrental.common.exception.user.BadIdInfoException;
 import com.team5.projrental.common.model.restapi.Addrs;
 import com.team5.projrental.common.utils.AxisGenerator;
 import com.team5.projrental.common.utils.CommonUtils;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static com.team5.projrental.common.Const.BAD_ADDRESS_INFO_EX_MESSAGE;
+import static com.team5.projrental.common.Const.BAD_ID_EX_MESSAGE;
 
 @Slf4j
 @Service
@@ -38,32 +40,32 @@ public class UserService {
     private final AxisGenerator axisGenerator;
 
     public int postSignup(UserSignupDto dto) {
-        String hashedPw = passwordEncoder.encode(dto.getUpw());
+        Integer checkUid = mapper.signinId(dto.getUid());
+//        if (checkUid != 0) {
+//            throw new BadIdInfoException(BAD_ID_EX_MESSAGE);
+//        }
+        CommonUtils.ifObjNullOrZeroThrow(BadIdInfoException.class, BAD_ID_EX_MESSAGE, checkUid);
 
+            String hashedPw = passwordEncoder.encode(dto.getUpw());
+            dto.setUpw(hashedPw);
+            // 대구 달서구 용산1동 -> x: xxx.xxxxx y: xx.xxxxx address_name: 대구 달서구 용산1동
 
-        dto.setUpw(hashedPw);
+            Addrs addrs = axisGenerator.getAxis(dto.getAddr());
+            CommonUtils.ifAnyNullThrow(BadAddressInfoException.class, BAD_ADDRESS_INFO_EX_MESSAGE,
+                    addrs, addrs.getAddress_name(), addrs.getX(), addrs.getY());
+            dto.setX(Double.parseDouble(addrs.getX()));
+            dto.setY(Double.parseDouble(addrs.getY()));
+            dto.setAddr(addrs.getAddress_name());
 
+            int result = mapper.insUser(dto);
+            log.debug("dto : {}", dto);
+            if (result == 1) {
+                return Const.SUCCESS;
+            }
+            return Const.FAIL;
 
-
-                                            // 대구 달서구 용산1동 -> x: xxx.xxxxx y: xx.xxxxx address_name: 대구 달서구 용산1동
-
-        Addrs addrs = axisGenerator.getAxis(dto.getAddr());
-        CommonUtils.ifAnyNullThrow(BadAddressInfoException.class, BAD_ADDRESS_INFO_EX_MESSAGE,
-                addrs, addrs.getAddress_name(), addrs.getX(), addrs.getY());
-        dto.setX(Double.parseDouble(addrs.getX()));
-        dto.setY(Double.parseDouble(addrs.getY()));
-        dto.setAddr(addrs.getAddress_name());
-
-
-        int result = mapper.insUser(dto);
-        log.debug("dto : {}", dto);
-        if (result == 1) {
-            return Const.SUCCESS;
-        }
         return Const.FAIL;
     }
-
-
 
 
     public SigninVo postSignin(HttpServletResponse res, SigninDto dto) {
@@ -71,7 +73,7 @@ public class UserService {
 
         if (entity == null) {
             return SigninVo.builder().result(Const.NO_SUCH_ID_EX_MESSAGE).build();
-        } else if (!passwordEncoder.matches(dto.getUpw(),entity.getUpw())){
+        } else if (!passwordEncoder.matches(dto.getUpw(), entity.getUpw())) {
             return SigninVo.builder().result(Const.NO_SUCH_PASSWORD_EX_MESSAGE).build();
         }
 
@@ -79,8 +81,8 @@ public class UserService {
         String at = jwtTokenProvider.generateAccessToken(principal);
         String rt = jwtTokenProvider.generateRefreshToken(principal);
 
-        int rtCookieMaxAge = (int)(securityProperties.getJwt().getRefreshTokenExpiry() / 1000);
-        cookieUtils.deleteCookie( res, "rt");
+        int rtCookieMaxAge = (int) (securityProperties.getJwt().getRefreshTokenExpiry() / 1000);
+        cookieUtils.deleteCookie(res, "rt");
         cookieUtils.setCookie(res, "rt", rt, rtCookieMaxAge);
 
         return SigninVo.builder()
@@ -92,25 +94,25 @@ public class UserService {
                 .build();
     }
 
-    public int getSignOut(HttpServletResponse res){
-       cookieUtils.deleteCookie(res,"rt");
+    public int getSignOut(HttpServletResponse res) {
+        cookieUtils.deleteCookie(res, "rt");
         return Const.SUCCESS;
     }
 
-    public SigninVo getRefrechToken(HttpServletRequest req){
-        Cookie cookie = cookieUtils.getCookie(req,"rt");
+    public SigninVo getRefrechToken(HttpServletRequest req) {
+        Cookie cookie = cookieUtils.getCookie(req, "rt");
         String token = cookie.getValue();
-        if(!jwtTokenProvider.isValidatedToken(token)){
+        if (!jwtTokenProvider.isValidatedToken(token)) {
             return SigninVo.builder()
                     .result(String.valueOf(Const.FAIL))
                     .accessToken(null)
                     .build();
         }
-        SecurityUserDetails UserDetails = (SecurityUserDetails)jwtTokenProvider.getUserDetailsFromToken(token);
+        SecurityUserDetails UserDetails = (SecurityUserDetails) jwtTokenProvider.getUserDetailsFromToken(token);
         SecurityPrincipal Principal = UserDetails.getSecurityPrincipal();
         String at = jwtTokenProvider.generateAccessToken(Principal);
 
-        return  SigninVo.builder()
+        return SigninVo.builder()
                 .result(String.valueOf(Const.SUCCESS))
                 .accessToken(at).build();
     }
@@ -119,7 +121,7 @@ public class UserService {
         int loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setIuser(loginUserPk);
         int result = mapper.updUserFirebaseToken(dto);
-        if(result == 1) {
+        if (result == 1) {
             return Const.SUCCESS;
         }
         return Const.FAIL;
@@ -135,17 +137,17 @@ public class UserService {
         String hashedPw = BCrypt.hashpw(dto.getUpw(), BCrypt.gensalt());
         dto.setUpw(hashedPw);
         int result = mapper.upFindUpw(dto);
-        if(result == 1) {
+        if (result == 1) {
             return Const.SUCCESS;
         }
-            return Const.FAIL;
+        return Const.FAIL;
     }
 
     public int putUser(ChangeUserDto dto) {
         int loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setIuser(loginUserPk);
 
-        if(dto.getAddr() != null && dto.getAddr() != "") {
+        if (dto.getAddr() != null && dto.getAddr() != "") {
             Addrs addrs = axisGenerator.getAxis(dto.getAddr());
             CommonUtils.ifAnyNullThrow(BadAddressInfoException.class, BAD_ADDRESS_INFO_EX_MESSAGE,
                     addrs, addrs.getAddress_name(), addrs.getX(), addrs.getY());
@@ -156,8 +158,8 @@ public class UserService {
 
         String hashedPw = BCrypt.hashpw(dto.getUpw(), BCrypt.gensalt());
         dto.setUpw(hashedPw);
-        int result =  mapper.changeUser(dto);
-        if(result == 1) {
+        int result = mapper.changeUser(dto);
+        if (result == 1) {
             return Const.SUCCESS;
         }
         return Const.FAIL;
@@ -166,7 +168,7 @@ public class UserService {
     public int patchUser(DelUserDto dto) {
         int loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setIuser(loginUserPk);
-        log.info("loginUserPk :{}",loginUserPk);
+        log.info("loginUserPk :{}", loginUserPk);
         SigninDto inDto = new SigninDto();
         inDto.setUid(dto.getUid());
         inDto.setUpw(dto.getUpw());
@@ -195,7 +197,7 @@ public class UserService {
     }
 
     public SelUserVo getUSer(int iuser) {
-        if(iuser == 0){
+        if (iuser == 0) {
             int loginUserPk = authenticationFacade.getLoginUserPk();
             iuser = loginUserPk;
             return mapper.selUser(iuser);

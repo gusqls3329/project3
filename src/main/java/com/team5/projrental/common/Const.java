@@ -27,6 +27,7 @@ public interface Const {
     String BAD_RENTAL_CANCEL_EX_MESSAGE = "거래가 종료된 결제는 취소할 수 없습니다.";
     String BAD_DIV_INFO_EX_MESSAGE = "div 값이 잘못되었습니다.";
     String BAD_PIC_EX_MESSAGE = "사진이 존재하지 않습니다.";
+    String BAD_ID_EX_MESSAGE = "이미 존재하는 아이디 입니다.";
     //
     String ALL_INFO_NOT_EXISTS_EX_MESSAGE = "모든 정보가 제공되지 않음";
     //

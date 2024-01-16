@@ -4,6 +4,7 @@ import com.team5.projrental.common.exception.IllegalCategoryException;
 import com.team5.projrental.common.exception.IllegalPaymentMethodException;
 import com.team5.projrental.product.model.innermodel.StoredFileInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.checkerframework.checker.units.qual.N;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,13 @@ import static com.team5.projrental.common.Const.*;
 @Slf4j
 public class CommonUtils {
 
+
+    public static void ifObjNullOrZeroThrow(Class<? extends RuntimeException> ex, String message, Integer n) {
+        if (n == null || n == 0) {
+            thrown(ex, message);
+        }
+
+    }
 
     public static void ifFalseThrow(Class<? extends RuntimeException> ex, String message, boolean b) {
         if (!b) thrown(ex, message);

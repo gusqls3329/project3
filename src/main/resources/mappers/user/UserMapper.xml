@@ -120,4 +120,11 @@
         ON a.ieupmyun= u.iaddr
         WHERE u.iuser = #{iuser}
     </select>
+
+    <!--예외처리-->
+     <select id="signinId">
+         SELECT COUNT(iuser)
+         from t_user
+         WHERE uid = #{uid}
+     </select>
 </mapper>

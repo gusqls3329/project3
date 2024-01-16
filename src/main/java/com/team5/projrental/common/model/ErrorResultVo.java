@@ -9,5 +9,6 @@ public class ErrorResultVo {
 
     public ErrorResultVo(String message) {
         this.message = message;
+
     }
 }
