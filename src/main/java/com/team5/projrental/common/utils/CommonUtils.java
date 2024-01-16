@@ -45,9 +45,9 @@ public class CommonUtils {
 //        Map<Integer, String> categories = CATEGORIES;
 //        return categories.keySet().stream().filter(k -> categories.get(k).equals(category))
 //                .findAny().orElseThrow(() -> new IllegalCategoryException(ILLEGAL_CATEGORY_EX_MESSAGE));
-        boolean contains = CATEGORIES.keySet().contains(icategory);
-        if (contains) return;
-        thrown(IllegalCategoryException.class, ILLEGAL_CATEGORY_EX_MESSAGE);
+        if (icategory > CATEGORY_COUNT || icategory < 1) thrown(IllegalCategoryException.class, ILLEGAL_CATEGORY_EX_MESSAGE);
+
+
     }
 
     public static Integer ifPaymentMethodNotContainsThrowOrReturn(String paymentMethod) {
