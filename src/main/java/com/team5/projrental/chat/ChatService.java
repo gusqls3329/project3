@@ -127,7 +127,7 @@ public class ChatService {
         UserSelDto usDto = new UserSelDto();
         usDto.setIuser(dto.getOtherPersonIuser());
 
-        UserEntity entity = userMapper.selChatUser(usDto);
+        UserEntity entity = mapper.selChatUser(usDto);
 
         ChatSelVo vo = new ChatSelVo();
         vo.setIchat(dto.getIchat());
