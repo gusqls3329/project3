@@ -71,14 +71,4 @@ public class InsProdBasicInfoDto {
         this.x = x;
         this.y = y;
     }
-
-    private Integer parseCategory(String category) {
-        Map<Integer, String> categories = Const.CATEGORIES;
-        return categories
-                .keySet()
-                .stream()
-                .filter(k -> categories.get(k).equals(category))
-                .findFirst()
-                .orElseThrow(() -> new IllegalCategoryException(Const.ILLEGAL_CATEGORY_EX_MESSAGE));
-    }
 }
