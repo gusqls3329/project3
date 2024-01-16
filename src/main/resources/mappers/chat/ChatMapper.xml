@@ -69,7 +69,7 @@
 
 
     <select id="selChatUserCheck">
-        SELECT ichat
+        SELECT t_ichat
         FROM t_chat_user
         WHERE iuser = #{loginedIuser} OR iuser =#{otherPersonIuser}
         GROUP BY ichat
@@ -125,5 +125,14 @@
         SET istatus = -1
         WHERE iuser =#{iuser} AND ichat =#{ichat}
     </update>
+
+
+    <select id="selChatUser">
+        SELECT u.y, u.x, u.nick, u.stored_pic, u.phone, u.email, u.raiting, CONCAT_WS(a.eupmyun,u.rest_addr)
+        FROM t_user u
+        JOIN t_eupmyun a
+        ON a.ieupmyun= u.iaddr
+        WHERE u.iuser = #{iuser}
+    </select>
 
 </mapper>
