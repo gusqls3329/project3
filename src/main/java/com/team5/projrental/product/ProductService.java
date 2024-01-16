@@ -2,7 +2,7 @@ package com.team5.projrental.product;
 
 import com.team5.projrental.common.aop.anno.CountView;
 import com.team5.projrental.common.exception.*;
-import com.team5.projrental.common.exception.checked.NotContainsDotException;
+import com.team5.projrental.common.exception.checked.FileNotContainsDotException;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.model.restapi.Addrs;
 import com.team5.projrental.common.utils.AxisGenerator;
@@ -182,7 +182,7 @@ public class ProductService {
                 }
                 return new ResVo(insProdBasicInfoDto.getIproduct());
             }
-        } catch (NotContainsDotException e) {
+        } catch (FileNotContainsDotException e) {
             throw new BadMainPicException(BAD_PIC_EX_MESSAGE);
         }
         throw new RuntimeException(SERVER_ERR_MESSAGE);
@@ -281,7 +281,7 @@ public class ProductService {
                 dto.setX(Double.parseDouble(addrs.getX()));
                 dto.setY(Double.parseDouble(addrs.getY()));
             }
-        } catch (NotContainsDotException e) {
+        } catch (FileNotContainsDotException e) {
             throw new BadMainPicException(BAD_PIC_EX_MESSAGE);
         }
         // do update

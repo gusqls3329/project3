@@ -1,7 +1,7 @@
 package com.team5.projrental.common.utils;
 
 import com.team5.projrental.common.Const;
-import com.team5.projrental.common.exception.checked.NotContainsDotException;
+import com.team5.projrental.common.exception.checked.FileNotContainsDotException;
 import com.team5.projrental.product.model.innermodel.StoredFileInfo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
@@ -20,7 +20,7 @@ import java.util.UUID;
 public class MyFileUtils {
 
     @Value("${file.base-package}")
-    private String basePackage;
+    private String basePath;
 
     // 파일 업로드 배운 후 완성시킬 예정.
 
@@ -59,19 +59,21 @@ public class MyFileUtils {
 
     /**
      * 하나의 사진 파일 저장
+     *
      * @param multipartFile
      * @param category
      * @return StoredFileInfo
-     * @throws NotContainsDotException
+     * @throws FileNotContainsDotException
      */
-    public StoredFileInfo savePic(MultipartFile multipartFile, String category) throws NotContainsDotException {
+    public StoredFileInfo savePic(MultipartFile multipartFile, String category) throws FileNotContainsDotException {
         String originalFilename = multipartFile.getOriginalFilename();
         if (originalFilename == null || !originalFilename.contains(".")) {
-            throw new NotContainsDotException();
+            throw new FileNotContainsDotException();
         }
         String storeName = generateRandomFileName(multipartFile.getOriginalFilename()); //aegeg.jpg
-        String storedName = generateFullPath(category, storeName); // category/fileName;
-        Path path = Paths.get(storedName);
+        String storedName = generateStoredPath(category, storeName); // category/fileName;
+
+        Path path = Paths.get(this.basePath, storedName);
 
         try {
             multipartFile.transferTo(path);
@@ -87,12 +89,13 @@ public class MyFileUtils {
     /**
      * 2개 이상의 사진 파일 저장
      * [savePic 내부 호출]
+     *
      * @param multipartFiles
      * @param category
      * @return List<StoredFileInfo>
-     * @throws NotContainsDotException
+     * @throws FileNotContainsDotException
      */
-    public List<StoredFileInfo> savePic(List<MultipartFile> multipartFiles, String category) throws NotContainsDotException {
+    public List<StoredFileInfo> savePic(List<MultipartFile> multipartFiles, String category) throws FileNotContainsDotException {
         List<StoredFileInfo> result = new ArrayList<>();
 
         for (MultipartFile multipartFile : multipartFiles) {
@@ -101,8 +104,8 @@ public class MyFileUtils {
         return result;
     }
 
-    private String generateFullPath(String category, String fileName) {
-        return category + "/" + fileName;
+    private String generateStoredPath(String category, String fileName) {
+        return Paths.get(category, fileName).toString();
     }
 
     private String generateRandomFileName(String fileName) {

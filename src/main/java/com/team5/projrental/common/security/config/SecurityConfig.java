@@ -31,6 +31,9 @@ public class SecurityConfig {
                                         "/**",
                                         "/api/user/signup",
                                         "/api/user/signin",
+                                        "/css/**",
+                                        "/static/**",
+                                        "/fimg/**",
                                         "/api/user/id",
                                         "/api/user/pw",
                                         "/error",
@@ -50,6 +53,7 @@ public class SecurityConfig {
                     ex.accessDeniedHandler(new JwtAccessDeniedHandler());
                 }).addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class).build();
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
