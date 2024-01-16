@@ -44,8 +44,8 @@ public class UserService {
 
 
         dto.setUpw(hashedPw);
-//        dto.setY(40);
-//        dto.setX(40);
+        dto.setY(40);
+        dto.setX(40);
 
         Addrs addrs = axisGenerator.getAxis(dto.getAddr());
         CommonUtils.ifAnyNullThrow(BadAddressInfoException.class, BAD_ADDRESS_INFO_EX_MESSAGE,
