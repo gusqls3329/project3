@@ -7,8 +7,10 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -29,7 +31,7 @@ public class UserController {
             , @Parameter(name="phone", description = "휴대폰 번호 (형식 : 010-1111-2222)")
             , @Parameter(name="email", description = "이메일 (형식 : aaa@naver.com)")
     })
-    public ResVo postSignup(@RequestBody UserSignupDto dto) {
+    public ResVo postSignup(@RequestBody @Validated UserSignupDto dto) {
         log.info("dto : {}", dto);
         return new ResVo(service.postSignup(dto));
     }
@@ -40,7 +42,7 @@ public class UserController {
             @Parameter(name = "uid", description = "아이디")
             , @Parameter(name = "upw", description = "비밀번호")
     })
-    public SigninVo postSignin(HttpServletResponse res, @RequestBody SigninDto dto) {
+    public SigninVo postSignin(HttpServletResponse res, @RequestBody @Validated SigninDto dto) {
         return service.postSignin(res, dto);
     }
 
@@ -107,8 +109,10 @@ public class UserController {
     @Parameters(value = {
             @Parameter(name = "iuser", description = "유저 Pk값")
     })
+
+    @Validated
     @GetMapping
-    public SelUserVo getUSer(@RequestParam(value = "tar", required = false) int iuser) {
+    public SelUserVo getUSer(@RequestParam(value = "tar", required = false) @Min(1) int iuser) {
         return service.getUSer(iuser);
     }
 }

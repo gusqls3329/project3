@@ -143,6 +143,7 @@ public class UserService {
         int loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setIuser(loginUserPk);
 
+
         String hashedPw = BCrypt.hashpw(dto.getUpw(), BCrypt.gensalt());
         dto.setUpw(hashedPw);
         int result =  mapper.changeUser(dto);
