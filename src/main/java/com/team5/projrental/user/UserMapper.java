@@ -24,4 +24,5 @@ public interface UserMapper {
     SelUserVo selUser(int iuser);
 
     SignUpExceptVo signinId();
+    List<Integer> patchUser(int iuser);
 }

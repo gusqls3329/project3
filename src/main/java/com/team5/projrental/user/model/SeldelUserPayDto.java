@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class SeldelUserPayDto {
-    private int iproduct;
+    private Integer iproduct;
     private int iuser;
     @JsonIgnore
     private int pistatus;

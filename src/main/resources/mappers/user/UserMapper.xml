@@ -84,7 +84,7 @@
         and phone = #{phone}
     </delete>
     <select id="seldelUserPay">
-        select P.iproduct, U.iuser, P.istatus as pistatus, PA.istatus , PA.ibuyer, PA.ipayment
+        select P.iproduct, U.iuser, P.istatus as pistatus, PA.istatus
         from t_product P
         join t_user U on P.iuser = U.iuser and P.istatus IN (-1, -2)
         left join t_product_payment PP on PP.iproduct = P.iproduct
@@ -126,4 +126,14 @@
          or email = #{email}
          or phone = #{phone}
      </select>
+
+    <select id="patchUser">
+        select P.iproduct
+        from t_product P
+        join t_user U on P.iuser = U.iuser
+        left join t_product_payment PP on PP.iproduct = P.iproduct
+        left join t_payment PA on PA.ipayment = PP.ipayment
+        where P.iuser = #{iuser}
+        or PA.ibuyer = #{iuser}
+    </select>
 </mapper>
