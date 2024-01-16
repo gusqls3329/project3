@@ -37,6 +37,7 @@ public interface Const {
     int PAY_PER_PAGE = 16;
     int SUCCESS = 1;
     int FAIL = 0;
+    int CATEGORY_COUNT = 22;
     //
 
     /*
@@ -62,13 +63,30 @@ public interface Const {
     /*
         --------- CATEGORIES ---------
     */
-    Map<Integer, String> CATEGORIES = Map.of(
-            1, "mobile",
-            2, "home-appliance",
-            3, "game",
-            4, "laptop",
-            5, "camera",
-            6, "ect");
+
+//    Map<Integer, String> CATEGORIES = Map.of(
+//            1, "smart-watch",
+//            2, "tablet",
+//            3, "Galaxy",
+//            4, "iphone",
+//            5, "laptop",
+//            6, "pc",
+//            7, "mouse",
+//            8, "keyboard",
+//            9, "beam-projector",
+//            10, "set-top-box",
+//            11, "camera",
+//            12, "camcorder",
+//            13, "dslr",
+//            14, "speaker",
+//            15, "earphone",
+//            16, "headphone",
+//            17, "mic",
+//            18, "playstation",
+//            19, "nintendo",
+//            20, "wii",
+//            21, "xbox",
+//            22, "ect");
 
     Map<Integer, String> PAYMENT_METHODS = Map.of(
             1, "credit-card",
