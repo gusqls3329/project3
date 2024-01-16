@@ -28,7 +28,7 @@ public class ProductUpdDto {
 //    @Min(1)
     @JsonIgnore
     private Integer iuser;
-    private String category;
+    private Integer icategory;
     private String addr;
     private String restAddr;
     private String title;
@@ -52,8 +52,6 @@ public class ProductUpdDto {
 
     @JsonIgnore
     private StoredFileInfo storedMainPic;
-    @JsonIgnore
-    private Integer icategory;
     @JsonIgnore
     private Integer deposit;
     @JsonIgnore

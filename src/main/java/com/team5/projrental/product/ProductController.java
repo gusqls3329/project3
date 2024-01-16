@@ -6,8 +6,10 @@ import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.product.model.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.checkerframework.checker.regex.qual.Regex;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +33,7 @@ public class ProductController {
 
         return productService.getProductList(sort, search, icategory, (page - 1) * Const.PROD_PER_PAGE);
     }
-
+//
     @Validated
     @GetMapping("/api/prod/{icategory}/{iproduct}")
     public ProductVo getProduct(@PathVariable @Min(1) Integer icategory, @PathVariable @Min(1) Integer iproduct) {
@@ -66,5 +68,6 @@ public class ProductController {
     @GetMapping("/list")
     public List<ProductUserVo> getUserProductList(@RequestParam @Min(1) @NotNull Integer page) {
         return productService.getUserProductList((page - 1) * Const.PROD_PER_PAGE);
+        
     }
 }

@@ -11,8 +11,6 @@ import com.team5.projrental.common.security.AuthenticationFacade;
 import com.team5.projrental.common.security.JwtTokenProvider;
 import com.team5.projrental.common.security.SecurityUserDetails;
 import com.team5.projrental.common.security.model.SecurityPrincipal;
-import com.team5.projrental.product.ProductMapper;
-import com.team5.projrental.product.ProductRepository;
 import com.team5.projrental.user.model.*;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -44,9 +42,9 @@ public class UserService {
 
 
         dto.setUpw(hashedPw);
-        dto.setY(40);
-        dto.setX(40);
-
+//        dto.setY(40);
+//        dto.setX(40);
+                                            // 대구 달서구 용산1동 -> x: xxx.xxxxx y: xx.xxxxx address_name: 대구 달서구 용산1동
         Addrs addrs = axisGenerator.getAxis(dto.getAddr());
         CommonUtils.ifAnyNullThrow(BadAddressInfoException.class, BAD_ADDRESS_INFO_EX_MESSAGE,
                 addrs, addrs.getAddress_name(), addrs.getX(), addrs.getY());
@@ -70,9 +68,9 @@ public class UserService {
         UserEntity entity = mapper.selSignin(dto);
 
         if (entity == null) {
-            return SigninVo.builder().result(Const.LOGIN_NO_UID).build();
+            return SigninVo.builder().result(Const.NO_SUCH_ID_EX_MESSAGE).build();
         } else if (!passwordEncoder.matches(dto.getUpw(),entity.getUpw())){
-            return SigninVo.builder().result(Const.LOGIN_DIFF_UPW).build();
+            return SigninVo.builder().result(Const.NO_SUCH_PASSWORD_EX_MESSAGE).build();
         }
 
         SecurityPrincipal principal = SecurityPrincipal.builder().iuser(entity.getIuser()).build();
