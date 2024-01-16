@@ -193,13 +193,16 @@ public class UserService {
         }
     }
 
-    public SelUserVo getUSer(int iuser) {
-        if (iuser == 0) {
+    public SelUserVo getUSer(Integer iuser) {
+        if (iuser == 0 || iuser==null) { //내가 아닐때.
             int loginUserPk = authenticationFacade.getLoginUserPk();
-            iuser = loginUserPk;
-            return mapper.selUser(iuser);
+            return mapper.selUser(loginUserPk);
         }
-        return mapper.selUser(iuser);
+
+        SelUserVo vo = mapper.selUser(iuser);
+        vo.setEmail(null);
+        vo.setPhone(null);
+        return vo;
     }
 }
 

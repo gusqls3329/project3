@@ -114,11 +114,9 @@
     </delete>
 
     <select id="selUser">
-        SELECT u.y, u.x, u.nick, u.stored_pic, u.phone, u.email, u.raiting, CONCAT_WS(a.eupmyun,u.rest_addr)
-        FROM t_user u
-        JOIN t_eupmyun a
-        ON a.ieupmyun= u.iaddr
-        WHERE u.iuser = #{iuser}
+        SELECT y, x, nick, stored_pic, phone, email, raiting, CONCAT_WS(addr, rest_addr)
+        FROM t_user
+        WHERE iuser = #{iuser}
     </select>
 
     <!--예외처리-->
