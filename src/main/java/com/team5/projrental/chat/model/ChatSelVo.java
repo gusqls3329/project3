@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class ChatSelVo {
     private int ichat; // 채팅방 PK
-    //private int iproduct; // 제품 pk
+    private int iproduct; // 제품 pk
     private String prodPic; // 제품 대표사진
     private String lastMsg; // 최근 메세지 내용
     private String lastMsgAt; // 최근 메세지 발송시간

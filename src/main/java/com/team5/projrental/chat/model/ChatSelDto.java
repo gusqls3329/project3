@@ -1,16 +1,29 @@
 package com.team5.projrental.chat.model;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
 
 @Data
 public class ChatSelDto {
+    //@NotNull // null은 안됨
+    //@NotBlank // 스페이스바도 안됨
+    //@NotEmpty // null아니면서 빈문자("") 까지 안됨
 
+    @Length(min = 1)
     private int loginedIuser;
+
+    @Length(min = 1)
     private int page;
 
+    @Length(min = 1)
     private int startIdx;
-    private int rowCount = 30;
+
+    @Length(min = 1)
+    private int rowCount = 20;
 
     public void setPage(int page) {
         this.startIdx = (page-1) * this.rowCount;
