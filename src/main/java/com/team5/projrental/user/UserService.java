@@ -40,11 +40,10 @@ public class UserService {
     private final AxisGenerator axisGenerator;
 
     public int postSignup(UserSignupDto dto) {
-        Integer checkUid = mapper.signinId(dto.getUid());
-//        if (checkUid != 0) {
-//            throw new BadIdInfoException(BAD_ID_EX_MESSAGE);
-//        }
-        CommonUtils.ifObjNullOrZeroThrow(BadIdInfoException.class, BAD_ID_EX_MESSAGE, checkUid);
+
+        SignUpExceptVo checkUid = mapper.signinId();
+        boolean a =checkUid.getNick() != dto.getNick();
+        //CommonUtils.ifObjNullOrZeroThrow(BadIdInfoException.class, BAD_ID_EX_MESSAGE, checkUid.getUid());
 
             String hashedPw = passwordEncoder.encode(dto.getUpw());
             dto.setUpw(hashedPw);
@@ -194,13 +193,17 @@ public class UserService {
         }
     }
 
-    public SelUserVo getUSer(int iuser) {
-        if (iuser == 0) {
+    public SelUserVo getUser(Integer iuser) {
+        if (iuser == null || iuser == 0 ) { //내가 아닐때.
             int loginUserPk = authenticationFacade.getLoginUserPk();
-            iuser = loginUserPk;
-            return mapper.selUser(iuser);
+            SelUserVo vo1 =  mapper.selUser(loginUserPk);
+            return vo1;
         }
-        return mapper.selUser(iuser);
+
+        SelUserVo vo2 = mapper.selUser(iuser);
+        vo2.setEmail(null);
+        vo2.setPhone(null);
+        return vo2;
     }
 }
 

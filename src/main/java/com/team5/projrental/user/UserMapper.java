@@ -23,5 +23,5 @@ public interface UserMapper {
 
     SelUserVo selUser(int iuser);
 
-    Integer signinId(String uid);
+    SignUpExceptVo signinId();
 }
