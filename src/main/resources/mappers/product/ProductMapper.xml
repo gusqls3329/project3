@@ -69,7 +69,7 @@
         P.rental_price as rentalPrice,
         P.rental_start_date as rentalStartDate, P.rental_end_date as rentalEndDate, COUNT(L.iproduct) as prodLike
         <if test="iuser != null">
-            , icategory
+            , category
         </if>
         <if test="sort == 1">
             , (select count(L.iproduct) from t_like L where L.iproduct = P.iproduct) as prodLike

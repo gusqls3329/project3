@@ -12,7 +12,7 @@ public class ProductUserVo extends ProductListVo {
 
     public ProductUserVo(GetProductListResultDto dto) {
         super(dto);
-        category = Const.CATEGORIES.get(dto.getIcategory());
+        this.category = dto.getCateogry();
     }
 
 }

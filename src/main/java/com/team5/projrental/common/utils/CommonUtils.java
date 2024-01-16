@@ -23,17 +23,36 @@ import static com.team5.projrental.common.Const.*;
 public class CommonUtils {
 
 
+    /**
+     * Integer n 이 null 이거나 0 이면 예외 유발
+     * @param ex
+     * @param message
+     * @param n
+     */
     public static void ifObjNullOrZeroThrow(Class<? extends RuntimeException> ex, String message, Integer n) {
         if (n == null || n == 0) {
             thrown(ex, message);
         }
-
     }
 
+    /**
+     * boolean b 가 false 면 예외 발생.
+     * @param ex
+     * @param message
+     * @param b
+     */
     public static void ifFalseThrow(Class<? extends RuntimeException> ex, String message, boolean b) {
         if (!b) thrown(ex, message);
     }
 
+    /**
+     * Stream<T> collection(리스트, 맵, 셋 등) 의 .size() 가 int limitNum 에 제공된 숫자보다 크면(초과) 예외 발생
+     * @param ex
+     * @param message
+     * @param collection
+     * @param limitNum
+     * @param Stream<T>
+     */
     public static <T> void checkSizeIfOverLimitNumThrow(Class<? extends RuntimeException> ex, String message, Stream<T> collection,
                                                         int limitNum) {
         if (collection.count() > limitNum) {
@@ -41,6 +60,14 @@ public class CommonUtils {
         }
     }
 
+    /**
+     * Stream<T> collection(리스트, 맵, 셋 등) 의 .size() 가 int limitNum 에 제공된 숫자보다 작으면(미만) 예외 발생
+     * @param ex
+     * @param message
+     * @param collection
+     * @param limitNum
+     * @param <T>
+     */
     public static <T> void checkSizeIfUnderLimitNumThrow(Class<? extends RuntimeException> ex, String message,
                                                          Stream<T> collection,
                                                          int limitNum) {
@@ -49,6 +76,10 @@ public class CommonUtils {
         }
     }
 
+    /**
+     * Integer icategory 가
+     * @param icategory
+     */
     public static void ifCategoryNotContainsThrowOrReturn(Integer icategory) {
 //        Map<Integer, String> categories = CATEGORIES;
 //        return categories.keySet().stream().filter(k -> categories.get(k).equals(category))
