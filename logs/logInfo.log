@@ -14267,3 +14267,64 @@ This generated password is for development use only. Your security configuration
 [2024-01-16 20:32:05 [32mINFO [0;39m restartedMain] [org.springframework.boot.devtools.autoconfigure.ConditionEvaluationDeltaLoggingListener] [36mCondition evaluation unchanged[0;39m
 [2024-01-16 20:42:04 [32mINFO [0;39m SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-9 - Shutdown initiated...[0;39m
 [2024-01-16 20:42:04 [32mINFO [0;39m SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-9 - Shutdown completed.[0;39m
+[2024-01-16 20:42:08 [32mINFO [0;39m background-preinit] [org.hibernate.validator.internal.util.Version] [36mHV000001: Hibernate Validator 8.0.1.Final[0;39m
+[2024-01-16 20:42:08 [32mINFO [0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mStarting ProjrentalApplication using Java 17.0.8.1 with PID 3824 (D:\2023\java\projectrental\build\classes\java\main started by Administrator in D:\2023\java\projectrental)[0;39m
+[2024-01-16 20:42:08 [32mDEBUG[0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mRunning with Spring Boot v3.2.1, Spring v6.1.2[0;39m
+[2024-01-16 20:42:08 [32mINFO [0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mNo active profile set, falling back to 1 default profile: "default"[0;39m
+[2024-01-16 20:42:08 [32mINFO [0;39m restartedMain] [org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor] [36mDevtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable[0;39m
+[2024-01-16 20:42:08 [32mINFO [0;39m restartedMain] [org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor] [36mFor additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'[0;39m
+[2024-01-16 20:42:09 [32mINFO [0;39m restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] [36mTomcat initialized with port 8080 (http)[0;39m
+[2024-01-16 20:42:09 [32mINFO [0;39m restartedMain] [org.apache.coyote.http11.Http11NioProtocol] [36mInitializing ProtocolHandler ["http-nio-8080"][0;39m
+[2024-01-16 20:42:09 [32mINFO [0;39m restartedMain] [org.apache.catalina.core.StandardService] [36mStarting service [Tomcat][0;39m
+[2024-01-16 20:42:09 [32mINFO [0;39m restartedMain] [org.apache.catalina.core.StandardEngine] [36mStarting Servlet engine: [Apache Tomcat/10.1.17][0;39m
+[2024-01-16 20:42:09 [32mINFO [0;39m restartedMain] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] [36mInitializing Spring embedded WebApplicationContext[0;39m
+[2024-01-16 20:42:09 [32mINFO [0;39m restartedMain] [org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext] [36mRoot WebApplicationContext: initialization completed in 1077 ms[0;39m
+[2024-01-16 20:42:09 [32mINFO [0;39m restartedMain] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-1 - Starting...[0;39m
+[2024-01-16 20:42:09 [32mINFO [0;39m restartedMain] [com.zaxxer.hikari.pool.HikariPool] [36mHikariPool-1 - Added connection org.mariadb.jdbc.Connection@4c4d4bbb[0;39m
+[2024-01-16 20:42:09 [32mINFO [0;39m restartedMain] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-1 - Start completed.[0;39m
+[2024-01-16 20:42:09 [32mINFO [0;39m restartedMain] [org.springframework.boot.autoconfigure.h2.H2ConsoleAutoConfiguration] [36mH2 console available at '/h2-console'. Database available at 'jdbc:mariadb://localhost/projrental?user=root&password=***'[0;39m
+[2024-01-16 20:42:09 [32mDEBUG[0;39m restartedMain] [com.team5.projrental.common.security.filter.JwtAuthenticationFilter] [36mFilter 'jwtAuthenticationFilter' configured for use[0;39m
+[2024-01-16 20:42:09 [33mWARN [0;39m restartedMain] [org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration] [36m
+
+Using generated security password: 2ff963ef-dc62-48c3-84c1-3f378237309e
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+[0;39m
+[2024-01-16 20:42:10 [32mINFO [0;39m restartedMain] [org.springframework.security.web.DefaultSecurityFilterChain] [36mWill secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@54b44e55, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@5c4d0ede, org.springframework.security.web.context.SecurityContextHolderFilter@44f72a72, org.springframework.security.web.header.HeaderWriterFilter@691eeb02, org.springframework.web.filter.CorsFilter@37cf47c6, org.springframework.security.web.authentication.logout.LogoutFilter@2360fd90, com.team5.projrental.common.security.filter.JwtAuthenticationFilter@6eee5bfa, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@208b793a, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6a3785a2, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@29c08656, org.springframework.security.web.session.SessionManagementFilter@eaf62f9, org.springframework.security.web.access.ExceptionTranslationFilter@21fccce1, org.springframework.security.web.access.intercept.AuthorizationFilter@68307b3a][0;39m
+[2024-01-16 20:42:10 [32mINFO [0;39m restartedMain] [org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer] [36mLiveReload server is running on port 35729[0;39m
+[2024-01-16 20:42:10 [32mINFO [0;39m restartedMain] [org.apache.coyote.http11.Http11NioProtocol] [36mStarting ProtocolHandler ["http-nio-8080"][0;39m
+[2024-01-16 20:42:10 [32mINFO [0;39m restartedMain] [org.springframework.boot.web.embedded.tomcat.TomcatWebServer] [36mTomcat started on port 8080 (http) with context path ''[0;39m
+[2024-01-16 20:42:10 [32mINFO [0;39m restartedMain] [com.team5.projrental.ProjrentalApplication] [36mStarted ProjrentalApplication in 2.405 seconds (process running for 2.846)[0;39m
+[2024-01-16 20:42:12 [32mINFO [0;39m http-nio-8080-exec-1] [org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]] [36mInitializing Spring DispatcherServlet 'dispatcherServlet'[0;39m
+[2024-01-16 20:42:12 [32mINFO [0;39m http-nio-8080-exec-1] [org.springframework.web.servlet.DispatcherServlet] [36mInitializing Servlet 'dispatcherServlet'[0;39m
+[2024-01-16 20:42:12 [32mINFO [0;39m http-nio-8080-exec-1] [org.springframework.web.servlet.DispatcherServlet] [36mCompleted initialization in 1 ms[0;39m
+[2024-01-16 20:42:12 [32mINFO [0;39m http-nio-8080-exec-1] [com.team5.projrental.user.UserService] [36mloginUserPk :2[0;39m
+[2024-01-16 20:42:12 [32mDEBUG[0;39m http-nio-8080-exec-1] [com.team5.projrental.user.UserMapper.selSignin] [36m==>  Preparing: SELECT u.iuser, a.auth, u.upw, u.uid, firebase_token AS firebaseToken FROM t_user u JOIN t_auth a ON a.iauth = u.iauth WHERE u.uid = ?[0;39m
+[2024-01-16 20:42:12 [32mDEBUG[0;39m http-nio-8080-exec-1] [com.team5.projrental.user.UserMapper.selSignin] [36m==> Parameters: happy1111(String)[0;39m
+[2024-01-16 20:42:12 [32mDEBUG[0;39m http-nio-8080-exec-1] [com.team5.projrental.user.UserMapper.selSignin] [36m<==      Total: 1[0;39m
+[2024-01-16 20:42:13 [32mDEBUG[0;39m http-nio-8080-exec-1] [com.team5.projrental.user.UserMapper.seldelUserPay] [36m==>  Preparing: select P.iproduct, U.iuser, P.istatus as pistatus, PA.istatus from t_product P join t_user U on P.iuser = U.iuser and P.istatus IN (-1, -2) left join t_product_payment PP on PP.iproduct = P.iproduct left join t_payment PA on PA.ipayment = PP.ipayment AND PA.istatus IN (1, -1, -2, -3) where P.iuser = ? or PA.ibuyer = ?[0;39m
+[2024-01-16 20:42:13 [32mDEBUG[0;39m http-nio-8080-exec-1] [com.team5.projrental.user.UserMapper.seldelUserPay] [36m==> Parameters: 2(Integer), 2(Integer)[0;39m
+[2024-01-16 20:42:13 [32mDEBUG[0;39m http-nio-8080-exec-1] [com.team5.projrental.user.UserMapper.seldelUserPay] [36m<==      Total: 2[0;39m
+[2024-01-16 20:42:13 [32mDEBUG[0;39m http-nio-8080-exec-1] [com.team5.projrental.user.UserMapper.patchUser] [36m==>  Preparing: select P.iproduct from t_product P join t_user U on P.iuser = U.iuser left join t_product_payment PP on PP.iproduct = P.iproduct left join t_payment PA on PA.ipayment = PP.ipayment where P.iuser = ? or PA.ibuyer = ?[0;39m
+[2024-01-16 20:42:13 [32mDEBUG[0;39m http-nio-8080-exec-1] [com.team5.projrental.user.UserMapper.patchUser] [36m==> Parameters: 2(Integer), 2(Integer)[0;39m
+[2024-01-16 20:42:13 [32mDEBUG[0;39m http-nio-8080-exec-1] [com.team5.projrental.user.UserMapper.patchUser] [36m<==      Total: 4[0;39m
+[2024-01-16 20:42:17 [32mINFO [0;39m http-nio-8080-exec-4] [com.team5.projrental.user.UserService] [36mloginUserPk :2[0;39m
+[2024-01-16 20:42:17 [32mDEBUG[0;39m http-nio-8080-exec-4] [com.team5.projrental.user.UserMapper.selSignin] [36m==>  Preparing: SELECT u.iuser, a.auth, u.upw, u.uid, firebase_token AS firebaseToken FROM t_user u JOIN t_auth a ON a.iauth = u.iauth WHERE u.uid = ?[0;39m
+[2024-01-16 20:42:17 [32mDEBUG[0;39m http-nio-8080-exec-4] [com.team5.projrental.user.UserMapper.selSignin] [36m==> Parameters: happy1111(String)[0;39m
+[2024-01-16 20:42:17 [32mDEBUG[0;39m http-nio-8080-exec-4] [com.team5.projrental.user.UserMapper.selSignin] [36m<==      Total: 1[0;39m
+[2024-01-16 20:42:17 [32mDEBUG[0;39m http-nio-8080-exec-4] [com.team5.projrental.user.UserMapper.seldelUserPay] [36m==>  Preparing: select P.iproduct, U.iuser, P.istatus as pistatus, PA.istatus from t_product P join t_user U on P.iuser = U.iuser and P.istatus IN (-1, -2) left join t_product_payment PP on PP.iproduct = P.iproduct left join t_payment PA on PA.ipayment = PP.ipayment AND PA.istatus IN (1, -1, -2, -3) where P.iuser = ? or PA.ibuyer = ?[0;39m
+[2024-01-16 20:42:17 [32mDEBUG[0;39m http-nio-8080-exec-4] [com.team5.projrental.user.UserMapper.seldelUserPay] [36m==> Parameters: 2(Integer), 2(Integer)[0;39m
+[2024-01-16 20:42:17 [32mDEBUG[0;39m http-nio-8080-exec-4] [com.team5.projrental.user.UserMapper.seldelUserPay] [36m<==      Total: 2[0;39m
+[2024-01-16 20:42:17 [32mDEBUG[0;39m http-nio-8080-exec-4] [com.team5.projrental.user.UserMapper.patchUser] [36m==>  Preparing: select P.iproduct from t_product P join t_user U on P.iuser = U.iuser left join t_product_payment PP on PP.iproduct = P.iproduct left join t_payment PA on PA.ipayment = PP.ipayment where P.iuser = ? or PA.ibuyer = ?[0;39m
+[2024-01-16 20:42:17 [32mDEBUG[0;39m http-nio-8080-exec-4] [com.team5.projrental.user.UserMapper.patchUser] [36m==> Parameters: 2(Integer), 2(Integer)[0;39m
+[2024-01-16 20:42:17 [32mDEBUG[0;39m http-nio-8080-exec-4] [com.team5.projrental.user.UserMapper.patchUser] [36m<==      Total: 4[0;39m
+[2024-01-16 20:42:21 [32mINFO [0;39m http-nio-8080-exec-7] [com.team5.projrental.user.UserService] [36mloginUserPk :2[0;39m
+[2024-01-16 20:42:21 [32mDEBUG[0;39m http-nio-8080-exec-7] [com.team5.projrental.user.UserMapper.selSignin] [36m==>  Preparing: SELECT u.iuser, a.auth, u.upw, u.uid, firebase_token AS firebaseToken FROM t_user u JOIN t_auth a ON a.iauth = u.iauth WHERE u.uid = ?[0;39m
+[2024-01-16 20:42:21 [32mDEBUG[0;39m http-nio-8080-exec-7] [com.team5.projrental.user.UserMapper.selSignin] [36m==> Parameters: happy1111(String)[0;39m
+[2024-01-16 20:42:21 [32mDEBUG[0;39m http-nio-8080-exec-7] [com.team5.projrental.user.UserMapper.selSignin] [36m<==      Total: 1[0;39m
+[2024-01-16 20:42:21 [32mDEBUG[0;39m http-nio-8080-exec-7] [com.team5.projrental.user.UserMapper.seldelUserPay] [36m==>  Preparing: select P.iproduct, U.iuser, P.istatus as pistatus, PA.istatus from t_product P join t_user U on P.iuser = U.iuser and P.istatus IN (-1, -2) left join t_product_payment PP on PP.iproduct = P.iproduct left join t_payment PA on PA.ipayment = PP.ipayment AND PA.istatus IN (1, -1, -2, -3) where P.iuser = ? or PA.ibuyer = ?[0;39m
+[2024-01-16 20:42:21 [32mDEBUG[0;39m http-nio-8080-exec-7] [com.team5.projrental.user.UserMapper.seldelUserPay] [36m==> Parameters: 2(Integer), 2(Integer)[0;39m
+[2024-01-16 20:42:21 [32mDEBUG[0;39m http-nio-8080-exec-7] [com.team5.projrental.user.UserMapper.seldelUserPay] [36m<==      Total: 2[0;39m
+[2024-01-16 20:42:21 [32mDEBUG[0;39m http-nio-8080-exec-7] [com.team5.projrental.user.UserMapper.patchUser] [36m==>  Preparing: select P.iproduct from t_product P join t_user U on P.iuser = U.iuser left join t_product_payment PP on PP.iproduct = P.iproduct left join t_payment PA on PA.ipayment = PP.ipayment where P.iuser = ? or PA.ibuyer = ?[0;39m
+[2024-01-16 20:42:21 [32mDEBUG[0;39m http-nio-8080-exec-7] [com.team5.projrental.user.UserMapper.patchUser] [36m==> Parameters: 2(Integer), 2(Integer)[0;39m
+[2024-01-16 20:42:21 [32mDEBUG[0;39m http-nio-8080-exec-7] [com.team5.projrental.user.UserMapper.patchUser] [36m<==      Total: 4[0;39m
