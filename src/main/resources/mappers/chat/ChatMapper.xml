@@ -8,6 +8,7 @@
     </insert>
 
 
+
     <insert id="insChatUser">
         INSERT INTO t_chat_user
         SET ichat = #{ichat},
@@ -70,7 +71,7 @@
     <select id="selChatUserCheck">
         SELECT ichat
         FROM t_chat_user
-        WHERE iuser = #{loginedIuser} OR iuser #{otherPersonIuser}
+        WHERE iuser = #{loginedIuser} OR iuser =#{otherPersonIuser}
         GROUP BY ichat
         HAVING COUNT(ichat) = 2
     </select>

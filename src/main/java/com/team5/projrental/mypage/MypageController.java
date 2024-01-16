@@ -18,39 +18,47 @@ public class MypageController {
     private final MypageService service;
 
 
-    @GetMapping("/{loginedIuser}")
-    @Operation(summary = "대여리스트", description = "빌린내역 및 빌려준내역" +
-            "<br>ibuyer에 loginedIuser가 입력되면 빌린 내역" +
-            "<br>iuser에 loginedIuser가 입력되면 빌려준 내역" +
+    @GetMapping("/prod")
+    @Operation(summary = "대여리스트", description = "대여관련 내역" +
             "<br>role = 1 : loginedIuser가 빌린 내역, role = 2 : loginedIuser가 빌려준 내역")
 
     @Parameters(value = {
-            @Parameter(name = "page", description = "페이지(defolt:0)"),
-            @Parameter(name = "loginedIuser", description = "로그인 유저PK"),
+            @Parameter(name = "page", description = "페이지"),
             @Parameter(name = "role", description = "role : 1 = 빌린 내역, 2 = 빌려준 내역")})
-    public List<PaymentSelVo> getPaymentList(@RequestParam(required = false, defaultValue = "0") int page,
-                                             @RequestParam(name = "row_count", required = false, defaultValue = "16") int rowCount,
-                                             @RequestParam(required = false) int loginedIuser,
-                                             @RequestParam(required = false) int role)
+    public List<PaymentSelVo> getPaymentList(@RequestParam int page,
+                                             @RequestParam int role)
 
  {
 
         PaymentSelDto dto = new PaymentSelDto();
         dto.setPage(page);
-        dto.setRowCount(rowCount);
-        dto.setLoginedIuser(loginedIuser);
         dto.setRole(role);
 
         return service.paymentList(dto);
     }
 
     @GetMapping("/review")
-    public List<MyBuyReviewListSelVo> getReview(@PathVariable int iuser, MyBuyReviewListSelDto dto) {
+    @Operation(summary = "로그인 유저가 작성한 후기", description = "로그인 유저가 빌린내역 중 작성된 후기")
+    @Parameters(value = {
+            @Parameter(name = "page", description = "페이지"),
+            })
+    public List<MyBuyReviewListSelVo> getReview(@RequestParam int page) {
+
+        MyBuyReviewListSelDto dto = new MyBuyReviewListSelDto();
+        dto.setPage(page);
+
         return service.selIbuyerReviewList(dto);
     }
 
     @GetMapping("/fav")
-    public List<MyFavListSelVo> getFavList(MyFavListSelDto dto) {
+    @Operation(summary = "로그인 유저가 찜한 목록", description = "로그인 유저가 찜한 목록")
+    @Parameters(value = {
+            @Parameter(name = "page", description = "페이지"),
+    })
+    public List<MyFavListSelVo> getFavList(@RequestParam int page) {
+        MyFavListSelDto dto = new MyFavListSelDto();
+        dto.setPage(page);
+
         return service.selMyFavList(dto);
     }
 }

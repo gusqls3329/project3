@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class MyFavListSelDto {
     private int page;
-    private int iuser;
+    private int loginedIuser;
     @JsonIgnore
     private int startIdx;
 

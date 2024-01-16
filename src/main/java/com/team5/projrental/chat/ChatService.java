@@ -6,6 +6,7 @@ import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.chat.model.*;
+import com.team5.projrental.common.security.AuthenticationFacade;
 import com.team5.projrental.user.UserMapper;
 import com.team5.projrental.user.model.UserEntity;
 import com.team5.projrental.user.model.UserSelDto;
@@ -24,6 +25,8 @@ public class ChatService {
     private final ChatMapper mapper;
     private final UserMapper userMapper;
     private final ObjectMapper objectMapper;
+    private final AuthenticationFacade authenticationFacade;
+
 
     //채팅 리스트
     public List<ChatSelVo> getChatAll(ChatSelDto dto) {
@@ -103,22 +106,34 @@ public class ChatService {
     public ChatSelVo postChat(ChatInsDto dto){
         Integer isExixtChat = mapper.selChatUserCheck(dto);
         log.info("dto: {}", dto);
-        if (isExixtChat==null){
+        if (isExixtChat!=null){
             return null;
         }
 
         int chataffectedrows = mapper.insChat(dto);
         int chatUserAffectedRows = mapper.insChatUser(dto);
 
+        int loginUserPk = authenticationFacade.getLoginUserPk();
+        dto.setLoginedIuser(loginUserPk);
+        ChatUserInsDto insDto2 = new ChatUserInsDto();
+        insDto2.setIchat(dto.getIchat());
+        insDto2.setIuser(loginUserPk);
+
+        ChatUserInsDto insDto1 = new ChatUserInsDto();
+        insDto1.setIchat(dto.getIchat());
+        insDto1.setIuser(dto.getOtherPersonIuser());
+
+
         UserSelDto usDto = new UserSelDto();
         usDto.setIuser(dto.getOtherPersonIuser());
-        UserEntity entity = userMapper.selChatUser(usDto);
+        //UserEntity entity = userMapper.selUser(usDto);
 
         ChatSelVo vo = new ChatSelVo();
         vo.setIchat(dto.getIchat());
-        vo.setOtherPersonIuser(entity.getIuser());
+        //vo.setIproduct(dto.getIproduct());
+        /*vo.setOtherPersonIuser(entity.getIuser());
         vo.setOtherPersonNm(entity.getNm());
-        vo.setOtherPersonPic(entity.getPic());
+        vo.setOtherPersonPic(entity.getPic());*/
         return vo;
     }
 

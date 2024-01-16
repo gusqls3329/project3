@@ -3,8 +3,10 @@ package com.team5.projrental.mypage;
 import com.team5.projrental.common.security.AuthenticationFacade;
 import com.team5.projrental.mypage.model.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,12 +26,14 @@ public class MypageService {
         int loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setIbuyer(loginUserPk);
 
-        return mapper.getIbuyerReviewList(dto);
+        List<MyBuyReviewListSelVo> list = mapper.getIbuyerReviewList(dto);
+
+        return list;
     }
 
     public List<MyFavListSelVo> selMyFavList(MyFavListSelDto dto) {
         int loginUserPk = authenticationFacade.getLoginUserPk();
-        dto.setIuser(loginUserPk);
+        dto.setLoginedIuser(loginUserPk);
 
         return mapper.getFavList(dto);
     }

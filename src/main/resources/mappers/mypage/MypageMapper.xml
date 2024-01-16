@@ -40,7 +40,7 @@
     </select>
 
     <select id="getIbuyerReviewList">
-        SELECT B.ibuyer, A.nick, A.stored_pic, A.request_pic, D.title, D.stored_pic, D.request_pic, B.raiting, B.`contents`
+        SELECT B.ibuyer, A.nick, A.stored_pic, A.request_pic, D.iproduct, D.title, D.stored_pic, D.request_pic, B.ireview, B.raiting, B.`contents`
         FROM t_user A
         LEFT JOIN t_review B
         ON A.iuser = B.ibuyer
@@ -48,11 +48,11 @@
         ON B.ipayment = C.ipayment
         JOIN t_product D
         ON C.iproduct = D.iproduct
-        WHERE B.ibuyer = #{iuser};
+        WHERE B.ibuyer = #{ibuyer};
     </select>
 
     <select id="getFavList">
-        SELECT B.iuser AS loginedIuser, A.iproduct, A.title, A.stored_pic, A.request_pic, A.iproduct, A.iproduct, B.nick, B.stored_pic, B.request_pic
+        SELECT B.iuser AS loginedIuser, A.iproduct, A.price, A.deposit, A.title, A.stored_pic, A.request_pic, A.iproduct, A.iproduct, B.nick, B.stored_pic, B.request_pic
         FROM t_product A
         LEFT JOIN t_user B
         ON A.iuser = B.iuser

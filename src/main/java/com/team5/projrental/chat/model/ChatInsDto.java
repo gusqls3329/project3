@@ -5,9 +5,11 @@ import lombok.Data;
 
 @Data
 public class ChatInsDto {
-    @JsonIgnore
-    private int ichat;
 
+    private int ichat;
+    private int iproduct;
+
+    @JsonIgnore
     private int loginedIuser;
     private int otherPersonIuser;
 }
