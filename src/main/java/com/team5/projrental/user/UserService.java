@@ -63,8 +63,6 @@ public class UserService {
                 return Const.SUCCESS;
             }
             return Const.FAIL;
-
-        return Const.FAIL;
     }
 
 
