@@ -33,9 +33,8 @@ import static com.team5.projrental.common.Const.*;
 @Slf4j
 @RequiredArgsConstructor
 public class PaymentService {
-    /* TODO: 1/11/24
-        수정 - 전부 null 이면 예외 발생 시키기
-        --by Hyunmin */
+
+
     private final PaymentRepository paymentRepository;
     private final ProductRepository productRepository;
     private final AuthenticationFacade authenticationFacade;
