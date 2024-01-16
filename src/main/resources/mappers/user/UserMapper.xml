@@ -61,8 +61,10 @@
             <if test="phone != null and phone != '' ">
                 ,phone =#{phone}
             </if>
-            <if test="iaddr != null and iaddr != '' ">
-                ,iaddr =#{iaddr}
+            <if test="addr != null and addr != '' ">
+                , addr = #{addr}
+                , y = #{y}
+                , x = #{x}
             </if>
             <if test="restAddr != null and restAddr != '' ">
                 ,rest_addr =#{restAddr}
@@ -70,6 +72,7 @@
             <if test="email != null and email != '' ">
                 ,email = #{email}
             </if>
+
         </set>
         where iuser = #{iuser}
     </update>

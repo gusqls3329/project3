@@ -66,7 +66,7 @@ public class UserController {
             @Parameter(name = "phone", description = "휴대폰 번호 (형식 : 010-1111-2222)")
     })
     @PostMapping("/id")
-    public FindUidVo getFindUid(@RequestBody FindUidDto phone) {
+    public FindUidVo getFindUid(@RequestBody @Validated FindUidDto phone) {
         return service.getFindUid(phone);
     }
 
@@ -76,7 +76,7 @@ public class UserController {
             , @Parameter(name = "phone", description = "휴대폰 번호 (형식 : 010-1111-2222)")
     })
     @PatchMapping("/pw")
-    public ResVo getFindUpw(@RequestBody FindUpwDto dto) {
+    public ResVo getFindUpw(@RequestBody @Validated FindUpwDto dto) {
         return new ResVo(service.getFindUpw(dto));
     }
 
@@ -90,7 +90,7 @@ public class UserController {
             , @Parameter(name = "phone", description = "휴대폰 번호 (형식 : 010-1111-2222)")
     })
     @PutMapping
-    public int putUser(@RequestBody ChangeUserDto dto) {
+    public int putUser(@RequestBody @Validated ChangeUserDto dto) {
         return service.putUser(dto);
     }
 
@@ -101,7 +101,7 @@ public class UserController {
             , @Parameter(name = "phone", description = "휴대폰 번호 (형식 : 010-1111-2222)")
     })
     @PatchMapping
-    public int patchUser(@RequestBody DelUserDto dto) {
+    public int patchUser(@RequestBody @Validated DelUserDto dto) {
         return service.patchUser(dto);
     }
 
