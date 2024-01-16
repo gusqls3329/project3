@@ -22,7 +22,7 @@ public class UserMapperTest {
         dto.setUid("test");
         dto.setUpw("1212");
         dto.setNick("연습중");
-        dto.setAddr("대구 달서구 용산동");
+        dto.setIaddr(111);
         dto.setEmail("test@naver.com");
         dto.setPic("aa.jpg");
         dto.setRestAddr("11-1");

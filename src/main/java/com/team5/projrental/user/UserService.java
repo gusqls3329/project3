@@ -12,6 +12,7 @@ import com.team5.projrental.common.security.JwtTokenProvider;
 import com.team5.projrental.common.security.SecurityUserDetails;
 import com.team5.projrental.common.security.model.SecurityPrincipal;
 import com.team5.projrental.product.ProductMapper;
+import com.team5.projrental.product.ProductRepository;
 import com.team5.projrental.user.model.*;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,17 +32,16 @@ import static com.team5.projrental.common.Const.BAD_ADDRESS_INFO_EX_MESSAGE;
 @RequiredArgsConstructor
 public class UserService {
     private final UserMapper mapper;
-    private final ProductMapper productMapper;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final SecurityProperties securityProperties;
     private final CookieUtils cookieUtils;
     private final AuthenticationFacade authenticationFacade;
-
     private final AxisGenerator axisGenerator;
 
     public int postSignup(UserSignupDto dto) {
         String hashedPw = passwordEncoder.encode(dto.getUpw());
+
 
         dto.setUpw(hashedPw);
 //        dto.setY(40);
@@ -64,12 +64,14 @@ public class UserService {
     }
 
 
+
+
     public SigninVo postSignin(HttpServletResponse res, SigninDto dto) {
         UserEntity entity = mapper.selSignin(dto);
 
         if (entity == null) {
             return SigninVo.builder().result(Const.LOGIN_NO_UID).build();
-        } else if (!passwordEncoder.matches(dto.getUpw(), entity.getUpw())) {
+        } else if (!passwordEncoder.matches(dto.getUpw(),entity.getUpw())){
             return SigninVo.builder().result(Const.LOGIN_DIFF_UPW).build();
         }
 
@@ -77,8 +79,8 @@ public class UserService {
         String at = jwtTokenProvider.generateAccessToken(principal);
         String rt = jwtTokenProvider.generateRefreshToken(principal);
 
-        int rtCookieMaxAge = (int) (securityProperties.getJwt().getRefreshTokenExpiry() / 1000);
-        cookieUtils.deleteCookie(res, "rt");
+        int rtCookieMaxAge = (int)(securityProperties.getJwt().getRefreshTokenExpiry() / 1000);
+        cookieUtils.deleteCookie( res, "rt");
         cookieUtils.setCookie(res, "rt", rt, rtCookieMaxAge);
 
         return SigninVo.builder()
@@ -90,25 +92,25 @@ public class UserService {
                 .build();
     }
 
-    public int getSignOut(HttpServletResponse res) {
-        cookieUtils.deleteCookie(res, "rt");
+    public int getSignOut(HttpServletResponse res){
+       cookieUtils.deleteCookie(res,"rt");
         return Const.SUCCESS;
     }
 
-    public SigninVo getRefrechToken(HttpServletRequest req) {
-        Cookie cookie = cookieUtils.getCookie(req, "rt");
+    public SigninVo getRefrechToken(HttpServletRequest req){
+        Cookie cookie = cookieUtils.getCookie(req,"rt");
         String token = cookie.getValue();
-        if (!jwtTokenProvider.isValidatedToken(token)) {
+        if(!jwtTokenProvider.isValidatedToken(token)){
             return SigninVo.builder()
                     .result(String.valueOf(Const.FAIL))
                     .accessToken(null)
                     .build();
         }
-        SecurityUserDetails UserDetails = (SecurityUserDetails) jwtTokenProvider.getUserDetailsFromToken(token);
+        SecurityUserDetails UserDetails = (SecurityUserDetails)jwtTokenProvider.getUserDetailsFromToken(token);
         SecurityPrincipal Principal = UserDetails.getSecurityPrincipal();
         String at = jwtTokenProvider.generateAccessToken(Principal);
 
-        return SigninVo.builder()
+        return  SigninVo.builder()
                 .result(String.valueOf(Const.SUCCESS))
                 .accessToken(at).build();
     }
@@ -117,7 +119,7 @@ public class UserService {
         int loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setIuser(loginUserPk);
         int result = mapper.updUserFirebaseToken(dto);
-        if (result == 1) {
+        if(result == 1) {
             return Const.SUCCESS;
         }
         return Const.FAIL;
@@ -133,10 +135,10 @@ public class UserService {
         String hashedPw = BCrypt.hashpw(dto.getUpw(), BCrypt.gensalt());
         dto.setUpw(hashedPw);
         int result = mapper.upFindUpw(dto);
-        if (result == 1) {
+        if(result == 1) {
             return Const.SUCCESS;
         }
-        return Const.FAIL;
+            return Const.FAIL;
     }
 
     public int putUser(ChangeUserDto dto) {
@@ -145,8 +147,8 @@ public class UserService {
 
         String hashedPw = BCrypt.hashpw(dto.getUpw(), BCrypt.gensalt());
         dto.setUpw(hashedPw);
-        int result = mapper.changeUser(dto);
-        if (result == 1) {
+        int result =  mapper.changeUser(dto);
+        if(result == 1) {
             return Const.SUCCESS;
         }
         return Const.FAIL;
@@ -164,7 +166,7 @@ public class UserService {
         if (loginUserPk == entity.getIuser()) {
             String hashedPw = entity.getUpw();
             boolean checkPw = BCrypt.checkpw(dto.getUpw(), hashedPw);
-            if (checkPw == true) {
+            if (checkPw) {
                 List<SeldelUserPayDto> payDtos = mapper.seldelUserPay(entity.getIuser());
                 for (SeldelUserPayDto list : payDtos) {
                     mapper.delUserProPic(list.getIproduct());
@@ -184,14 +186,12 @@ public class UserService {
     }
 
     public SelUserVo getUSer(int iuser) {
-        if (iuser == 0) {
+        if(iuser == 0){
             int loginUserPk = authenticationFacade.getLoginUserPk();
             iuser = loginUserPk;
             return mapper.selUser(iuser);
         }
         return mapper.selUser(iuser);
     }
-
-
 }
 
