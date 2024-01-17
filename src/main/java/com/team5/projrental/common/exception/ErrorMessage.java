@@ -26,6 +26,7 @@ public interface ErrorMessage {
     String BAD_ADDRESS_INFO_EX_MESSAGE = "잘못된 주소 입니다.";
     String BAD_INFO_EX_MESSAGE = "잘못된 정보 입니다.";
     String BAD_SORT_EX_MESSAGE = "SORT 는 1 또는 2 만 가능합니다.";
+    String BAD_LENGTH_EX_MESSAGE = "글자수 범위를 벗어났습니다";
     String BAD_RENTAL_DEL_EX_MESSAGE = "거래중인 결제정보는 삭제하거나 숨길 수 없습니다.";
     String BAD_RENTAL_CANCEL_EX_MESSAGE = "거래가 종료된 결제는 취소할 수 없습니다.";
     String BAD_DIV_INFO_EX_MESSAGE = "div 값이 잘못되었습니다.";
