@@ -9,6 +9,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -111,5 +112,24 @@ public class MyFileUtils {
     private String generateRandomFileName(String fileName) {
         return UUID.randomUUID() + fileName.substring(fileName.lastIndexOf("."));
     }
+    public void delFolderTrigger(String relativePayh) {
+        delFolder(basePath + relativePayh);
+    }
 
+    public void delFolder(String folderPath) {
+        File folder = new File( folderPath);
+
+        if (folder.exists()) {
+            File[] files = folder.listFiles();
+
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    delFolder(file.getAbsolutePath());
+                } else {
+                    file.delete();
+                }
+            }
+            folder.delete();
+        }
+    }
 }

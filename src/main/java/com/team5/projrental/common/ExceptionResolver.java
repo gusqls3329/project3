@@ -1,10 +1,13 @@
 package com.team5.projrental.common;
 
 import com.team5.projrental.common.exception.*;
+import com.team5.projrental.common.exception.base.BadInformationException;
+import com.team5.projrental.common.exception.base.IllegalException;
+import com.team5.projrental.common.exception.base.NoSuchDataException;
 import com.team5.projrental.common.model.ErrorResultVo;
-import org.springframework.http.HttpStatus;
+import com.team5.projrental.common.utils.ErrorCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
@@ -13,34 +16,46 @@ public class ExceptionResolver {
 
     // 400
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResultVo resolve(BadInformationException e) {
-        return new ErrorResultVo(e.getMessage());
+    public ResponseEntity<ErrorResultVo> resolve(BadInformationException e) {
+
+        return ResponseEntity.status(e.getErrorCode().getCode())
+                .body(ErrorResultVo.builder().errorCode(e.getErrorCode().getCode())
+//                        .message(e.getErrorCode().getMessage()).build());
+                        .message(e.getMessage()).build());
+
     }
 
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResultVo resolve(NoSuchDataException e) {
-        return new ErrorResultVo(e.getMessage());
+    public ResponseEntity<ErrorResultVo> resolve(NoSuchDataException e) {
+        return ResponseEntity.status(e.getErrorCode().getCode())
+                .body(ErrorResultVo.builder().errorCode(e.getErrorCode().getCode())
+//                        .message(e.getErrorCode().getMessage()).build());
+                        .message(e.getMessage()).build());
     }
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResultVo resolve(IllegalException e) {
-        return new ErrorResultVo(e.getMessage());
+    public ResponseEntity<ErrorResultVo> resolve(IllegalException e) {
+        return ResponseEntity.status(e.getErrorCode().getCode())
+                .body(ErrorResultVo.builder().errorCode(e.getErrorCode().getCode())
+//                        .message(e.getErrorCode().getMessage()).build());
+                        .message(e.getMessage()).build());
     }
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResultVo resolve(RestApiException e) {
-        return new ErrorResultVo(e.getMessage());
+    public ResponseEntity<ErrorResultVo> resolve(RestApiException e) {
+        return ResponseEntity.status(e.getErrorCode().getCode())
+                .body(ErrorResultVo.builder().errorCode(e.getErrorCode().getCode())
+//                        .message(e.getErrorCode().getMessage()).build());
+                        .message(e.getMessage()).build());
     }
 
     // 500
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResultVo resolve(RuntimeException e) {
-        return new ErrorResultVo(e.getMessage());
+    public ResponseEntity<ErrorResultVo> resolve(RuntimeException e) {
+        return ResponseEntity.status(500)
+                .body(ErrorResultVo.builder().errorCode(500)
+                        .message(ErrorCode.SERVER_ERR_MESSAGE.getMessage()).errorCode(500).build());
+
     }
 }

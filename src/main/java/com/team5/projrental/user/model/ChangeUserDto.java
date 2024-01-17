@@ -14,7 +14,7 @@ public class ChangeUserDto {
     private String nick;
     //private MultipartFile pic;
     //private String pushpic;
-    private String pic;
+    private MultipartFile pic;
 
     @Length(min = 8, max = 20)
     private String upw;
@@ -30,8 +30,9 @@ public class ChangeUserDto {
     private String email;
 
     @JsonIgnore
+    private String chPic;
+    @JsonIgnore
     private int iuser;
-
     @JsonIgnore
     private double x;
     @JsonIgnore
