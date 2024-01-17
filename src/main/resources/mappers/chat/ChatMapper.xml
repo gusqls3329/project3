@@ -2,9 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team5.projrental.chat.ChatMapper">
 
-    <insert id="insChat" useGeneratedKeys="true" keyProperty="iChat"> <!--빈 채팅방 생성-->
+    <insert id="insChat" useGeneratedKeys="true" keyProperty="ichat"> <!--빈 채팅방 생성-->
         INSERT INTO t_chat
-        SET last_msg = NULL <!-- 마지막 보낸 메세지가 없음 -->
+        SET last_msg = NULL,<!-- 마지막 보낸 메세지가 없음 -->
+            iproduct = #{iproduct}
     </insert>
 
 
@@ -19,10 +20,10 @@
     <insert id="insChatMsg">
         <selectKey resultType="int" keyProperty="seq" order="BEFORE"> <!--BEFORE는 SELECT 먼저 실행하고 insert 실행한다는 뜻-->
             SELECT IFNULL(MAX(seq), 0) + 1 <!-- IFNULL은 최초 메세지 보낼 때 seq가 null이면 0 + 1해서 0+1 = 1로 채팅 seq(PK)번호 생성-->
-            FROM t_chat_msg
+            FROM t_chat_message
             WHERE ichat = #{ichat}
         </selectKey>
-        INSERT INTO t_chat_msg
+        INSERT INTO t_chat_message
         SET ichat = #{ichat}, <!--채팅방 PK-->
         seq = #{seq}, <!--메세지 PK-->
         iuser = #{loginedIuser}, <!--메세지 보내는 사람-->
@@ -53,7 +54,7 @@
         SELECT
         A.seq, A.msg, A.created_at AS createdAt,
         B.iuser AS writerIuser, B.pic AS writerPic
-        FROM t_chat_msg A
+        FROM t_chat_message A
         INNER JOIN t_user B
         ON A.iuser = B.iuser
         WHERE A.ichat =#{ichat}
@@ -63,13 +64,13 @@
 
 
     <delete id="chatDelMsg">
-        DELETE t_chat_msg
+        DELETE t_chat_message
         WHERE ichat = #{ichat} AND iuser =#{iuser}
     </delete>
 
 
     <select id="selChatUserCheck">
-        SELECT t_ichat
+        SELECT ichat
         FROM t_chat_user
         WHERE iuser = #{loginedIuser} OR iuser =#{otherPersonIuser}
         GROUP BY ichat
@@ -88,7 +89,7 @@
         UPDATE t_chat A
         INNER JOIN (
         SELECT ichat, msg, created_at AS createdAt
-        FROM t_chat_msg
+        FROM t_chat_message
         WHERE ichat = #{ichat}
         ORDER BY seq DESC
         LIMIT 1
@@ -114,12 +115,6 @@
 
 
     <update id="chatDel"> <!--숨김 처리-->
-        <!--<selectKey resultType="int" keyProperty="istatus" order="BEFORE">
-            SELECT
-            istatus
-            FROM chat_user
-            WHERE iuser =#{iuser} and ichat =#{ichat}
-        </selectKey>-->
         UPDATE
         t_chat_user
         SET istatus = -1
@@ -128,11 +123,9 @@
 
 
     <select id="selChatUser">
-        SELECT u.y, u.x, u.nick, u.stored_pic, u.phone, u.email, u.raiting, CONCAT_WS(a.eupmyun,u.rest_addr)
-        FROM t_user u
-        JOIN t_eupmyun a
-        ON a.ieupmyun= u.iaddr
-        WHERE u.iuser = #{iuser}
+        SELECT iuser, nick, stored_pic AS storedPic
+        FROM t_user
+        WHERE iuser = #{iuser}
     </select>
 
 </mapper>

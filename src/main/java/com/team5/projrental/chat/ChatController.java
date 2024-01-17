@@ -25,7 +25,7 @@ public class ChatController {
     }
 
     @PostMapping
-    public ChatSelVo PostChat(@RequestBody @Validated ChatInsDto dto) {
+    public ChatSelVo PostChat(@RequestBody ChatInsDto dto) {
 
         return service.postChat(dto);
     }
