@@ -11,7 +11,7 @@ import static com.team5.projrental.common.exception.ErrorCode.*;
 @Data
 public class UserCheckInfoDto {
 
-    @NotNull
+    @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
     @Range(min = 1, max = 2)
     private Integer div;
     private String uid;
