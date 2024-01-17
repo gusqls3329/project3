@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.Arrays;
 
@@ -20,6 +21,14 @@ public class ExceptionResolver {
 
 
     // 400
+    @ExceptionHandler({MethodArgumentTypeMismatchException.class})
+    public ResponseEntity<ErrorResultVo> resolve(MethodArgumentTypeMismatchException eBase) {
+        return ResponseEntity.status(400)
+                .body(ErrorResultVo.builder().errorCode(400)
+//                        .message(e.getErrorCode().getMessage()).build());
+                        .message("잘못된 타입을 입력하였습니다.").build());
+    }
+
     @ExceptionHandler
     public ResponseEntity<ErrorResultVo> resolve(HandlerMethodValidationException eBase) {
         StringBuilder sb = new StringBuilder();
@@ -73,6 +82,7 @@ public class ExceptionResolver {
 //                        .message(e.getErrorCode().getMessage()).build());
                         .message(e.getMessage()).build());
     }
+
 
     // 500
     @ExceptionHandler
