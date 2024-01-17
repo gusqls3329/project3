@@ -113,6 +113,6 @@ public class UserController {
     @Validated
     @GetMapping
     public SelUserVo getUSer(@RequestParam(value = "tar", required = false) @Min(1) Integer iuser) {
-        return service.getUSer(iuser);
+        return service.getUser(iuser);
     }
 }
