@@ -30,7 +30,8 @@ public class ChatService {
 
     //채팅 리스트
     public List<ChatSelVo> getChatAll(ChatSelDto dto) {
-        return mapper.selChatAll(dto);
+        List<ChatSelVo> list = mapper.selChatAll(dto);
+        return list;
     }
 
     //
@@ -57,7 +58,6 @@ public class ChatService {
                 pushVo.setIchat(dto.getIchat());
                 pushVo.setSeq(dto.getSeq());
                 pushVo.setWriterIuser(dto.getLoginedIuser());
-                pushVo.setWriterPic(dto.getLoginedPic());
                 pushVo.setMsg(dto.getMsg());
                 pushVo.setCreatedAt(createdAt);
 
@@ -93,7 +93,8 @@ public class ChatService {
 
     //채팅방 입장시 메세지 내용 불러오기
     public List<ChatMsgSelVo> getMsgAll(ChatMsgSelDto dto) {
-        return mapper.selChatMsgAll(dto);
+        List<ChatMsgSelVo> list = mapper.selChatMsgAll(dto);
+        return list;
     }
 
     public ResVo chatDelMsg(ChatMsgDelDto dto) {

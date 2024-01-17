@@ -18,8 +18,5 @@ public class ChatMsgInsDto {
     //@NotNull // null은 안됨
     //@NotBlank // 스페이스바도 안됨
     //@NotEmpty // null아니면서 빈문자("") 까지 안됨
-
-    private String loginedPic; // 로그인 유저 프로필 사진
-
     private String msg; // 전송할 메세지 내용
 }
