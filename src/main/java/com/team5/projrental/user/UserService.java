@@ -3,6 +3,8 @@ package com.team5.projrental.user;
 import com.team5.projrental.common.Const;
 import com.team5.projrental.common.SecurityProperties;
 import com.team5.projrental.common.exception.BadAddressInfoException;
+import com.team5.projrental.common.exception.RestApiException;
+import com.team5.projrental.common.exception.base.BadInformationException;
 import com.team5.projrental.common.exception.checked.FileNotContainsDotException;
 import com.team5.projrental.common.exception.user.BadIdInfoException;
 import com.team5.projrental.common.model.restapi.Addrs;
@@ -58,21 +60,19 @@ public class UserService {
         int result = mapper.insUser(dto);
         log.debug("dto : {}", dto);
         if (result == 1) {
+            String path = "/user/" + dto.getIuser();
+            myFileUtils.delFolderTrigger(path);
+            try {
+                String savedPicFileNm = String.valueOf(myFileUtils.savePic(dto.getPic(), path));
+                ChangeUserDto picdto = new ChangeUserDto();
+                picdto.setChPic(savedPicFileNm);
+                mapper.changeUser(picdto);
+            } catch (FileNotContainsDotException e) {
+                throw new RuntimeException(e);
+            }
             return Const.SUCCESS;
         }
-
-
-        String path = "/user/" + dto.getIuser();
-        myFileUtils.delFolderTrigger(path);
-        try {
-            String savedPicFileNm = String.valueOf(myFileUtils.savePic(dto.getPic(), path));
-            ChangeUserDto picdto = new ChangeUserDto();
-            picdto.setChPic(savedPicFileNm);
-            mapper.changeUser(picdto);
-        } catch (FileNotContainsDotException e) {
-            throw new RuntimeException(e);
-        }
-        return Const.SUCCESS;
+        return Const.FAIL;
     }
 
 
@@ -80,9 +80,9 @@ public class UserService {
         UserEntity entity = mapper.selSignin(dto);
 
         if (entity == null) {
-            return SigninVo.builder().result(NO_SUCH_ID_EX_MESSAGE.getMessage()).build();
+           // throw new BadInformationException("존재하지 않는 아이디 입니다.");
         } else if (!passwordEncoder.matches(dto.getUpw(), entity.getUpw())) {
-            return SigninVo.builder().result(NO_SUCH_PASSWORD_EX_MESSAGE.getMessage()).build();
+            throw new RuntimeException("비밀번호를 잘못 입력하셨습니다.");
         }
 
         SecurityPrincipal principal = SecurityPrincipal.builder().iuser(entity.getIuser()).build();
