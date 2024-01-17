@@ -1,9 +1,11 @@
 package com.team5.projrental.common.exception;
 
 import com.team5.projrental.common.exception.base.BadInformationException;
+import lombok.Getter;
 
 import java.util.Arrays;
 
+@Getter
 public class BadAddressInfoException extends BadInformationException {
     private ErrorCode errorCode;
     public BadAddressInfoException(String message) {
@@ -17,7 +19,4 @@ public class BadAddressInfoException extends BadInformationException {
         this.errorCode = errorCode;
     }
 
-    public ErrorCode getErrorCode() {
-        return errorCode;
-    }
 }
