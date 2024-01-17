@@ -22,17 +22,13 @@ public class MypageController {
 
     @Validated
     @GetMapping("/prod")
-    @Operation(summary = "대여리스트", description = "대여관련 내역" +
-            "<br>role = 1 : loginedIuser가 빌린 내역, role = 2 : loginedIuser가 빌려준 내역")
-
+    @Operation(summary = "대여리스트", description = "대여관련 내역")
     @Parameters(value = {
             @Parameter(name = "page", description = "페이지"),
             @Parameter(name = "role", description = "role : 1 = 빌린 내역, 2 = 빌려준 내역")})
     public List<PaymentSelVo> getPaymentList(@RequestParam @Min(1) int page,
                                              @RequestParam @Range(min = 1, max = 2) int role)
-
  {
-
         PaymentSelDto dto = new PaymentSelDto();
         dto.setPage(page);
         dto.setRole(role);
