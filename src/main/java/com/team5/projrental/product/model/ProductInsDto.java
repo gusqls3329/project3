@@ -1,6 +1,7 @@
 package com.team5.projrental.product.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.team5.projrental.common.exception.ErrorMessage;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -20,31 +21,31 @@ public class ProductInsDto {
 //    @NotNull
     @JsonIgnore
     private Integer iuser;
-    @NotBlank
+    @NotBlank(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
     private String title;
-    @NotBlank
+    @NotBlank(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
     private String contents;
-    @NotBlank
+    @NotBlank(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
     private String addr;
-    @NotBlank
+    @NotBlank(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
     private String restAddr;
-    @NotNull
+    @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
     private MultipartFile mainPic;
     private List<MultipartFile> pics;
-    @NotNull
-    @Range(min = 100, max = Integer.MAX_VALUE)
+    @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
+    @Range(min = 100, max = Integer.MAX_VALUE, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private Integer price;
-    @NotNull
-    @Range(min = 100, max = Integer.MAX_VALUE)
+    @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
+    @Range(min = 100, max = Integer.MAX_VALUE, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private Integer rentalPrice;
-    @NotNull
-    @Range(min = 50, max = 100)
+    @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
+    @Range(min = 50, max = 100, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private Integer depositPer;
     private LocalDate buyDate;
     private LocalDate rentalStartDate;
     private LocalDate rentalEndDate;
-    @NotNull
-    @Min(1)
+    @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
+    @Min(value = 1, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private Integer icategory;
 
 

@@ -1,9 +1,11 @@
 package com.team5.projrental.common.exception;
 
 import com.team5.projrental.common.exception.base.IllegalException;
+import lombok.Getter;
 
 import java.util.Arrays;
 
+@Getter
 public class IllegalProductPicsException extends IllegalException {
 
     private ErrorCode errorCode;
@@ -18,7 +20,4 @@ public class IllegalProductPicsException extends IllegalException {
         this.errorCode = errorCode;
     }
 
-    public ErrorCode getErrorCode() {
-        return errorCode;
-    }
 }

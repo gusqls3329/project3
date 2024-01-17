@@ -1,6 +1,7 @@
 package com.team5.projrental.payment;
 
 import com.team5.projrental.common.Const;
+import com.team5.projrental.common.exception.ErrorMessage;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.payment.model.PaymentInsDto;
 import com.team5.projrental.payment.model.PaymentListVo;
@@ -28,21 +29,21 @@ public class PaymentController {
 
     @Validated
     @DeleteMapping("/{ipay}")
-    public ResVo delPayment(@PathVariable("ipay") @Min(1) Integer ipayment,
-                            @RequestParam @Range(min = 1, max = 3) Integer div) {
+    public ResVo delPayment(@PathVariable("ipay") @Min(value = 1, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE) Integer ipayment,
+                            @RequestParam @Range(min = 1, max = 3, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE) Integer div) {
         return paymentService.delPayment(ipayment, div);
     }
 
     @Validated
     @GetMapping
-    public List<PaymentListVo> getAllPayment(@RequestParam @Range(min = 1, max = 2) Integer role,
-                                             @RequestParam @Min(1) int page) {
+    public List<PaymentListVo> getAllPayment(@RequestParam @Range(min = 1, max = 2, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE) Integer role,
+                                             @RequestParam @Min(value = 1, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE) int page) {
         return paymentService.getAllPayment(role, (page - 1) * Const.PROD_PER_PAGE);
     }
 
     @Validated
     @GetMapping("/{ipayment}")
-    public PaymentVo getPayment(@PathVariable @Min(1) Integer ipayment) {
+    public PaymentVo getPayment(@PathVariable @Min(value = 1, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE) Integer ipayment) {
         return paymentService.getPayment(ipayment);
 
     }

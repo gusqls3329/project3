@@ -1,7 +1,10 @@
 package com.team5.projrental.common.exception;
 
+import lombok.Getter;
+
 import java.util.Arrays;
 
+@Getter
 public class RestApiException extends RuntimeException{
     private ErrorCode errorCode;
     public RestApiException(String message) {
@@ -15,7 +18,4 @@ public class RestApiException extends RuntimeException{
         this.errorCode = errorCode;
     }
 
-    public ErrorCode getErrorCode() {
-        return errorCode;
-    }
 }
