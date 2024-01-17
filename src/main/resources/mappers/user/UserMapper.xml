@@ -135,13 +135,13 @@
     </select>
 
     <select id="checkUserUid">
-        SELECT iuser
+        SELECT count(iuser)
         FROM t_user
         WHERE uid = #{uid}
     </select>
 
     <select id = "checkUserNick">
-        SELECT iuser
+        SELECT count(iuser)
         FROM t_user
         WHERE nick = #{nick}
     </select>

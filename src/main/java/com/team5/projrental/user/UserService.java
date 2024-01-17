@@ -47,6 +47,7 @@ public class UserService {
 
     public int postSignup(UserSignupDto dto) {
 
+
         String hashedPw = passwordEncoder.encode(dto.getUpw());
         dto.setUpw(hashedPw);
         // 대구 달서구 용산1동 -> x: xxx.xxxxx y: xx.xxxxx address_name: 대구 달서구 용산1동
@@ -255,13 +256,13 @@ public class UserService {
 
     public ResVo CheckUserInfo(UserCheckInfoDto dto) {
         if(dto.getDiv() == 1) {
-            UserEntity entity = mapper.checkUserUid(dto);
-            if(entity != null) {
+            Integer checkUid = mapper.checkUserUid(dto);
+            if(checkUid > 1) {
                 throw new RestApiException("중복된 아이디");
             }
         }else if(dto.getDiv() == 2) {
-            UserEntity entity = mapper.checkUserNick(dto);
-            if(entity != null) {
+            Integer checkNick = mapper.checkUserNick(dto);
+            if(checkNick > 1) {
                 throw new RestApiException("중복된 닉넴");
             }
         }

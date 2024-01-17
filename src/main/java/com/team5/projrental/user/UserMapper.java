@@ -23,4 +23,8 @@ public interface UserMapper {
 
     SelUserVo selUser(int iuser);
     Integer selpatchUser(int iuser);
+
+    Integer checkUserUid(UserCheckInfoDto dto);
+    Integer checkUserNick(UserCheckInfoDto dto);
+
 }
