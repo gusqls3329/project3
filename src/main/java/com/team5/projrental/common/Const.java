@@ -39,6 +39,7 @@ public interface Const {
     int SUCCESS = 1;
     int FAIL = 0;
     int CATEGORY_COUNT = 22;
+    int DEL_I_STATUS = -1;
     //
 
     /*

@@ -9,11 +9,10 @@ public class ChatInsDto {
 
     @JsonIgnore
     private int ichat;
-
-    private int iproduct;
-
     @JsonIgnore
     private int loginedIuser;
+
+    private int iproduct;
 
     private int otherPersonIuser;
 }
