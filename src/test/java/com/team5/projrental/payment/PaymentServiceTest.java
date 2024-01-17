@@ -1,6 +1,6 @@
 package com.team5.projrental.payment;
 
-import com.team5.projrental.common.exception.BadDateInfoException;
+import com.team5.projrental.common.exception.base.BadDateInfoException;
 import com.team5.projrental.common.exception.NoSuchProductException;
 import com.team5.projrental.common.exception.NoSuchUserException;
 import com.team5.projrental.common.model.ResVo;
@@ -9,11 +9,8 @@ import com.team5.projrental.common.utils.MyFileUtils;
 import com.team5.projrental.payment.model.PaymentInsDto;
 import com.team5.projrental.payment.model.proc.GetInfoForCheckIproductAndIuserResult;
 import com.team5.projrental.product.ProductRepository;
-import com.team5.projrental.product.ProductService;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;

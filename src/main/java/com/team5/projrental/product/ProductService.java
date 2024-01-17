@@ -2,6 +2,9 @@ package com.team5.projrental.product;
 
 import com.team5.projrental.common.aop.anno.CountView;
 import com.team5.projrental.common.exception.*;
+import com.team5.projrental.common.exception.base.BadDateInfoException;
+import com.team5.projrental.common.exception.base.BadInformationException;
+import com.team5.projrental.common.exception.base.WrapRuntimeException;
 import com.team5.projrental.common.exception.checked.FileNotContainsDotException;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.model.restapi.Addrs;
@@ -23,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.team5.projrental.common.Const.*;
+import static com.team5.projrental.common.utils.ErrorCode.*;
 
 @Service
 @Slf4j
@@ -175,14 +179,14 @@ public class ProductService {
                     // pics 에 insert 할 객체
                     InsProdPicsDto insProdPicsDto = new InsProdPicsDto(insProdBasicInfoDto.getIproduct(),
                             myFileUtils.savePic(dto.getPics(), CATEGORY_PRODUCT_SUB));
-                    if (productRepository.savePics(insProdPicsDto) == 0) throw new RuntimeException(SERVER_ERR_MESSAGE);
+                    if (productRepository.savePics(insProdPicsDto) == 0) throw new WrapRuntimeException(SERVER_ERR_MESSAGE);
                 }
                 return new ResVo(insProdBasicInfoDto.getIproduct());
             }
         } catch (FileNotContainsDotException e) {
             throw new BadMainPicException(BAD_PIC_EX_MESSAGE);
         }
-        throw new RuntimeException(SERVER_ERR_MESSAGE);
+        throw new WrapRuntimeException(SERVER_ERR_MESSAGE);
     }
 
 
@@ -208,7 +212,7 @@ public class ProductService {
         // 삭제사진 필요시 삭제
         if (!dto.getDelPics().isEmpty()) {
             if (productRepository.deletePics(dto.getIproduct(), dto.getDelPics()) == 0) {
-                throw new RuntimeException(SERVER_ERR_MESSAGE);
+                throw new WrapRuntimeException(SERVER_ERR_MESSAGE);
             }
         }
         // 병합하지 않아도 되는 데이터 검증
@@ -272,7 +276,7 @@ public class ProductService {
             if (!dto.getPics().isEmpty()) {
                 if (productRepository.savePics(new InsProdPicsDto(dto.getIproduct(),
                         myFileUtils.savePic(dto.getPics(), CATEGORY_PRODUCT_SUB))) == 0) {
-                    throw new RuntimeException(SERVER_ERR_MESSAGE);
+                    throw new WrapRuntimeException(SERVER_ERR_MESSAGE);
                 }
             }
 
