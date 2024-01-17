@@ -11,15 +11,15 @@ public class DelUserDto {
     @JsonIgnore
     private int iuser;
 
-    @NotBlank
+    @NotBlank(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
     @Length(min = 8, max = 15)
     private String uid;
 
-    @NotBlank
+    @NotBlank(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
     @Length(min = 8, max = 20)
     private String upw;
 
-    @NotBlank
+    @NotBlank(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
     @Pattern(regexp = "(01)\\d-\\d{3,4}-\\d{4}")
     private String phone;
 }

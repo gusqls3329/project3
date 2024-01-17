@@ -1,9 +1,11 @@
 package com.team5.projrental.common.exception;
 
 import com.team5.projrental.common.exception.base.NoSuchDataException;
+import lombok.Getter;
 
 import java.util.Arrays;
 
+@Getter
 public class NoSuchUserException extends NoSuchDataException {
     private ErrorCode errorCode;
     public NoSuchUserException(String message) {
@@ -17,7 +19,4 @@ public class NoSuchUserException extends NoSuchDataException {
         this.errorCode = errorCode;
     }
 
-    public ErrorCode getErrorCode() {
-        return errorCode;
-    }
 }

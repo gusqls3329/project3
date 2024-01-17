@@ -1,6 +1,7 @@
 package com.team5.projrental.product;
 
 import com.team5.projrental.common.Const;
+import com.team5.projrental.common.exception.ErrorMessage;
 import com.team5.projrental.common.model.ErrorResultVo;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.product.model.*;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.team5.projrental.common.exception.ErrorMessage.*;
+
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -26,17 +29,19 @@ public class ProductController {
 
     @Validated
     @GetMapping("{icategory}")
-    public List<ProductListVo> getProductList(@RequestParam(required = false) Integer sort,
+    public List<ProductListVo> getProductList(@RequestParam(required = false) @Range(min = 1, max = 2,
+            message = BAD_SORT_EX_MESSAGE) Integer sort,
                                               @RequestParam(required = false) String search,
-                                              @RequestParam @Min(1) int page,
-                                              @PathVariable @Min(1) int icategory) {
+                                              @RequestParam @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE) int page,
+                                              @PathVariable @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE) int icategory) {
 
         return productService.getProductList(sort, search, icategory, (page - 1) * Const.PROD_PER_PAGE);
     }
 //
     @Validated
     @GetMapping("/api/prod/{icategory}/{iproduct}")
-    public ProductVo getProduct(@PathVariable @Min(1) Integer icategory, @PathVariable @Min(1) Integer iproduct) {
+    public ProductVo getProduct(@PathVariable @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE) Integer icategory,
+                                @PathVariable @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE) Integer iproduct) {
         return productService.getProduct(icategory, iproduct);
     }
 
@@ -59,14 +64,14 @@ public class ProductController {
 
     @Validated
     @DeleteMapping("/{iproduct}")
-    public ResVo delProduct(@PathVariable @Min(1) Integer iproduct,
-                            @RequestParam @Range(min = 1, max = 2) Integer div) {
+    public ResVo delProduct(@PathVariable @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE) Integer iproduct,
+                            @RequestParam @Range(min = 1, max = 2, message = ILLEGAL_RANGE_EX_MESSAGE) Integer div) {
         return productService.delProduct(iproduct, div);
     }
 
     @Validated
     @GetMapping("/list")
-    public List<ProductUserVo> getUserProductList(@RequestParam @Min(1) @NotNull Integer page) {
+    public List<ProductUserVo> getUserProductList(@RequestParam @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE) @NotNull Integer page) {
         return productService.getUserProductList((page - 1) * Const.PROD_PER_PAGE);
         
     }

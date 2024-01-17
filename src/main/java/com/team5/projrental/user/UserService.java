@@ -4,7 +4,10 @@ import com.team5.projrental.common.Const;
 import com.team5.projrental.common.SecurityProperties;
 import com.team5.projrental.common.exception.BadAddressInfoException;
 import com.team5.projrental.common.exception.RestApiException;
+import com.team5.projrental.common.exception.base.BadDateInfoException;
 import com.team5.projrental.common.exception.base.BadInformationException;
+import com.team5.projrental.common.exception.base.NoSuchDataException;
+import com.team5.projrental.common.exception.base.WrapRuntimeException;
 import com.team5.projrental.common.exception.checked.FileNotContainsDotException;
 import com.team5.projrental.common.exception.user.BadIdInfoException;
 import com.team5.projrental.common.model.ResVo;
@@ -31,6 +34,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static com.team5.projrental.common.exception.ErrorCode.*;
+import static com.team5.projrental.common.exception.ErrorMessage.BAD_NICK_EX_MESSAGE;
 
 @Slf4j
 @Service
@@ -77,17 +81,12 @@ public class UserService {
                     picdto.setChPic(savedPicFileNm);
                     mapper.changeUser(picdto);
                 } catch (FileNotContainsDotException e) {
-                    throw new RuntimeException(e);
+                    throw new BadInformationException(BAD_PIC_EX_MESSAGE);
                 }
-
-
             }
-
             return Const.SUCCESS;
         }
-        return Const.FAIL;
-
-
+        throw new BadInformationException(BAD_INFO_EX_MESSAGE);
     }
 
 
@@ -95,9 +94,9 @@ public class UserService {
         UserEntity entity = mapper.selSignin(dto);
 
         if (entity == null) {
-            // throw new BadInformationException("존재하지 않는 아이디 입니다.");
+            throw new NoSuchDataException(NO_SUCH_ID_EX_MESSAGE);
         } else if (!passwordEncoder.matches(dto.getUpw(), entity.getUpw())) {
-            throw new RuntimeException("비밀번호를 잘못 입력하셨습니다.");
+            throw new NoSuchDataException(NO_SUCH_PASSWORD_EX_MESSAGE);
         }
 
         SecurityPrincipal principal = SecurityPrincipal.builder().iuser(entity.getIuser()).build();
@@ -119,7 +118,7 @@ public class UserService {
 
     public int getSignOut(HttpServletResponse res) {
         cookieUtils.deleteCookie(res, "rt");
-        return Const.SUCCESS;
+        throw new BadInformationException(AUTHENTICATION_FAIL_EX_MESSAGE);
     }
 
     public SigninVo getRefrechToken(HttpServletRequest req) {
@@ -147,12 +146,14 @@ public class UserService {
         if (result == 1) {
             return Const.SUCCESS;
         }
-        return Const.FAIL;
+        throw new BadInformationException(AUTHENTICATION_FAIL_EX_MESSAGE);
     }
 
     public FindUidVo getFindUid(FindUidDto phone) {
         FindUidVo vo = mapper.selFindUid(phone);
-        log.info("id:{}", vo);
+        if (vo == null) {
+            throw new BadInformationException(NO_SUCH_USER_EX_MESSAGE);
+        }
         return vo;
     }
 
@@ -163,14 +164,14 @@ public class UserService {
         if (result == 1) {
             return Const.SUCCESS;
         }
-        return Const.FAIL;
+        throw new BadInformationException(NO_SUCH_USER_EX_MESSAGE);
     }
 
     public int putUser(ChangeUserDto dto) {
         int loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setIuser(loginUserPk);
 
-        if(checkNickOrId(1, dto.getNick()) == null) throw new BadInformationException(BAD_INFO_EX_MESSAGE);
+        if (checkNickOrId(1, dto.getNick()) == null) throw new BadInformationException(BAD_INFO_EX_MESSAGE);
 
         Addrs addrs = axisGenerator.getAxis(dto.getAddr());
         CommonUtils.ifAnyNullThrow(BadAddressInfoException.class, BAD_ADDRESS_INFO_EX_MESSAGE,
@@ -188,7 +189,7 @@ public class UserService {
                             String.valueOf(dto.getIuser())));
             dto.setChPic(savedPicFileNm);
         } catch (FileNotContainsDotException e) {
-            throw new RuntimeException(e);
+            throw new BadInformationException(BAD_PIC_EX_MESSAGE);
         }
 
 
@@ -198,22 +199,22 @@ public class UserService {
         if (result == 1) {
             return Const.SUCCESS;
         }
-        return Const.FAIL;
+        throw new BadDateInfoException(AUTHENTICATION_FAIL_EX_MESSAGE);
     }
 
     public int patchUser(DelUserDto dto) {
         int loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setIuser(loginUserPk);
-        log.info("loginUserPk :{}", loginUserPk);
+
         SigninDto inDto = new SigninDto();
         inDto.setUid(dto.getUid());
         inDto.setUpw(dto.getUpw());
         UserEntity entity = mapper.selSignin(inDto);
 
         if (entity == null) {
-            return Integer.parseInt(NO_SUCH_ID_EX_MESSAGE.getMessage());
+            throw new NoSuchDataException(NO_SUCH_ID_EX_MESSAGE);
         } else if (!passwordEncoder.matches(dto.getUpw(), entity.getUpw())) {
-            return Integer.parseInt(NO_SUCH_PASSWORD_EX_MESSAGE.getMessage());
+            throw new NoSuchDataException(NO_SUCH_PASSWORD_EX_MESSAGE);
         }
         Integer check = mapper.selpatchUser(entity.getIuser());
         if (loginUserPk == entity.getIuser()) {
@@ -236,12 +237,12 @@ public class UserService {
                 if (result == 1) {
                     return Const.SUCCESS;
                 }
-                return Const.FAIL;
+                throw new WrapRuntimeException(ILLEGAL_EX_MESSAGE);
             } else {
-                return Const.FAIL;
+                throw new BadDateInfoException(AUTHENTICATION_FAIL_EX_MESSAGE);
             }
         }
-        return Const.FAIL;
+        throw new BadDateInfoException(AUTHENTICATION_FAIL_EX_MESSAGE);
     }
 
     public SelUserVo getUser(Integer iuser) {
@@ -267,13 +268,13 @@ public class UserService {
         if (div == 1) {
             result = mapper.checkUserNick(obj);
             if (result > 0) {
-                throw new RestApiException("중복된 닉넴");
+                throw new BadInformationException(BAD_NICK_EX_MESSAGE);
             }
         }
         if (div == 2) {
             result = mapper.checkUserUid(obj);
             if (result > 0) {
-                throw new RestApiException("중복된 아이디");
+                throw new BadInformationException(BAD_ID_EX_MESSAGE);
             }
         }
         return result;
