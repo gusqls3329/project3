@@ -22,7 +22,12 @@ public class UserController {
     private final UserService service;
 
     @PostMapping("/check")
-    @Operation(summary = "", description = "")
+    @Operation(summary = "중복확인", description = "uid, nick 중복확인")
+    @Parameters(value = {
+            @Parameter(name="div", description = "div:1 - nick 중복확인 <br>div:2 - uid 중복확인")
+            , @Parameter(name="uid", description = "아이디")
+            , @Parameter(name="nick", description = "닉네임")
+    })
     public ResVo CheckUserInfo(@RequestBody @Validated UserCheckInfoDto dto) {
         return service.checkUserInfo(dto);
     }
