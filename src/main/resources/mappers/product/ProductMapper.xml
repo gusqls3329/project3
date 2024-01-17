@@ -203,7 +203,7 @@
                 , contents = #{contents}
             </if>
             <if test="storedMainPic != null">
-                , stored_pic = #{storedMainPic.storedPic}, request_pic = #{storedMainPic.requestPic}
+                , stored_pic = #{storedMainPic}
             </if>
             <if test="price != null">
                 , price = #{price}

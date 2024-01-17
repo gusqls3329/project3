@@ -60,7 +60,7 @@ public class ProductController {
     @Validated
     @DeleteMapping("/{iproduct}")
     public ResVo delProduct(@PathVariable @Min(1) Integer iproduct,
-                            @RequestParam @Range(min = 1, max = 1) Integer div) {
+                            @RequestParam @Range(min = 1, max = 2) Integer div) {
         return productService.delProduct(iproduct, div);
     }
 
