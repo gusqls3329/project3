@@ -44,7 +44,6 @@
         U.iuser,
         U.nick,
         U.stored_pic as storedPic,
-        U.request_pic as requestPic,
         PA.ipayment,
         P.iproduct,
         PA.istatus,

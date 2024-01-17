@@ -51,7 +51,7 @@ public class ProductUpdDto {
 
 
     @JsonIgnore
-    private StoredFileInfo storedMainPic;
+    private String storedMainPic;
     @JsonIgnore
     private Integer deposit;
     @JsonIgnore

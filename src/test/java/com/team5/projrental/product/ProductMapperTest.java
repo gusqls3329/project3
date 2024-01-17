@@ -29,7 +29,7 @@ class ProductMapperTest {
     @Autowired
     ProductMapper productMapper;
     InsProdBasicInfoDto insProdBasicInfoDto = new InsProdBasicInfoDto(1, "test", "test", "test",
-            "test", new StoredFileInfo("test pic1", "test pic 2"), 100, 10,
+            "test",  "test pic 2", 100, 10,
             80, LocalDate.of(2022, 11, 2), LocalDate.of(2024, 2, 2),
             LocalDate.of(2024, 3, 3), 1, 1.1, 2.2);
 
@@ -123,7 +123,7 @@ class ProductMapperTest {
     void insProduct() {
 
         int result = productMapper.insProduct(new InsProdBasicInfoDto(1, "test", "test", "test",
-                "test", new StoredFileInfo("test pic1", "test pic 2"), 100, 10,
+                "test", "test pic 2", 100, 10,
                 80, LocalDate.of(2022, 11, 2), LocalDate.of(2024, 2, 2),
                 LocalDate.of(2024, 3, 3), 1, 1.1, 2.2));
         assertThat(result).isEqualTo(1);

@@ -11,7 +11,7 @@ import java.time.LocalDate;
 public class PaymentListVo {
     private Integer iuser;
     private String nick;
-    private Resource userPic;
+    private String userPic;
 
     private Integer ipayment;
     private Integer iproduct;
