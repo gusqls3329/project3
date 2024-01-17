@@ -30,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Transactional
 class PaymentControllerIntegrationTest {
     /* TODO: 1/16/24
         파싱 에러, @Validated 에러 ExceptionResolver 에 추가할것.
@@ -109,41 +110,41 @@ class PaymentControllerIntegrationTest {
     @Test
     void delPayment() throws Exception {
 
-
+        // 5번으로 로그인
         assertThatThrownBy(() -> objectMapper.readValue(mockMvc.perform(
-                                MockMvcRequestBuilders.delete("/api/pay/1div=1")
+                                MockMvcRequestBuilders.delete("/api/pay/1?div=1")
                                         .header("Authorization",
                                                 this.authValue)
                         ).andExpect(MockMvcResultMatchers.status().isOk())
                         .andDo(print())
                         .andReturn().getResponse().getContentAsString(), ResVo.class)
         ).isInstanceOf(BadDivInformationException.class);
-
+        // 2번으로 로그인
         assertThat(objectMapper.readValue(mockMvc.perform(
-                        MockMvcRequestBuilders.delete("/api/pay/2div=1")
+                        MockMvcRequestBuilders.delete("/api/pay/2?div=1")
                                 .header("Authorization",
                                         this.authValue)
                 ).andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(print())
                 .andReturn().getResponse().getContentAsString(), ResVo.class).getResult()).isEqualTo(-1);
-
+        // 3번으로 로그인
         assertThatThrownBy(() -> objectMapper.readValue(mockMvc.perform(
-                                MockMvcRequestBuilders.delete("/api/pay/3div=1")
+                                MockMvcRequestBuilders.delete("/api/pay/3?div=1")
                                         .header("Authorization",
                                                 this.authValue)
                         ).andExpect(MockMvcResultMatchers.status().isOk())
                         .andDo(print())
                         .andReturn().getResponse().getContentAsString(), ResVo.class)
         ).isInstanceOf(BadDivInformationException.class);
-
+        // 2번으로 로그인
         assertThat(objectMapper.readValue(mockMvc.perform(
-                        MockMvcRequestBuilders.delete("/api/pay/4div=1")
+                        MockMvcRequestBuilders.delete("/api/pay/4?div=1")
                                 .header("Authorization",
                                         this.authValue)
                 ).andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(print())
                 .andReturn().getResponse().getContentAsString(), ResVo.class).getResult()).isEqualTo(-1);
-
+        // 1번으로 로그인
         assertThat(objectMapper.readValue(mockMvc.perform(
                         MockMvcRequestBuilders.delete("/api/pay/5?div=3")
                                 .header("Authorization",
@@ -154,7 +155,7 @@ class PaymentControllerIntegrationTest {
 
 
 
-
+        // 2번으로 로그인
         assertThat(objectMapper.readValue(mockMvc.perform(
                         MockMvcRequestBuilders.delete("/api/pay/2?div=2")
                                 .header("Authorization",

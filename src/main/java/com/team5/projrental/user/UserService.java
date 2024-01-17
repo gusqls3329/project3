@@ -26,8 +26,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.team5.projrental.common.Const.BAD_ADDRESS_INFO_EX_MESSAGE;
-import static com.team5.projrental.common.Const.BAD_ID_EX_MESSAGE;
+import static com.team5.projrental.common.utils.ErrorCode.*;
 
 @Slf4j
 @Service
@@ -80,9 +79,9 @@ public class UserService {
         UserEntity entity = mapper.selSignin(dto);
 
         if (entity == null) {
-            return SigninVo.builder().result(Const.NO_SUCH_ID_EX_MESSAGE).build();
+            return SigninVo.builder().result(NO_SUCH_ID_EX_MESSAGE.getMessage()).build();
         } else if (!passwordEncoder.matches(dto.getUpw(), entity.getUpw())) {
-            return SigninVo.builder().result(Const.NO_SUCH_PASSWORD_EX_MESSAGE).build();
+            return SigninVo.builder().result(NO_SUCH_PASSWORD_EX_MESSAGE.getMessage()).build();
         }
 
         SecurityPrincipal principal = SecurityPrincipal.builder().iuser(entity.getIuser()).build();
@@ -193,9 +192,9 @@ public class UserService {
         UserEntity entity = mapper.selSignin(inDto);
 
         if (entity == null) {
-            return Integer.parseInt(Const.NO_SUCH_ID_EX_MESSAGE);
+            return Integer.parseInt(NO_SUCH_ID_EX_MESSAGE.getMessage());
         } else if (!passwordEncoder.matches(dto.getUpw(), entity.getUpw())) {
-            return Integer.parseInt(Const.NO_SUCH_PASSWORD_EX_MESSAGE);
+            return Integer.parseInt(NO_SUCH_PASSWORD_EX_MESSAGE.getMessage());
         }
 
         if (loginUserPk == entity.getIuser()) {
