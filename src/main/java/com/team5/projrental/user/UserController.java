@@ -23,9 +23,8 @@ public class UserController {
 
     @PostMapping("/check")
     @Operation(summary = "", description = "")
-
-    public ResVo CheckUserInfo(UserCheckInfoDto dto) {
-        return service.CheckUserInfo(dto);
+    public ResVo CheckUserInfo(@RequestBody @Validated UserCheckInfoDto dto) {
+        return service.checkUserInfo(dto);
     }
 
     @PostMapping("/signup")
