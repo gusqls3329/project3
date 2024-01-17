@@ -38,7 +38,8 @@
         D.iuser AS otherPersonIuser,
         D.nick AS otherPersonNm,
         D.stored_pic AS otherPersonPic,
-        E.stored_pic AS prodPic
+        E.stored_pic AS prodPic,
+        E.iproduct
         FROM t_chat A
         INNER JOIN t_chat_user B <!--로그인 한 유저-->
         ON A.ichat = B.ichat
