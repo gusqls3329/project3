@@ -7,6 +7,7 @@ import com.team5.projrental.common.exception.RestApiException;
 import com.team5.projrental.common.exception.base.BadInformationException;
 import com.team5.projrental.common.exception.checked.FileNotContainsDotException;
 import com.team5.projrental.common.exception.user.BadIdInfoException;
+import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.model.restapi.Addrs;
 import com.team5.projrental.common.utils.AxisGenerator;
 import com.team5.projrental.common.utils.CommonUtils;
@@ -253,5 +254,24 @@ public class UserService {
         vo2.setPhone(null);
         return vo2;
     }
+
+    public ResVo CheckUserInfo(UserCheckInfoDto dto) {
+        if(dto.getDiv() == 1) {
+            UserEntity entity = mapper.checkUserUid(dto);
+            if(entity != null) {
+                throw new RestApiException("중복된 아이디");
+            }
+        }else if(dto.getDiv() == 2) {
+            UserEntity entity = mapper.checkUserNick(dto);
+            if(entity != null) {
+                throw new RestApiException("중복된 닉넴");
+            }
+        }
+        if(dto.getDiv() > 2 || dto.getDiv() < 1) {
+            throw new RestApiException("div 다시 입력");
+        }
+        return new ResVo(1);
+    }
+
 }
 

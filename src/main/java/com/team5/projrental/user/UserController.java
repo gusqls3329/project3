@@ -117,4 +117,9 @@ public class UserController {
     public SelUserVo getUSer(@RequestParam(value = "tar", required = false) @Min(1) Integer iuser) {
         return service.getUser(iuser);
     }
+
+    @PostMapping("/check")
+    public ResVo CheckUserInfo(UserCheckInfoDto dto) {
+        return service.CheckUserInfo(dto);
+    }
 }
