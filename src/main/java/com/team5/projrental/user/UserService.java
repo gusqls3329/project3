@@ -58,24 +58,34 @@ public class UserService {
         dto.setAddr(addrs.getAddress_name());
 
         int result = mapper.insUser(dto);
+
         log.debug("dto : {}", dto);
+
         if (result == 1) {
-            String path = "/user/";
-            myFileUtils.delFolderTrigger(path);
-            try {
-                String savedPicFileNm = String.valueOf(
-                        myFileUtils.savePic(dto.getPic(), Const.CATEGORY_USER,
-                        String.valueOf(dto.getIuser())));
-                ChangeUserDto picdto = new ChangeUserDto();
-                picdto.setIuser(dto.getIuser());
-                picdto.setChPic(savedPicFileNm);
-                mapper.changeUser(picdto);
-            } catch (FileNotContainsDotException e) {
-                throw new RuntimeException(e);
+            if (dto.getPic() != null ) {
+                log.info("사진 :{}", dto.getPic());
+                String path = "/user/";
+                myFileUtils.delFolderTrigger(path);
+                try {
+                    String savedPicFileNm = String.valueOf(
+                            myFileUtils.savePic(dto.getPic(), Const.CATEGORY_USER,
+                                    String.valueOf(dto.getIuser())));
+                    ChangeUserDto picdto = new ChangeUserDto();
+                    picdto.setIuser(dto.getIuser());
+                    picdto.setChPic(savedPicFileNm);
+                    mapper.changeUser(picdto);
+                } catch (FileNotContainsDotException e) {
+                    throw new RuntimeException(e);
+                }
+
+
             }
+
             return Const.SUCCESS;
         }
-        return Const.FAIL;
+            return Const.FAIL;
+
+
     }
 
 
@@ -83,7 +93,7 @@ public class UserService {
         UserEntity entity = mapper.selSignin(dto);
 
         if (entity == null) {
-           // throw new BadInformationException("존재하지 않는 아이디 입니다.");
+            // throw new BadInformationException("존재하지 않는 아이디 입니다.");
         } else if (!passwordEncoder.matches(dto.getUpw(), entity.getUpw())) {
             throw new RuntimeException("비밀번호를 잘못 입력하셨습니다.");
         }
