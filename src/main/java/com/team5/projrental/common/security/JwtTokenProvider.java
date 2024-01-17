@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team5.projrental.common.Const;
 import com.team5.projrental.common.SecurityProperties;
+import com.team5.projrental.common.exception.base.WrapRuntimeException;
 import com.team5.projrental.common.security.model.SecurityPrincipal;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -18,6 +19,8 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Date;
+
+import static com.team5.projrental.common.utils.ErrorCode.SERVER_ERR_MESSAGE;
 
 @Component
 @RequiredArgsConstructor
@@ -66,7 +69,7 @@ public class JwtTokenProvider {
         try {
             principal = objectMapper.readValue(json, SecurityPrincipal.class);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(Const.SERVER_ERR_MESSAGE);
+            throw new WrapRuntimeException(SERVER_ERR_MESSAGE);
         }
         return new SecurityUserDetails(principal);
     }
@@ -87,7 +90,7 @@ public class JwtTokenProvider {
         try {
             json = objectMapper.writeValueAsString(principal);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(Const.SERVER_ERR_MESSAGE);
+            throw new WrapRuntimeException(SERVER_ERR_MESSAGE);
         }
         return Jwts.claims()
                 .add("user", json)
