@@ -3,7 +3,10 @@ package com.team5.projrental.user;
 import com.team5.projrental.common.Const;
 import com.team5.projrental.common.SecurityProperties;
 import com.team5.projrental.common.exception.BadAddressInfoException;
+import com.team5.projrental.common.exception.RestApiException;
+import com.team5.projrental.common.exception.base.BadInformationException;
 import com.team5.projrental.common.exception.checked.FileNotContainsDotException;
+import com.team5.projrental.common.exception.user.BadIdInfoException;
 import com.team5.projrental.common.model.restapi.Addrs;
 import com.team5.projrental.common.utils.AxisGenerator;
 import com.team5.projrental.common.utils.CommonUtils;
@@ -19,6 +22,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.checkerframework.checker.units.qual.C;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -56,22 +60,19 @@ public class UserService {
         int result = mapper.insUser(dto);
         log.debug("dto : {}", dto);
         if (result == 1) {
+            String path = "/user/";
+            myFileUtils.delFolderTrigger(path);
+            try {
+                String savedPicFileNm = String.valueOf(myFileUtils.savePic(dto.getPic(), Const.CATEGORY_USER,
+                        String.valueOf(dto.getIuser())));
+                ChangeUserDto picdto = new ChangeUserDto();
+                picdto.setChPic(savedPicFileNm);
+                mapper.changeUser(picdto);
+            } catch (FileNotContainsDotException e) {
+                throw new RuntimeException(e);
+            }
             return Const.SUCCESS;
         }
-
-
-        String path = "/user/" + dto.getIuser();
-        myFileUtils.delFolderTrigger(path);
-        try {
-            String savedPicFileNm = String.valueOf(myFileUtils.savePic(dto.getPic(), path));
-            dto.setChPic(savedPicFileNm);
-        } catch (FileNotContainsDotException e) {
-            throw new RuntimeException(e);
-        }
-
-        //int result = mapper.changeUser(dto);
-
-
         return Const.FAIL;
     }
 
@@ -80,9 +81,9 @@ public class UserService {
         UserEntity entity = mapper.selSignin(dto);
 
         if (entity == null) {
-            return SigninVo.builder().result(NO_SUCH_ID_EX_MESSAGE.getMessage()).build();
+           // throw new BadInformationException("존재하지 않는 아이디 입니다.");
         } else if (!passwordEncoder.matches(dto.getUpw(), entity.getUpw())) {
-            return SigninVo.builder().result(NO_SUCH_PASSWORD_EX_MESSAGE.getMessage()).build();
+            throw new RuntimeException("비밀번호를 잘못 입력하셨습니다.");
         }
 
         SecurityPrincipal principal = SecurityPrincipal.builder().iuser(entity.getIuser()).build();
