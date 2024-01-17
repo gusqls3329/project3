@@ -20,6 +20,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.checkerframework.checker.units.qual.C;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -66,13 +67,13 @@ public class UserService {
         myFileUtils.delFolderTrigger(path);
         try {
             String savedPicFileNm = String.valueOf(myFileUtils.savePic(dto.getPic(), path));
-            dto.setChPic(savedPicFileNm);
+            ChangeUserDto picdto = new ChangeUserDto();
+            picdto.setChPic(savedPicFileNm);
+            mapper.changeUser(picdto);
         } catch (FileNotContainsDotException e) {
             throw new RuntimeException(e);
         }
-        int result = mapper.changeUser(dto);
-
-        return Const.FAIL;
+        return Const.SUCCESS;
     }
 
 
