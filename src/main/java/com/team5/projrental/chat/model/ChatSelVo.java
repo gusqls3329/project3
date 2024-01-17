@@ -1,5 +1,6 @@
 package com.team5.projrental.chat.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 // 채팅방 리스트
@@ -13,4 +14,7 @@ public class ChatSelVo {
     private int otherPersonIuser; // 상대방 유저 PK
     private String otherPersonNm; // 상대방 유저 이름
     private String otherPersonPic; // 상대방 유저 사진
+
+    @JsonIgnore
+    private String istatus;
 }

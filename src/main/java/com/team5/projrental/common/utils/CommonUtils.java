@@ -86,8 +86,10 @@ public class CommonUtils {
 //        return categories.keySet().stream().filter(k -> categories.get(k).equals(category))
 //                .findAny().orElseThrow(() -> new IllegalCategoryException(ILLEGAL_CATEGORY_EX_MESSAGE));
         if (icategory > CATEGORY_COUNT || icategory < 1) thrown(IllegalCategoryException.class, ILLEGAL_CATEGORY_EX_MESSAGE);
+    }
 
-
+    public static void ifChatUserStatusThrowOrReturn(Integer istatus) {
+        if (istatus == DEL_I_STATUS) thrown(IllegalCategoryException.class, ILLEGAL_STATUS_EX_MESSAGE);
     }
 
     public static Integer ifPaymentMethodNotContainsThrowOrReturn(String paymentMethod) {

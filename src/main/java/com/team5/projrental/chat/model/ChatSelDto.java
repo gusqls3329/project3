@@ -1,5 +1,6 @@
 package com.team5.projrental.chat.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -13,16 +14,15 @@ public class ChatSelDto {
     //@NotBlank // 스페이스바도 안됨
     //@NotEmpty // null아니면서 빈문자("") 까지 안됨
 
-    @Length(min = 1)
-    private int loginedIuser;
-
-    @Length(min = 1)
     private int page;
 
-    @Length(min = 1)
+    @JsonIgnore
+    private int loginedIuser;
+
+    @JsonIgnore
     private int startIdx;
 
-    @Length(min = 1)
+    @JsonIgnore
     private int rowCount = 20;
 
     public void setPage(int page) {

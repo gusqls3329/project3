@@ -9,6 +9,7 @@ public enum ErrorCode {
     ILLEGAL_PRODUCT_PICS_EX_MESSAGE(ErrorStatus.ILLEGAL_PRODUCT_PICS_EX_MESSAGE.getCode(), "메인사진을 제외한 사진은 9개 이하여야 합니다."),
     ILLEGAL_CATEGORY_EX_MESSAGE(ErrorStatus.ILLEGAL_CATEGORY_EX_MESSAGE.getCode(), "잘못된 카테고리 입니다."),
     ILLEGAL_PAYMENT_EX_MESSAGE(ErrorStatus.ILLEGAL_PAYMENT_EX_MESSAGE.getCode(), "잘못된 결제수단 입니다."),
+    ILLEGAL_STATUS_EX_MESSAGE(ErrorStatus.ILLEGAL_STATUS_EX_MESSAGE.getCode(), "상대유저가 채팅방을 나갔습니다."),
     //
     BUY_DATE_MUST_BE_LATER_THAN_TODAY_EX_MESSAGE(ErrorStatus.BUY_DATE_MUST_BE_LATER_THAN_TODAY_EX_MESSAGE.getCode(), "구매일은 오늘보다 같거나 이전이어야 합니다."),
     RENTAL_DATE_MUST_BE_BEFORE_THAN_TODAY_EX_MESSAGE(ErrorStatus.RENTAL_DATE_MUST_BE_BEFORE_THAN_TODAY_EX_MESSAGE.getCode(), "대여 시작일은 오늘보다 같거나 이후어야 합니다."),
