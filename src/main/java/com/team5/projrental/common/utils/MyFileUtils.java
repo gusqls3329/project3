@@ -1,6 +1,7 @@
 package com.team5.projrental.common.utils;
 
 import com.team5.projrental.common.Const;
+import com.team5.projrental.common.exception.base.WrapRuntimeException;
 import com.team5.projrental.common.exception.checked.FileNotContainsDotException;
 import com.team5.projrental.product.model.innermodel.StoredFileInfo;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,6 +17,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import static com.team5.projrental.common.utils.ErrorCode.SERVER_ERR_MESSAGE;
 
 @Component
 public class MyFileUtils {
@@ -79,7 +82,7 @@ public class MyFileUtils {
         try {
             multipartFile.transferTo(path);
         } catch (IOException e) {
-            throw new RuntimeException(Const.SERVER_ERR_MESSAGE);
+            throw new WrapRuntimeException(SERVER_ERR_MESSAGE);
         }
         return new StoredFileInfo(originalFilename, storedName);
     }
