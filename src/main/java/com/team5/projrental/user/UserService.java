@@ -29,7 +29,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.team5.projrental.common.utils.ErrorCode.*;
+import static com.team5.projrental.common.exception.ErrorCode.*;
 
 @Slf4j
 @Service
