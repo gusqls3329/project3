@@ -3,6 +3,9 @@ package com.team5.projrental.payment;
 import com.team5.projrental.common.Flag;
 import com.team5.projrental.common.Role;
 import com.team5.projrental.common.exception.*;
+import com.team5.projrental.common.exception.base.BadDateInfoException;
+import com.team5.projrental.common.exception.base.BadInformationException;
+import com.team5.projrental.common.exception.base.WrapRuntimeException;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.utils.CommonUtils;
 import com.team5.projrental.common.utils.MyFileUtils;
@@ -28,6 +31,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.team5.projrental.common.Const.*;
+import static com.team5.projrental.common.utils.ErrorCode.*;
 
 @Service
 @Slf4j
@@ -77,7 +81,7 @@ public class PaymentService {
             }
         }
 
-        throw new RuntimeException(SERVER_ERR_MESSAGE);
+        throw new WrapRuntimeException(SERVER_ERR_MESSAGE);
 
     }
 
@@ -147,7 +151,7 @@ public class PaymentService {
         DelPaymentDto delPaymentDto = new DelPaymentDto(ipayment, istatusForUpdate);
 
         if (paymentRepository.deletePayment(delPaymentDto) != 0) {
-            throw new RuntimeException(SERVER_ERR_MESSAGE);
+            throw new WrapRuntimeException(SERVER_ERR_MESSAGE);
         }
         return new ResVo(istatusForUpdate);
     }

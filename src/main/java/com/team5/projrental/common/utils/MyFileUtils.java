@@ -1,6 +1,7 @@
 package com.team5.projrental.common.utils;
 
 import com.team5.projrental.common.Const;
+import com.team5.projrental.common.exception.base.WrapRuntimeException;
 import com.team5.projrental.common.exception.checked.FileNotContainsDotException;
 import com.team5.projrental.product.model.innermodel.StoredFileInfo;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,12 +10,15 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import static com.team5.projrental.common.utils.ErrorCode.SERVER_ERR_MESSAGE;
 
 @Component
 public class MyFileUtils {
@@ -78,7 +82,7 @@ public class MyFileUtils {
         try {
             multipartFile.transferTo(path);
         } catch (IOException e) {
-            throw new RuntimeException(Const.SERVER_ERR_MESSAGE);
+            throw new WrapRuntimeException(SERVER_ERR_MESSAGE);
         }
         return new StoredFileInfo(originalFilename, storedName);
     }
@@ -111,5 +115,24 @@ public class MyFileUtils {
     private String generateRandomFileName(String fileName) {
         return UUID.randomUUID() + fileName.substring(fileName.lastIndexOf("."));
     }
+    public void delFolderTrigger(String relativePayh) {
+        delFolder(basePath + relativePayh);
+    }
 
+    public void delFolder(String folderPath) {
+        File folder = new File( folderPath);
+
+        if (folder.exists()) {
+            File[] files = folder.listFiles();
+
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    delFolder(file.getAbsolutePath());
+                } else {
+                    file.delete();
+                }
+            }
+            folder.delete();
+        }
+    }
 }

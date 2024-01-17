@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -31,7 +32,7 @@ public class UserSignupDto {
     @Length(max = 20)
     private String nick;
 
-    private String pic;
+    private MultipartFile pic;
 
     @NotBlank
     @Pattern(regexp = "(01)\\d-\\d{3,4}-\\d{4}")
@@ -45,4 +46,6 @@ public class UserSignupDto {
     private double x;
     @JsonIgnore
     private double y;
+    @JsonIgnore
+    private String chPic;
 }

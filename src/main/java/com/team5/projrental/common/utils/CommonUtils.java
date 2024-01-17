@@ -17,6 +17,7 @@ import java.util.*;
 import java.util.stream.Stream;
 
 import static com.team5.projrental.common.Const.*;
+import static com.team5.projrental.common.utils.ErrorCode.*;
 
 @Component
 @Slf4j
@@ -25,59 +26,64 @@ public class CommonUtils {
 
     /**
      * Integer n 이 null 이거나 0 이면 예외 유발
+     *
      * @param ex
      * @param message
      * @param n
      */
-    public static void ifObjNullOrZeroThrow(Class<? extends RuntimeException> ex, String message, Integer n) {
+    public static void ifObjNullOrZeroThrow(Class<? extends RuntimeException> ex, ErrorCode err, Integer n) {
         if (n == null || n == 0) {
-            thrown(ex, message);
+            thrown(ex, err);
         }
     }
 
     /**
      * boolean b 가 false 면 예외 발생.
+     *
      * @param ex
-     * @param message
+     * @param err
      * @param b
      */
-    public static void ifFalseThrow(Class<? extends RuntimeException> ex, String message, boolean b) {
-        if (!b) thrown(ex, message);
+    public static void ifFalseThrow(Class<? extends RuntimeException> ex, ErrorCode err, boolean b) {
+        if (!b) thrown(ex, err);
     }
 
     /**
      * Stream<T> collection(리스트, 맵, 셋 등) 의 .size() 가 int limitNum 에 제공된 숫자보다 크면(초과) 예외 발생
+     *
      * @param ex
-     * @param message
+     * @param err
      * @param collection
      * @param limitNum
      * @param Stream<T>
      */
-    public static <T> void checkSizeIfOverLimitNumThrow(Class<? extends RuntimeException> ex, String message, Stream<T> collection,
+    public static <T> void checkSizeIfOverLimitNumThrow(Class<? extends RuntimeException> ex, ErrorCode err, Stream<T> collection,
                                                         int limitNum) {
         if (collection.count() > limitNum) {
-            thrown(ex, message);
+            thrown(ex, err);
         }
     }
 
     /**
      * Stream<T> collection(리스트, 맵, 셋 등) 의 .size() 가 int limitNum 에 제공된 숫자보다 작으면(미만) 예외 발생
+     *
      * @param ex
-     * @param message
+     * @param err
      * @param collection
      * @param limitNum
      * @param <T>
      */
-    public static <T> void checkSizeIfUnderLimitNumThrow(Class<? extends RuntimeException> ex, String message,
+    public static <T> void checkSizeIfUnderLimitNumThrow(Class<? extends RuntimeException> ex, ErrorCode err,
                                                          Stream<T> collection,
                                                          int limitNum) {
         if (collection.count() < limitNum) {
-            thrown(ex, message);
+            thrown(ex, err);
         }
     }
 
     /**
      * Integer icategory 가
+     *
      * @param icategory
      */
     public static void ifCategoryNotContainsThrowOrReturn(Integer icategory) {
@@ -95,17 +101,17 @@ public class CommonUtils {
                 .findAny().orElseThrow(() -> new IllegalPaymentMethodException(ILLEGAL_PAYMENT_EX_MESSAGE));
     }
 
-    public static void ifAfterThrow(Class<? extends RuntimeException> ex, String message, LocalDate expectedAfter,
+    public static void ifAfterThrow(Class<? extends RuntimeException> ex, ErrorCode err, LocalDate expectedAfter,
                                     LocalDate expectedBefore) {
         if (expectedBefore.isAfter(expectedAfter)) {
-            thrown(ex, message);
+            thrown(ex, err);
         }
     }
 
-    public static void ifBeforeThrow(Class<? extends RuntimeException> ex, String message, LocalDate expectedAfter,
+    public static void ifBeforeThrow(Class<? extends RuntimeException> ex, ErrorCode err, LocalDate expectedAfter,
                                      LocalDate expectedBefore) {
         if (expectedAfter.isBefore(expectedBefore)) {
-            thrown(ex, message);
+            thrown(ex, err);
         }
     }
 
@@ -122,44 +128,44 @@ public class CommonUtils {
     }
 
 
-    public static void ifAnyNullThrow(Class<? extends RuntimeException> ex, String message, Object... objs) {
+    public static void ifAnyNullThrow(Class<? extends RuntimeException> ex, ErrorCode err, Object... objs) {
         Arrays.stream(objs).forEach(o -> {
             if (o == null) {
-                thrown(ex, message);
+                thrown(ex, err);
             }
         });
     }
 
-    public static void ifAnyNotNullThrow(Class<? extends RuntimeException> ex, String message, Object... objs) {
+    public static void ifAnyNotNullThrow(Class<? extends RuntimeException> ex, ErrorCode err, Object... objs) {
         Arrays.stream(objs).forEach(o -> {
             if (o != null) {
-                thrown(ex, message);
+                thrown(ex, err);
             }
         });
     }
 
-    public static void ifAllNullThrow(Class<? extends RuntimeException> ex, String message, Object... objs) {
+    public static void ifAllNullThrow(Class<? extends RuntimeException> ex, ErrorCode err, Object... objs) {
         for (Object obj : objs) {
             if (obj != null) {
                 return;
             }
         }
-        thrown(ex, message);
+        thrown(ex, err);
     }
 
-    public static void ifAllNotNullThrow(Class<? extends RuntimeException> ex, String message, Object... objs) {
+    public static void ifAllNotNullThrow(Class<? extends RuntimeException> ex, ErrorCode err, Object... objs) {
         for (Object obj : objs) {
             if (obj == null) {
                 return;
             }
         }
-        thrown(ex, message);
+        thrown(ex, err);
     }
 
-    public static void checkNullOrZeroIfCollectionThrow(Class<? extends RuntimeException> ex, String message, Object instance) {
-        ifAnyNullThrow(ex, message, instance);
+    public static void checkNullOrZeroIfCollectionThrow(Class<? extends RuntimeException> ex, ErrorCode err, Object instance) {
+        ifAnyNullThrow(ex, err, instance);
         if (instance instanceof Collection<?>) {
-            checkSizeIfUnderLimitNumThrow(ex, message,
+            checkSizeIfUnderLimitNumThrow(ex, err,
                     ((Collection<?>) instance).stream(), 1);
         }
     }
@@ -173,9 +179,9 @@ public class CommonUtils {
      * @param ex
      * @param message
      */
-    private static void thrown(Class<? extends RuntimeException> ex, String message) {
+    private static void thrown(Class<? extends RuntimeException> ex, ErrorCode err) {
         try {
-            throw ex.getDeclaredConstructor(String.class).newInstance(message);
+            throw ex.getDeclaredConstructor(ErrorCode.class).newInstance(err);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new RuntimeException(e);
         }

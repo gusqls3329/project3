@@ -1,6 +1,6 @@
 package com.team5.projrental.product;
 
-import com.team5.projrental.common.exception.BadInformationException;
+import com.team5.projrental.common.exception.base.BadInformationException;
 import com.team5.projrental.common.exception.NoSuchProductException;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.utils.AxisGenerator;
