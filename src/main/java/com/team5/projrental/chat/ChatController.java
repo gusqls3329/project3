@@ -22,6 +22,9 @@ public class ChatController {
 
 
     @GetMapping
+    @Operation(summary = "대화중인 리스트 출력", description = "대화중인 채팅 리스트 출력")
+    @Parameters(value = {
+            @Parameter(name = "page", description = "page당 노출되는 채팅 방 리스트 20개")})
     public List<ChatSelVo> getChatAll(ChatSelDto dto) {
         return service.getChatAll(dto);
     }
@@ -47,17 +50,19 @@ public class ChatController {
 
 
     @GetMapping("/msg")
-    @Operation(summary = "채팅방 입장", description = "채팅방 입장시 모든 내용 출력" +
-            "<br>page : 페이지(defoult = 0)" +
-            "<br>ichat : 채팅 방번호")
+    @Operation(summary = "채팅방 입장", description = "채팅방 입장시 모든 내용 출력")
+    @Parameters(value = {
+            @Parameter(name = "page", description = "페이지"),
+            @Parameter(name = "ichat", description = "채팅방 번호")})
     public List<ChatMsgSelVo> getChatMsgAll(ChatMsgSelDto dto){
         log.info("dto : {}", dto);
         return service.getMsgAll(dto);
     }
 
     @DeleteMapping("/msg")
-    @Operation(summary = "채팅방 삭제", description = "istatus = 0: 채팅 중" + "<br>istatus = 1: 삭제됨(숨김)" +
-            "<br>ichat : 채팅 방번호PK, seq : 채팅 메세지 PK, iuser : ")
+    @Operation(summary = "채팅방 삭제(숨김)", description = "실행시 로그인 유저의 채팅 숨김 처리되도록 설계함")
+    @Parameters(value = {
+            @Parameter(name = "ichat", description = "로그인 유저가 선택한 ichat 삭제(실제로는 숨김처리)")})
     public ResVo delChatMsg(ChatMsgDelDto dto) {
         return service.chatDelMsg(dto);
     }
