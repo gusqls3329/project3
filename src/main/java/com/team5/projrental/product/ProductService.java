@@ -4,6 +4,7 @@ import com.team5.projrental.common.aop.anno.CountView;
 import com.team5.projrental.common.exception.*;
 import com.team5.projrental.common.exception.base.BadDateInfoException;
 import com.team5.projrental.common.exception.base.BadInformationException;
+import com.team5.projrental.common.exception.base.BadProductInfoException;
 import com.team5.projrental.common.exception.base.WrapRuntimeException;
 import com.team5.projrental.common.exception.checked.FileNotContainsDotException;
 import com.team5.projrental.common.model.ResVo;
@@ -289,7 +290,10 @@ public class ProductService {
             throw new BadMainPicException(BAD_PIC_EX_MESSAGE);
         }
         // do update
-        return new ResVo(productRepository.updateProduct(dto));
+        if (productRepository.updateProduct(dto) == 0) {
+            throw new BadProductInfoException(BAD_PRODUCT_INFO_EX_MESSAGE);
+        }
+        return new ResVo(SUCCESS);
     }
 
     /**
