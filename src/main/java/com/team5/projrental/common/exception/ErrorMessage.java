@@ -34,4 +34,7 @@ public interface ErrorMessage {
     //
     String SERVER_ERR_MESSAGE = "알 수 없는 오류로 실패 했습니다.";
 
+    // added
+    String ILLEGAL_STATUS_EX_MESSAGE = "상대유저가 채팅방을 나갔습니다.";
+
 }
