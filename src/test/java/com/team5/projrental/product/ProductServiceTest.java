@@ -53,7 +53,6 @@ class ProductServiceTest {
         myMockResult.setIuser(1);
         when(productRepository.findProductListBy(any())).thenReturn(List.of(myMockResult,
                 new GetProductListResultDto()));
-        when(myFileUtils.getPic(any(StoredFileInfo.class))).thenReturn(null);
 
         List<ProductListVo> productList = productService.getProductList(null, null, 1, 0);
         assertThat(productList.get(0).getIuser()).isEqualTo(1);

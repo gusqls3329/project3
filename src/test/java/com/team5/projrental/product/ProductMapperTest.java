@@ -114,7 +114,6 @@ class ProductMapperTest {
         assertThat(prodEctPics.get(1).getIpics()).isEqualTo(2);
         prodEctPics.forEach(pic -> {
             assertThat((pic.getProdStoredPic())).isEqualTo("test");
-            assertThat((pic.getProdRequestPic())).isEqualTo("test2");
         });
 
     }
@@ -133,10 +132,10 @@ class ProductMapperTest {
     @Test
     void insPics() {
 
-        int result = productMapper.insPics(new InsProdPicsDto(3, List.of(new StoredFileInfo("test", "test2"))));
+        int result = productMapper.insPics(new InsProdPicsDto(3, List.of("test2")));
         assertThat(result).isEqualTo(1);
 
-        int result2 = productMapper.insPics(new InsProdPicsDto(3, List.of(new StoredFileInfo("test", "test2"), new StoredFileInfo("test3", "test4"))));
+        int result2 = productMapper.insPics(new InsProdPicsDto(3, List.of("test", "test2")));
         assertThat(result2).isEqualTo(2);
 
     }
@@ -145,10 +144,10 @@ class ProductMapperTest {
     @Test
     void deletePic() {
 
-        int result = productMapper.insPics(new InsProdPicsDto(3, List.of(new StoredFileInfo("test", "test2"))));
+        int result = productMapper.insPics(new InsProdPicsDto(3, List.of("test", "test2")));
         assertThat(result).isEqualTo(1);
 
-        int result2 = productMapper.insPics(new InsProdPicsDto(3, List.of(new StoredFileInfo("test", "test2"), new StoredFileInfo("test3", "test4"))));
+        int result2 = productMapper.insPics(new InsProdPicsDto(3, List.of("test", "test2")));
         assertThat(result2).isEqualTo(2);
 
         assertThat(productMapper.getAllIpics(3).size()).isEqualTo(3);
@@ -194,9 +193,9 @@ class ProductMapperTest {
         int beforePicCount = productMapper.getPicCount(1);
         assertThat(beforePicCount).isEqualTo(2);
 
-        productMapper.insPics(new InsProdPicsDto(1, List.of(new StoredFileInfo("test", "test"))));
-        productMapper.insPics(new InsProdPicsDto(1, List.of(new StoredFileInfo("test", "test"))));
-        productMapper.insPics(new InsProdPicsDto(1, List.of(new StoredFileInfo("test", "test"))));
+        productMapper.insPics(new InsProdPicsDto(1, List.of("test")));
+        productMapper.insPics(new InsProdPicsDto(1, List.of("test")));
+        productMapper.insPics(new InsProdPicsDto(1, List.of("test")));
 
         assertThat(productMapper.getPicCount(1)).isEqualTo(beforePicCount + 3);
         assertThat(productMapper.getPicCount(2)).isEqualTo(0);
@@ -249,8 +248,6 @@ class ProductMapperTest {
         assertThat(product.getRentalPrice()).isEqualTo(10000);
         assertThat(product.getTitle()).isEqualTo("test prod1");
         assertThat(product.getUserStoredPic()).isNull();
-        assertThat(product.getUserRequestPic()).isNull();
-        assertThat(product.getProdMainRequestPic()).isEqualTo("test pic1");
         assertThat(product.getProdMainStoredPic()).isEqualTo("test pic2");
         assertThat(product.getRentalStartDate()).isEqualTo(LocalDate.of(2023, 10, 22));
         assertThat(product.getRentalEndDate()).isEqualTo(LocalDate.of(2023, 12, 11));
