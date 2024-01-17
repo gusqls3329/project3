@@ -137,12 +137,12 @@
     <select id="checkUserUid">
         SELECT count(iuser)
         FROM t_user
-        WHERE uid = #{uid}
+        WHERE uid = #{obj}
     </select>
 
     <select id = "checkUserNick">
         SELECT count(iuser)
         FROM t_user
-        WHERE nick = #{nick}
+        WHERE nick = #{obj}
     </select>
 </mapper>
