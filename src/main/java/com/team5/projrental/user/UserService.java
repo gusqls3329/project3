@@ -60,22 +60,28 @@ public class UserService {
         int result = mapper.insUser(dto);
         log.debug("dto : {}", dto);
         if (result == 1) {
-            String path = "/user/";
-            myFileUtils.delFolderTrigger(path);
-            try {
-                String savedPicFileNm = String.valueOf(
-                        myFileUtils.savePic(dto.getPic(), Const.CATEGORY_USER,
-                        String.valueOf(dto.getIuser())));
-                ChangeUserDto picdto = new ChangeUserDto();
-                picdto.setIuser(dto.getIuser());
-                picdto.setChPic(savedPicFileNm);
-                mapper.changeUser(picdto);
-            } catch (FileNotContainsDotException e) {
-                throw new RuntimeException(e);
+            if (dto.getPic() != null ) {
+                log.info("사진 :{}", dto.getPic());
+                String path = "/user/";
+                myFileUtils.delFolderTrigger(path);
+                try {
+                    String savedPicFileNm = String.valueOf(
+                            myFileUtils.savePic(dto.getPic(), Const.CATEGORY_USER,
+                                    String.valueOf(dto.getIuser())));
+                    ChangeUserDto picdto = new ChangeUserDto();
+                    picdto.setIuser(dto.getIuser());
+                    picdto.setChPic(savedPicFileNm);
+                    mapper.changeUser(picdto);
+                } catch (FileNotContainsDotException e) {
+                    throw new RuntimeException(e);
+                }
+
             }
             return Const.SUCCESS;
         }
-        return Const.FAIL;
+            return Const.FAIL;
+
+
     }
 
 

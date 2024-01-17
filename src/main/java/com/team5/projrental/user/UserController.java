@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController
@@ -31,7 +32,8 @@ public class UserController {
             , @Parameter(name="phone", description = "휴대폰 번호 (형식 : 010-1111-2222)")
             , @Parameter(name="email", description = "이메일 (형식 : aaa@naver.com)")
     })
-    public ResVo postSignup(@RequestPart @Validated UserSignupDto dto) {
+    public ResVo postSignup(@RequestPart(required = false) MultipartFile pic,@RequestPart @Validated UserSignupDto dto) {
+        dto.setPic(pic);
         log.info("dto : {}", dto);
         return new ResVo(service.postSignup(dto));
     }
