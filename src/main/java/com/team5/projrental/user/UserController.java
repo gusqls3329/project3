@@ -20,6 +20,13 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api/user")
 public class UserController {
     private final UserService service;
+
+    @PostMapping("/check")
+    @Operation(summary = "", description = "")
+    public ResVo CheckUserInfo(@RequestBody @Validated UserCheckInfoDto dto) {
+        return service.checkUserInfo(dto);
+    }
+
     @PostMapping("/signup")
     @Operation(summary = "회원가입", description = "유저 회원가입")
     @Parameters(value = {
@@ -116,10 +123,5 @@ public class UserController {
     @GetMapping
     public SelUserVo getUSer(@RequestParam(value = "tar", required = false) @Min(1) Integer iuser) {
         return service.getUser(iuser);
-    }
-
-    @PostMapping("/check")
-    public ResVo CheckUserInfo(UserCheckInfoDto dto) {
-        return service.CheckUserInfo(dto);
     }
 }

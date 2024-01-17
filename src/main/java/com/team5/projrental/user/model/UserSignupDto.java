@@ -2,10 +2,12 @@ package com.team5.projrental.user.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.web.multipart.MultipartFile;
 
 @Getter
@@ -42,10 +44,15 @@ public class UserSignupDto {
     @NotBlank
     private String email;
 
+    @NotNull
+    @Range(min = 2, max = 2)
+    private Integer isValid;
+
     @JsonIgnore
     private double x;
     @JsonIgnore
     private double y;
     @JsonIgnore
     private String chPic;
+
 }

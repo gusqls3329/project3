@@ -47,6 +47,7 @@ public class UserService {
 
     public int postSignup(UserSignupDto dto) {
 
+
         String hashedPw = passwordEncoder.encode(dto.getUpw());
         dto.setUpw(hashedPw);
         // 대구 달서구 용산1동 -> x: xxx.xxxxx y: xx.xxxxx address_name: 대구 달서구 용산1동
@@ -63,7 +64,7 @@ public class UserService {
         log.debug("dto : {}", dto);
 
         if (result == 1) {
-            if (dto.getPic() != null ) {
+            if (dto.getPic() != null) {
                 log.info("사진 :{}", dto.getPic());
                 String path = "/user/";
                 myFileUtils.delFolderTrigger(path);
@@ -82,7 +83,7 @@ public class UserService {
 
             return Const.SUCCESS;
         }
-            return Const.FAIL;
+        return Const.FAIL;
 
 
     }
@@ -167,6 +168,7 @@ public class UserService {
         int loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setIuser(loginUserPk);
 
+        if(checkNickOrId(1, dto.getNick()) == null) throw new BadInformationException(BAD_INFO_EX_MESSAGE);
 
         Addrs addrs = axisGenerator.getAxis(dto.getAddr());
         CommonUtils.ifAnyNullThrow(BadAddressInfoException.class, BAD_ADDRESS_INFO_EX_MESSAGE,
@@ -216,27 +218,28 @@ public class UserService {
             String hashedPw = entity.getUpw();
             boolean checkPw = BCrypt.checkpw(dto.getUpw(), hashedPw);
             if (checkPw) {
-                if(check != 0 || check != null){
+                if (check != 0 || check != null) {
                     return -1;
                 } else {
-                List<SeldelUserPayDto> payDtos = mapper.seldelUserPay(entity.getIuser());
+                    List<SeldelUserPayDto> payDtos = mapper.seldelUserPay(entity.getIuser());
 
-                for (SeldelUserPayDto list : payDtos) {
-                    mapper.delUserProPic(list.getIproduct());
-                    mapper.delUserPorc2(list.getIproduct());
-                    mapper.delUserPorc(list.getIuser());
-                    mapper.delUpUserPay(list.getIuser());
+                    for (SeldelUserPayDto list : payDtos) {
+                        mapper.delUserProPic(list.getIproduct());
+                        mapper.delUserPorc2(list.getIproduct());
+                        mapper.delUserPorc(list.getIuser());
+                        mapper.delUpUserPay(list.getIuser());
+                    }
                 }
-            }
-            int result = mapper.delUser(dto);
-            if (result == 1) {
-                return Const.SUCCESS;
-            }
-            return Const.FAIL;
-        } else {
+                int result = mapper.delUser(dto);
+                if (result == 1) {
+                    return Const.SUCCESS;
+                }
+                return Const.FAIL;
+            } else {
                 return Const.FAIL;
             }
-        }return Const.FAIL;
+        }
+        return Const.FAIL;
     }
 
     public SelUserVo getUser(Integer iuser) {
@@ -251,23 +254,28 @@ public class UserService {
         return vo2;
     }
 
-    public ResVo CheckUserInfo(UserCheckInfoDto dto) {
-        if(dto.getDiv() == 1) {
-            UserEntity entity = mapper.checkUserUid(dto);
-            if(entity != null) {
-                throw new RestApiException("중복된 아이디");
-            }
-        }else if(dto.getDiv() == 2) {
-            UserEntity entity = mapper.checkUserNick(dto);
-            if(entity != null) {
+    public ResVo checkUserInfo(UserCheckInfoDto dto) { // div = 1 || nick = "..."
+        return new ResVo(checkNickOrId(dto.getDiv(), dto.getDiv() == 1 ? dto.getNick() : dto.getUid()));
+    }
+
+
+    private Integer checkNickOrId(Integer div, String obj) {
+        Integer result = null;
+        if (div == 1) {
+            result = mapper.checkUserNick(obj);
+            if (result > 0) {
                 throw new RestApiException("중복된 닉넴");
             }
         }
-        if(dto.getDiv() > 2 || dto.getDiv() < 1) {
-            throw new RestApiException("div 다시 입력");
+        if (div == 2) {
+            result = mapper.checkUserUid(obj);
+            if (result > 0) {
+                throw new RestApiException("중복된 아이디");
+            }
         }
-        return new ResVo(1);
+        return result;
     }
+
 
 }
 
