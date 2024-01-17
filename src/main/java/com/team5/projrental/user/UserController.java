@@ -31,7 +31,7 @@ public class UserController {
             , @Parameter(name="phone", description = "휴대폰 번호 (형식 : 010-1111-2222)")
             , @Parameter(name="email", description = "이메일 (형식 : aaa@naver.com)")
     })
-    public ResVo postSignup( @Validated UserSignupDto dto) {
+    public ResVo postSignup(@RequestPart @Validated UserSignupDto dto) {
         log.info("dto : {}", dto);
         return new ResVo(service.postSignup(dto));
     }
@@ -90,7 +90,7 @@ public class UserController {
             , @Parameter(name = "phone", description = "휴대폰 번호 (형식 : 010-1111-2222)")
     })
     @PutMapping
-    public int putUser(@RequestBody @Validated ChangeUserDto dto) {
+    public int putUser(@RequestPart @Validated ChangeUserDto dto) {
         return service.putUser(dto);
     }
 
