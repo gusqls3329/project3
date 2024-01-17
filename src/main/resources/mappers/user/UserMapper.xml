@@ -19,6 +19,8 @@
     </insert>
 
 
+<!--    t_auth join 필요 없음 user 데이터만 가져오기.
+     -->
     <select id="selSignin">
         SELECT u.iuser, a.auth, u.upw, u.uid, firebase_token AS firebaseToken
         FROM t_user u
