@@ -24,4 +24,7 @@ public interface UserMapper {
     SelUserVo selUser(int iuser);
 
     List<Integer> patchUser(int iuser);
+
+    UserEntity checkUserUid(UserCheckInfoDto dto);
+    UserEntity checkUserNick(UserCheckInfoDto dto);
 }
