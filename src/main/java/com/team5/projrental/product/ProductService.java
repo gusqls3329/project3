@@ -216,13 +216,20 @@ public class ProductService {
         CommonUtils.ifCategoryNotContainsThrowOrReturn(dto.getIcategory());
         UpdProdBasicDto fromDb =
                 productRepository.findProductByForUpdate(new GetProductBaseDto(dto.getIcategory(), dto.getIproduct(), dto.getIuser()));
+
+        // 가격이나 보증금퍼센트가 변경되면 변경된 보증금 가격으로 바꾸기 위한 로직
+        Integer resolvedDepositPer = CommonUtils.getDepositPerFromPrice(dto.getPrice() == null ? fromDb.getPrice() : dto.getPrice(),
+                dto.getDepositPer() == null ? fromDb.getDepositPer() : dto.getDepositPer());
         // 병합
         Integer price = dto.getPrice() == null ? fromDb.getPrice() : dto.getPrice();
         UpdProdBasicDto mergedData = new UpdProdBasicDto(
                 dto.getPrice() == null ? fromDb.getPrice() : dto.getPrice(),
+                CommonUtils.getDepositFromPer(dto.getPrice() == null ? fromDb.getPrice() : dto.getPrice(),
+                        dto.getDepositPer() == null ? resolvedDepositPer : dto.getDepositPer()),
                 dto.getBuyDate() == null ? fromDb.getBuyDate() : dto.getBuyDate(),
                 dto.getRentalStartDate() == null ? fromDb.getRentalStartDate() : dto.getRentalStartDate(),
-                dto.getRentalEndDate() == null ? fromDb.getRentalEndDate() : dto.getRentalEndDate()
+                dto.getRentalEndDate() == null ? fromDb.getRentalEndDate() : dto.getRentalEndDate(),
+                dto.getDepositPer() == null ? resolvedDepositPer : dto.getDepositPer()
         );
         int dbPicsCount = productRepository.findPicsCount(dto.getIproduct());
 
@@ -260,6 +267,11 @@ public class ProductService {
                 , mergedData.getRentalEndDate(), mergedData.getRentalStartDate());
         // 날짜 검증 끝
 
+        // 주소 검증
+        Addrs addrs = null;
+        if (dto.getAddr() != null) {
+            addrs = axisGenerator.getAxis(dto.getAddr());
+        }
 
         // 문제 없음.
 
@@ -273,11 +285,7 @@ public class ProductService {
                 }
             }
 
-            // 주소 검증
-            Addrs addrs = null;
-            if (dto.getAddr() != null) {
-                addrs = axisGenerator.getAxis(dto.getAddr());
-            }
+
             // update 할 객체 세팅
             dto.setStoredMainPic(dto.getMainPic() == null ? null : myFileUtils.savePic(dto.getMainPic(), CATEGORY_PRODUCT_MAIN,
                     String.valueOf(dto.getIproduct())));

@@ -17,11 +17,12 @@ public class PaymentVo extends PaymentListVo {
     private LocalDateTime createdAt;
 
 
-
-    public PaymentVo(Integer iuser, String nick, String userPic, Integer ipayment, Integer iproduct, String status,
+    public PaymentVo(Integer iuser, String nick, String userPic, Integer ipayment, Integer iproduct, String prodPic,
+                     String status,
                      LocalDate rentalStartDate, LocalDate rentalEndDate, Integer rentalDuration, Integer price, Integer deposit,
                      String phone, String payment, String code, LocalDateTime createdAt) {
-        super(iuser, nick, userPic, ipayment, iproduct, status, rentalStartDate, rentalEndDate, rentalDuration, price, deposit);
+        super(iuser, nick, userPic, ipayment, iproduct, prodPic, status, rentalStartDate, rentalEndDate, rentalDuration, price,
+                deposit);
         this.phone = phone;
         this.payment = payment;
         this.code = code;

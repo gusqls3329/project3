@@ -12,10 +12,11 @@ import java.time.LocalDateTime;
 public class GetPaymentListResultDto {
     private Integer iuser;
     private String nick;
-    private String storedPic;
+    private String userStoredPic;
 
     private Integer ipayment;
     private Integer iproduct;
+    private String prodStoredPic;
     private Integer istatus;
     private LocalDate rentalStartDate;
     private LocalDate rentalEndDate;
