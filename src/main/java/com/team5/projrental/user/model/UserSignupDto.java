@@ -26,29 +26,29 @@ public class UserSignupDto {
     private String restAddr;
 
     @NotBlank(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
-    @Length(min = 8, max = 15)
+    @Length(min = 8, max = 15, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private String uid;
 
     @NotBlank(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
-    @Length(min = 8, max = 20)
+    @Length(min = 8, max = 20, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private String upw;
 
     @NotBlank(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
-    @Length(max = 20)
+    @Length(max = 20, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private String nick;
 
     private MultipartFile pic;
 
     @NotBlank(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
-    @Pattern(regexp = "(01)\\d-\\d{3,4}-\\d{4}")
+    @Pattern(regexp = "(01)\\d-\\d{3,4}-\\d{4}", message = ErrorMessage.BAD_INFO_EX_MESSAGE)
     private String phone;
 
-    @Pattern(regexp = "\\w+@\\w+\\.\\w+(\\.\\w+)?")
+    @Pattern(regexp = "\\w+@\\w+\\.\\w+(\\.\\w+)?", message = ErrorMessage.BAD_INFO_EX_MESSAGE)
     @NotBlank(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
     private String email;
 
     @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
-    @Range(min = 2, max = 2)
+    @Range(min = 2, max = 2, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private Integer isValid;
 
     @JsonIgnore
