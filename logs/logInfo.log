@@ -14328,3 +14328,5 @@ This generated password is for development use only. Your security configuration
 [2024-01-16 20:42:21 [32mDEBUG[0;39m http-nio-8080-exec-7] [com.team5.projrental.user.UserMapper.patchUser] [36m==>  Preparing: select P.iproduct from t_product P join t_user U on P.iuser = U.iuser left join t_product_payment PP on PP.iproduct = P.iproduct left join t_payment PA on PA.ipayment = PP.ipayment where P.iuser = ? or PA.ibuyer = ?[0;39m
 [2024-01-16 20:42:21 [32mDEBUG[0;39m http-nio-8080-exec-7] [com.team5.projrental.user.UserMapper.patchUser] [36m==> Parameters: 2(Integer), 2(Integer)[0;39m
 [2024-01-16 20:42:21 [32mDEBUG[0;39m http-nio-8080-exec-7] [com.team5.projrental.user.UserMapper.patchUser] [36m<==      Total: 4[0;39m
+[2024-01-16 20:43:36 [32mINFO [0;39m SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-1 - Shutdown initiated...[0;39m
+[2024-01-16 20:43:36 [32mINFO [0;39m SpringApplicationShutdownHook] [com.zaxxer.hikari.HikariDataSource] [36mHikariPool-1 - Shutdown completed.[0;39m

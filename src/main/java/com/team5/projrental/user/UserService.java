@@ -41,10 +41,6 @@ public class UserService {
 
     public int postSignup(UserSignupDto dto) {
 
-        SignUpExceptVo checkUid = mapper.signinId();
-        boolean a =checkUid.getNick() != dto.getNick();
-        //CommonUtils.ifObjNullOrZeroThrow(BadIdInfoException.class, BAD_ID_EX_MESSAGE, checkUid.getUid());
-
             String hashedPw = passwordEncoder.encode(dto.getUpw());
             dto.setUpw(hashedPw);
             // 대구 달서구 용산1동 -> x: xxx.xxxxx y: xx.xxxxx address_name: 대구 달서구 용산1동

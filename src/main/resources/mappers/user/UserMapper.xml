@@ -118,14 +118,6 @@
     </select>
 
     <!--예외처리-->
-     <select id="signin">
-         SELECT Count(uid), nick, email, phone
-         from t_user
-         where uid = #{uid}
-         or nick = #{nick}
-         or email = #{email}
-         or phone = #{phone}
-     </select>
 
     <select id="patchUser">
         select P.iproduct
