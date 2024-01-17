@@ -78,8 +78,6 @@ public class UserService {
                 } catch (FileNotContainsDotException e) {
                     throw new RuntimeException(e);
                 }
-
-
             }
 
             return Const.SUCCESS;
