@@ -11,5 +11,4 @@ import lombok.NoArgsConstructor;
 public class GetProdEctPicDto {
     private Integer ipics;
     private String prodStoredPic;
-    private String prodRequestPic;
 }

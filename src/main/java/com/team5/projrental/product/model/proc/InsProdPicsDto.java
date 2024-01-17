@@ -10,5 +10,5 @@ import java.util.List;
 @AllArgsConstructor
 public class InsProdPicsDto {
     private Integer iproduct;
-    private List<StoredFileInfo> pics; //  // #{mainPicObj.requestPic} #{mainPicObj.storedPic}
+    private List<String> pics;
 }

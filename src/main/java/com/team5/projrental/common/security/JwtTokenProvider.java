@@ -2,7 +2,6 @@ package com.team5.projrental.common.security;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.team5.projrental.common.Const;
 import com.team5.projrental.common.SecurityProperties;
 import com.team5.projrental.common.exception.base.WrapRuntimeException;
 import com.team5.projrental.common.security.model.SecurityPrincipal;
@@ -20,7 +19,7 @@ import org.springframework.stereotype.Component;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Date;
 
-import static com.team5.projrental.common.utils.ErrorCode.SERVER_ERR_MESSAGE;
+import static com.team5.projrental.common.exception.ErrorCode.SERVER_ERR_MESSAGE;
 
 @Component
 @RequiredArgsConstructor

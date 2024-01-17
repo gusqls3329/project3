@@ -5,7 +5,7 @@ import com.team5.projrental.common.exception.base.BadInformationException;
 import com.team5.projrental.common.exception.base.IllegalException;
 import com.team5.projrental.common.exception.base.NoSuchDataException;
 import com.team5.projrental.common.model.ErrorResultVo;
-import com.team5.projrental.common.utils.ErrorCode;
+import com.team5.projrental.common.exception.ErrorCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
