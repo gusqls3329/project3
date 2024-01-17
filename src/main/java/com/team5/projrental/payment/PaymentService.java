@@ -17,7 +17,6 @@ import com.team5.projrental.payment.model.proc.GetInfoForCheckIproductAndIuserRe
 import com.team5.projrental.payment.model.proc.GetPaymentListDto;
 import com.team5.projrental.payment.model.proc.GetPaymentListResultDto;
 import com.team5.projrental.product.ProductRepository;
-import com.team5.projrental.product.model.innermodel.StoredFileInfo;
 import com.team5.projrental.common.security.AuthenticationFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +30,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.team5.projrental.common.Const.*;
-import static com.team5.projrental.common.utils.ErrorCode.*;
+import static com.team5.projrental.common.exception.ErrorCode.*;
 
 @Service
 @Slf4j
@@ -162,7 +161,7 @@ public class PaymentService {
         List<PaymentListVo> result = new ArrayList<>();
         CommonUtils.checkNullOrZeroIfCollectionThrow(NoSuchPaymentException.class, NO_SUCH_PAYMENT_EX_MESSAGE, paymentBy);
         paymentBy.forEach(p -> result.add(new PaymentListVo(
-                p.getIuser(), p.getNick(), myFileUtils.getPic(new StoredFileInfo(p.getRequestPic(), p.getStoredPic())),
+                p.getIuser(), p.getNick(), p.getStoredPic(),
                 p.getIpayment(), p.getIproduct(), STATUS.get(p.getIstatus()), p.getRentalStartDate(), p.getRentalEndDate(),
                 p.getRentalDuration(), p.getPrice(), p.getDeposit())
         ));
@@ -187,7 +186,7 @@ public class PaymentService {
         return new PaymentVo(
                 aPayment.getIuser(),
                 aPayment.getNick(),
-                myFileUtils.getPic(new StoredFileInfo(aPayment.getRequestPic(), aPayment.getStoredPic())),
+                aPayment.getStoredPic(),
                 aPayment.getIpayment(),
                 aPayment.getIproduct(),
                 STATUS.get(aPayment.getIstatus()), // status resolver ?

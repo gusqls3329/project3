@@ -14,11 +14,11 @@ public class ProductListVo {
 
     private Integer iuser;
     private String nick;
-    private Resource userPic;
+    private String userPic;
 
     private Integer iproduct;
     private String title;
-    private Resource prodPic;
+    private String prodPic;
     private Integer rentalPrice;
     private LocalDate rentalStartDate;
     private LocalDate rentalEndDate;
@@ -35,6 +35,8 @@ public class ProductListVo {
         this.rentalEndDate = dto.getRentalEndDate();
         this.addr = dto.getAddr();
         this.prodLike = dto.getProdLike();
+        this.userPic = dto.getUserStoredPic();
+        this.prodPic = dto.getProdMainStoredPic();
     }
 
     public ProductListVo(GetProductResultDto dto) {

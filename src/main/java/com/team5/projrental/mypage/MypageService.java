@@ -3,10 +3,8 @@ package com.team5.projrental.mypage;
 import com.team5.projrental.common.security.AuthenticationFacade;
 import com.team5.projrental.mypage.model.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

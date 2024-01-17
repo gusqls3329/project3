@@ -10,13 +10,11 @@ public class GetProductListResultDto {
     private Integer iuser;
     private String nick;
     private String userStoredPic;
-    private String userRequestPic;
 
     private Integer iproduct;
     private String addr;
     private String title;
     private String prodMainStoredPic;
-    private String prodMainRequestPic;
     private Integer rentalPrice;
     private LocalDate rentalStartDate;
     private LocalDate rentalEndDate;

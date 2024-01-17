@@ -1,6 +1,5 @@
 package com.team5.projrental.common.model;
 
-import com.team5.projrental.common.utils.ErrorCode;
 import lombok.Builder;
 import lombok.Data;
 

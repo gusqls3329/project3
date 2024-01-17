@@ -1,4 +1,4 @@
-package com.team5.projrental.common.utils;
+package com.team5.projrental.common.exception;
 
 import com.team5.projrental.common.exception.ErrorStatus;
 import lombok.Getter;

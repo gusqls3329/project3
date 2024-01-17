@@ -16,7 +16,7 @@ public class ProductVo extends ProductListVo{
 
     // 추가필드만 작성
     private String contents;
-    private List<PicSet> prodPics;
+    private List<String> prodPics;
     private Integer deposit;
     private LocalDate buyDate;
     private Double x;
