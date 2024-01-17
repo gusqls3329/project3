@@ -80,12 +80,9 @@ public class UserService {
                     throw new RuntimeException(e);
                 }
             }
-
             return Const.SUCCESS;
         }
-        return Const.FAIL;
-
-
+        throw new RestApiException(ILLEGAL_EX_MESSAGE);
     }
 
 
