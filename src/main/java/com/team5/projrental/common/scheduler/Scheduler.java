@@ -4,6 +4,8 @@ import com.team5.projrental.common.aop.anno.Retry;
 import com.team5.projrental.payment.PaymentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -22,5 +24,9 @@ public class Scheduler {
         paymentRepository.updateStatusIfOverRentalEndDate(LocalDate.now());
     }
 
-
+    @Retry
+    @EventListener(ApplicationReadyEvent.class)
+    public void postConstruct() {
+        updateStatusIfOverRentalEndDate();
+    }
 }
