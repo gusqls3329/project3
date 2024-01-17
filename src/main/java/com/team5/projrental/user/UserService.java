@@ -257,6 +257,7 @@ public class UserService {
     }
 
     public ResVo checkUserInfo(UserCheckInfoDto dto) { // div = 1 || nick = "..."
+
         return new ResVo(checkNickOrId(dto.getDiv(), dto.getDiv() == 1 ? dto.getNick() : dto.getUid()));
     }
 
