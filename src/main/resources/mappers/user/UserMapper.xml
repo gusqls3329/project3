@@ -133,4 +133,16 @@
         WHERE U.iuser = #{iuser}
         or k.ibuyer = #{iuser}
     </select>
+
+    <select id="checkUserUid">
+        SELECT iuser
+        FROM t_user
+        WHERE uid = #{uid}
+    </select>
+
+    <select id = "checkUserNick">
+        SELECT iuser
+        FROM t_user
+        WHERE nick = #{nick}
+    </select>
 </mapper>
