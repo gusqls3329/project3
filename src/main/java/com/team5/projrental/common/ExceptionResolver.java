@@ -28,7 +28,7 @@ public class ExceptionResolver {
             log.debug("error message = {}", e1);
         });
         String errorMessage = sb.toString();
-        int errorCode = Arrays.stream(ErrorCode.values()).filter(e -> e.getMessage().equals(message)).findFirst()
+        int errorCode = Arrays.stream(ErrorCode.values()).filter(e -> e.getMessage().equals(errorMessage)).findFirst()
                 .orElse(ErrorCode.SERVER_ERR_MESSAGE).getCode();
         return ResponseEntity.status(errorCode)
                 .body(ErrorResultVo.builder().errorCode(errorCode)
