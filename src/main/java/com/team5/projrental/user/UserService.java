@@ -29,7 +29,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.team5.projrental.common.utils.ErrorCode.*;
+import static com.team5.projrental.common.exception.ErrorCode.*;
 
 @Slf4j
 @Service
@@ -60,10 +60,11 @@ public class UserService {
         int result = mapper.insUser(dto);
         log.debug("dto : {}", dto);
         if (result == 1) {
-            String path = "/user/" + dto.getIuser();
+            String path = "/user/";
             myFileUtils.delFolderTrigger(path);
             try {
-                String savedPicFileNm = String.valueOf(myFileUtils.savePic(dto.getPic(), path));
+                String savedPicFileNm = String.valueOf(myFileUtils.savePic(dto.getPic(), Const.CATEGORY_USER,
+                        String.valueOf(dto.getIuser())));
                 ChangeUserDto picdto = new ChangeUserDto();
                 picdto.setChPic(savedPicFileNm);
                 mapper.changeUser(picdto);
