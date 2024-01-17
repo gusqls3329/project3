@@ -118,13 +118,19 @@
 
     <!--예외처리-->
 
-    <select id="patchUser">
-        select P.iproduct
-        from t_product P
-        join t_user U on P.iuser = U.iuser
-        left join t_product_payment PP on PP.iproduct = P.iproduct
-        left join t_payment PA on PA.ipayment = PP.ipayment
-        where P.iuser = #{iuser}
-        or PA.ibuyer = #{iuser}
+    <select id="selpatchUser">
+        SELECT count(P.iproduct)
+        FROM t_user U
+        LEFT JOIN t_product P
+        ON U.iuser = P.iuser AND P.istatus not IN (-1, -2)
+        LEFT JOIN
+        (SELECT PA.istatus, PP.iproduct, PA.ipayment, PA.ibuyer
+        from t_product_payment PP
+        JOIN t_payment PA
+        ON PP.ipayment = PA.ipayment AND PA.istatus not IN (1, -1, -2, -3)
+        ) k
+        ON P.iproduct = k.iproduct
+        WHERE U.iuser = #{iuser}
+        or k.ibuyer = #{iuser}
     </select>
 </mapper>

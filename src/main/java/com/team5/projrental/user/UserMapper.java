@@ -22,6 +22,5 @@ public interface UserMapper {
     int delUserPorc(int iuser);
 
     SelUserVo selUser(int iuser);
-
-    List<Integer> patchUser(int iuser);
+    Integer selpatchUser(int iuser);
 }

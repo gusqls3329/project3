@@ -208,20 +208,17 @@ public class UserService {
         } else if (!passwordEncoder.matches(dto.getUpw(), entity.getUpw())) {
             return Integer.parseInt(NO_SUCH_PASSWORD_EX_MESSAGE.getMessage());
         }
-
+        Integer check = mapper.selpatchUser(entity.getIuser());
         if (loginUserPk == entity.getIuser()) {
             String hashedPw = entity.getUpw();
             boolean checkPw = BCrypt.checkpw(dto.getUpw(), hashedPw);
             if (checkPw) {
+                if(check != 0 || check != null){
+                    return -1;
+                } else {
                 List<SeldelUserPayDto> payDtos = mapper.seldelUserPay(entity.getIuser());
-                List<Integer> iproduct = mapper.patchUser(dto.getIuser());
 
                 for (SeldelUserPayDto list : payDtos) {
-                    for (Integer iproductsss : iproduct) {
-                        if (list.getIproduct() != iproductsss) {
-                            return Const.FAIL;
-                        }
-                    }
                     mapper.delUserProPic(list.getIproduct());
                     mapper.delUserPorc2(list.getIproduct());
                     mapper.delUserPorc(list.getIuser());
@@ -234,8 +231,9 @@ public class UserService {
             }
             return Const.FAIL;
         } else {
-            return Const.FAIL;
-        }
+                return Const.FAIL;
+            }
+        }return Const.FAIL;
     }
 
     public SelUserVo getUser(Integer iuser) {
