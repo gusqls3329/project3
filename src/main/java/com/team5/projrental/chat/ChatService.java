@@ -30,14 +30,17 @@ public class ChatService {
 
     //채팅 리스트
     public List<ChatSelVo> getChatAll(ChatSelDto dto) {
-        return mapper.selChatAll(dto);
+        List<ChatSelVo> list = mapper.selChatAll(dto);
+        return list;
     }
 
     //
-    public ResVo postChatMsg (ChatMsgInsDto dto) {
+    public ResVo postChatMsg(ChatMsgInsDto dto) {
+        int loginUserPk = authenticationFacade.getLoginUserPk();
+        dto.setLoginedIuser(loginUserPk);
 
         int affectedRows = mapper.insChatMsg(dto);
-        if (affectedRows == 1){
+        if (affectedRows == 1) {
             int updAffectedRows = mapper.updChatLastMsg(dto);
         }
 
@@ -50,12 +53,11 @@ public class ChatService {
 
 
         try {
-            if (otherPerson.getFirebaseToken() != null){
+            if (otherPerson.getFirebaseToken() != null) {
                 ChatMsgPushVo pushVo = new ChatMsgPushVo();
                 pushVo.setIchat(dto.getIchat());
                 pushVo.setSeq(dto.getSeq());
                 pushVo.setWriterIuser(dto.getLoginedIuser());
-                pushVo.setWriterPic(dto.getLoginedPic());
                 pushVo.setMsg(dto.getMsg());
                 pushVo.setCreatedAt(createdAt);
 
@@ -90,23 +92,24 @@ public class ChatService {
     }
 
     //채팅방 입장시 메세지 내용 불러오기
-    public List<ChatMsgSelVo> getMsgAll(ChatMsgSelDto dto){
-        return mapper.selChatMsgAll(dto);
+    public List<ChatMsgSelVo> getMsgAll(ChatMsgSelDto dto) {
+        List<ChatMsgSelVo> list = mapper.selChatMsgAll(dto);
+        return list;
     }
 
-    public ResVo chatDelMsg(ChatMsgDelDto dto){
+    public ResVo chatDelMsg(ChatMsgDelDto dto) {
         int delAffectedRows = mapper.chatDelMsg(dto);
-        if (delAffectedRows==1) {
+        if (delAffectedRows == 1) {
             int updAffectedRows = mapper.updChatLastMsgAfterDelByLastMsg(dto);
         }
         return new ResVo(delAffectedRows);
     }
 
     // 채팅 입력
-    public ChatSelVo postChat(ChatInsDto dto){
+    public ChatSelVo postChat(ChatInsDto dto) {
         Integer isExixtChat = mapper.selChatUserCheck(dto);
         log.info("dto: {}", dto);
-        if (isExixtChat!=null){
+        if (isExixtChat != null) {
             return null;
         }
         int loginUserPk = authenticationFacade.getLoginUserPk();
@@ -114,27 +117,26 @@ public class ChatService {
         mapper.insChat(dto);
 
         mapper.insChatUser(ChatUserInsDto.builder()
-                        .ichat(dto.getIchat())
-                        .iuser(loginUserPk)
+                .ichat(dto.getIchat())
+                .iuser(loginUserPk)
                 .build());
 
         mapper.insChatUser(ChatUserInsDto.builder()
-                        .ichat(dto.getIchat())
-                        .iuser(dto.getOtherPersonIuser())
+                .ichat(dto.getIchat())
+                .iuser(dto.getOtherPersonIuser())
                 .build());
 
 
         UserSelDto usDto = new UserSelDto();
         usDto.setIuser(dto.getOtherPersonIuser());
 
-        UserEntity entity = mapper.selChatUser(usDto);
+        UserEntity entity = mapper.selChatUser(usDto.getIuser());
 
         ChatSelVo vo = new ChatSelVo();
-        vo.setIchat(dto.getIchat());
         vo.setIproduct(dto.getIproduct());
         vo.setOtherPersonIuser(entity.getIuser());
-        vo.setOtherPersonNm(entity.getNm());
-        vo.setOtherPersonPic(entity.getPic());
+        vo.setOtherPersonNm(entity.getNick());
+        vo.setOtherPersonPic(entity.getStoredPic());
         return vo;
     }
 
