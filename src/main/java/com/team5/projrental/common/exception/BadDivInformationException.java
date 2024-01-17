@@ -1,7 +1,6 @@
 package com.team5.projrental.common.exception;
 
 import com.team5.projrental.common.exception.base.BadInformationException;
-import com.team5.projrental.common.utils.ErrorCode;
 
 import java.util.Arrays;
 

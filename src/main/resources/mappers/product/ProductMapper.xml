@@ -63,9 +63,8 @@
 
 
     <select id="getProductList">
-        select U.iuser, U.nick, U.stored_pic as userStoredPic, U.request_pic as userRequestPic,
-        P.iproduct, concat(P.addr, ' ', P.rest_addr) as addr, P.title, P.stored_pic as prodMainStoredPic, P.request_pic as
-        prodMainRequestPic,
+        select U.iuser, U.nick, U.stored_pic as userStoredPic,
+        P.iproduct, concat(P.addr, ' ', P.rest_addr) as addr, P.title, P.stored_pic as prodMainStoredPic,
         P.rental_price as rentalPrice,
         P.rental_start_date as rentalStartDate, P.rental_end_date as rentalEndDate, COUNT(L.iproduct) as prodLike
         <if test="iuser != null">
@@ -110,10 +109,10 @@
     </select>
 
     <select id="getProduct">
-        select U.iuser, U.nick, U.stored_pic as userStoredPic, U.request_pic as userRequestPic,
+        select U.iuser, U.nick, U.stored_pic as userStoredPic,
         P.iproduct, concat(P.addr, ' ', P.rest_addr) as addr, P.title, P.stored_pic as
         prodMainStoredPic,
-        P.request_pic as prodMainRequestPic, P.rental_price as rentalPrice, P.rental_start_date as rentalStartDate,
+        P.rental_price as rentalPrice, P.rental_start_date as rentalStartDate,
         P.rental_end_date as rentalEndDate, (select count(L.iproduct) from t_like L where L.iproduct = P.iproduct) prodLike,
         P.iuser, P.contents, P.deposit, P.buy_date as buyDate, COUNT(L.iproduct) as prodLike, P.x, P.y
         from t_product P
@@ -133,7 +132,7 @@
     </select>
 
     <select id="getProdEctPics">
-        select ipics, stored_pic as prodStoredPic, request_pic as prodRequestPic from t_pics
+        select ipics, stored_pic as prodStoredPic from t_pics
         where iproduct = #{iproduct}
     </select>
 
@@ -147,18 +146,18 @@
 
     <insert id="insProduct" useGeneratedKeys="true" keyProperty="iproduct">
         insert into t_product
-        (iuser, title, contents, addr, rest_addr, stored_pic, request_pic,
+        (iuser, title, contents, addr, rest_addr, stored_pic,
         price, rental_price, deposit, buy_date, rental_start_date, rental_end_date, icategory, x, y)
         values
-        (#{iuser}, #{title}, #{contents}, #{addr}, #{restAddr}, #{mainPicObj.storedPic}, #{mainPicObj.requestPic},
+        (#{iuser}, #{title}, #{contents}, #{addr}, #{restAddr}, #{storedPic},
         #{price}, #{rentalPrice}, #{deposit}, #{buyDate}, #{rentalStartDate}, #{rentalEndDate}, #{icategory}, #{x}, #{y})
     </insert>
 
     <insert id="insPics">
-        insert into t_pics (iproduct, stored_pic, request_pic)
+        insert into t_pics (iproduct, stored_pic)
         values
         <foreach collection="pics" item="pic" separator=", ">
-            (#{iproduct}, #{pic.storedPic}, #{pic.requestPic})
+            (#{iproduct}, #{pic})
         </foreach>
 
     </insert>

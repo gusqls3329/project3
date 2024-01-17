@@ -4,7 +4,6 @@ import com.team5.projrental.common.Const;
 import com.team5.projrental.common.SecurityProperties;
 import com.team5.projrental.common.exception.BadAddressInfoException;
 import com.team5.projrental.common.exception.checked.FileNotContainsDotException;
-import com.team5.projrental.common.exception.user.BadIdInfoException;
 import com.team5.projrental.common.model.restapi.Addrs;
 import com.team5.projrental.common.utils.AxisGenerator;
 import com.team5.projrental.common.utils.CommonUtils;
@@ -26,7 +25,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.team5.projrental.common.utils.ErrorCode.*;
+import static com.team5.projrental.common.exception.ErrorCode.*;
 
 @Slf4j
 @Service
@@ -69,7 +68,9 @@ public class UserService {
         } catch (FileNotContainsDotException e) {
             throw new RuntimeException(e);
         }
+
         //int result = mapper.changeUser(dto);
+
 
         return Const.FAIL;
     }

@@ -1,23 +1,18 @@
 package com.team5.projrental.common.utils;
 
+import com.team5.projrental.common.exception.ErrorCode;
 import com.team5.projrental.common.exception.IllegalCategoryException;
 import com.team5.projrental.common.exception.IllegalPaymentMethodException;
-import com.team5.projrental.product.model.innermodel.StoredFileInfo;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.units.qual.N;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.lang.reflect.InvocationTargetException;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Stream;
 
 import static com.team5.projrental.common.Const.*;
-import static com.team5.projrental.common.utils.ErrorCode.*;
+import static com.team5.projrental.common.exception.ErrorCode.*;
 
 @Component
 @Slf4j

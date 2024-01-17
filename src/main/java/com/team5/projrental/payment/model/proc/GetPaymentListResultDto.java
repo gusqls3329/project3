@@ -13,7 +13,6 @@ public class GetPaymentListResultDto {
     private Integer iuser;
     private String nick;
     private String storedPic;
-    private String requestPic;
 
     private Integer ipayment;
     private Integer iproduct;
