@@ -4,6 +4,7 @@ import com.team5.projrental.common.aop.anno.CountView;
 import com.team5.projrental.common.exception.*;
 import com.team5.projrental.common.exception.base.BadDateInfoException;
 import com.team5.projrental.common.exception.base.BadInformationException;
+import com.team5.projrental.common.exception.base.BadProductInfoException;
 import com.team5.projrental.common.exception.base.WrapRuntimeException;
 import com.team5.projrental.common.exception.checked.FileNotContainsDotException;
 import com.team5.projrental.common.model.ResVo;
@@ -202,7 +203,7 @@ public class ProductService {
                 dto.getRentalEndDate(), dto.getDelPics());
 
         // 삭제사진 필요시 삭제
-        if (!dto.getDelPics().isEmpty()) {
+        if (dto.getDelPics() != null && !dto.getDelPics().isEmpty()) {
             if (productRepository.deletePics(dto.getIproduct(), dto.getDelPics()) == 0) {
                 throw new WrapRuntimeException(SERVER_ERR_MESSAGE);
             }
@@ -237,7 +238,7 @@ public class ProductService {
 
         // 사진 개수 검증
         // fromDb 사진(이미 삭제필요한 사진은 삭제 된 상태) 과 dto.getPics 를 savePic 하고난 결과를 합쳐서 개수 체크.
-        if (!dto.getPics().isEmpty()) {
+        if (dto.getPics() != null && !dto.getPics().isEmpty()) {
             CommonUtils.checkSizeIfOverLimitNumThrow(IllegalProductPicsException.class, ILLEGAL_PRODUCT_PICS_EX_MESSAGE,
                     dto.getPics().stream(), 9 - dbPicsCount);
         }
@@ -265,7 +266,7 @@ public class ProductService {
 
         try {
             // 문제 없으면 추가 사진 insert
-            if (!dto.getPics().isEmpty()) {
+            if (dto.getPics() != null && !dto.getPics().isEmpty()) {
                 if (productRepository.savePics(new InsProdPicsDto(dto.getIproduct(),
                         myFileUtils.savePic(dto.getPics(), CATEGORY_PRODUCT_SUB, String.valueOf(dto.getIproduct())))) == 0) {
                     throw new WrapRuntimeException(SERVER_ERR_MESSAGE);
@@ -280,7 +281,7 @@ public class ProductService {
             // update 할 객체 세팅
             dto.setStoredMainPic(dto.getMainPic() == null ? null : myFileUtils.savePic(dto.getMainPic(), CATEGORY_PRODUCT_MAIN,
                     String.valueOf(dto.getIproduct())));
-            dto.setDeposit(dto.getDepositPer() == null ? null : CommonUtils.getDepositFromPer(price, dto.getDeposit()));
+            dto.setDeposit(dto.getDepositPer() == null ? null : CommonUtils.getDepositFromPer(price, dto.getDepositPer()));
             if (dto.getAddr() != null && dto.getRestAddr() != null && addrs != null) {
                 dto.setX(Double.parseDouble(addrs.getX()));
                 dto.setY(Double.parseDouble(addrs.getY()));
@@ -289,7 +290,10 @@ public class ProductService {
             throw new BadMainPicException(BAD_PIC_EX_MESSAGE);
         }
         // do update
-        return new ResVo(productRepository.updateProduct(dto));
+        if (productRepository.updateProduct(dto) == 0) {
+            throw new BadProductInfoException(BAD_PRODUCT_INFO_EX_MESSAGE);
+        }
+        return new ResVo(SUCCESS);
     }
 
     /**

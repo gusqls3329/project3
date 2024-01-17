@@ -30,6 +30,7 @@ public enum ErrorCode {
     BAD_DIV_INFO_EX_MESSAGE(ErrorStatus.BAD_DIV_INFO_EX_MESSAGE.getCode(), "div 값이 잘못되었습니다."),
     BAD_PIC_EX_MESSAGE(ErrorStatus.BAD_PIC_EX_MESSAGE.getCode(), "사진이 존재하지 않습니다."),
     BAD_ID_EX_MESSAGE(ErrorStatus.BAD_ID_EX_MESSAGE.getCode(), "이미 존재하는 아이디 입니다."),
+    BAD_PRODUCT_INFO_EX_MESSAGE(ErrorStatus.BAD_PRODUCT_INFO_EX_MESSAGE.getCode(), "잘못된 제품 정보 입니다."),
     //
     ALL_INFO_NOT_EXISTS_EX_MESSAGE(ErrorStatus.ALL_INFO_NOT_EXISTS_EX_MESSAGE.getCode(), "모든 정보가 제공되지 않음"),
     //
