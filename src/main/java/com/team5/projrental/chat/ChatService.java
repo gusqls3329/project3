@@ -134,8 +134,8 @@ public class ChatService {
         ChatSelVo vo = new ChatSelVo();
         vo.setIproduct(dto.getIproduct());
         vo.setOtherPersonIuser(entity.getIuser());
-        vo.setOtherPersonNm(entity.getNm());
-        vo.setOtherPersonPic(entity.getPic());
+        vo.setOtherPersonNm(entity.getNick());
+        vo.setOtherPersonPic(entity.getStoredPic());
         return vo;
     }
 
