@@ -63,7 +63,8 @@ public class UserService {
             String path = "/user/";
             myFileUtils.delFolderTrigger(path);
             try {
-                String savedPicFileNm = String.valueOf(myFileUtils.savePic(dto.getPic(), Const.CATEGORY_USER,
+                String savedPicFileNm = String.valueOf(
+                        myFileUtils.savePic(dto.getPic(), Const.CATEGORY_USER,
                         String.valueOf(dto.getIuser())));
                 ChangeUserDto picdto = new ChangeUserDto();
                 picdto.setChPic(savedPicFileNm);
@@ -168,7 +169,9 @@ public class UserService {
         String path = "/user/" + dto.getIuser();
         myFileUtils.delFolderTrigger(path);
         try {
-            String savedPicFileNm = String.valueOf(myFileUtils.savePic(dto.getPic(), path));
+            String savedPicFileNm = String.valueOf(
+                    myFileUtils.savePic(dto.getPic(), Const.CATEGORY_USER,
+                            String.valueOf(dto.getIuser())));
             dto.setChPic(savedPicFileNm);
         } catch (FileNotContainsDotException e) {
             throw new RuntimeException(e);
