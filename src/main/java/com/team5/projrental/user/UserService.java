@@ -67,6 +67,7 @@ public class UserService {
                         myFileUtils.savePic(dto.getPic(), Const.CATEGORY_USER,
                         String.valueOf(dto.getIuser())));
                 ChangeUserDto picdto = new ChangeUserDto();
+                picdto.setIuser(dto.getIuser());
                 picdto.setChPic(savedPicFileNm);
                 mapper.changeUser(picdto);
             } catch (FileNotContainsDotException e) {
