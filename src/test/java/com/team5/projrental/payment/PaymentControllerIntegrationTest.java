@@ -1,6 +1,7 @@
 package com.team5.projrental.payment;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.team5.projrental.common.exception.BadDivInformationException;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.payment.model.PaymentInsDto;
 import com.team5.projrental.user.model.SigninDto;
@@ -30,6 +31,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class PaymentControllerIntegrationTest {
+    /* TODO: 1/16/24
+        파싱 에러, @Validated 에러 ExceptionResolver 에 추가할것.
+        --by Hyunmin */
 
     @Autowired
     MockMvc mockMvc;
@@ -103,7 +107,62 @@ class PaymentControllerIntegrationTest {
     }
 
     @Test
-    void delPayment() {
+    void delPayment() throws Exception {
+
+
+        assertThatThrownBy(() -> objectMapper.readValue(mockMvc.perform(
+                                MockMvcRequestBuilders.delete("/api/pay/1div=1")
+                                        .header("Authorization",
+                                                this.authValue)
+                        ).andExpect(MockMvcResultMatchers.status().isOk())
+                        .andDo(print())
+                        .andReturn().getResponse().getContentAsString(), ResVo.class)
+        ).isInstanceOf(BadDivInformationException.class);
+
+        assertThat(objectMapper.readValue(mockMvc.perform(
+                        MockMvcRequestBuilders.delete("/api/pay/2div=1")
+                                .header("Authorization",
+                                        this.authValue)
+                ).andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(print())
+                .andReturn().getResponse().getContentAsString(), ResVo.class).getResult()).isEqualTo(-1);
+
+        assertThatThrownBy(() -> objectMapper.readValue(mockMvc.perform(
+                                MockMvcRequestBuilders.delete("/api/pay/3div=1")
+                                        .header("Authorization",
+                                                this.authValue)
+                        ).andExpect(MockMvcResultMatchers.status().isOk())
+                        .andDo(print())
+                        .andReturn().getResponse().getContentAsString(), ResVo.class)
+        ).isInstanceOf(BadDivInformationException.class);
+
+        assertThat(objectMapper.readValue(mockMvc.perform(
+                        MockMvcRequestBuilders.delete("/api/pay/4div=1")
+                                .header("Authorization",
+                                        this.authValue)
+                ).andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(print())
+                .andReturn().getResponse().getContentAsString(), ResVo.class).getResult()).isEqualTo(-1);
+
+        assertThat(objectMapper.readValue(mockMvc.perform(
+                        MockMvcRequestBuilders.delete("/api/pay/5?div=3")
+                                .header("Authorization",
+                                        this.authValue)
+                ).andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(print())
+                .andReturn().getResponse().getContentAsString(), ResVo.class).getResult()).isEqualTo(2);
+
+
+
+
+        assertThat(objectMapper.readValue(mockMvc.perform(
+                        MockMvcRequestBuilders.delete("/api/pay/2?div=2")
+                                .header("Authorization",
+                                        this.authValue)
+                ).andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(print())
+                .andReturn().getResponse().getContentAsString(), ResVo.class).getResult()).isEqualTo(-2);
+
     }
 
     @Test

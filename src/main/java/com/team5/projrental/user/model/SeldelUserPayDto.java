@@ -1,11 +1,14 @@
 package com.team5.projrental.user.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 @Data
 public class SeldelUserPayDto {
-    private int iproduct;
+    private Integer iproduct;
     private int iuser;
+    @JsonIgnore
     private int pistatus;
+    @JsonIgnore
     private int paistatus;
 }
