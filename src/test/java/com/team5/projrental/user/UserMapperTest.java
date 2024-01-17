@@ -24,7 +24,7 @@ public class UserMapperTest {
         dto.setNick("연습중");
         dto.setAddr("111");
         dto.setEmail("test@naver.com");
-        dto.setPic("aa.jpg");
+//        dto.setPic("aa.jpg");
         dto.setRestAddr("11-1");
         dto.setPhone("010-1212-1212");
 
@@ -113,7 +113,7 @@ public class UserMapperTest {
     void changeUser() {
         ChangeUserDto dto = new ChangeUserDto();
         dto.setEmail("mm@naver.com");
-        dto.setPic("변경함");
+//        dto.setPic("변경함");
         dto.setNick("닉닉");
         dto.setPhone("010-0101-0101");
         dto.setIuser(3);
