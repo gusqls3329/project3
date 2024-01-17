@@ -32,10 +32,13 @@
 
 
     <select id="selChatAll">
-        SELECT A.ichat, A.last_msg_at AS lastMsg,
+        SELECT A.ichat,
+        A.last_msg AS lastMsg,
+        A.last_msg_at AS lastMsgAt,
         D.iuser AS otherPersonIuser,
-        D.nm AS otherPersonNm,
-        D.pic AS otherPersonPic
+        D.nick AS otherPersonNm,
+        D.stored_pic AS otherPersonPic,
+        E.stored_pic AS prodPic
         FROM t_chat A
         INNER JOIN t_chat_user B <!--로그인 한 유저-->
         ON A.ichat = B.ichat
@@ -43,6 +46,8 @@
         ON B.ichat = C.ichat
         INNER JOIN t_user D
         ON C.iuser = D.iuser
+        INNER JOIN t_product E
+        ON A.iproduct = E.iproduct
         WHERE B.iuser = #{loginedIuser}
         AND C.iuser != #{loginedIuser}
         ORDER BY A.last_msg_at DESC
@@ -53,7 +58,7 @@
     <select id="selChatMsgAll">
         SELECT
         A.seq, A.msg, A.created_at AS createdAt,
-        B.iuser AS writerIuser, B.pic AS writerPic
+        B.iuser AS writerIuser, B.stored_pic AS writerPic
         FROM t_chat_message A
         INNER JOIN t_user B
         ON A.iuser = B.iuser
@@ -63,10 +68,10 @@
     </select>
 
 
-    <delete id="chatDelMsg">
+    <!--<delete id="chatDelMsg">
         DELETE t_chat_message
         WHERE ichat = #{ichat} AND iuser =#{iuser}
-    </delete>
+    </delete>-->
 
 
     <select id="selChatUserCheck">
@@ -84,8 +89,14 @@
         WHERE ichat = #{ichat}
     </update>
 
-
     <update id="updChatLastMsgAfterDelByLastMsg">
+        UPDATE t_chat_user
+        SET istatus = -1
+        WHERE iuser = #{iuser};
+    </update>
+
+
+    <!--<update id="updChatLastMsgAfterDelByLastMsg">
         UPDATE t_chat A
         INNER JOIN (
         SELECT ichat, msg, created_at AS createdAt
@@ -98,7 +109,7 @@
         SET A.last_msg = B.msg,
         A.last_msg_at = B.created_at
         WHERE A.ichat = #{ichat}
-    </update>
+    </update>-->
 
 
     <select id="selOtherPersonByLoginUser">
@@ -126,6 +137,12 @@
         SELECT iuser, nick, stored_pic AS storedPic
         FROM t_user
         WHERE iuser = #{iuser}
+    </select>
+    
+    <select id="delBeforeChatIstatus">
+        SELECT istatus
+        FROM t_chat_user
+        WHERE ichat = #{ichat} AND iuser != #{loginedIuser};
     </select>
 
 </mapper>

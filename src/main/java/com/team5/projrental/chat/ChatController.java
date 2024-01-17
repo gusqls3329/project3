@@ -3,6 +3,8 @@ package com.team5.projrental.chat;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.chat.model.*;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -20,17 +22,25 @@ public class ChatController {
 
 
     @GetMapping
-    public List<ChatSelVo> getChatAll(@Validated ChatSelDto dto) {
+    public List<ChatSelVo> getChatAll(ChatSelDto dto) {
         return service.getChatAll(dto);
     }
 
     @PostMapping
+    @Operation(summary = "채팅방 생성", description = "빈 채팅방 생성 후 참여 유저 입력")
+    @Parameters(value = {
+            @Parameter(name = "iproduct", description = "제품 PK"),
+            @Parameter(name = "otherPersonIuser", description = "상대유저 PK")})
     public ChatSelVo PostChat(@RequestBody ChatInsDto dto) {
 
         return service.postChat(dto);
     }
 
     @PostMapping("/msg")
+    @Operation(summary = "메세지 작성", description = "채팅메세지 전송")
+    @Parameters(value = {
+            @Parameter(name = "page", description = "페이지"),
+            @Parameter(name = "msg", description = "보낼 메세지")})
     public ResVo postChatMsg(@RequestBody @Validated ChatMsgInsDto dto) {
         return service.postChatMsg(dto);
     }
@@ -39,10 +49,8 @@ public class ChatController {
     @GetMapping("/msg")
     @Operation(summary = "채팅방 입장", description = "채팅방 입장시 모든 내용 출력" +
             "<br>page : 페이지(defoult = 0)" +
-            "<br>ichat : 채팅 방번호" +
-            "<br>row_count : 페이지당 채팅 수(defoult = 20" +
-            "<br>loginedIuser : 로그인한 유저PK")
-    public List<ChatMsgSelVo> getChatMsgAll(@Validated ChatMsgSelDto dto){
+            "<br>ichat : 채팅 방번호")
+    public List<ChatMsgSelVo> getChatMsgAll(ChatMsgSelDto dto){
         log.info("dto : {}", dto);
         return service.getMsgAll(dto);
     }
@@ -50,7 +58,7 @@ public class ChatController {
     @DeleteMapping("/msg")
     @Operation(summary = "채팅방 삭제", description = "istatus = 0: 채팅 중" + "<br>istatus = 1: 삭제됨(숨김)" +
             "<br>ichat : 채팅 방번호PK, seq : 채팅 메세지 PK, iuser : ")
-    public ResVo delChatMsg(@Validated ChatMsgDelDto dto) {
+    public ResVo delChatMsg(ChatMsgDelDto dto) {
         return service.chatDelMsg(dto);
     }
 

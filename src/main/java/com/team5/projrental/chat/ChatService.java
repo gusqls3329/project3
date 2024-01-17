@@ -1,15 +1,18 @@
 package com.team5.projrental.chat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.firebase.ErrorCode;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.chat.model.*;
 import com.team5.projrental.common.security.AuthenticationFacade;
+import com.team5.projrental.common.utils.CommonUtils;
 import com.team5.projrental.user.UserMapper;
 import com.team5.projrental.user.model.UserEntity;
 import com.team5.projrental.user.model.UserSelDto;
+import jakarta.security.auth.message.AuthException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,14 +33,25 @@ public class ChatService {
 
     //채팅 리스트
     public List<ChatSelVo> getChatAll(ChatSelDto dto) {
+
+        int loginUserPk = authenticationFacade.getLoginUserPk();
+        dto.setLoginedIuser(loginUserPk);
         List<ChatSelVo> list = mapper.selChatAll(dto);
         return list;
     }
 
     //
     public ResVo postChatMsg(ChatMsgInsDto dto) {
+
         int loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setLoginedIuser(loginUserPk);
+
+        int istatus = mapper.delBeforeChatIstatus(dto);
+
+
+
+        //상대유저가 나갔을 경우
+        CommonUtils.ifChatUserStatusThrowOrReturn(istatus);
 
         int affectedRows = mapper.insChatMsg(dto);
         if (affectedRows == 1) {
@@ -98,11 +112,9 @@ public class ChatService {
     }
 
     public ResVo chatDelMsg(ChatMsgDelDto dto) {
-        int delAffectedRows = mapper.chatDelMsg(dto);
-        if (delAffectedRows == 1) {
-            int updAffectedRows = mapper.updChatLastMsgAfterDelByLastMsg(dto);
-        }
-        return new ResVo(delAffectedRows);
+        dto.setIuser(authenticationFacade.getLoginUserPk());
+        int updAffectedRows = mapper.updChatLastMsgAfterDelByLastMsg(dto);
+        return new ResVo(updAffectedRows);
     }
 
     // 채팅 입력
