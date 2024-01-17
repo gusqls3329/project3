@@ -31,7 +31,7 @@ public class UserController {
             , @Parameter(name="phone", description = "휴대폰 번호 (형식 : 010-1111-2222)")
             , @Parameter(name="email", description = "이메일 (형식 : aaa@naver.com)")
     })
-    public ResVo postSignup(@RequestBody @Validated UserSignupDto dto) {
+    public ResVo postSignup( @Validated UserSignupDto dto) {
         log.info("dto : {}", dto);
         return new ResVo(service.postSignup(dto));
     }

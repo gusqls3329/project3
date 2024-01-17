@@ -3,6 +3,7 @@ package com.team5.projrental.user;
 import com.team5.projrental.common.Const;
 import com.team5.projrental.common.SecurityProperties;
 import com.team5.projrental.common.exception.BadAddressInfoException;
+import com.team5.projrental.common.exception.checked.FileNotContainsDotException;
 import com.team5.projrental.common.exception.user.BadIdInfoException;
 import com.team5.projrental.common.model.restapi.Addrs;
 import com.team5.projrental.common.utils.AxisGenerator;
@@ -12,6 +13,7 @@ import com.team5.projrental.common.security.AuthenticationFacade;
 import com.team5.projrental.common.security.JwtTokenProvider;
 import com.team5.projrental.common.security.SecurityUserDetails;
 import com.team5.projrental.common.security.model.SecurityPrincipal;
+import com.team5.projrental.common.utils.MyFileUtils;
 import com.team5.projrental.user.model.*;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,26 +40,39 @@ public class UserService {
     private final CookieUtils cookieUtils;
     private final AuthenticationFacade authenticationFacade;
     private final AxisGenerator axisGenerator;
+    private final MyFileUtils myFileUtils;
 
     public int postSignup(UserSignupDto dto) {
 
-            String hashedPw = passwordEncoder.encode(dto.getUpw());
-            dto.setUpw(hashedPw);
-            // 대구 달서구 용산1동 -> x: xxx.xxxxx y: xx.xxxxx address_name: 대구 달서구 용산1동
+        String hashedPw = passwordEncoder.encode(dto.getUpw());
+        dto.setUpw(hashedPw);
+        // 대구 달서구 용산1동 -> x: xxx.xxxxx y: xx.xxxxx address_name: 대구 달서구 용산1동
 
-            Addrs addrs = axisGenerator.getAxis(dto.getAddr());
-            CommonUtils.ifAnyNullThrow(BadAddressInfoException.class, BAD_ADDRESS_INFO_EX_MESSAGE,
-                    addrs, addrs.getAddress_name(), addrs.getX(), addrs.getY());
-            dto.setX(Double.parseDouble(addrs.getX()));
-            dto.setY(Double.parseDouble(addrs.getY()));
-            dto.setAddr(addrs.getAddress_name());
+        Addrs addrs = axisGenerator.getAxis(dto.getAddr());
+        CommonUtils.ifAnyNullThrow(BadAddressInfoException.class, BAD_ADDRESS_INFO_EX_MESSAGE,
+                addrs, addrs.getAddress_name(), addrs.getX(), addrs.getY());
+        dto.setX(Double.parseDouble(addrs.getX()));
+        dto.setY(Double.parseDouble(addrs.getY()));
+        dto.setAddr(addrs.getAddress_name());
 
-            int result = mapper.insUser(dto);
-            log.debug("dto : {}", dto);
-            if (result == 1) {
-                return Const.SUCCESS;
-            }
-            return Const.FAIL;
+        int result = mapper.insUser(dto);
+        log.debug("dto : {}", dto);
+        if (result == 1) {
+            return Const.SUCCESS;
+        }
+
+
+        String path = "/user/" + dto.getIuser();
+        myFileUtils.delFolderTrigger(path);
+        try {
+            String savedPicFileNm = String.valueOf(myFileUtils.savePic(dto.getPic(), path));
+            dto.setChPic(savedPicFileNm);
+        } catch (FileNotContainsDotException e) {
+            throw new RuntimeException(e);
+        }
+        int result = mapper.changeUser(dto);
+
+        return Const.FAIL;
     }
 
 
@@ -140,14 +155,24 @@ public class UserService {
         int loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setIuser(loginUserPk);
 
-        if (dto.getAddr() != null && dto.getAddr() != "") {
-            Addrs addrs = axisGenerator.getAxis(dto.getAddr());
-            CommonUtils.ifAnyNullThrow(BadAddressInfoException.class, BAD_ADDRESS_INFO_EX_MESSAGE,
-                    addrs, addrs.getAddress_name(), addrs.getX(), addrs.getY());
-            dto.setX(Double.parseDouble(addrs.getX()));
-            dto.setY(Double.parseDouble(addrs.getY()));
-            dto.setAddr(addrs.getAddress_name());
+
+        Addrs addrs = axisGenerator.getAxis(dto.getAddr());
+        CommonUtils.ifAnyNullThrow(BadAddressInfoException.class, BAD_ADDRESS_INFO_EX_MESSAGE,
+                addrs, addrs.getAddress_name(), addrs.getX(), addrs.getY());
+        dto.setX(Double.parseDouble(addrs.getX()));
+        dto.setY(Double.parseDouble(addrs.getY()));
+        dto.setAddr(addrs.getAddress_name());
+
+
+        String path = "/user/" + dto.getIuser();
+        myFileUtils.delFolderTrigger(path);
+        try {
+            String savedPicFileNm = String.valueOf(myFileUtils.savePic(dto.getPic(), path));
+            dto.setChPic(savedPicFileNm);
+        } catch (FileNotContainsDotException e) {
+            throw new RuntimeException(e);
         }
+
 
         String hashedPw = BCrypt.hashpw(dto.getUpw(), BCrypt.gensalt());
         dto.setUpw(hashedPw);
@@ -182,7 +207,7 @@ public class UserService {
 
                 for (SeldelUserPayDto list : payDtos) {
                     for (Integer iproductsss : iproduct) {
-                        if (list.getIproduct() != iproductsss){
+                        if (list.getIproduct() != iproductsss) {
                             return Const.FAIL;
                         }
                     }
@@ -203,9 +228,9 @@ public class UserService {
     }
 
     public SelUserVo getUser(Integer iuser) {
-        if (iuser == null || iuser == 0 ) { //내가 아닐때.
+        if (iuser == null || iuser == 0) { //내가 아닐때.
             int loginUserPk = authenticationFacade.getLoginUserPk();
-            SelUserVo vo1 =  mapper.selUser(loginUserPk);
+            SelUserVo vo1 = mapper.selUser(loginUserPk);
             return vo1;
         }
         SelUserVo vo2 = mapper.selUser(iuser);

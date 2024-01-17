@@ -8,10 +8,6 @@
         , uid = #{uid}
         , upw = #{upw}
         , nick = #{nick}
-        <if test=" pic != null and pic != '' ">
-            , stored_pic = #{pic}
-            , request_pic = #{pic}
-        </if>
         , phone = #{phone}
         , email = #{email}
         , y = #{y}
@@ -54,8 +50,8 @@
             <if test="nick != null and nick != '' ">
                 nick =#{nick}
             </if>
-            <if test="pic != null and pic != '' ">
-                ,stored_pic =#{pic}
+            <if test="chPic != null and chPic != '' ">
+                ,stored_pic =#{chPic}
             </if>
             <if test="upw != null and upw != '' ">
                 ,upw =#{upw}
