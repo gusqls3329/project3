@@ -22,6 +22,9 @@ public interface UserMapper {
     int delUserPorc(int iuser);
 
     SelUserVo selUser(int iuser);
+    Integer selpatchUser(int iuser);
 
-    List<Integer> patchUser(int iuser);
+    Integer checkUserUid(String dto);
+    Integer checkUserNick(String dto);
+
 }
