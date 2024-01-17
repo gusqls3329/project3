@@ -35,9 +35,7 @@ public class MyFileUtils {
             throw new FileNotContainsDotException();
         }
         String storeName = generateRandomFileName(multipartFile.getOriginalFilename()); //aegeg.jpg
-        String addedPath = generateStoredPath(category, pk);
-        File packagePath = new File(addedPath); // basePackage + category + pk
-
+        File packagePath = new File(generateStoredPath(category, pk)); // basePackage + category + pk
         File file = new File(packagePath, storeName);
 
         if (!packagePath.exists()) {
