@@ -9,10 +9,13 @@ public interface ErrorMessage {
     String ILLEGAL_PRODUCT_PICS_EX_MESSAGE = "메인사진을 제외한 사진은 9개 이하여야 합니다.";
     String ILLEGAL_CATEGORY_EX_MESSAGE = "잘못된 카테고리 입니다.";
     String ILLEGAL_PAYMENT_EX_MESSAGE = "잘못된 결제수단 입니다.";
+    String ILLEGAL_RANGE_EX_MESSAGE = "잘못된 범위의 값을 입력하셨습니다.";
     //
     String BUY_DATE_MUST_BE_LATER_THAN_TODAY_EX_MESSAGE = "구매일은 오늘보다 같거나 이전이어야 합니다.";
     String RENTAL_DATE_MUST_BE_BEFORE_THAN_TODAY_EX_MESSAGE = "대여 시작일은 오늘보다 같거나 이후어야 합니다.";
     String RENTAL_END_DATE_MUST_BE_AFTER_THAN_RENTAL_START_DATE_EX_MESSAGE = "대여 종료일은 대여 시작일 보다 같거나 이후어야합니다.";
+    String CAN_NOT_BLANK_EX_MESSAGE = "필수값이 제공되지 않았습니다.";
+    String AUTHENTICATION_FAIL_EX_MESSAGE = "인증에 실패하였습니다.";
     //
     String NO_SUCH_USER_EX_MESSAGE = "잘못된 유저 정보 입니다.";
     String NO_SUCH_PRODUCT_EX_MESSAGE = "조회된 상품이 없습니다.";
