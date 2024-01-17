@@ -1,6 +1,6 @@
 package com.team5.projrental.common.exception.base;
 
-import com.team5.projrental.common.utils.ErrorCode;
+import com.team5.projrental.common.exception.ErrorCode;
 
 import java.util.Arrays;
 

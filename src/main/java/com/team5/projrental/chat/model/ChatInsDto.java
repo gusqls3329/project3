@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.Length;
 @Data
 public class ChatInsDto {
 
+    @JsonIgnore
     private int ichat;
 
     private int iproduct;
