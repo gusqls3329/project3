@@ -104,7 +104,7 @@
     <select id="selOtherPersonByLoginUser">
         SELECT
         B.iuser,
-        B.pic,
+        B.stored_pic AS storedPic,
         B.firebase_token AS firebaseToken
         FROM t_chat_user A
         INNER JOIN t_user B
