@@ -35,11 +35,12 @@ public class MyFileUtils {
             throw new FileNotContainsDotException();
         }
         String storeName = generateRandomFileName(multipartFile.getOriginalFilename()); //aegeg.jpg
-        String packagePath = generateStoredPath(category, pk); // basePackage + category + pk
+        String addedPath = generateStoredPath(category, pk);
+        File packagePath = new File(addedPath); // basePackage + category + pk
 
         File file = new File(packagePath, storeName);
 
-        if (!file.exists()) {
+        if (!packagePath.exists()) {
             file.mkdirs();
         }
         try {
@@ -47,7 +48,7 @@ public class MyFileUtils {
         } catch (IOException e) {
             throw new WrapRuntimeException(SERVER_ERR_MESSAGE);
         }
-        return Paths.get(packagePath, storeName).toString();
+        return storeName;
     }
 
     // 파일 업로드 배운 후 완성시킬 예정.
