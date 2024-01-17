@@ -203,13 +203,13 @@
                 , contents = #{contents}
             </if>
             <if test="storedMainPic != null">
-                , stored_pic = #{storedMainPic.storedPic}, request_pic = #{storedMainPic.requestPic}
+                , stored_pic = #{storedMainPic}
             </if>
             <if test="price != null">
                 , price = #{price}
             </if>
             <if test="rentalPrice != null">
-                , rental_price = #{rental_price}
+                , rental_price = #{rentalPrice}
             </if>
             <if test="deposit != null">
                 , deposit = #{deposit}
