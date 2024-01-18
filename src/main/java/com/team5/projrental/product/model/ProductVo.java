@@ -3,6 +3,7 @@ package com.team5.projrental.product.model;
 
 import com.team5.projrental.product.model.innermodel.PicSet;
 import com.team5.projrental.product.model.proc.GetProductResultDto;
+import com.team5.projrental.product.model.review.ReviewResultVo;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,6 +22,8 @@ public class ProductVo extends ProductListVo{
     private LocalDate buyDate;
     private Double x;
     private Double y;
+    private Integer isLiked;
+    private List<ReviewResultVo> reviews;
 
     public ProductVo(GetProductResultDto dto) {
         super(dto);

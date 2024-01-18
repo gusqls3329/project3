@@ -66,5 +66,5 @@ public interface ProductMapper {
 
     int checkIproduct(Integer iproduct);
 
-    ReviewResultVo getReview(ReviewGetDto dto);
+    List<ReviewResultVo> getReview(ReviewGetDto dto);
 }

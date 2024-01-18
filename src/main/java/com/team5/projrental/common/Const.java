@@ -40,6 +40,11 @@ public interface Const {
     int FAIL = 0;
     int CATEGORY_COUNT = 22;
     int DEL_I_STATUS = -1;
+    /* TODO: 1/18/24
+        해당 부분 프론트와 대화 협의 필요
+        --by Hyunmin */
+    int inProductReviewPerPage = 4;
+    int totalReviewPerPage = 10;
     //
 
     /*

@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class ReviewGetDto {
     private Integer iproduct;
     private Integer page;
+    private Integer prodPerPage;
 }
