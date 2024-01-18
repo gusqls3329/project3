@@ -76,7 +76,6 @@ public class ChatService {
                 pushVo.setCreatedAt(createdAt);
 
                 String body = objectMapper.writeValueAsString(pushVo);
-                log.info("body: {}", body);
 
                 Notification noti = Notification.builder()
                         .setTitle("chat") // 제목각성, 프론트에서 쓰는 분기용
@@ -96,8 +95,8 @@ public class ChatService {
                 // 스레드 - 동작단위 (게임 예 : 총게임에 캐릭터 한명한명)
                 // 메인스레드는 통신하지 말것
 
-                FirebaseMessaging fm = FirebaseMessaging.getInstance(); // 싱글톤
-                fm.sendAsync(message);
+                // FirebaseMessaging fm = FirebaseMessaging.getInstance(); // 싱글톤
+                // fm.sendAsync(message);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -121,7 +120,7 @@ public class ChatService {
     // 채팅 입력
     public ChatSelVo postChat(ChatInsDto dto) {
         Integer isExixtChat = mapper.selChatUserCheck(dto);
-        log.info("dto: {}", dto);
+
         if (isExixtChat != null) {
             return null;
         }
