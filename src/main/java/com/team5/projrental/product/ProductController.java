@@ -131,7 +131,7 @@ public class ProductController {
                              @RequestPart
                              List<MultipartFile> pics,
                              @Validated
-                             @RequestBody
+                             @RequestPart
                              ProductInsDto dto) {
         dto.setMainPic(mainPic);
         dto.setPics(pics);
