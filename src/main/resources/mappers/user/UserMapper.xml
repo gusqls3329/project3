@@ -109,6 +109,17 @@
         where iuser = #{iuser}
     </delete>
 
+<!--    채팅 개수 가져오기 -> 채팅 개수가 1이상일 경우만 수행,
+                            채팅 삭제 개수가 채팅 개수와 동일하지 않으면 예외 발생-->
+    <select id="getUserChatCount">
+        select count(ichat) from t_chat_user where iuser = #{iuser}
+    </select>
+<!--    -->
+<!--    채팅 삭제 (-1 인 곳만)-->
+    <delete id="delUserChat">
+        delete from t_chat_user where iuser = #{iuser} and istatus = -1
+    </delete>
+<!--    -->
     <select id="selUser">
         SELECT y, x, nick, stored_pic, phone, email, raiting, CONCAT_WS(addr, rest_addr)
         FROM t_user

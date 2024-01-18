@@ -13,6 +13,7 @@ import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.checkerframework.checker.regex.qual.Regex;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -53,7 +54,9 @@ public class ProductController {
     public List<ProductListVo> getProductList(@RequestParam(required = false)
                                               @Range(min = 1, max = 2, message = BAD_SORT_EX_MESSAGE)
                                               Integer sort,
-                                              @RequestParam(required = false) String search,
+                                              @RequestParam(required = false)
+                                              @Length(min = 2, message = ILLEGAL_RANGE_EX_MESSAGE)
+                                              String search,
                                               @RequestParam @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
                                               @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
                                               Integer page,
@@ -170,7 +173,7 @@ public class ProductController {
     @PutMapping
     public ResVo putProduct(@RequestPart(required = false) MultipartFile mainPic,
                             @RequestPart(required = false) List<MultipartFile> pics,
-            @Validated @RequestPart ProductUpdDto dto) {
+                            @Validated @RequestPart ProductUpdDto dto) {
 
         return productService.putProduct(mainPic, pics, dto);
     }
