@@ -175,7 +175,7 @@ public class ProductService {
 
                 // 사진은 완전히 따로 저장해야함 (useGeneratedKey)
                 // 프로필 사진 저장
-                if (mainPic != null && !mainPic.isEmpty()) {
+                if (mainPic != null) {
                     productRepository.updateProduct(ProductUpdDto.builder()
                             .storedMainPic(
                                     myFileUtils.savePic(
