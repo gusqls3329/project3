@@ -36,3 +36,5 @@ server:
 
 file:
   base-package: D:/projrental/download/pics/
+#  docker only
+#  base-package: /C:/Users/even_last_5/resources/download/pics/
