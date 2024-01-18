@@ -124,11 +124,13 @@ public class ProductService {
      * @return ResVo
      */
     @Transactional
-    public ResVo postProduct(ProductInsDto dto) {
+    public ResVo postProduct(MultipartFile mainPic, List<MultipartFile> pics, ProductInsDto dto) {
         /* TODO: 2024-01-10
             security 적용시 모든 iuser 가 있는부분 로직 변경, 모델 변경 해야함.
             --by Hyunmin */
 
+        if (mainPic != null) dto.setMainPic(mainPic);
+        if (pics != null) dto.setPics(pics);
 
         // 사진 개수 검증 - 예외 코드, 메시지 를 위해 직접 검증 (!@Validated)
         if (dto.getPics() != null) {
@@ -167,7 +169,7 @@ public class ProductService {
 
 
             if (productRepository.saveProduct(insProdBasicInfoDto) == 1) {
-                if (!dto.getPics().isEmpty()) {
+                if (dto.getPics() != null && !dto.getPics().isEmpty()) {
                     insProdBasicInfoDto.setStoredPic(myFileUtils.savePic(dto.getMainPic(), CATEGORY_PRODUCT_MAIN,
                             String.valueOf(insProdBasicInfoDto.getIproduct())));
                     // pics 에 insert 할 객체
@@ -192,8 +194,8 @@ public class ProductService {
      */
     @Transactional
     public ResVo putProduct(MultipartFile mainPic, List<MultipartFile> pics, ProductUpdDto dto) {
-        if(mainPic != null) dto.setMainPic(mainPic);
-        if(pics != null) dto.setPics(pics);
+        if (mainPic != null) dto.setMainPic(mainPic);
+        if (pics != null) dto.setPics(pics);
 
         // 수정할 모든 데이터가 null 이면 예외
         CommonUtils.ifAllNullThrow(BadInformationException.class, ALL_INFO_NOT_EXISTS_EX_MESSAGE,
