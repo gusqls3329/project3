@@ -38,9 +38,7 @@ public class UserControllerTest {
     void postSignup() throws Exception {
         ResVo result = new ResVo(2);
         UserSignupDto dto = new UserSignupDto();
-        String pic = "test.jpg";
-        given(service.postSignup(any())).willReturn(2);
-
+        given(service.postSignup(any())).willReturn(result.getResult());
 
         mvc.perform(
                         MockMvcRequestBuilders
