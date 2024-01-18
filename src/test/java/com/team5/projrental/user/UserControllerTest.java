@@ -77,7 +77,6 @@ public class UserControllerTest {
     @Test
     void getUSer () throws Exception {
         SelUserVo vo = new SelUserVo();
-        vo.setX(23);
         given(service.getUser(any())).willReturn(vo);
         verify(service).postSignup(any());
     }
