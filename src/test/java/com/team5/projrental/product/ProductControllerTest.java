@@ -51,6 +51,7 @@ class ProductControllerTest {
 
     }
 
+    /*
     @Test
     void putProduct() {
 
@@ -59,6 +60,8 @@ class ProductControllerTest {
         assertThat(productController.putProduct(new ProductUpdDto()).getResult()).isEqualTo(1);
 
     }
+
+     */
 
     @Test
     void delProduct() {

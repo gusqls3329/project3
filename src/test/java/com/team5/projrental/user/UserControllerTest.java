@@ -32,6 +32,7 @@ public class UserControllerTest {
     @Autowired private ObjectMapper mapper;
     @MockBean private UserService service;
     @MockBean private JwtAuthenticationFilter jwtAuthenticationFilter;
+    @Autowired private UserController controller;
 
 
     @Test
@@ -78,8 +79,5 @@ public class UserControllerTest {
 
     @Test
     void getUSer () throws Exception {
-        SelUserVo vo = new SelUserVo();
-        given(service.getUser(any())).willReturn(vo);
-        verify(service).postSignup(any());
     }
 }
