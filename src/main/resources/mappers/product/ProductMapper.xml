@@ -264,6 +264,7 @@
         JOIN t_review R ON PA.ipayment = R.ipayment
         JOIN t_user U ON U.iuser = R.ibuyer
         where PP.iproduct = #{iproduct} and PA.istatus != -1 and PA.istatus != -2
+            and R.contents is not null and R.rating is not null
         <if test="page != null and prodPerPage != null">
         limit #{page}, #{prodPerPage}
         </if>

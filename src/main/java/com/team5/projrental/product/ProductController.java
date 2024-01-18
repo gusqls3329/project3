@@ -45,8 +45,18 @@ public class ProductController {
                     "[v] page: 페이징" +
                     "<br><br>" +
                     "성공시:<br>" +
-                    "[nick, userPic, iproduct, title, prodPic, rentalPrice, rentalStartDate, rentalEndDate, addr(rest_addr 까지 " +
-                    "포함), prodLike(제품의 좋아요 수)] (배열)" +
+                    "[<br>" +
+                    "  nick<br> " +
+                    "  userPic<br>" +
+                    "  iproduct<br> " +
+                    "  title<br> " +
+                    "  prodPic<br> " +
+                    "  rentalPrice<br> " +
+                    "  rentalStartDate<br>" +
+                    "  rentalEndDate<br> " +
+                    "  addr(rest_addr 까지 포함)<br> " +
+                    "  prodLike(제품의 좋아요 수)" +
+                    "] (배열)" +
                     "<br><br>" +
                     "실패시:<br>" +
                     "message: 에러 발생 사유<br>errorCode: 에러 코드")
@@ -77,9 +87,23 @@ public class ProductController {
                     "[v] icategory: 조회할 상품의 카테고리<br>" +
                     "[v] iproduct: 조회할 상품의 iproduct 값 (getProductList 에서 제공됨)<br><br>" +
                     "성공시:<br>" +
-                    "iuser(판매자의), nick(판매자의), userPic(판매자의), title, contents, mainPic, pics(배열), deposit, " +
-                    "buyDate, rentalStartDate, rentalEndDate, addr (rest_addr 까지 포함), prodLike, x, y" +
-                    "<br><br>" +
+                    "iuser(판매자의)<br> " +
+                    "nick(판매자의)<br> " +
+                    "userPic(판매자의)<br> " +
+                    "title<br> " +
+                    "contents<br> " +
+                    "mainPic<br> " +
+                    "pics(배열)<br> " +
+                    "deposit<br> " +
+                    "buyDate<br> " +
+                    "rentalStartDate<br> " +
+                    "rentalEndDate<br> " +
+                    "addr (rest_addr 까지 포함)<br> " +
+                    "prodLike<br> " +
+                    "x<br> " +
+                    "y<br> " +
+                    "isLiked(로그인한 유저가 좋아요를 눌렀는지 여부 - 0: 누르지 않음, 1: 누름<br> " +
+                    "reviews: 해당 제품에 작성된 리뷰<br><br>" +
                     "실패시: <br>" +
                     "message: 에러 발생 사유<br>errorCode: 에러 코드")
     @Validated
@@ -206,8 +230,18 @@ public class ProductController {
                     "[v] page: 페이징" +
                     "<br><br>" +
                     "성공시: <br>" +
-                    "nick, userPic, iproduct, category, title, prodPic, rentalPrice, rentalStartDate, " +
-                    "rentalEndDate, addr (rest_addr 까지 포함) (배열) <br><br>" +
+                    "[<br>" +
+                    "  nick<br> " +
+                    "  userPic<br> " +
+                    "  iproduct<br> " +
+                    "  category<br> " +
+                    "  title<br> " +
+                    "  prodPic<br> " +
+                    "  rentalPrice<br> " +
+                    "  rentalStartDate<br> " +
+                    "  rentalEndDate<br> " +
+                    "  addr (rest_addr 까지 포함)" +
+                    "] (배열) <br><br>" +
                     "실패시: <br>" +
                     "message: 에러 발생 사유<br>errorCode: 에러 코드")
     @Validated
@@ -220,6 +254,17 @@ public class ProductController {
 
     }
 
+    @Operation(summary = "<strong>해당 제품에 작성된 모든 리뷰</strong><br>",
+    description = "성공시:<br>" +
+            "[<br>" +
+            "  ireview: 리뷰의 PK<br>" +
+            "  contents: 리뷰 내용<br>" +
+            "  rating: 평가한 별점 (0~5)<br>" +
+            "  iuser: 리뷰를 작성한 유저의 PK<br>" +
+            "  nick: 리뷰를 작성한 유저의 닉네임<br>" +
+            "  profPic: 리뷰를 작성한 유저의 사진<br><br>" +
+            "실패시:<br>" +
+            "message: 에러 발생 사유<br>errorCode: 에러 코드")
     @Validated
     @GetMapping("/review/{iproduct}?page=")
     public List<ReviewResultVo> getAllReviews(@PathVariable
