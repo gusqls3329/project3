@@ -1,10 +1,17 @@
 package com.team5.projrental.user;
 
+import com.team5.projrental.common.SecurityProperties;
+import com.team5.projrental.common.security.AuthenticationFacade;
+import com.team5.projrental.common.security.JwtTokenProvider;
+import com.team5.projrental.common.utils.AxisGenerator;
+import com.team5.projrental.common.utils.CookieUtils;
+import com.team5.projrental.common.utils.MyFileUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -17,7 +24,20 @@ import static org.mockito.Mockito.when;
 public class UserServiceTest {
     @MockBean
     private UserMapper mapper;
-
+    @MockBean
+    private PasswordEncoder passwordEncoder;
+    @MockBean
+    private JwtTokenProvider jwtTokenProvider;
+    @MockBean
+    private SecurityProperties securityProperties;
+    @MockBean
+    private CookieUtils cookieUtils;
+    @MockBean
+    private AuthenticationFacade authenticationFacade;
+    @MockBean
+    private AxisGenerator axisGenerator;
+    @MockBean
+    private MyFileUtils myFileUtils;
     @Autowired
     private UserService service;
 
