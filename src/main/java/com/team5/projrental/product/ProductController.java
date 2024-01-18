@@ -15,6 +15,7 @@ import org.checkerframework.checker.regex.qual.Regex;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -122,9 +123,21 @@ public class ProductController {
                     "<br><br>" +
                     "실패시:<br>" +
                     "message: 에러 발생 사유<br>errorCode: 에러 코드")
+    @Validated
     @PostMapping
-    public ResVo postProduct(@Validated @RequestBody ProductInsDto dto) {
+    public ResVo postProduct(@RequestPart
+                             @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
+                             MultipartFile mainPic,
+                             @RequestPart
+                             List<MultipartFile> pics,
+                             @Validated
+                             @RequestBody
+                             ProductInsDto dto) {
+        dto.setMainPic(mainPic);
+        dto.setPics(pics);
         return productService.postProduct(dto);
+
+
     }
 
     @Operation(summary = "특정 제품 수정",

@@ -9,6 +9,7 @@ import com.team5.projrental.common.model.ErrorResultVo;
 import com.team5.projrental.common.exception.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
@@ -84,6 +85,21 @@ public class ExceptionResolver {
                         .message(e.getMessage()).build());
     }
 
+    @ExceptionHandler
+    public ResponseEntity<ErrorResultVo> resolve(MethodArgumentNotValidException eBase) {
+        StringBuilder sb = new StringBuilder();
+        eBase.getAllErrors().forEach(e1 -> {
+            sb.append(e1.getDefaultMessage());
+            log.warn("error message = {}", e1);
+        });
+        String errorMessage = sb.toString();
+        int errorCode = Arrays.stream(ErrorCode.values()).filter(e -> e.getMessage().equals(errorMessage)).findFirst()
+                .orElse(ErrorCode.SERVER_ERR_MESSAGE).getCode();
+        return ResponseEntity.status(errorCode)
+                .body(ErrorResultVo.builder().errorCode(errorCode)
+//                        .message(e.getErrorCode().getMessage()).build());
+                        .message(errorMessage).build());
+    }
 
     // 500
     @ExceptionHandler

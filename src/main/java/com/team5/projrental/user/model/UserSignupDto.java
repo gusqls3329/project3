@@ -37,6 +37,7 @@ public class UserSignupDto {
     @Length(max = 20, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private String nick;
 
+    @JsonIgnore
     private MultipartFile pic;
 
     @NotBlank(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
