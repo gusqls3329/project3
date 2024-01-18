@@ -2,6 +2,8 @@ package com.team5.projrental.product;
 
 import com.team5.projrental.product.model.ProductUpdDto;
 import com.team5.projrental.product.model.proc.*;
+import com.team5.projrental.product.model.review.ReviewGetDto;
+import com.team5.projrental.product.model.review.ReviewResultVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -83,6 +85,10 @@ public class ProductRepository {
 
     public int updateProductStatus(DelProductBaseDto delProductBaseDto) {
         return productMapper.changeProdStatus(delProductBaseDto);
+    }
+
+    public ReviewResultVo getReview(ReviewGetDto dto) {
+        return productMapper.getReview(dto);
     }
 
 

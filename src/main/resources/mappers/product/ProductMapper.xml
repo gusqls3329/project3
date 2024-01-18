@@ -261,5 +261,14 @@
         update t_product set ipayment = #{ipayment} where iproduct = #{iproduct}
     </update>
 
+    <select id="getReview">
+        select R.ireview, R.contents, R.rating, U.nick, U.stored_pic
+        from t_product_payment PP
+        JOIN t_payment PA ON PP.ipayment = PA.ipayment
+        JOIN t_review R ON PA.ipayment = R.ipayment
+        JOIN t_user U ON U.iuser = R.ibuyer
+        where PP.iproduct = #{iproduct}
+        limit #{page}, #{prodPerPage}
+    </select>
 
 </mapper>

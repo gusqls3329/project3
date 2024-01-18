@@ -2,6 +2,8 @@ package com.team5.projrental.product;
 
 import com.team5.projrental.product.model.ProductUpdDto;
 import com.team5.projrental.product.model.proc.*;
+import com.team5.projrental.product.model.review.ReviewGetDto;
+import com.team5.projrental.product.model.review.ReviewResultVo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -63,4 +65,6 @@ public interface ProductMapper {
     int changeProdStatus(DelProductBaseDto delProductBaseDto);
 
     int checkIproduct(Integer iproduct);
+
+    ReviewResultVo getReview(ReviewGetDto dto);
 }

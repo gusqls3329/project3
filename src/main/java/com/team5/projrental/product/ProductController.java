@@ -70,9 +70,6 @@ public class ProductController {
 
     //
 
-    /* TODO: 1/17/24
-        로그인한 유저가 해당 제품을 좋아요 했는지 여부 체크하는 데이터도 리턴에 추가해야함.
-        --by Hyunmin */
     @Operation(summary = "특정 상품 상세 조회",
             description = "<strong>특정 상품의 상세페이지 조회</strong><br>" +
                     "[ [v] : 필수값]<br>" +

@@ -3,10 +3,7 @@ package com.team5.projrental.product;
 import com.team5.projrental.common.Const;
 import com.team5.projrental.common.aop.anno.CountView;
 import com.team5.projrental.common.exception.*;
-import com.team5.projrental.common.exception.base.BadDateInfoException;
-import com.team5.projrental.common.exception.base.BadInformationException;
-import com.team5.projrental.common.exception.base.BadProductInfoException;
-import com.team5.projrental.common.exception.base.WrapRuntimeException;
+import com.team5.projrental.common.exception.base.*;
 import com.team5.projrental.common.exception.checked.FileNotContainsDotException;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.model.restapi.Addrs;
@@ -18,6 +15,8 @@ import com.team5.projrental.product.model.innermodel.PicSet;
 import com.team5.projrental.product.model.innermodel.StoredFileInfo;
 import com.team5.projrental.product.model.proc.*;
 import com.team5.projrental.common.security.AuthenticationFacade;
+import com.team5.projrental.product.model.review.ReviewGetDto;
+import com.team5.projrental.product.model.review.ReviewResultVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -66,6 +65,7 @@ public class ProductService {
         // sort 검증
         if (sort != null && sort != 1 && sort != 2) throw new BadInformationException(BAD_SORT_EX_MESSAGE);
         // 카테고리 검증
+        // search 의 length 가 2 이상으로 validated 되었으므로 문제 없음.
         GetProductListDto getProductListDto = new GetProductListDto(sort, search, icategory, page);
         List<GetProductListResultDto> products = productRepository.findProductListBy(getProductListDto);
         // 결과물 없음 여부 체크
@@ -174,7 +174,7 @@ public class ProductService {
 
                 // 사진은 완전히 따로 저장해야함 (useGeneratedKey)
                 // 프로필 사진 저장
-                if (mainPic != null && !mainPic.isEmpty()) {
+                if (mainPic != null) {
                     productRepository.updateProduct(ProductUpdDto.builder()
                             .storedMainPic(
                                     myFileUtils.savePic(
@@ -373,25 +373,17 @@ public class ProductService {
     }
 
 
-
-
-
-
-
-
-
     /*
-        ------- Extracted Method -------
+        ------- Inner Methods -------
      */
 
-
-//    private Integer checkAddrInDb(String addr) {
-//        List<Integer> addrBy = productRepository.findAddrBy(CommonUtils.subEupmyun(addr));
-//        if (addrBy.isEmpty()) throw new BadAddressInfoException(BAD_ADDRESS_INFO_EX_MESSAGE);
-//        CommonUtils.checkSizeIfOverLimitNumThrow(BadAddressInfoException.class, BAD_ADDRESS_INFO_EX_MESSAGE,
-//                addrBy.stream(), 1);
-//        return addrBy.get(0);
-//    }
+    // todo 해당 메소드 사용해서 리뷰 가져올 예정
+    //  (제품에 포함된 리뷰 & 전체 리뷰 모두 해당 메소드를 사용, 파라미터로 분기)
+    private ReviewResultVo getReview(Integer iproduct, Integer page, Integer reviewPerPage) {
+        CommonUtils.ifAnyNullThrow(NotEnoughInfoException.class, CAN_NOT_BLANK_EX_MESSAGE,
+                iproduct, page, reviewPerPage);
+        return productRepository.getReview(new ReviewGetDto(iproduct, (page - 1) * reviewPerPage));
+    }
 
 
 }
