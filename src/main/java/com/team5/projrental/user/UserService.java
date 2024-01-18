@@ -4,10 +4,7 @@ import com.team5.projrental.common.Const;
 import com.team5.projrental.common.SecurityProperties;
 import com.team5.projrental.common.exception.BadAddressInfoException;
 import com.team5.projrental.common.exception.RestApiException;
-import com.team5.projrental.common.exception.base.BadDateInfoException;
-import com.team5.projrental.common.exception.base.BadInformationException;
-import com.team5.projrental.common.exception.base.NoSuchDataException;
-import com.team5.projrental.common.exception.base.WrapRuntimeException;
+import com.team5.projrental.common.exception.base.*;
 import com.team5.projrental.common.exception.checked.FileNotContainsDotException;
 import com.team5.projrental.common.exception.user.BadIdInfoException;
 import com.team5.projrental.common.model.ResVo;
@@ -102,11 +99,11 @@ public class UserService {
         SecurityPrincipal principal = SecurityPrincipal.builder().iuser(entity.getIuser()).build();
         String at = jwtTokenProvider.generateAccessToken(principal);
         String rt = jwtTokenProvider.generateRefreshToken(principal);
-
-        int rtCookieMaxAge = (int) (securityProperties.getJwt().getRefreshTokenExpiry() / 1000);
-        cookieUtils.deleteCookie(res, "rt");
-        cookieUtils.setCookie(res, "rt", rt, rtCookieMaxAge);
-
+        if(res != null) {
+            int rtCookieMaxAge = (int) (securityProperties.getJwt().getRefreshTokenExpiry() / 1000);
+            cookieUtils.deleteCookie(res, "rt");
+            cookieUtils.setCookie(res, "rt", rt, rtCookieMaxAge);
+        }
         return SigninVo.builder()
                 .result(String.valueOf(Const.SUCCESS))
                 .iuser(entity.getIuser())
@@ -222,8 +219,14 @@ public class UserService {
             boolean checkPw = BCrypt.checkpw(dto.getUpw(), hashedPw);
             if (checkPw) {
                 if (check != 0 || check != null) {
-                    return -1;
+                    throw new IllegalException(CAN_NOT_DEL_USER_EX_MESSAGE);
                 } else {
+                    // 채팅 개수 가져오기 && 채팅 삭제
+                    if(!mapper.getUserChatCount(loginUserPk).equals(mapper.delUserChat(loginUserPk))){
+                        throw new IllegalException(CAN_NOT_DEL_USER_EX_MESSAGE);
+                    }
+
+
                     List<SeldelUserPayDto> payDtos = mapper.seldelUserPay(entity.getIuser());
 
                     for (SeldelUserPayDto list : payDtos) {

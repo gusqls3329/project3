@@ -27,4 +27,8 @@ public interface UserMapper {
     Integer checkUserUid(String dto);
     Integer checkUserNick(String dto);
 
+    // 채팅 삭제 관련
+    Integer getUserChatCount(Integer iuser);
+
+    Integer delUserChat(Integer iuser);
 }
