@@ -1,5 +1,6 @@
 package com.team5.projrental.product;
 
+import com.team5.projrental.common.Const;
 import com.team5.projrental.common.aop.anno.CountView;
 import com.team5.projrental.common.exception.*;
 import com.team5.projrental.common.exception.base.BadDateInfoException;
@@ -124,16 +125,20 @@ public class ProductService {
      * @return ResVo
      */
     @Transactional
-    public ResVo postProduct(ProductInsDto dto) {
+    public ResVo postProduct(MultipartFile mainPic, List<MultipartFile> pics, ProductInsDto dto) {
         /* TODO: 2024-01-10
             security 적용시 모든 iuser 가 있는부분 로직 변경, 모델 변경 해야함.
             --by Hyunmin */
 
 
+
+
+        CommonUtils.ifAllNullThrow(BadMainPicException.class, BAD_PIC_EX_MESSAGE, mainPic);
+
         // 사진 개수 검증 - 예외 코드, 메시지 를 위해 직접 검증 (!@Validated)
-        if (dto.getPics() != null) {
+        if (pics != null) {
             CommonUtils.checkSizeIfOverLimitNumThrow(IllegalProductPicsException.class, ILLEGAL_PRODUCT_PICS_EX_MESSAGE,
-                    dto.getPics().stream(), 9);
+                    pics.stream(), 9);
         }
 
         // iuser 있는지 체크
@@ -167,12 +172,22 @@ public class ProductService {
 
 
             if (productRepository.saveProduct(insProdBasicInfoDto) == 1) {
-                if (!dto.getPics().isEmpty()) {
-                    insProdBasicInfoDto.setStoredPic(myFileUtils.savePic(dto.getMainPic(), CATEGORY_PRODUCT_MAIN,
-                            String.valueOf(insProdBasicInfoDto.getIproduct())));
+
+                // 사진은 완전히 따로 저장해야함 (useGeneratedKey)
+                // 프로필 사진 저장
+                if (mainPic != null && !mainPic.isEmpty()) {
+                    productRepository.updateProduct(ProductUpdDto.builder()
+                            .storedMainPic(
+                                    myFileUtils.savePic(
+                                            mainPic, CATEGORY_PRODUCT_SUB, String.valueOf(insProdBasicInfoDto.getIproduct())
+                                    )).build()
+                    );
+                }
+                // 그 외 사진 저장
+               if(pics != null && !pics.isEmpty()){
                     // pics 에 insert 할 객체
                     InsProdPicsDto insProdPicsDto = new InsProdPicsDto(insProdBasicInfoDto.getIproduct(),
-                            myFileUtils.savePic(dto.getPics(), CATEGORY_PRODUCT_SUB, String.valueOf(insProdBasicInfoDto.getIproduct())));
+                            myFileUtils.savePic(pics, CATEGORY_PRODUCT_SUB, String.valueOf(insProdBasicInfoDto.getIproduct())));
                     if (productRepository.savePics(insProdPicsDto) == 0) throw new WrapRuntimeException(SERVER_ERR_MESSAGE);
                 }
                 return new ResVo(insProdBasicInfoDto.getIproduct());
@@ -192,8 +207,8 @@ public class ProductService {
      */
     @Transactional
     public ResVo putProduct(MultipartFile mainPic, List<MultipartFile> pics, ProductUpdDto dto) {
-        if(mainPic != null) dto.setMainPic(mainPic);
-        if(pics != null) dto.setPics(pics);
+        if (mainPic != null) dto.setMainPic(mainPic);
+        if (pics != null) dto.setPics(pics);
 
         // 수정할 모든 데이터가 null 이면 예외
         CommonUtils.ifAllNullThrow(BadInformationException.class, ALL_INFO_NOT_EXISTS_EX_MESSAGE,

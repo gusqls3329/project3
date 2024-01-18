@@ -30,9 +30,9 @@ public class ProductInsDto {
     @NotBlank(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
     private String restAddr;
     @JsonIgnore
-    private MultipartFile mainPic;
+    private String mainPic;
     @JsonIgnore
-    private List<MultipartFile> pics;
+    private List<String> pics;
     @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
     @Range(min = 100, max = Integer.MAX_VALUE, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private Integer price;
