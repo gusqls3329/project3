@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.checkerframework.checker.regex.qual.Regex;
@@ -166,9 +167,13 @@ public class ProductController {
                     "result: 1<br><br>" +
                     "실패시: <br>" +
                     "message: 에러 발생 사유<br>errorCode: 에러 코드")
+
     @PutMapping
-    public ResVo putProduct(@Validated @RequestBody ProductUpdDto dto) {
-        return productService.putProduct(dto);
+    public ResVo putProduct(@RequestPart(required = false) MultipartFile mainPic,
+                            @RequestPart(required = false) List<MultipartFile> pics,
+            @Validated @RequestPart ProductUpdDto dto) {
+
+        return productService.putProduct(mainPic, pics, dto);
     }
 
     @Operation(summary = "제품 수정 or 삭제",

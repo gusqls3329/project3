@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -190,7 +191,9 @@ public class ProductService {
      * @return ResVo
      */
     @Transactional
-    public ResVo putProduct(ProductUpdDto dto) {
+    public ResVo putProduct(MultipartFile mainPic, List<MultipartFile> pics, ProductUpdDto dto) {
+        if(mainPic != null) dto.setMainPic(mainPic);
+        if(pics != null) dto.setPics(pics);
 
         // 수정할 모든 데이터가 null 이면 예외
         CommonUtils.ifAllNullThrow(BadInformationException.class, ALL_INFO_NOT_EXISTS_EX_MESSAGE,
