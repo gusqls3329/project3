@@ -29,7 +29,6 @@ public class ProductInsDto {
     private String addr;
     @NotBlank(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
     private String restAddr;
-    @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
     @JsonIgnore
     private MultipartFile mainPic;
     @JsonIgnore
