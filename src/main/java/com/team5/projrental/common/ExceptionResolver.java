@@ -94,7 +94,7 @@ public class ExceptionResolver {
             log.warn("error message = {}", e1);
         });
         String errorMessage = sb.toString();
-        int errorCode = Arrays.stream(ErrorCode.values()).filter(e -> e.getMessage().contains(errorMessage)).findFirst()
+        int errorCode = Arrays.stream(ErrorCode.values()).filter(e -> errorMessage.contains(e.getMessage())).findFirst()
                 .orElse(ErrorCode.SERVER_ERR_MESSAGE).getCode();
         return ResponseEntity.status(errorCode)
                 .body(ErrorResultVo.builder().errorCode(errorCode)
