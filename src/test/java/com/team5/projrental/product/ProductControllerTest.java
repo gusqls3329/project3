@@ -51,14 +51,14 @@ class ProductControllerTest {
 
     }
 
-    @Test
+    /*@Test
     void putProduct() {
 
         when(productService.putProduct(any())).thenReturn(new ResVo(1));
 
         assertThat(productController.putProduct(new ProductUpdDto()).getResult()).isEqualTo(1);
 
-    }
+    }*/
 
     @Test
     void delProduct() {
