@@ -55,7 +55,7 @@ public class ProductController {
                     "  rentalStartDate<br>" +
                     "  rentalEndDate<br> " +
                     "  addr(rest_addr 까지 포함)<br> " +
-                    "  prodLike(제품의 좋아요 수)" +
+                    "  prodLike(제품의 좋아요 수)<br>" +
                     "] (배열)" +
                     "<br><br>" +
                     "실패시:<br>" +
@@ -240,7 +240,7 @@ public class ProductController {
                     "  rentalPrice<br> " +
                     "  rentalStartDate<br> " +
                     "  rentalEndDate<br> " +
-                    "  addr (rest_addr 까지 포함)" +
+                    "  addr (rest_addr 까지 포함)<br>" +
                     "] (배열) <br><br>" +
                     "실패시: <br>" +
                     "message: 에러 발생 사유<br>errorCode: 에러 코드")
@@ -262,11 +262,12 @@ public class ProductController {
             "  rating: 평가한 별점 (0~5)<br>" +
             "  iuser: 리뷰를 작성한 유저의 PK<br>" +
             "  nick: 리뷰를 작성한 유저의 닉네임<br>" +
-            "  profPic: 리뷰를 작성한 유저의 사진<br><br>" +
+            "  profPic: 리뷰를 작성한 유저의 사진<br>" +
+            "] (배열)<br><br>" +
             "실패시:<br>" +
             "message: 에러 발생 사유<br>errorCode: 에러 코드")
     @Validated
-    @GetMapping("/review/{iproduct}?page=")
+    @GetMapping("/review/{iproduct}")
     public List<ReviewResultVo> getAllReviews(@PathVariable
                                               @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
                                               @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
