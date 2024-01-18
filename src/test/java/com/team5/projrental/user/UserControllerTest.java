@@ -3,8 +3,11 @@ package com.team5.projrental.user;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team5.projrental.common.model.ResVo;
+import com.team5.projrental.common.security.filter.JwtAuthenticationFilter;
+import com.team5.projrental.user.model.FindUidDto;
 import com.team5.projrental.user.model.UserSignupDto;
 import org.apache.commons.codec.CharEncoding;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -27,18 +30,21 @@ public class UserControllerTest {
     @Autowired private MockMvc mvc;
     @Autowired private ObjectMapper mapper;
     @MockBean private UserService service;
+    @MockBean private JwtAuthenticationFilter jwtAuthenticationFilter;
+
 
     @Test
+    @DisplayName("회원가입 테스트")
     void postSignup() throws Exception {
         ResVo result = new ResVo(2);
-
+        UserSignupDto dto = new UserSignupDto();
+        String pic = "test.jpg";
         given(service.postSignup(any())).willReturn(2);
 
-        UserSignupDto dto = new UserSignupDto();
 
         mvc.perform(
                         MockMvcRequestBuilders
-                                .post("/api/user")
+                                .post("/api/user/signup")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(mapper.writer().writeValueAsString(dto))
                 )
@@ -50,7 +56,8 @@ public class UserControllerTest {
     }
 
     @Test
-    void postSignin() throws Exception {}
+    void postSignin() throws Exception {
+    }
 
     void getSignOut() throws Exception {}
 
@@ -58,7 +65,12 @@ public class UserControllerTest {
 
     void patchUserFirebaseToken() throws Exception {}
 
-    void getFindUid() throws Exception {}
+    @Test
+    void getFindUid() throws Exception {
+        ResVo result = new ResVo(2);
+        FindUidDto dto = new FindUidDto();
+        given(service.getFindUid(any())).willReturn();
+    }
 
     void getFindUpw() throws Exception {}
 
