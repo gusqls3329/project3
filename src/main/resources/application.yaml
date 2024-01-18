@@ -16,8 +16,6 @@ spring:
 
 
 
-
-
 mybatis:
   mapper-locations: mappers/**/*.xml
 springdoc:
@@ -27,7 +25,8 @@ springdoc:
 #  certification: serviceAccountKey.json
 logging:
   level:
-    -com.team5.projrental: DEBUG
+    org.springframework.boot.autoconfigure: ERROR
+    #com.team5.projrental: DEBUG
 server:
   tomcat:
     threads:

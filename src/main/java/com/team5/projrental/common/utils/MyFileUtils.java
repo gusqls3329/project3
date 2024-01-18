@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,11 +35,14 @@ public class MyFileUtils {
         if (originalFilename == null || !originalFilename.contains(".")) {
             throw new FileNotContainsDotException();
         }
-        String storeName = generateRandomFileName(multipartFile.getOriginalFilename()); //aegeg.jpg
-        File packagePath = new File(generateStoredPath(category, pk)); // basePackage + category + pk
-        File file = new File(packagePath, storeName);
+        File checkPath = new File(Paths.get(this.basePath, category, pk).toString());
+        String storePath = Paths.get(category, pk, generateRandomFileName(multipartFile.getOriginalFilename())).toString();
+        // category + pk + fileName.xxx
 
-        if (!packagePath.exists()) {
+        String absPath = Paths.get(this.basePath, storePath).toString();
+        File file = new File(absPath); // basePackage + category + pk + fileName.xxx
+
+        if (!checkPath.exists()) {
             file.mkdirs();
         }
         try {
@@ -46,7 +50,8 @@ public class MyFileUtils {
         } catch (IOException e) {
             throw new WrapRuntimeException(SERVER_ERR_MESSAGE);
         }
-        return storeName;
+        // todo /category/pk/filename.xxx 모두 담아서 db에 저장하자.
+        return storePath;
     }
 
     // 파일 업로드 배운 후 완성시킬 예정.
@@ -65,13 +70,13 @@ public class MyFileUtils {
         List<String> result = new ArrayList<>();
 
         for (MultipartFile multipartFile : multipartFiles) {
-            savePic(multipartFile,  category , pk);
+            savePic(multipartFile, category, pk);
         }
         return result;
     }
 
     private String generateStoredPath(String category, String pk) {
-        return Paths.get(this.basePath, category, pk).toString();
+        return Paths.get(category, pk).toString();
     }
 
     private String generateRandomFileName(String fileName) {
@@ -85,7 +90,7 @@ public class MyFileUtils {
     }
 
     public void delFolder(String folderPath) {
-        File folder = new File( folderPath);
+        File folder = new File(folderPath);
 
         if (folder.exists()) {
             File[] files = folder.listFiles();
