@@ -48,7 +48,7 @@ public class UserMapperTest {
     @Test
     void selSignin() {
         SigninDto dto = new SigninDto();
-        dto.setUid("happy");
+        dto.setUid("happy1111");
         dto.setUpw("1212");
 
         UserEntity vo = mapper.selSignin(dto);
@@ -68,7 +68,7 @@ public class UserMapperTest {
         dto.setPhone("010-4563-9872");
 
         FindUidVo vo = mapper.selFindUid(dto);
-        assertEquals(vo.getUid(),"happy");
+        assertEquals(vo.getUid(),"happy1111");
         assertEquals(vo.getIuser(),2);
         SelUserVo selvo = mapper.selUser(vo.getIuser());
         assertEquals(selvo.getPhone(),dto.getPhone());
