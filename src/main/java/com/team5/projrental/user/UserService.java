@@ -219,9 +219,9 @@ public class UserService {
         Integer check = mapper.selpatchUser(entity.getIuser());
         if (loginUserPk == entity.getIuser()) {
             String hashedPw = entity.getUpw();
-            boolean checkPw = BCrypt.checkpw(dto.getUpw(), hashedPw);
+            boolean checkPw = passwordEncoder.matches(dto.getUpw(), hashedPw);
             if (checkPw) {
-                if (check != 0 || check != null) {
+                if (check != 0 || check == null) {
                     return -1;
                 } else {
                     List<SeldelUserPayDto> payDtos = mapper.seldelUserPay(entity.getIuser());

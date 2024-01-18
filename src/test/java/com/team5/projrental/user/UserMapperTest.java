@@ -169,4 +169,30 @@ public class UserMapperTest {
     }
 
 
+    @Test
+    void selpatchUser() {
+        Integer result = mapper.selpatchUser(1);
+        assertEquals(result,2);
+
+        Integer result2 = mapper.selpatchUser(2);
+        assertEquals(result2,3);
+    }
+
+    @Test
+    void checkUserUid() {
+        Integer result = mapper.checkUserUid("12341234");
+        assertEquals(result,1);
+
+        Integer result2 = mapper.checkUserUid("aaa15");
+        assertEquals(result2,0);
+    }
+
+    @Test
+    void checkUserNick() {
+        Integer result = mapper.checkUserNick("12341234");
+        assertEquals(result,1);
+
+        Integer result2 = mapper.checkUserNick("집");
+        assertEquals(result2,0);
+    }
 }

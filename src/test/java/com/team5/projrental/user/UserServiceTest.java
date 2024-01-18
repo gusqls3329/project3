@@ -15,11 +15,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.awaitility.Awaitility.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -82,7 +86,7 @@ public class UserServiceTest {
     @Test
     void postSignin() {
         SigninDto dto = new SigninDto();
- // Assuming this is the plain password
+        // Assuming this is the plain password
 
         UserEntity entity = new UserEntity();
         dto.setUid("12341234");
@@ -99,8 +103,8 @@ public class UserServiceTest {
         when(jwtTokenProvider.generateAccessToken(principal)).thenReturn("mockedAccessToken");
         when(jwtTokenProvider.generateRefreshToken(principal)).thenReturn("mockedRefreshToken");
 
-        log.info("entity:{}",entity);
-        log.info("dto:{}",dto.getUpw());
+        log.info("entity:{}", entity);
+        log.info("dto:{}", dto.getUpw());
 
         when(passwordEncoder.matches(any(), any())).thenReturn(true);
 
@@ -144,29 +148,85 @@ public class UserServiceTest {
         // Test
         vo = service.getFindUid(dto);
         verify(mapper).selFindUid(any());
-        log.info("id:{}",vo.getUid());
-        assertEquals(vo.getUid(),"hoho");
-        assertEquals(vo.getIuser(),5);
+        log.info("id:{}", vo.getUid());
+        assertEquals(vo.getUid(), "hoho");
+        assertEquals(vo.getIuser(), 5);
     }
 
     @Test
     void getFindUpw() {
+        FindUpwDto dto = new FindUpwDto();
+        dto.setUpw("12121212");
+        dto.setUid("dongdong12");
+        dto.setPhone("010-7777-6666");
 
+        String hashedPw = BCrypt.hashpw(dto.getUpw(), BCrypt.gensalt());
+        dto.setUpw(hashedPw);
+        when(mapper.upFindUpw(dto)).thenReturn(1);
+
+        int result = service.getFindUpw(dto);
+        verify(mapper).upFindUpw(dto);
+        assertEquals(result, 1);
     }
 
     @Test
     void putUser() {
+        ChangeUserDto dto = new ChangeUserDto();
+        dto.setPhone("010-3333-3333");
+        dto.setNick("변경");
+        dto.setIuser(5);
+        when(mapper.changeUser(dto)).thenReturn(1);
+
+        int result = service.putUser(dto);
+        verify(mapper).changeUser(dto);
+        assertEquals(result, 1);
     }
 
     @Test
     void patchUser() {
+
+        DelUserDto dto = new DelUserDto();
+        UserEntity entity = new UserEntity();
+        dto.setUid("12341234");
+        dto.setUpw("12341234");
+        entity.setUid(dto.getUid());
+        entity.setUpw(dto.getUpw());
+        entity.setIuser(1);
+        entity.setFirebaseToken("123");
+        dto.setIuser(1);
+        when(authenticationFacade.getLoginUserPk()).thenReturn(1);
+        when(mapper.selSignin(any())).thenReturn(entity);
+        when(passwordEncoder.matches(any(), any())).thenReturn(true);
+        when(mapper.selpatchUser(anyInt())).thenReturn(0);
+        when(mapper.delUser(any())).thenReturn(1);
+        int result = service.patchUser(dto);
+
+        verify(mapper).selSignin(any());
+        verify(authenticationFacade).getLoginUserPk();
+       // verify(mapper).selpatchUser(any());
+        verify(mapper).delUser(any());
+        assertEquals(result, 1);
     }
 
     @Test
     void getUser() {
+        SelUserVo vo = new SelUserVo();
+        when(mapper.selUser(1)).thenReturn(vo);
+        vo.setPhone("테스트");
+        vo.setNick("테스트");
+        vo.setX(1);
+        vo.setY(2);
+        vo.setAddr("테스트");
+        vo.setEmail("테스트");
+        vo.setAddr("테스트");
+        vo.setStoredPic("테스트");
+        vo = service.getUser(1);
+        assertEquals(vo.getEmail(), null);
+        assertEquals(vo.getPhone(), null);
     }
 
     @Test
     void checkUserInfo() {
+
     }
 }
