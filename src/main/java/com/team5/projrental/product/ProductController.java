@@ -134,9 +134,8 @@ public class ProductController {
                              @Validated
                              @RequestPart
                              ProductInsDto dto) {
-        dto.setMainPic(mainPic);
-        dto.setPics(pics);
-        return productService.postProduct(dto);
+
+        return productService.postProduct(mainPic, pics, dto);
 
 
     }
