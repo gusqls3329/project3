@@ -128,10 +128,10 @@ public class ProductController {
     public ResVo postProduct(@RequestPart
                              @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
                              MultipartFile mainPic,
-                             @RequestPart
+                             @RequestPart(required = false)
                              List<MultipartFile> pics,
                              @Validated
-                             @RequestBody
+                             @RequestPart
                              ProductInsDto dto) {
         dto.setMainPic(mainPic);
         dto.setPics(pics);
