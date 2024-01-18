@@ -131,8 +131,6 @@ public class ProductService {
             --by Hyunmin */
 
 
-
-
         CommonUtils.ifAllNullThrow(BadMainPicException.class, BAD_PIC_EX_MESSAGE, mainPic);
 
         // 사진 개수 검증 - 예외 코드, 메시지 를 위해 직접 검증 (!@Validated)
@@ -142,7 +140,8 @@ public class ProductService {
         }
 
         // iuser 있는지 체크
-        dto.setIuser(authenticationFacade.getLoginUserPk());
+        int loginIuser = authenticationFacade.getLoginUserPk();
+        dto.setIuser(loginIuser);
         CommonUtils.ifFalseThrow(NoSuchUserException.class, NO_SUCH_USER_EX_MESSAGE, productRepository.findIuserCountBy(dto.getIuser()));
 
         // 카테고리 검증 - 예외 코드, 메시지 를 위해 직접 검증 (!@Validated)
@@ -180,15 +179,19 @@ public class ProductService {
                             .storedMainPic(
                                     myFileUtils.savePic(
                                             mainPic, CATEGORY_PRODUCT_SUB, String.valueOf(insProdBasicInfoDto.getIproduct())
-                                    )).build()
+                                    ))
+                            .iproduct(insProdBasicInfoDto.getIproduct())
+                            .iuser(loginIuser)
+                            .build()
                     );
                 }
                 // 그 외 사진 저장
-               if(pics != null && !pics.isEmpty()){
+                if (pics != null && !pics.isEmpty()) {
                     // pics 에 insert 할 객체
                     InsProdPicsDto insProdPicsDto = new InsProdPicsDto(insProdBasicInfoDto.getIproduct(),
                             myFileUtils.savePic(pics, CATEGORY_PRODUCT_SUB, String.valueOf(insProdBasicInfoDto.getIproduct())));
-                    if (productRepository.savePics(insProdPicsDto) == 0) throw new WrapRuntimeException(SERVER_ERR_MESSAGE);
+                    if (productRepository.savePics(insProdPicsDto) == 0)
+                        throw new WrapRuntimeException(SERVER_ERR_MESSAGE);
                 }
                 return new ResVo(insProdBasicInfoDto.getIproduct());
             }
