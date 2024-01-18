@@ -31,6 +31,7 @@ public class ExceptionResolver {
                         .message("잘못된 타입을 입력하였습니다.").build());
     }
 
+
     @ExceptionHandler
     public ResponseEntity<ErrorResultVo> resolve(HandlerMethodValidationException eBase) {
         StringBuilder sb = new StringBuilder();
@@ -93,7 +94,7 @@ public class ExceptionResolver {
             log.warn("error message = {}", e1);
         });
         String errorMessage = sb.toString();
-        int errorCode = Arrays.stream(ErrorCode.values()).filter(e -> e.getMessage().equals(errorMessage)).findFirst()
+        int errorCode = Arrays.stream(ErrorCode.values()).filter(e -> e.getMessage().contains(errorMessage)).findFirst()
                 .orElse(ErrorCode.SERVER_ERR_MESSAGE).getCode();
         return ResponseEntity.status(errorCode)
                 .body(ErrorResultVo.builder().errorCode(errorCode)
