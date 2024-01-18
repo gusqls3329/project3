@@ -102,11 +102,11 @@ public class UserService {
         SecurityPrincipal principal = SecurityPrincipal.builder().iuser(entity.getIuser()).build();
         String at = jwtTokenProvider.generateAccessToken(principal);
         String rt = jwtTokenProvider.generateRefreshToken(principal);
-
-        int rtCookieMaxAge = (int) (securityProperties.getJwt().getRefreshTokenExpiry() / 1000);
-        cookieUtils.deleteCookie(res, "rt");
-        cookieUtils.setCookie(res, "rt", rt, rtCookieMaxAge);
-
+        if(res != null) {
+            int rtCookieMaxAge = (int) (securityProperties.getJwt().getRefreshTokenExpiry() / 1000);
+            cookieUtils.deleteCookie(res, "rt");
+            cookieUtils.setCookie(res, "rt", rt, rtCookieMaxAge);
+        }
         return SigninVo.builder()
                 .result(String.valueOf(Const.SUCCESS))
                 .iuser(entity.getIuser())
