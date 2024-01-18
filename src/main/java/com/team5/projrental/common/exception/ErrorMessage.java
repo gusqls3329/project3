@@ -40,5 +40,6 @@ public interface ErrorMessage {
 
     // added
     String ILLEGAL_STATUS_EX_MESSAGE = "상대유저가 채팅방을 나갔습니다.";
+    String CAN_NOT_DEL_USER_EX_MESSAGE = "삭제되지 않은 데이터가 있어 탈퇴할 수 없습니다.";
 
 }
