@@ -51,7 +51,9 @@
         PA.rental_end_date as rentalEndDate,
         PA.rental_duration as rentalDuration,
         PA.price,
-        P.deposit
+        P.deposit,
+        U.phone,
+        PA.code
         <if test="flag == 1">
             , U.phone, PA.code, PA.created_at as createdAt
         </if>

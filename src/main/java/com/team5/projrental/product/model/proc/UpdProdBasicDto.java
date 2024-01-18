@@ -18,9 +18,13 @@ public class UpdProdBasicDto {
 //    private StoredFileInfo mainPic;
     private Integer price;
 //    private Integer rentalPrice;
-//    private Integer deposit;
+    private Integer deposit;
     private LocalDate buyDate;
+//    private Integer rentalPrice;
     private LocalDate rentalStartDate;
     private LocalDate rentalEndDate;
+
+    //
+    private Integer depositPer;
 
 }

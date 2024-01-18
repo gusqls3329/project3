@@ -136,13 +136,13 @@
         where iproduct = #{iproduct}
     </select>
 
-<!--    <select id="getIEupmyun">-->
-<!--        select ieupmyun from t_eupmyun where eupmyun in (-->
-<!--        <foreach collection="eupmyun" item="eup" separator=", ">-->
-<!--            #{eup}-->
-<!--        </foreach>-->
-<!--        )-->
-<!--    </select>-->
+    <!--    <select id="getIEupmyun">-->
+    <!--        select ieupmyun from t_eupmyun where eupmyun in (-->
+    <!--        <foreach collection="eupmyun" item="eup" separator=", ">-->
+    <!--            #{eup}-->
+    <!--        </foreach>-->
+    <!--        )-->
+    <!--    </select>-->
 
     <insert id="insProduct" useGeneratedKeys="true" keyProperty="iproduct">
         insert into t_product
@@ -174,9 +174,10 @@
     </delete>
 
     <select id="getProductForUpdate">
-        select P.price, P.buy_date as buyDate, P.rental_start_date as rentalStartDate, P.rental_end_date as rentalEndDate
-        from t_product P
-        where P.iproduct = #{iproduct} and P.icategory = #{icategory} and P.istatus = 0
+        select price, deposit, buy_date as buyDate, rental_start_date as rentalStartDate,
+        rental_end_date as rentalEndDate
+        from t_product
+        where iproduct = #{iproduct} and icategory = #{icategory} and istatus = 0
 
     </select>
 

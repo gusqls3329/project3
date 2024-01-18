@@ -4,6 +4,7 @@ import com.team5.projrental.common.exception.*;
 import com.team5.projrental.common.exception.base.BadInformationException;
 import com.team5.projrental.common.exception.base.IllegalException;
 import com.team5.projrental.common.exception.base.NoSuchDataException;
+import com.team5.projrental.common.exception.base.WrapRuntimeException;
 import com.team5.projrental.common.model.ErrorResultVo;
 import com.team5.projrental.common.exception.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +35,7 @@ public class ExceptionResolver {
         StringBuilder sb = new StringBuilder();
         eBase.getAllErrors().forEach(e1 -> {
             sb.append(e1.getDefaultMessage());
-            log.debug("error message = {}", e1);
+            log.warn("error message = {}", e1);
         });
         String errorMessage = sb.toString();
         int errorCode = Arrays.stream(ErrorCode.values()).filter(e -> e.getMessage().equals(errorMessage)).findFirst()
@@ -47,7 +48,7 @@ public class ExceptionResolver {
 
     @ExceptionHandler
     public ResponseEntity<ErrorResultVo> resolve(BadInformationException e) {
-        log.debug("error message", e);
+        log.warn("error message", e);
         return ResponseEntity.status(e.getErrorCode().getCode())
                 .body(ErrorResultVo.builder().errorCode(e.getErrorCode().getCode())
 //                        .message(e.getErrorCode().getMessage()).build());
@@ -58,7 +59,7 @@ public class ExceptionResolver {
 
     @ExceptionHandler
     public ResponseEntity<ErrorResultVo> resolve(NoSuchDataException e) {
-        log.debug("error message", e);
+        log.warn("error message", e);
         return ResponseEntity.status(e.getErrorCode().getCode())
                 .body(ErrorResultVo.builder().errorCode(e.getErrorCode().getCode())
 //                        .message(e.getErrorCode().getMessage()).build());
@@ -67,7 +68,7 @@ public class ExceptionResolver {
 
     @ExceptionHandler
     public ResponseEntity<ErrorResultVo> resolve(IllegalException e) {
-        log.debug("error message", e);
+        log.warn("error message", e);
         return ResponseEntity.status(e.getErrorCode().getCode())
                 .body(ErrorResultVo.builder().errorCode(e.getErrorCode().getCode())
 //                        .message(e.getErrorCode().getMessage()).build());
@@ -76,7 +77,7 @@ public class ExceptionResolver {
 
     @ExceptionHandler
     public ResponseEntity<ErrorResultVo> resolve(RestApiException e) {
-        log.debug("error message", e);
+        log.warn("error message", e);
         return ResponseEntity.status(e.getErrorCode().getCode())
                 .body(ErrorResultVo.builder().errorCode(e.getErrorCode().getCode())
 //                        .message(e.getErrorCode().getMessage()).build());
@@ -86,8 +87,17 @@ public class ExceptionResolver {
 
     // 500
     @ExceptionHandler
+    public ResponseEntity<ErrorResultVo> resolve(WrapRuntimeException e) {
+        log.warn("error message", e);
+        return ResponseEntity.status(500)
+                .body(ErrorResultVo.builder().errorCode(500)
+                        .message(ErrorCode.SERVER_ERR_MESSAGE.getMessage()).errorCode(500).build());
+
+    }
+
+    @ExceptionHandler
     public ResponseEntity<ErrorResultVo> resolve(RuntimeException e) {
-        log.debug("error message", e);
+        log.warn("error message", e);
         return ResponseEntity.status(500)
                 .body(ErrorResultVo.builder().errorCode(500)
                         .message(ErrorCode.SERVER_ERR_MESSAGE.getMessage()).errorCode(500).build());

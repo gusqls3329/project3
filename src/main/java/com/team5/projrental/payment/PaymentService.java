@@ -161,8 +161,9 @@ public class PaymentService {
         List<PaymentListVo> result = new ArrayList<>();
         CommonUtils.checkNullOrZeroIfCollectionThrow(NoSuchPaymentException.class, NO_SUCH_PAYMENT_EX_MESSAGE, paymentBy);
         paymentBy.forEach(p -> result.add(new PaymentListVo(
-                p.getIuser(), p.getNick(), p.getStoredPic(),
-                p.getIpayment(), p.getIproduct(), STATUS.get(p.getIstatus()), p.getRentalStartDate(), p.getRentalEndDate(),
+                p.getIuser(), p.getNick(), p.getUserStoredPic(),
+                p.getIpayment(), p.getIproduct(), p.getProdStoredPic(), STATUS.get(p.getIstatus()), p.getRentalStartDate(),
+                p.getRentalEndDate(),
                 p.getRentalDuration(), p.getPrice(), p.getDeposit())
         ));
 
@@ -186,10 +187,11 @@ public class PaymentService {
         return new PaymentVo(
                 aPayment.getIuser(),
                 aPayment.getNick(),
-                aPayment.getStoredPic(),
+                aPayment.getUserStoredPic(),
                 aPayment.getIpayment(),
                 aPayment.getIproduct(),
                 STATUS.get(aPayment.getIstatus()), // status resolver ?
+                aPayment.getProdStoredPic(),
                 aPayment.getRentalStartDate(),
                 aPayment.getRentalEndDate(),
                 aPayment.getRentalDuration(),
