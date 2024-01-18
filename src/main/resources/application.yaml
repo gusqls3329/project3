@@ -25,8 +25,8 @@ springdoc:
 #  certification: serviceAccountKey.json
 logging:
   level:
-    org.springframework.boot.autoconfigure: ERROR
-    #com.team5.projrental: DEBUG
+#    org.springframework.boot.autoconfigure: ERROR
+    -com.team5.projrental: DEBUG
 server:
   tomcat:
     threads:
