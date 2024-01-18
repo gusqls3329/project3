@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.security.filter.JwtAuthenticationFilter;
 import com.team5.projrental.user.model.FindUidDto;
+import com.team5.projrental.user.model.SelUserVo;
 import com.team5.projrental.user.model.UserSignupDto;
 import org.apache.commons.codec.CharEncoding;
 import org.junit.jupiter.api.DisplayName;
@@ -65,9 +66,6 @@ public class UserControllerTest {
 
     @Test
     void getFindUid() throws Exception {
-        ResVo result = new ResVo(2);
-        FindUidDto dto = new FindUidDto();
-        given(service.getFindUid(any())).willReturn();
     }
 
     void getFindUpw() throws Exception {}
@@ -76,5 +74,11 @@ public class UserControllerTest {
 
     void patchUser () throws Exception {}
 
-    void getUSer () throws Exception {}
+    @Test
+    void getUSer () throws Exception {
+        SelUserVo vo = new SelUserVo();
+        vo.setX(23);
+        given(service.getUser(any())).willReturn(vo);
+        verify(service).postSignup(any());
+    }
 }
