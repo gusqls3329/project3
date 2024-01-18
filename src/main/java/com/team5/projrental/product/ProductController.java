@@ -5,6 +5,7 @@ import com.team5.projrental.common.exception.ErrorMessage;
 import com.team5.projrental.common.model.ErrorResultVo;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.product.model.*;
+import com.team5.projrental.product.model.review.ReviewResultVo;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -217,5 +218,18 @@ public class ProductController {
                                                   @NotNull Integer page) {
         return productService.getUserProductList((page - 1) * Const.PROD_PER_PAGE);
 
+    }
+
+    @Validated
+    @GetMapping("/review/{iproduct}?page=")
+    public List<ReviewResultVo> getAllReviews(@PathVariable
+                                              @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
+                                              @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
+                                              Integer iproduct,
+                                              @RequestParam
+                                              @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
+                                              @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
+                                              Integer page) {
+        return productService.getAllReviews(iproduct, page);
     }
 }
