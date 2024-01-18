@@ -39,6 +39,8 @@ public class UserControllerTest {
     void postSignup() throws Exception {
         ResVo result = new ResVo(2);
         UserSignupDto dto = new UserSignupDto();
+        dto.setUid("testuid");
+        dto.setUpw("testupw");
         given(service.postSignup(any())).willReturn(result.getResult());
 
         mvc.perform(
