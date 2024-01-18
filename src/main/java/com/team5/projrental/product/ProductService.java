@@ -66,6 +66,7 @@ public class ProductService {
         // sort 검증
         if (sort != null && sort != 1 && sort != 2) throw new BadInformationException(BAD_SORT_EX_MESSAGE);
         // 카테고리 검증
+        // search 의 length 가 2 이상으로 validated 되었으므로 문제 없음.
         GetProductListDto getProductListDto = new GetProductListDto(sort, search, icategory, page);
         List<GetProductListResultDto> products = productRepository.findProductListBy(getProductListDto);
         // 결과물 없음 여부 체크
