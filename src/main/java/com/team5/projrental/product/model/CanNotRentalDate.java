@@ -1,4 +1,4 @@
-package com.team5.projrental.product;
+package com.team5.projrental.product.model;
 
 import lombok.*;
 
