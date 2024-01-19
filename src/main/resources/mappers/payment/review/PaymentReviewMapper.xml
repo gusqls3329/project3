@@ -50,6 +50,7 @@
         SELECT ipayment
         FROM t_payment
         WHERE ibuyer = #{iuser}
+        and ipayment =#{ipayment}
     </select>
 
     <select id="selPatchRev">
