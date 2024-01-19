@@ -114,19 +114,15 @@
         prodMainStoredPic,
         P.rental_price as rentalPrice, P.rental_start_date as rentalStartDate,
         P.rental_end_date as rentalEndDate, (select count(L.iproduct) from t_like L where L.iproduct = P.iproduct) prodLike,
-        P.iuser, P.contents, P.deposit, P.buy_date as buyDate, COUNT(L.iproduct) as prodLike, P.x, P.y
+        P.iuser, P.contents, P.deposit, P.buy_date as buyDate, COUNT(L.iproduct) as prodLike, P.x, P.y,
+        if(count(L.iuser) = 0, 0, 1) as isLiked
         from t_product P
         join t_user U on P.iuser = U.iuser
-        left join t_like L on P.iproduct = L.iproduct
+        left join t_like L on P.iproduct = L.iproduct and L.iuser = #{iuser}
         <where>
-            P.iproduct = #{iproduct}
-            <if test="iuser != null and iuser != 0">
-                and U.iuser = #{iuser}
-            </if>
-            and P.istatus = 0
-            <if test="icategory != null and icategory > 0">
-                and P.icategory = #{icategory}
-            </if>
+            P.iproduct = #{iproduct} and
+            P.istatus = 0 and
+            P.icategory = #{icategory}
         </where>
 
     </select>
@@ -261,5 +257,23 @@
         update t_product set ipayment = #{ipayment} where iproduct = #{iproduct}
     </update>
 
+    <select id="getReview">
+        select R.ireview, R.contents, R.rating, U.nick, U.stored_pic
+        from t_product_payment PP
+        JOIN t_payment PA ON PP.ipayment = PA.ipayment
+        JOIN t_review R ON PA.ipayment = R.ipayment
+        JOIN t_user U ON U.iuser = R.ibuyer
+        where PP.iproduct = #{iproduct} and PA.istatus != -1 and PA.istatus != -2
+            and R.contents is not null and R.rating is not null
+        <if test="page != null and prodPerPage != null">
+        limit #{page}, #{prodPerPage}
+        </if>
+    </select>
+
+    <select id="getLendStartDateAndEndDate">
+        SELECT PA.rental_start_date, PA.rental_end_date FROM t_product_payment PP
+        JOIN t_payment PA ON PP.ipayment = PA.ipayment
+        WHERE PP.iproduct = #{iproduct}
+    </select>
 
 </mapper>
