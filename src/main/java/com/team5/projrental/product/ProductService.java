@@ -437,7 +437,10 @@ public class ProductService {
             productRepository.insFav(dto);
             return new ResVo(1);
         }
-        return new ResVo(-1);
+        if(affectedRow == 1) {
+            return new ResVo(-1);
+        }
+        throw new BadInformationException(ILLEGAL_EX_MESSAGE);
     }
 
 }
