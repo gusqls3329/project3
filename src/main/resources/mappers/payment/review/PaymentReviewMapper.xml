@@ -55,6 +55,6 @@
     <select id="selPatchRev">
         select ibuyer, ipayment
         FROM t_review
-        WHERE ireview = 1;
+        WHERE ireview = #{ireview};
     </select>
 </mapper>
