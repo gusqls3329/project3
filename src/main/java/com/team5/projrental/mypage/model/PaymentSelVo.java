@@ -12,7 +12,7 @@ public class PaymentSelVo {
 
     private int ipayment; // 지불 PK
 
-    private String pic; // 제품 대표 사진
+    private String productStoredPic; // 제품 대표 사진
     private int deposit; // 보증금
     private int price; // 가격
     private int rentalDuration; // 대여 일수
@@ -22,6 +22,5 @@ public class PaymentSelVo {
     private String createdAt; // 대여료 결제일
     private int targetIuser; // 상대 유저 PK
     private String targetNick; // 상대 닉네임
-    private String stroedPic; // 상대 프로필사진
-    private String requestPic; // 상대 프로필 사진
+    private String userStoredPic; // 상대 프로필사진
 }
