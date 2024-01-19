@@ -49,7 +49,7 @@ public class PaymentReviewService {
         int loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setIuser(loginUserPk);
         RiviewVo check = reviewMapper.selPatchRev(dto.getIreview());
-        if (check.getIuser() == loginUserPk) {
+        if (check.getIbuyer() == loginUserPk) {
             int result = reviewMapper.upReview(dto);
             if (result != 1) {
                 throw new BadInformationException(ILLEGAL_EX_MESSAGE);
@@ -64,7 +64,7 @@ public class PaymentReviewService {
         int loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setIuser(loginUserPk);
         RiviewVo check = reviewMapper.selPatchRev(dto.getIreview());
-        if (check.getIuser() == loginUserPk) {
+        if (check.getIbuyer() == loginUserPk) {
             Integer selReview = reviewMapper.selReview(loginUserPk, check.getIpayment());
             if (selReview == 1) {
                 int result = reviewMapper.delReview(dto);
