@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team5.projrental.payment.review.PaymentReviewMapper">
+
+    <insert id="insReview">
+        INSERT INTO t_review
+        <set>
+            ibuyer = #{iuser}
+            ,ipayment = #{ipayment}
+            <if test="contents =! null and contents != '' ">
+            , contents = #{contents}
+            </if>
+            <if test="rating =! null and rating != '' ">
+            , rating = #{rating}
+            </if>
+        </set>
+    </insert>
+    <update id="upProductIstatus">
+        update t_product pr
+        JOIN t_product_payment pp
+        ON pp.iproduct = pr.iproduct
+        JOIN t_payment pa
+        ON pa.ipayment = pp.ipayment
+        set pr.istatus = 1
+        WHERE pa.ipayment = #{ipayment}
+    </update>
+
+    <update id="upReview">
+        update t_review
+        <set>
+            ibuyer = #{iuser}
+            ,ipayment = #{ipayment}
+            <if test="contents =! null and contents != '' ">
+                , contents = #{contents}
+            </if>
+            <if test="rating =! null and rating != '' ">
+                , rating = #{rating}
+            </if>
+        </set>
+    </update>
+
+    <update id="delReview">
+        update t_review
+        set contents = null
+        , rating =null
+        where ibuyer = #{iuser} and ipayment = #{ipayment}
+    </update>
+
+    <select id="selReview">
+        SELECT COUNT(ireview)
+        FROM t_review
+        WHERE ibuyer = #{iuser}
+        and ipayment = #{ipayment}
+    </select>
+</mapper>

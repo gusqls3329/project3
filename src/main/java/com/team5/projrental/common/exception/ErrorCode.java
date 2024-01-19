@@ -38,8 +38,10 @@ public enum ErrorCode {
     //
     ALL_INFO_NOT_EXISTS_EX_MESSAGE(ErrorStatus.ALL_INFO_NOT_EXISTS_EX_MESSAGE.getCode(), ErrorMessage.ALL_INFO_NOT_EXISTS_EX_MESSAGE),
     //
-    SERVER_ERR_MESSAGE(ErrorStatus.SERVER_ERR_MESSAGE.getCode(), ErrorMessage.SERVER_ERR_MESSAGE);
+    SERVER_ERR_MESSAGE(ErrorStatus.SERVER_ERR_MESSAGE.getCode(), ErrorMessage.SERVER_ERR_MESSAGE),
 
+    REVIEW_ALREADY_EXISTS_EX_MESSAGE(ErrorStatus.REVIEW_ALREADY_EXISTS_EX_MESSAGE.getCode(), ErrorMessage.REVIEW_ALREADY_EXISTS_EX_MESSAGE),
+    NO_SUCH_REVIEW_EX_MESSAGE(ErrorStatus.NO_SUCH_REVIEW_EX_MESSAGE.getCode(), ErrorMessage.NO_SUCH_REVIEW_EX_MESSAGE);
 
     private final int code;
     private final String message;
