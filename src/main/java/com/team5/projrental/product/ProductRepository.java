@@ -1,5 +1,6 @@
 package com.team5.projrental.product;
 
+import com.team5.projrental.product.model.CanNotRentalDate;
 import com.team5.projrental.product.model.ProductToggleFavDto;
 import com.team5.projrental.product.model.ProductUpdDto;
 import com.team5.projrental.product.model.proc.*;
@@ -101,10 +102,4 @@ public class ProductRepository implements RefProductRepository {
         return productMapper.getLendStartDateAndEndDate(iproduct);
     }
 
-    public int delFav(ProductToggleFavDto dto) {
-        return productMapper.delFav(dto);
-    }
-    public int insFav(ProductToggleFavDto dto) {
-        return productMapper.insFav(dto);
-    }
 }

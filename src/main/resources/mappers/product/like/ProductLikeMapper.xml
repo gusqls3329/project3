@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team5.projrental.product.like.ProductLikeMapper">
+
+
+    <insert id="insFav">
+        INSERT INTO t_like
+        SET iuser = #{iuser}
+        , iproduct = #{iproduct}
+    </insert>
+
+    <delete id="delFav">
+        DELETE FROM t_like
+        WHERE iuser = #{iuser} and iproduct = #{iproduct}
+    </delete>
+
+    <delete id="delFavForDelUser">
+        DELETE FROM t_like
+        WHERE iuser = #{iuser}
+    </delete>
+
+
+</mapper>
