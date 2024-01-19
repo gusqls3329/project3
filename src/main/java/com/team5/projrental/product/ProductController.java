@@ -103,7 +103,8 @@ public class ProductController {
                     "x<br> " +
                     "y<br> " +
                     "isLiked(로그인한 유저가 좋아요를 눌렀는지 여부 - 0: 누르지 않음, 1: 누름<br> " +
-                    "reviews: 해당 제품에 작성된 리뷰<br><br>" +
+                    "reviews: 해당 제품에 작성된 리뷰<br>" +
+                    "disabledDates: 이미 거래진행중인 날짜들 (거래 불가능한 날짜들) <br><br>" +
                     "실패시: <br>" +
                     "message: 에러 발생 사유<br>errorCode: 에러 코드")
     @Validated
@@ -277,5 +278,11 @@ public class ProductController {
                                               @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
                                               Integer page) {
         return productService.getAllReviews(iproduct, page);
+    }
+
+    @GetMapping("/fav/{iuser}/{iproduct}")
+    @Operation(summary = "찜 기능", description = "찜 토글")
+    public ResVo toggleFav(@PathVariable int iuser, @PathVariable int iproduct) {
+        return productService.toggleFav(iuser, iproduct);
     }
 }
