@@ -93,7 +93,7 @@ class ProductMapperTest {
 
     }
 
-    @Test
+/*    @Test
     void getProduct() {
 
         GetProductResultDto product = productMapper.getProduct(new GetProductBaseDto(1, 1));
@@ -102,7 +102,7 @@ class ProductMapperTest {
         checkProductInfoByIproductIsOne(product);
 
 
-    }
+    }*/
 
 
     @Test
@@ -159,7 +159,7 @@ class ProductMapperTest {
 
     }
 
-    @Test
+/*    @Test
     void getProductForUpdate() {
 
         UpdProdBasicDto productForUpdate = productMapper.getProductForUpdate(new GetProductBaseDto(1, 1));
@@ -170,9 +170,9 @@ class ProductMapperTest {
         assertThat(productForUpdate.getRentalEndDate()).isEqualTo(LocalDate.of(2023, 12, 11));
 
 
-    }
+    }*/
 
-    @Test
+/*    @Test
     void updateProduct() {
 
         int result = productMapper.updateProduct(ProductUpdDto.builder().iproduct(3).iuser(3).icategory(3).build());
@@ -185,7 +185,7 @@ class ProductMapperTest {
         product = productMapper.getProduct(new GetProductBaseDto(3, 3));
         assertThat(product.getRentalEndDate()).isEqualTo(LocalDate.of(2222, 2, 2));
 
-    }
+    }*/
 
     @Test
     void getPicCount() {

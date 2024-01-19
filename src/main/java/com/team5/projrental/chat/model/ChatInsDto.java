@@ -9,11 +9,9 @@ import org.hibernate.validator.constraints.Range;
 public class ChatInsDto {
 
     @JsonIgnore
-    @Range(min = 1)
     private int ichat;
 
     @JsonIgnore
-    @Range(min = 1)
     private int loginedIuser;
 
     @Range(min = 1)
