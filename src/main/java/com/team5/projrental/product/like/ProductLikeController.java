@@ -16,9 +16,9 @@ public class ProductLikeController {
 
     private final ProductLikeService service;
 
-    @GetMapping("/fav/{iuser}/{iproduct}")
+    @GetMapping("/fav/{iproduct}")
     @Operation(summary = "찜 기능", description = "찜 토글")
-    public ResVo toggleFav(@PathVariable int iuser, @PathVariable int iproduct) {
-        return service.toggleFav(iuser, iproduct);
+    public ResVo toggleFav( @PathVariable int iproduct) {
+        return service.toggleFav(iproduct);
     }
 }
