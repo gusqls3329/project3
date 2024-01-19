@@ -87,7 +87,7 @@ public class ProductRepository {
         return productMapper.changeProdStatus(delProductBaseDto);
     }
 
-    public ReviewResultVo getReview(ReviewGetDto dto) {
+    public List<ReviewResultVo> getReview(ReviewGetDto dto) {
         return productMapper.getReview(dto);
     }
 
