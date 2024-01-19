@@ -1,5 +1,6 @@
 package com.team5.projrental.product;
 
+import com.google.common.util.concurrent.AtomicDouble;
 import com.team5.projrental.common.Const;
 import com.team5.projrental.common.aop.anno.CountView;
 import com.team5.projrental.common.exception.*;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.sql.Ref;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +38,7 @@ import static com.team5.projrental.common.exception.ErrorCode.*;
 public class ProductService {
 
 
-    private final ProductRepository productRepository;
+    private final RefProductRepository productRepository;
 
     private final AxisGenerator axisGenerator;
 
@@ -98,6 +100,7 @@ public class ProductService {
         );
 
         // 결과물 없음 여부 검증
+        // iproduct 가 존재하는 제품이라는것 보장됨.
         CommonUtils.ifAnyNullThrow(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE, productBy);
         // 검증 완
 
@@ -105,11 +108,28 @@ public class ProductService {
         Integer productPK = productBy.getIproduct();
         // 리턴 객체 생성
         ProductVo result = new ProductVo(productBy);
+
         // 리뷰
         List<ReviewResultVo> reviews = getReview(productBy.getIproduct(), 1, inProductReviewPerPage);
         result.setReviews(reviews);
+
+        // 거래 불가능 날짜
+        List<CanNotRentalDate> lendDates = productRepository.getLendDatesBy(productBy.getIproduct());
+        // 거래불가능 날짜 전부 세팅하기
+        List<LocalDate> disabledDates = new ArrayList<>();
+        lendDates.forEach(d -> {
+            while (true) {
+                LocalDate rentalDateWalker = d.getRentalStartDate();
+                disabledDates.add(rentalDateWalker);
+                rentalDateWalker = rentalDateWalker.plusDays(1);
+                if (!rentalDateWalker.isAfter(d.getRentalEndDate())) break;
+            }
+        });
+        result.setDisabledDates(disabledDates);
+
         // 사진
         List<GetProdEctPicDto> ectPics = productRepository.findPicsBy(productPK);
+
         // 사진 조회 결과가 없으면 곧바로 리턴
         if (ectPics == null || ectPics.isEmpty()) {
             return result;
@@ -393,9 +413,10 @@ public class ProductService {
     /**
      * 제품에 포함하여 리뷰를 가져오거나,
      * 해당 제품의 전체 리뷰를 가져올 수 있음.
-     *
+     * <p>
      * 제품에 포함할때는 page = 1, reviewPerPage 는 Const.inProductReviewPerPage 사용.
      * 전체를 가져올때는 넘어온 page, reviewPerPage 는 Const.totalReviewPerPage 사용.
+     *
      * @param iproduct
      * @param page
      * @param reviewPerPage
