@@ -5,6 +5,7 @@ import com.team5.projrental.common.exception.base.BadInformationException;
 import com.team5.projrental.common.security.AuthenticationFacade;
 import com.team5.projrental.payment.review.model.DelRivewDto;
 import com.team5.projrental.payment.review.model.RivewDto;
+import com.team5.projrental.payment.review.model.UpRieDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -43,18 +44,14 @@ public class PaymentReviewService {
         throw new BadInformationException(REVIEW_ALREADY_EXISTS_EX_MESSAGE);
     }
 
-    public int patchReview(RivewDto dto) {
-        int loginUserPk = authenticationFacade.getLoginUserPk();
-        dto.setIuser(loginUserPk);
-        Integer selReview = reviewMapper.selReview(loginUserPk, dto.getIpayment());
-        if (selReview == 1) {
+    public int patchReview(UpRieDto dto) {
+
             int result = reviewMapper.upReview(dto);
             if (result != 1) {
                 throw new BadInformationException(ILLEGAL_EX_MESSAGE);
             }
             return Const.SUCCESS;
-        }
-        throw new BadInformationException(NO_SUCH_REVIEW_EX_MESSAGE);
+
     }
 
 

@@ -39,8 +39,7 @@
                 , rating = #{rating}
             </if>
         </set>
-        where ibuyer = #{iuser}
-        and ipayment = #{ipayment}
+        where ireview = #{ireview}
     </update>
 
     <update id="delReview">
