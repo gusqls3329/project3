@@ -17,6 +17,8 @@
             </if>
         </set>
     </insert>
+
+
     <update id="upProductIstatus">
         update t_product pr
         JOIN t_product_payment pp
@@ -30,8 +32,6 @@
     <update id="upReview">
         update t_review
         <set>
-            ibuyer = #{iuser}
-            ,ipayment = #{ipayment}
             <if test="contents =! null and contents != '' ">
                 , contents = #{contents}
             </if>
@@ -39,6 +39,8 @@
                 , rating = #{rating}
             </if>
         </set>
+        where ibuyer = #{iuser}
+        and ipayment = #{ipayment}
     </update>
 
     <update id="delReview">
@@ -53,5 +55,11 @@
         FROM t_review
         WHERE ibuyer = #{iuser}
         and ipayment = #{ipayment}
+    </select>
+
+    <select id="selBuyRew">
+        SELECT ipayment
+        FROM t_payment
+        WHERE ibuyer = #{iuser}
     </select>
 </mapper>

@@ -23,8 +23,10 @@ public class PaymentReviewService {
     public int postReview(RivewDto dto) {
         int loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setIuser(loginUserPk);
-        Integer selReview = reviewMapper.selReview(loginUserPk, dto.getIpayment());
-            if (selReview == 0) {
+        int selReview = reviewMapper.selReview(loginUserPk, dto.getIpayment());
+        if (selReview == 0) {
+            int buyCheck = reviewMapper.selBuyRew(loginUserPk);
+            if (buyCheck == dto.getIpayment()) {
                 int result = reviewMapper.insReview(dto);
                 if (result != 1) {
                     throw new BadInformationException(ILLEGAL_EX_MESSAGE);
@@ -36,14 +38,16 @@ public class PaymentReviewService {
                     return Const.SUCCESS;
                 }
             }
-            throw new BadInformationException(REVIEW_ALREADY_EXISTS_EX_MESSAGE);
+            throw new BadInformationException(ILLEGAL_EX_MESSAGE);
+        }
+        throw new BadInformationException(REVIEW_ALREADY_EXISTS_EX_MESSAGE);
     }
 
     public int patchReview(RivewDto dto) {
         int loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setIuser(loginUserPk);
         Integer selReview = reviewMapper.selReview(loginUserPk, dto.getIpayment());
-        if(selReview == 1) {
+        if (selReview == 1) {
             int result = reviewMapper.upReview(dto);
             if (result != 1) {
                 throw new BadInformationException(ILLEGAL_EX_MESSAGE);
@@ -59,12 +63,13 @@ public class PaymentReviewService {
         dto.setIuser(loginUserPk);
 
         Integer selReview = reviewMapper.selReview(loginUserPk, dto.getIpayment());
-        if(selReview == 1) {
+        if (selReview == 1) {
             int result = reviewMapper.delReview(dto);
             if (result != 1) {
                 throw new BadInformationException(ILLEGAL_EX_MESSAGE);
             }
             return Const.SUCCESS;
-        }  throw new BadInformationException(NO_SUCH_REVIEW_EX_MESSAGE);
+        }
+        throw new BadInformationException(NO_SUCH_REVIEW_EX_MESSAGE);
     }
 }
