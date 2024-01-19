@@ -92,4 +92,7 @@ public class ProductRepository {
     }
 
 
+    public List<CanNotRentalDate> getLendDatesBy(Integer iproduct) {
+        return productMapper.getLendStartDateAndEndDate(iproduct);
+    }
 }
