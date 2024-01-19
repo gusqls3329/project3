@@ -3,6 +3,7 @@ package com.team5.projrental.payment.review;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.payment.review.model.DelRivewDto;
 import com.team5.projrental.payment.review.model.RivewDto;
+import com.team5.projrental.payment.review.model.UpRieDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -32,11 +33,11 @@ public class PaymentReviewController {
     @PatchMapping
     @Operation(summary = "리뷰 수정", description = "해당 거래에 등록한 리뷰 수정")
     @Parameters(value = {
-            @Parameter(name="ipayment", description = "후기 등록하는 제품의 결제PK")
+            @Parameter(name="ireview", description = "작성한 리뷰 PK")
             , @Parameter(name="contents", description = "null 허용")
             , @Parameter(name="raiting", description = "null 허용 , 별점 등록 시 0~5점 등록 가능")
     })
-    public ResVo patchReview(@Validated @RequestBody RivewDto dto){
+    public ResVo patchReview(@Validated @RequestBody UpRieDto dto){
         return new ResVo(reviewService.patchReview(dto));
     }
 
