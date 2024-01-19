@@ -14,11 +14,9 @@ public class ChatMsgInsDto {
     private int ichat; // 채팅방 고유 번호(채팅방 PK)
 
     @JsonIgnore
-    @Range(min = 1)
     private int seq; // 각 채팅방의 채팅고유 번호(채팅 PK)
 
     @JsonIgnore
-    @Range(min = 1)
     private int loginedIuser; // 로그인 유저 PK
 
     @NotBlank(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)

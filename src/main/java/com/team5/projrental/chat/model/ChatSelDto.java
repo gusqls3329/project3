@@ -19,7 +19,6 @@ public class ChatSelDto {
     private int page;
 
     @JsonIgnore
-    @Range(min = 1)
     private int loginedIuser;
 
     @JsonIgnore
