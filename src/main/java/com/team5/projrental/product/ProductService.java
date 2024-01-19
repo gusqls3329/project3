@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.sql.Ref;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,7 @@ import static com.team5.projrental.common.exception.ErrorCode.*;
 public class ProductService {
 
 
-    private final ProductRepository productRepository;
+    private final RefProductRepository productRepository;
 
     private final AxisGenerator axisGenerator;
 
