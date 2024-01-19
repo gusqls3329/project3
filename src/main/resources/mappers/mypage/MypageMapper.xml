@@ -7,7 +7,6 @@
             A.iproduct,
             A.title,
             A.stored_pic AS productStoredPic,
-            A.request_pic AS productRequestPic,
             A.deposit,
             A.iuser,
             C.ipayment,
@@ -22,7 +21,6 @@
             D.iuser AS targetIuser,
             D.nick AS targetNick,
             D.stored_pic AS userStoredPic,
-            D.request_pic AS userRequestPic
         FROM t_product A
         JOIN t_product_payment B
         ON A.iproduct = B.iproduct

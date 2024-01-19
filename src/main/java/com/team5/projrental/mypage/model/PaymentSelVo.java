@@ -23,5 +23,4 @@ public class PaymentSelVo {
     private int targetIuser; // 상대 유저 PK
     private String targetNick; // 상대 닉네임
     private String stroedPic; // 상대 프로필사진
-    private String requestPic; // 상대 프로필 사진
 }
