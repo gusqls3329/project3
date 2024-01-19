@@ -24,6 +24,7 @@ public class ProductVo extends ProductListVo{
     private Double y;
     private Integer isLiked;
     private List<ReviewResultVo> reviews;
+    private List<LocalDate> disabledDates;
 
     public ProductVo(GetProductResultDto dto) {
         super(dto);

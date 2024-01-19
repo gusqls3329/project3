@@ -270,4 +270,10 @@
         </if>
     </select>
 
+    <select id="getLendStartDateAndEndDate">
+        SELECT PA.rental_start_date, PA.rental_end_date FROM t_product_payment PP
+        JOIN t_payment PA ON PP.ipayment = PA.ipayment
+        WHERE PP.iproduct = #{iproduct}
+    </select>
+
 </mapper>

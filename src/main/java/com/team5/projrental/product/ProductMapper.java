@@ -67,4 +67,6 @@ public interface ProductMapper {
     int checkIproduct(Integer iproduct);
 
     List<ReviewResultVo> getReview(ReviewGetDto dto);
+
+    List<CanNotRentalDate> getLendStartDateAndEndDate(Integer iproduct);
 }
