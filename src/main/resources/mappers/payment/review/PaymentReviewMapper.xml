@@ -20,8 +20,8 @@
         ON pp.iproduct = pr.iproduct
         JOIN t_payment pa
         ON pa.ipayment = pp.ipayment
-        set pr.istatus = 1
-        WHERE pa.ipayment = #{ipayment}
+        set pa.istatus = 1
+        WHERE pa.ipayment = #{ipayment};
     </update>
 
     <update id="upReview">
