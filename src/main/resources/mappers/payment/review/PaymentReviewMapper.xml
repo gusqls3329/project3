@@ -42,15 +42,19 @@
     <select id="selReview">
         SELECT COUNT(ireview)
         FROM t_review
-        WHERE ibuyer = #{iuser}
-        and ipayment = #{ipayment}
+        WHERE
+        <if test="iuser != null and iuser != 0">
+        ibuyer = #{iuser} and
+        </if>
+        ipayment = #{ipayment}
     </select>
 
     <select id="selBuyRew">
-        SELECT ipayment
-        FROM t_payment
-        WHERE ibuyer = #{iuser}
-        and ipayment =#{ipayment}
+        select count(PA.ipayment) as isExists, if(PA.ibuyer = #{iuser}, 1, 0) as isBuyer
+        from t_product_payment PP
+        join t_product P on PP.iproduct = P.iproduct
+        join t_payment PA on PP.ipayment = PA.ipayment and PA.ipayment = #{ipayment}
+        where P.iuser = #{iuser} or PA.ibuyer = #{iuser}
     </select>
 
     <select id="selPatchRev">
@@ -58,4 +62,6 @@
         FROM t_review
         WHERE ireview = #{ireview};
     </select>
+
+
 </mapper>
