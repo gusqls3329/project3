@@ -27,7 +27,7 @@ public class PaymentReviewService {
         dto.setIuser(loginUserPk);
         int selReview = reviewMapper.selReview(loginUserPk, dto.getIpayment());
         if (selReview == 0) {
-            int buyCheck = reviewMapper.selBuyRew(loginUserPk);
+            int buyCheck = reviewMapper.selBuyRew(loginUserPk, dto.getIpayment());
             if (buyCheck == dto.getIpayment()) {
                 int result = reviewMapper.insReview(dto);
                 if (result != 1) {
