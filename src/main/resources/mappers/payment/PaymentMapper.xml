@@ -15,8 +15,12 @@
     <!--    -->
 
 <!--    -->
-    <select id="getDepositPerFromProduct">
-        select deposit, price from t_product where iproduct = #{iproduct}
+    <select id="getValidationInfoFromProduct">
+        select P.deposit, P.price, PA.rental_start_date as rentalStartDate, PA.rental_end_date as rentalEndDate
+        from t_product P
+        left join t_product_payment PP on P.iproduct = PP.iproduct
+        left join t_payment PA on PP.ipayment = PA.ipayment
+        where P.iproduct = #{iproduct}
     </select>
 <!--    -->
 
