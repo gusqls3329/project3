@@ -276,4 +276,20 @@
         WHERE PP.iproduct = #{iproduct}
     </select>
 
+    <!-- 찜 -->
+    <insert id="insFav">
+        INSERT INTO t_like
+        SET iuser = #{iuser}
+        , iproduct = #{iproduct}
+    </insert>
+
+    <delete id="delFav">
+        DELETE FROM t_like
+        WHERE iuser = #{iuser} and iproduct = #{iproduct}
+    </delete>
+
+    <delete id="delFavForDelUser">
+        DELETE FROM t_like
+        WHERE iuser = #{iuser}
+    </delete>
 </mapper>

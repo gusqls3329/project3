@@ -279,4 +279,10 @@ public class ProductController {
                                               Integer page) {
         return productService.getAllReviews(iproduct, page);
     }
+
+    @GetMapping("/fav/{iuser}/{iproduct}")
+    @Operation(summary = "찜 기능", description = "찜 토글")
+    public ResVo toggleFav(@PathVariable int iuser, @PathVariable int iproduct) {
+        return productService.toggleFav(iuser, iproduct);
+    }
 }
