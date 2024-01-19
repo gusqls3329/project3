@@ -15,8 +15,8 @@ public class PaymentRepository {
     private final PaymentMapper paymentMapper;
 
     //
-    public GetDepositAndPriceFromProduct getDepositPerFromIproduct(int iproduct) {
-        return paymentMapper.getDepositPerFromProduct(iproduct);
+    public List<GetDepositAndPriceFromProduct> getValidationInfoFromProduct(int iproduct) {
+        return paymentMapper.getValidationInfoFromProduct(iproduct);
     }
     //
 

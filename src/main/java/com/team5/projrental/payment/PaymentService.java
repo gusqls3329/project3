@@ -45,9 +45,9 @@ public class PaymentService {
     public ResVo postPayment(PaymentInsDto paymentInsDto) {
 
         // 1일당 가격 가져오기
-        Integer rentalPrice = productRepository.findRentalPriceBy(paymentInsDto.getIproduct());
+        Integer totalRentalPrice = productRepository.findRentalPriceBy(paymentInsDto.getIproduct());
         // request 데이터 검증
-        if (rentalPrice == null || rentalPrice == 0) {
+        if (totalRentalPrice == null || totalRentalPrice == 0) {
             throw new NoSuchProductException(NO_SUCH_PRODUCT_EX_MESSAGE);
         }
         paymentInsDto.setIbuyer(authenticationFacade.getLoginUserPk());
@@ -56,14 +56,24 @@ public class PaymentService {
         CommonUtils.ifBeforeThrow(BadDateInfoException.class, RENTAL_END_DATE_MUST_BE_AFTER_THAN_RENTAL_START_DATE_EX_MESSAGE,
                 paymentInsDto.getRentalEndDate(), paymentInsDto.getRentalStartDate());
 
-        GetDepositAndPriceFromProduct depositInfo = paymentRepository.getDepositPerFromIproduct(paymentInsDto.getIproduct());
+        // iproduct 는 문제 없음이 검증된 상태.
+        List<GetDepositAndPriceFromProduct> validationInfoFromProduct = paymentRepository.getValidationInfoFromProduct(paymentInsDto.getIproduct());
+
+        // deposit 과 price 는 일정함. 따라서
+        GetDepositAndPriceFromProduct depositInfo = validationInfoFromProduct.get(0);
         CommonUtils.ifAnyNullThrow(BadProductInfoException.class, BAD_PRODUCT_INFO_EX_MESSAGE,
                 depositInfo);
+
+        // 이미 등록된 날짜에는 동일한 상품이 더이상 결제등록 되지 않도록 예외처리
+        validationInfoFromProduct.forEach(o -> CommonUtils.ifFalseThrow(BadDateInfoException.class, ILLEGAL_DATE_EX_MESSAGE,
+                CommonUtils.notBetweenChecker(o.getRentalStartDate(), o.getRentalEndDate(),
+                        paymentInsDto.getRentalStartDate(), paymentInsDto.getRentalEndDate())));
+
         // 데이터 세팅 (+마지막 예외처리)
         paymentInsDto.setIpaymentMethod(CommonUtils.ifPaymentMethodNotContainsThrowOrReturn(paymentInsDto.getPaymentMethod()));
         paymentInsDto.setRentalDuration(((int) ChronoUnit.DAYS.between(paymentInsDto.getRentalStartDate(),
                 paymentInsDto.getRentalEndDate())) + 1);
-        paymentInsDto.setPrice(rentalPrice * paymentInsDto.getRentalDuration());
+        paymentInsDto.setPrice(totalRentalPrice * paymentInsDto.getRentalDuration());
         paymentInsDto.setCode(createCode());
         paymentInsDto.setDeposit(CommonUtils.getDepositFromPer(paymentInsDto.getPrice(),
                 CommonUtils.getDepositPerFromPrice(depositInfo.getPrice(), depositInfo.getDeposit())));

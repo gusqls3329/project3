@@ -7,6 +7,7 @@ public interface ErrorMessage {
     String ILLEGAL_CATEGORY_EX_MESSAGE = "잘못된 카테고리 입니다.";
     String ILLEGAL_PAYMENT_EX_MESSAGE = "잘못된 결제수단 입니다.";
     String ILLEGAL_RANGE_EX_MESSAGE = "잘못된 범위의 값을 입력하셨습니다.";
+    String ILLEGAL_DATE_EX_MESSAGE = "잘못된 날짜를 입력하셨습니다.";
     //
     String BUY_DATE_MUST_BE_LATER_THAN_TODAY_EX_MESSAGE = "구매일은 오늘보다 같거나 이전이어야 합니다.";
     String RENTAL_DATE_MUST_BE_BEFORE_THAN_TODAY_EX_MESSAGE = "대여 시작일은 오늘보다 같거나 이후어야 합니다.";
