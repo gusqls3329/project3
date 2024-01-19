@@ -19,6 +19,12 @@ import static com.team5.projrental.common.exception.ErrorCode.*;
 public class CommonUtils {
 
 
+    public static boolean notBetweenChecker(LocalDate refStartDate, LocalDate refEndDate,
+                                             LocalDate newStartDate, LocalDate newEndDate) {
+
+        return newStartDate.isBefore(refStartDate) && newEndDate.isBefore(refStartDate)
+                || newStartDate.isAfter(refEndDate) && newEndDate.isAfter(refEndDate);
+    }
     /**
      * Integer n 이 null 이거나 0 이면 예외 유발
      *

@@ -15,7 +15,7 @@ public interface PaymentMapper {
 
     //
     //
-    GetDepositAndPriceFromProduct getDepositPerFromProduct(int iproduct);
+    List<GetDepositAndPriceFromProduct> getValidationInfoFromProduct(int iproduct);
     //
 
     int insPayment(PaymentInsDto paymentInsDto);
