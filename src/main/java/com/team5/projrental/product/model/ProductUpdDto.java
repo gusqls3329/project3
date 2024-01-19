@@ -34,7 +34,9 @@ public class ProductUpdDto {
     private String restAddr;
     private String title;
     private String contents;
+    @JsonIgnore
     private MultipartFile mainPic;
+    @JsonIgnore
     private List<MultipartFile> pics;
     @Range(min = 100, max = Integer.MAX_VALUE, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private Integer price;

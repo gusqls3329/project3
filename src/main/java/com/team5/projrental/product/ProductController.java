@@ -5,16 +5,20 @@ import com.team5.projrental.common.exception.ErrorMessage;
 import com.team5.projrental.common.model.ErrorResultVo;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.product.model.*;
+import com.team5.projrental.product.model.review.ReviewResultVo;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.checkerframework.checker.regex.qual.Regex;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -41,8 +45,18 @@ public class ProductController {
                     "[v] page: 페이징" +
                     "<br><br>" +
                     "성공시:<br>" +
-                    "[nick, userPic, iproduct, title, prodPic, rentalPrice, rentalStartDate, rentalEndDate, addr(rest_addr 까지 " +
-                    "포함), prodLike(제품의 좋아요 수)] (배열)" +
+                    "[<br>" +
+                    "  nick<br> " +
+                    "  userPic<br>" +
+                    "  iproduct<br> " +
+                    "  title<br> " +
+                    "  prodPic<br> " +
+                    "  rentalPrice<br> " +
+                    "  rentalStartDate<br>" +
+                    "  rentalEndDate<br> " +
+                    "  addr(rest_addr 까지 포함)<br> " +
+                    "  prodLike(제품의 좋아요 수)<br>" +
+                    "] (배열)" +
                     "<br><br>" +
                     "실패시:<br>" +
                     "message: 에러 발생 사유<br>errorCode: 에러 코드")
@@ -51,7 +65,9 @@ public class ProductController {
     public List<ProductListVo> getProductList(@RequestParam(required = false)
                                               @Range(min = 1, max = 2, message = BAD_SORT_EX_MESSAGE)
                                               Integer sort,
-                                              @RequestParam(required = false) String search,
+                                              @RequestParam(required = false)
+                                              @Length(min = 2, message = ILLEGAL_RANGE_EX_MESSAGE)
+                                              String search,
                                               @RequestParam @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
                                               @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
                                               Integer page,
@@ -65,18 +81,30 @@ public class ProductController {
 
     //
 
-    /* TODO: 1/17/24
-        로그인한 유저가 해당 제품을 좋아요 했는지 여부 체크하는 데이터도 리턴에 추가해야함.
-        --by Hyunmin */
     @Operation(summary = "특정 상품 상세 조회",
             description = "<strong>특정 상품의 상세페이지 조회</strong><br>" +
                     "[ [v] : 필수값]<br>" +
                     "[v] icategory: 조회할 상품의 카테고리<br>" +
                     "[v] iproduct: 조회할 상품의 iproduct 값 (getProductList 에서 제공됨)<br><br>" +
                     "성공시:<br>" +
-                    "iuser(판매자의), nick(판매자의), userPic(판매자의), title, contents, mainPic, pics(배열), deposit, " +
-                    "buyDate, rentalStartDate, rentalEndDate, addr (rest_addr 까지 포함), prodLike, x, y" +
-                    "<br><br>" +
+                    "iuser(판매자의)<br> " +
+                    "nick(판매자의)<br> " +
+                    "userPic(판매자의)<br> " +
+                    "title<br> " +
+                    "contents<br> " +
+                    "mainPic<br> " +
+                    "pics(배열)<br> " +
+                    "deposit<br> " +
+                    "buyDate<br> " +
+                    "rentalStartDate<br> " +
+                    "rentalEndDate<br> " +
+                    "addr (rest_addr 까지 포함)<br> " +
+                    "prodLike<br> " +
+                    "x<br> " +
+                    "y<br> " +
+                    "isLiked(로그인한 유저가 좋아요를 눌렀는지 여부 - 0: 누르지 않음, 1: 누름<br> " +
+                    "reviews: 해당 제품에 작성된 리뷰<br>" +
+                    "disabledDates: 이미 거래진행중인 날짜들 (거래 불가능한 날짜들) <br><br>" +
                     "실패시: <br>" +
                     "message: 에러 발생 사유<br>errorCode: 에러 코드")
     @Validated
@@ -122,9 +150,20 @@ public class ProductController {
                     "<br><br>" +
                     "실패시:<br>" +
                     "message: 에러 발생 사유<br>errorCode: 에러 코드")
+    @Validated
     @PostMapping
-    public ResVo postProduct(@Validated @RequestBody ProductInsDto dto) {
-        return productService.postProduct(dto);
+    public ResVo postProduct(@RequestPart
+                             @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
+                             MultipartFile mainPic,
+                             @RequestPart(required = false)
+                             List<MultipartFile> pics,
+                             @Validated
+                             @RequestPart
+                             ProductInsDto dto) {
+
+        return productService.postProduct(mainPic, pics, dto);
+
+
     }
 
     @Operation(summary = "특정 제품 수정",
@@ -153,9 +192,13 @@ public class ProductController {
                     "result: 1<br><br>" +
                     "실패시: <br>" +
                     "message: 에러 발생 사유<br>errorCode: 에러 코드")
+
     @PutMapping
-    public ResVo putProduct(@Validated @RequestBody ProductUpdDto dto) {
-        return productService.putProduct(dto);
+    public ResVo putProduct(@RequestPart(required = false) MultipartFile mainPic,
+                            @RequestPart(required = false) List<MultipartFile> pics,
+                            @Validated @RequestPart ProductUpdDto dto) {
+
+        return productService.putProduct(mainPic, pics, dto);
     }
 
     @Operation(summary = "제품 수정 or 삭제",
@@ -188,8 +231,18 @@ public class ProductController {
                     "[v] page: 페이징" +
                     "<br><br>" +
                     "성공시: <br>" +
-                    "nick, userPic, iproduct, category, title, prodPic, rentalPrice, rentalStartDate, " +
-                    "rentalEndDate, addr (rest_addr 까지 포함) (배열) <br><br>" +
+                    "[<br>" +
+                    "  nick<br> " +
+                    "  userPic<br> " +
+                    "  iproduct<br> " +
+                    "  category<br> " +
+                    "  title<br> " +
+                    "  prodPic<br> " +
+                    "  rentalPrice<br> " +
+                    "  rentalStartDate<br> " +
+                    "  rentalEndDate<br> " +
+                    "  addr (rest_addr 까지 포함)<br>" +
+                    "] (배열) <br><br>" +
                     "실패시: <br>" +
                     "message: 에러 발생 사유<br>errorCode: 에러 코드")
     @Validated
@@ -200,5 +253,36 @@ public class ProductController {
                                                   @NotNull Integer page) {
         return productService.getUserProductList((page - 1) * Const.PROD_PER_PAGE);
 
+    }
+
+    @Operation(summary = "<strong>해당 제품에 작성된 모든 리뷰</strong><br>",
+    description = "성공시:<br>" +
+            "[<br>" +
+            "  ireview: 리뷰의 PK<br>" +
+            "  contents: 리뷰 내용<br>" +
+            "  rating: 평가한 별점 (0~5)<br>" +
+            "  iuser: 리뷰를 작성한 유저의 PK<br>" +
+            "  nick: 리뷰를 작성한 유저의 닉네임<br>" +
+            "  profPic: 리뷰를 작성한 유저의 사진<br>" +
+            "] (배열)<br><br>" +
+            "실패시:<br>" +
+            "message: 에러 발생 사유<br>errorCode: 에러 코드")
+    @Validated
+    @GetMapping("/review/{iproduct}")
+    public List<ReviewResultVo> getAllReviews(@PathVariable
+                                              @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
+                                              @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
+                                              Integer iproduct,
+                                              @RequestParam
+                                              @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
+                                              @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
+                                              Integer page) {
+        return productService.getAllReviews(iproduct, page);
+    }
+
+    @GetMapping("/fav/{iuser}/{iproduct}")
+    @Operation(summary = "찜 기능", description = "찜 토글")
+    public ResVo toggleFav(@PathVariable int iuser, @PathVariable int iproduct) {
+        return productService.toggleFav(iuser, iproduct);
     }
 }

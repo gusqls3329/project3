@@ -4,10 +4,7 @@ import com.team5.projrental.common.Const;
 import com.team5.projrental.common.SecurityProperties;
 import com.team5.projrental.common.exception.BadAddressInfoException;
 import com.team5.projrental.common.exception.RestApiException;
-import com.team5.projrental.common.exception.base.BadDateInfoException;
-import com.team5.projrental.common.exception.base.BadInformationException;
-import com.team5.projrental.common.exception.base.NoSuchDataException;
-import com.team5.projrental.common.exception.base.WrapRuntimeException;
+import com.team5.projrental.common.exception.base.*;
 import com.team5.projrental.common.exception.checked.FileNotContainsDotException;
 import com.team5.projrental.common.exception.user.BadIdInfoException;
 import com.team5.projrental.common.model.ResVo;
@@ -219,11 +216,17 @@ public class UserService {
         Integer check = mapper.selpatchUser(entity.getIuser());
         if (loginUserPk == entity.getIuser()) {
             String hashedPw = entity.getUpw();
-            boolean checkPw = passwordEncoder.matches(dto.getUpw(), hashedPw);
+            boolean checkPw = BCrypt.checkpw(dto.getUpw(), hashedPw);
             if (checkPw) {
-                if (check != 0 || check == null) {
-                    return -1;
+                if (check != 0 || check != null) {
+                    throw new IllegalException(CAN_NOT_DEL_USER_EX_MESSAGE);
                 } else {
+                    // 채팅 개수 가져오기 && 채팅 삭제
+                    if(!mapper.getUserChatCount(loginUserPk).equals(mapper.delUserChat(loginUserPk))){
+                        throw new IllegalException(CAN_NOT_DEL_USER_EX_MESSAGE);
+                    }
+
+
                     List<SeldelUserPayDto> payDtos = mapper.seldelUserPay(entity.getIuser());
 
                     for (SeldelUserPayDto list : payDtos) {

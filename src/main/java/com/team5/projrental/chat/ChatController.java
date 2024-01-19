@@ -25,7 +25,7 @@ public class ChatController {
     @Operation(summary = "대화중인 리스트 출력", description = "대화중인 채팅 리스트 출력")
     @Parameters(value = {
             @Parameter(name = "page", description = "page당 노출되는 채팅 방 리스트 20개")})
-    public List<ChatSelVo> getChatAll(ChatSelDto dto) {
+    public List<ChatSelVo> getChatAll(@Validated ChatSelDto dto) {
         return service.getChatAll(dto);
     }
 

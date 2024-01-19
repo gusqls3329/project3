@@ -1,11 +1,10 @@
 package com.team5.projrental.product;
 
+import com.google.common.util.concurrent.AtomicDouble;
+import com.team5.projrental.common.Const;
 import com.team5.projrental.common.aop.anno.CountView;
 import com.team5.projrental.common.exception.*;
-import com.team5.projrental.common.exception.base.BadDateInfoException;
-import com.team5.projrental.common.exception.base.BadInformationException;
-import com.team5.projrental.common.exception.base.BadProductInfoException;
-import com.team5.projrental.common.exception.base.WrapRuntimeException;
+import com.team5.projrental.common.exception.base.*;
 import com.team5.projrental.common.exception.checked.FileNotContainsDotException;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.model.restapi.Addrs;
@@ -17,11 +16,15 @@ import com.team5.projrental.product.model.innermodel.PicSet;
 import com.team5.projrental.product.model.innermodel.StoredFileInfo;
 import com.team5.projrental.product.model.proc.*;
 import com.team5.projrental.common.security.AuthenticationFacade;
+import com.team5.projrental.product.model.review.ReviewGetDto;
+import com.team5.projrental.product.model.review.ReviewResultVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.sql.Ref;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +38,7 @@ import static com.team5.projrental.common.exception.ErrorCode.*;
 public class ProductService {
 
 
-    private final ProductRepository productRepository;
+    private final RefProductRepository productRepository;
 
     private final AxisGenerator axisGenerator;
 
@@ -64,6 +67,7 @@ public class ProductService {
         // sort 검증
         if (sort != null && sort != 1 && sort != 2) throw new BadInformationException(BAD_SORT_EX_MESSAGE);
         // 카테고리 검증
+        // search 의 length 가 2 이상으로 validated 되었으므로 문제 없음.
         GetProductListDto getProductListDto = new GetProductListDto(sort, search, icategory, page);
         List<GetProductListResultDto> products = productRepository.findProductListBy(getProductListDto);
         // 결과물 없음 여부 체크
@@ -89,18 +93,43 @@ public class ProductService {
     @CountView
     public ProductVo getProduct(Integer icategory, Integer iproduct) {
 
+
         // 사진을 '제외한' 모든 정보 획득 & 제공된 카테고리 검증 (category -> icategory)
         GetProductResultDto productBy = productRepository.findProductBy(
-                new GetProductBaseDto(icategory, iproduct)
+                new GetProductBaseDto(icategory, iproduct, authenticationFacade.getLoginUserPk())
         );
-        // 결과물 없음 여부 검증
-        CommonUtils.ifAnyNullThrow(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE, productBy);
 
+        // 결과물 없음 여부 검증
+        // iproduct 가 존재하는 제품이라는것 보장됨.
+        CommonUtils.ifAnyNullThrow(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE, productBy);
         // 검증 완
+
+        // 사진, 리뷰를 가져오기 위한 iproduct 획득
         Integer productPK = productBy.getIproduct();
+        // 리턴 객체 생성
+        ProductVo result = new ProductVo(productBy);
+
+        // 리뷰
+        List<ReviewResultVo> reviews = getReview(productBy.getIproduct(), 1, inProductReviewPerPage);
+        result.setReviews(reviews);
+
+        // 거래 불가능 날짜
+        List<CanNotRentalDate> lendDates = productRepository.getLendDatesBy(productBy.getIproduct());
+        // 거래불가능 날짜 전부 세팅하기
+        List<LocalDate> disabledDates = new ArrayList<>();
+        lendDates.forEach(d -> {
+            while (true) {
+                LocalDate rentalDateWalker = d.getRentalStartDate();
+                disabledDates.add(rentalDateWalker);
+                rentalDateWalker = rentalDateWalker.plusDays(1);
+                if (!rentalDateWalker.isAfter(d.getRentalEndDate())) break;
+            }
+        });
+        result.setDisabledDates(disabledDates);
+
+        // 사진
         List<GetProdEctPicDto> ectPics = productRepository.findPicsBy(productPK);
 
-        ProductVo result = new ProductVo(productBy);
         // 사진 조회 결과가 없으면 곧바로 리턴
         if (ectPics == null || ectPics.isEmpty()) {
             return result;
@@ -123,20 +152,23 @@ public class ProductService {
      * @return ResVo
      */
     @Transactional
-    public ResVo postProduct(ProductInsDto dto) {
+    public ResVo postProduct(MultipartFile mainPic, List<MultipartFile> pics, ProductInsDto dto) {
         /* TODO: 2024-01-10
             security 적용시 모든 iuser 가 있는부분 로직 변경, 모델 변경 해야함.
             --by Hyunmin */
 
 
+        CommonUtils.ifAllNullThrow(BadMainPicException.class, BAD_PIC_EX_MESSAGE, mainPic);
+
         // 사진 개수 검증 - 예외 코드, 메시지 를 위해 직접 검증 (!@Validated)
-        if (dto.getPics() != null) {
+        if (pics != null) {
             CommonUtils.checkSizeIfOverLimitNumThrow(IllegalProductPicsException.class, ILLEGAL_PRODUCT_PICS_EX_MESSAGE,
-                    dto.getPics().stream(), 9);
+                    pics.stream(), 9);
         }
 
         // iuser 있는지 체크
-        dto.setIuser(authenticationFacade.getLoginUserPk());
+        int loginIuser = authenticationFacade.getLoginUserPk();
+        dto.setIuser(loginIuser);
         CommonUtils.ifFalseThrow(NoSuchUserException.class, NO_SUCH_USER_EX_MESSAGE, productRepository.findIuserCountBy(dto.getIuser()));
 
         // 카테고리 검증 - 예외 코드, 메시지 를 위해 직접 검증 (!@Validated)
@@ -166,13 +198,27 @@ public class ProductService {
 
 
             if (productRepository.saveProduct(insProdBasicInfoDto) == 1) {
-                if (!dto.getPics().isEmpty()) {
-                    insProdBasicInfoDto.setStoredPic(myFileUtils.savePic(dto.getMainPic(), CATEGORY_PRODUCT_MAIN,
-                            String.valueOf(insProdBasicInfoDto.getIproduct())));
+
+                // 사진은 완전히 따로 저장해야함 (useGeneratedKey)
+                // 프로필 사진 저장
+                if (mainPic != null) {
+                    productRepository.updateProduct(ProductUpdDto.builder()
+                            .storedMainPic(
+                                    myFileUtils.savePic(
+                                            mainPic, CATEGORY_PRODUCT_SUB, String.valueOf(insProdBasicInfoDto.getIproduct())
+                                    ))
+                            .iproduct(insProdBasicInfoDto.getIproduct())
+                            .iuser(loginIuser)
+                            .build()
+                    );
+                }
+                // 그 외 사진 저장
+                if (pics != null && !pics.isEmpty()) {
                     // pics 에 insert 할 객체
                     InsProdPicsDto insProdPicsDto = new InsProdPicsDto(insProdBasicInfoDto.getIproduct(),
-                            myFileUtils.savePic(dto.getPics(), CATEGORY_PRODUCT_SUB, String.valueOf(insProdBasicInfoDto.getIproduct())));
-                    if (productRepository.savePics(insProdPicsDto) == 0) throw new WrapRuntimeException(SERVER_ERR_MESSAGE);
+                            myFileUtils.savePic(pics, CATEGORY_PRODUCT_SUB, String.valueOf(insProdBasicInfoDto.getIproduct())));
+                    if (productRepository.savePics(insProdPicsDto) == 0)
+                        throw new WrapRuntimeException(SERVER_ERR_MESSAGE);
                 }
                 return new ResVo(insProdBasicInfoDto.getIproduct());
             }
@@ -190,7 +236,9 @@ public class ProductService {
      * @return ResVo
      */
     @Transactional
-    public ResVo putProduct(ProductUpdDto dto) {
+    public ResVo putProduct(MultipartFile mainPic, List<MultipartFile> pics, ProductUpdDto dto) {
+        if (mainPic != null) dto.setMainPic(mainPic);
+        if (pics != null) dto.setPics(pics);
 
         // 수정할 모든 데이터가 null 이면 예외
         CommonUtils.ifAllNullThrow(BadInformationException.class, ALL_INFO_NOT_EXISTS_EX_MESSAGE,
@@ -351,26 +399,48 @@ public class ProductService {
 
     }
 
+    public List<ReviewResultVo> getAllReviews(Integer iproduct, Integer page) {
+        CommonUtils.ifFalseThrow(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE,
+                productRepository.findIproductCountBy(iproduct));
 
-
-
-
-
-
-
+        return getReview(iproduct, page, totalReviewPerPage);
+    }
 
     /*
-        ------- Extracted Method -------
+        ------- Inner Methods -------
      */
 
+    /**
+     * 제품에 포함하여 리뷰를 가져오거나,
+     * 해당 제품의 전체 리뷰를 가져올 수 있음.
+     * <p>
+     * 제품에 포함할때는 page = 1, reviewPerPage 는 Const.inProductReviewPerPage 사용.
+     * 전체를 가져올때는 넘어온 page, reviewPerPage 는 Const.totalReviewPerPage 사용.
+     *
+     * @param iproduct
+     * @param page
+     * @param reviewPerPage
+     * @return List<ReviewResultVo>
+     */
+    private List<ReviewResultVo> getReview(Integer iproduct, Integer page, Integer reviewPerPage) {
+        CommonUtils.ifAnyNullThrow(NotEnoughInfoException.class, CAN_NOT_BLANK_EX_MESSAGE,
+                iproduct, page, reviewPerPage);
+        return productRepository.getReview(new ReviewGetDto(iproduct, (page - 1) * reviewPerPage, reviewPerPage));
+    }
 
-//    private Integer checkAddrInDb(String addr) {
-//        List<Integer> addrBy = productRepository.findAddrBy(CommonUtils.subEupmyun(addr));
-//        if (addrBy.isEmpty()) throw new BadAddressInfoException(BAD_ADDRESS_INFO_EX_MESSAGE);
-//        CommonUtils.checkSizeIfOverLimitNumThrow(BadAddressInfoException.class, BAD_ADDRESS_INFO_EX_MESSAGE,
-//                addrBy.stream(), 1);
-//        return addrBy.get(0);
-//    }
-
+    public ResVo toggleFav(int iuser, int iproduct) {
+        ProductToggleFavDto dto = new ProductToggleFavDto();
+        dto.setIuser(iuser);
+        dto.setIproduct(iproduct);
+        int affectedRow = productRepository.delFav(dto);
+        if(affectedRow == 0) {
+            productRepository.insFav(dto);
+            return new ResVo(1);
+        }
+        if(affectedRow == 1) {
+            return new ResVo(-1);
+        }
+        throw new BadInformationException(ILLEGAL_EX_MESSAGE);
+    }
 
 }

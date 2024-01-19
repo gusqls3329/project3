@@ -18,7 +18,7 @@ public interface ErrorMessage {
     String AUTHENTICATION_FAIL_EX_MESSAGE = "인증에 실패하였습니다.";
     //
     String NO_SUCH_USER_EX_MESSAGE = "잘못된 유저 정보 입니다.";
-    String NO_SUCH_PRODUCT_EX_MESSAGE = "조회된 상품이 없습니다.";
+    String NO_SUCH_PRODUCT_EX_MESSAGE = "해당하는 상품이 없습니다.";
     String NO_SUCH_PAYMENT_EX_MESSAGE = "조회된 결제 정보가 없습니다.";
     String NO_SUCH_ID_EX_MESSAGE = "아이디가 존재하지 않습니다";
     String NO_SUCH_PASSWORD_EX_MESSAGE = "비밀번호가 틀렸습니다";
@@ -40,5 +40,6 @@ public interface ErrorMessage {
 
     // added
     String ILLEGAL_STATUS_EX_MESSAGE = "상대유저가 채팅방을 나갔습니다.";
+    String CAN_NOT_DEL_USER_EX_MESSAGE = "삭제되지 않은 데이터가 있어 탈퇴할 수 없습니다.";
 
 }

@@ -50,12 +50,12 @@ public class ChatService {
 
 
 
-        //상대유저가 나갔을 경우
+        //상대유저가 채팅방 나갔을 경우 예외처리
         CommonUtils.ifChatUserStatusThrowOrReturn(istatus);
 
         int affectedRows = mapper.insChatMsg(dto);
         if (affectedRows == 1) {
-            int updAffectedRows = mapper.updChatLastMsg(dto);
+            mapper.updChatLastMsg(dto);
         }
 
         LocalDateTime now = LocalDateTime.now(); // 현재 날짜 구하기
@@ -76,15 +76,14 @@ public class ChatService {
                 pushVo.setCreatedAt(createdAt);
 
                 String body = objectMapper.writeValueAsString(pushVo);
-                log.info("body: {}", body);
 
                 Notification noti = Notification.builder()
-                        .setTitle("dm") // 제모각성, 프론트에서 쓰는 분기용
+                        .setTitle("chat") // 제목각성, 프론트에서 쓰는 분기용
                         .setBody(body) // 내용
                         .build();
 
                 Message message = Message.builder()
-                        .putData("type", "dm")
+                        .putData("type", "chat")
                         .putData("json", body)
                         .setToken(otherPerson.getFirebaseToken())
                         //.setNotification(noti) 이거 넣으면 채팅 입력시 메세지가 중복해서 2개씩 표현됨
@@ -96,8 +95,8 @@ public class ChatService {
                 // 스레드 - 동작단위 (게임 예 : 총게임에 캐릭터 한명한명)
                 // 메인스레드는 통신하지 말것
 
-                FirebaseMessaging fm = FirebaseMessaging.getInstance(); // 싱글톤
-                fm.sendAsync(message);
+                // FirebaseMessaging fm = FirebaseMessaging.getInstance(); // 싱글톤
+                // fm.sendAsync(message);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -111,6 +110,7 @@ public class ChatService {
         return list;
     }
 
+    // 메세지 삭제(실제로 숨김처리)
     public ResVo chatDelMsg(ChatMsgDelDto dto) {
         dto.setIuser(authenticationFacade.getLoginUserPk());
         int updAffectedRows = mapper.updChatLastMsgAfterDelByLastMsg(dto);
@@ -120,7 +120,7 @@ public class ChatService {
     // 채팅 입력
     public ChatSelVo postChat(ChatInsDto dto) {
         Integer isExixtChat = mapper.selChatUserCheck(dto);
-        log.info("dto: {}", dto);
+
         if (isExixtChat != null) {
             return null;
         }

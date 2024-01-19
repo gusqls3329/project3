@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
 
 
 @Data
@@ -14,9 +15,11 @@ public class ChatSelDto {
     //@NotBlank // 스페이스바도 안됨
     //@NotEmpty // null아니면서 빈문자("") 까지 안됨
 
+    @Range(min = 1)
     private int page;
 
     @JsonIgnore
+    @Range(min = 1)
     private int loginedIuser;
 
     @JsonIgnore

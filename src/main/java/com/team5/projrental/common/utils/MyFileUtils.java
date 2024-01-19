@@ -70,7 +70,7 @@ public class MyFileUtils {
         List<String> result = new ArrayList<>();
 
         for (MultipartFile multipartFile : multipartFiles) {
-            savePic(multipartFile, category, pk);
+            result.add(savePic(multipartFile, category, pk));
         }
         return result;
     }
