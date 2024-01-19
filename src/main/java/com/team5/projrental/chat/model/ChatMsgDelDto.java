@@ -12,6 +12,5 @@ public class ChatMsgDelDto {
     private int ichat;
 
     @JsonIgnore
-    @Range(min = 1)
     private int iuser;
 }

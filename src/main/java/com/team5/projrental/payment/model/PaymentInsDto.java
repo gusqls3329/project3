@@ -34,9 +34,9 @@ public class PaymentInsDto {
     @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
     @FutureOrPresent(message = ErrorMessage.RENTAL_DATE_MUST_BE_BEFORE_THAN_TODAY_EX_MESSAGE)
     private LocalDate rentalEndDate;
-    @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
-    @Range(min = 50, max = 100, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
-    private Integer depositPer;
+//    @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
+//    @Range(min = 50, max = 100, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
+//    private Integer depositPer;
 
 
     //

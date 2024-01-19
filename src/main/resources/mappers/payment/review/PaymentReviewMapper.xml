@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team5.projrental.payment.review.PaymentReviewMapper">
+
+    <insert id="insReview">
+        INSERT INTO t_review
+        set
+        ibuyer = #{iuser}
+        ,ipayment = #{ipayment}
+        , contents = #{contents}
+        , rating = #{rating}
+    </insert>
+
+
+    <update id="upProductIstatus">
+        update t_product pr
+        JOIN t_product_payment pp
+        ON pp.iproduct = pr.iproduct
+        JOIN t_payment pa
+        ON pa.ipayment = pp.ipayment
+        set pa.istatus = 1
+        WHERE pa.ipayment = #{ipayment};
+    </update>
+
+    <update id="upReview">
+        update t_review
+        set
+        contents = #{contents}
+        ,rating = #{rating}
+        where ireview = #{ireview}
+    </update>
+
+    <update id="delReview">
+        update t_review
+        set contents = null
+        , rating =null
+        where ireview = #{ireview}
+    </update>
+
+    <select id="selReview">
+        SELECT COUNT(ireview)
+        FROM t_review
+        WHERE
+        <if test="iuser != null and iuser != 0">
+        ibuyer = #{iuser} and
+        </if>
+        ipayment = #{ipayment}
+    </select>
+
+    <select id="selBuyRew">
+        select count(PA.ipayment) as isExists, if(PA.ibuyer = #{iuser}, 1, 0) as isBuyer
+        from t_product_payment PP
+        join t_product P on PP.iproduct = P.iproduct
+        join t_payment PA on PP.ipayment = PA.ipayment and PA.ipayment = #{ipayment}
+        where P.iuser = #{iuser} or PA.ibuyer = #{iuser}
+    </select>
+
+    <select id="selPatchRev">
+        select ibuyer, ipayment
+        FROM t_review
+        WHERE ireview = #{ireview};
+    </select>
+
+
+</mapper>

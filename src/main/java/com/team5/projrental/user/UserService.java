@@ -218,7 +218,7 @@ public class UserService {
             String hashedPw = entity.getUpw();
             boolean checkPw = BCrypt.checkpw(dto.getUpw(), hashedPw);
             if (checkPw) {
-                if (check != 0 || check != null) {
+                if (check == null || check != 0 ) {
                     throw new IllegalException(CAN_NOT_DEL_USER_EX_MESSAGE);
                 } else {
                     // 채팅 개수 가져오기 && 채팅 삭제

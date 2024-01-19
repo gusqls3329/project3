@@ -44,7 +44,7 @@ public class ChatController {
     @Parameters(value = {
             @Parameter(name = "page", description = "페이지"),
             @Parameter(name = "msg", description = "보낼 메세지")})
-    public ResVo postChatMsg(@RequestBody @Validated ChatMsgInsDto dto) {
+    public ResVo postChatMsg(@Validated @RequestBody ChatMsgInsDto dto) {
         return service.postChatMsg(dto);
     }
 
@@ -63,7 +63,7 @@ public class ChatController {
     @Operation(summary = "채팅방 삭제(숨김)", description = "실행시 로그인 유저의 채팅 숨김 처리되도록 설계함")
     @Parameters(value = {
             @Parameter(name = "ichat", description = "로그인 유저가 선택한 ichat 삭제(실제로는 숨김처리)")})
-    public ResVo delChatMsg(ChatMsgDelDto dto) {
+    public ResVo delChatMsg(@Validated ChatMsgDelDto dto) {
         return service.chatDelMsg(dto);
     }
 

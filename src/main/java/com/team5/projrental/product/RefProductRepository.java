@@ -1,6 +1,8 @@
 package com.team5.projrental.product;
 
 
+import com.team5.projrental.product.model.CanNotRentalDate;
+import com.team5.projrental.product.model.ProductToggleFavDto;
 import com.team5.projrental.product.model.ProductUpdDto;
 import com.team5.projrental.product.model.proc.*;
 import com.team5.projrental.product.model.review.ReviewGetDto;
@@ -51,6 +53,6 @@ public interface RefProductRepository {
 
     List<ReviewResultVo> getReview(ReviewGetDto dto);
 
-
     List<CanNotRentalDate> getLendDatesBy(Integer iproduct);
+
 }

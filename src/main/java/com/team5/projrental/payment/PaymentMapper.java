@@ -1,10 +1,7 @@
 package com.team5.projrental.payment;
 
 import com.team5.projrental.payment.model.PaymentInsDto;
-import com.team5.projrental.payment.model.proc.DelPaymentDto;
-import com.team5.projrental.payment.model.proc.GetInfoForCheckIproductAndIuserResult;
-import com.team5.projrental.payment.model.proc.GetPaymentListDto;
-import com.team5.projrental.payment.model.proc.GetPaymentListResultDto;
+import com.team5.projrental.payment.model.proc.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.time.LocalDate;
@@ -15,6 +12,10 @@ public interface PaymentMapper {
     // for test
     int getPaymentFromProductPayment(int iproduct, int ipayment);
     int getProductFromProductPayment(int iproduct, int ipayment);
+
+    //
+    //
+    List<GetDepositAndPriceFromProduct> getValidationInfoFromProduct(int iproduct);
     //
 
     int insPayment(PaymentInsDto paymentInsDto);

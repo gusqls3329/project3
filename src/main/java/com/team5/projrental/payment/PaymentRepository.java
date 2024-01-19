@@ -1,10 +1,7 @@
 package com.team5.projrental.payment;
 
 import com.team5.projrental.payment.model.PaymentInsDto;
-import com.team5.projrental.payment.model.proc.DelPaymentDto;
-import com.team5.projrental.payment.model.proc.GetInfoForCheckIproductAndIuserResult;
-import com.team5.projrental.payment.model.proc.GetPaymentListDto;
-import com.team5.projrental.payment.model.proc.GetPaymentListResultDto;
+import com.team5.projrental.payment.model.proc.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -17,6 +14,11 @@ public class PaymentRepository {
 
     private final PaymentMapper paymentMapper;
 
+    //
+    public List<GetDepositAndPriceFromProduct> getValidationInfoFromProduct(int iproduct) {
+        return paymentMapper.getValidationInfoFromProduct(iproduct);
+    }
+    //
 
     public int savePayment(PaymentInsDto paymentInsDto) {
         return paymentMapper.insPayment(paymentInsDto);

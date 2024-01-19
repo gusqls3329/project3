@@ -1,7 +1,5 @@
 package com.team5.projrental.product;
 
-import com.google.common.util.concurrent.AtomicDouble;
-import com.team5.projrental.common.Const;
 import com.team5.projrental.common.aop.anno.CountView;
 import com.team5.projrental.common.exception.*;
 import com.team5.projrental.common.exception.base.*;
@@ -12,8 +10,6 @@ import com.team5.projrental.common.utils.AxisGenerator;
 import com.team5.projrental.common.utils.CommonUtils;
 import com.team5.projrental.common.utils.MyFileUtils;
 import com.team5.projrental.product.model.*;
-import com.team5.projrental.product.model.innermodel.PicSet;
-import com.team5.projrental.product.model.innermodel.StoredFileInfo;
 import com.team5.projrental.product.model.proc.*;
 import com.team5.projrental.common.security.AuthenticationFacade;
 import com.team5.projrental.product.model.review.ReviewGetDto;
@@ -24,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.sql.Ref;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -427,6 +422,7 @@ public class ProductService {
                 iproduct, page, reviewPerPage);
         return productRepository.getReview(new ReviewGetDto(iproduct, (page - 1) * reviewPerPage, reviewPerPage));
     }
+
 
 
 }
