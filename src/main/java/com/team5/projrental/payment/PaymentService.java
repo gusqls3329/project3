@@ -5,6 +5,7 @@ import com.team5.projrental.common.Role;
 import com.team5.projrental.common.exception.*;
 import com.team5.projrental.common.exception.base.BadDateInfoException;
 import com.team5.projrental.common.exception.base.BadInformationException;
+import com.team5.projrental.common.exception.base.BadProductInfoException;
 import com.team5.projrental.common.exception.base.WrapRuntimeException;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.utils.CommonUtils;
@@ -12,10 +13,7 @@ import com.team5.projrental.common.utils.MyFileUtils;
 import com.team5.projrental.payment.model.PaymentInsDto;
 import com.team5.projrental.payment.model.PaymentListVo;
 import com.team5.projrental.payment.model.PaymentVo;
-import com.team5.projrental.payment.model.proc.DelPaymentDto;
-import com.team5.projrental.payment.model.proc.GetInfoForCheckIproductAndIuserResult;
-import com.team5.projrental.payment.model.proc.GetPaymentListDto;
-import com.team5.projrental.payment.model.proc.GetPaymentListResultDto;
+import com.team5.projrental.payment.model.proc.*;
 import com.team5.projrental.product.ProductRepository;
 import com.team5.projrental.common.security.AuthenticationFacade;
 import lombok.RequiredArgsConstructor;
@@ -58,14 +56,17 @@ public class PaymentService {
         CommonUtils.ifBeforeThrow(BadDateInfoException.class, RENTAL_END_DATE_MUST_BE_AFTER_THAN_RENTAL_START_DATE_EX_MESSAGE,
                 paymentInsDto.getRentalEndDate(), paymentInsDto.getRentalStartDate());
 
-
+        GetDepositAndPriceFromProduct depositInfo = paymentRepository.getDepositPerFromIproduct(paymentInsDto.getIproduct());
+        CommonUtils.ifAnyNullThrow(BadProductInfoException.class, BAD_PRODUCT_INFO_EX_MESSAGE,
+                depositInfo);
         // 데이터 세팅 (+마지막 예외처리)
         paymentInsDto.setIpaymentMethod(CommonUtils.ifPaymentMethodNotContainsThrowOrReturn(paymentInsDto.getPaymentMethod()));
         paymentInsDto.setRentalDuration(((int) ChronoUnit.DAYS.between(paymentInsDto.getRentalStartDate(),
                 paymentInsDto.getRentalEndDate())) + 1);
         paymentInsDto.setPrice(rentalPrice * paymentInsDto.getRentalDuration());
         paymentInsDto.setCode(createCode());
-        paymentInsDto.setDeposit(CommonUtils.getDepositFromPer(paymentInsDto.getPrice(), paymentInsDto.getDepositPer()));
+        paymentInsDto.setDeposit(CommonUtils.getDepositFromPer(paymentInsDto.getPrice(),
+                CommonUtils.getDepositPerFromPrice(depositInfo.getPrice(), depositInfo.getDeposit())));
 
         // insert (select key 사용)
 //        if (paymentRepository.savePayment(paymentInsDto) != 0 &&
