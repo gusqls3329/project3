@@ -72,7 +72,5 @@ public interface ProductMapper {
 
     List<CanNotRentalDate> getLendStartDateAndEndDate(Integer iproduct);
 
-    int insFav(ProductToggleFavDto dto);
-    int delFav(ProductToggleFavDto dto);
-    int delFavForDelUser(ProductToggleFavDto dto);
+
 }

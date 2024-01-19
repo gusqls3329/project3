@@ -55,6 +55,4 @@ public interface RefProductRepository {
 
     List<CanNotRentalDate> getLendDatesBy(Integer iproduct);
 
-    int delFav(ProductToggleFavDto dto);
-    int insFav(ProductToggleFavDto dto);
 }
