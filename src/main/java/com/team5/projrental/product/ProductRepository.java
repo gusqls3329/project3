@@ -102,10 +102,4 @@ public class ProductRepository implements RefProductRepository {
         return productMapper.getLendStartDateAndEndDate(iproduct);
     }
 
-    public int delFav(ProductToggleFavDto dto) {
-        return productMapper.delFav(dto);
-    }
-    public int insFav(ProductToggleFavDto dto) {
-        return productMapper.insFav(dto);
-    }
 }

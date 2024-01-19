@@ -423,19 +423,6 @@ public class ProductService {
         return productRepository.getReview(new ReviewGetDto(iproduct, (page - 1) * reviewPerPage, reviewPerPage));
     }
 
-    public ResVo toggleFav(int iuser, int iproduct) {
-        ProductToggleFavDto dto = new ProductToggleFavDto();
-        dto.setIuser(iuser);
-        dto.setIproduct(iproduct);
-        int affectedRow = productRepository.delFav(dto);
-        if(affectedRow == 0) {
-            productRepository.insFav(dto);
-            return new ResVo(1);
-        }
-        if(affectedRow == 1) {
-            return new ResVo(-1);
-        }
-        throw new BadInformationException(ILLEGAL_EX_MESSAGE);
-    }
+
 
 }
