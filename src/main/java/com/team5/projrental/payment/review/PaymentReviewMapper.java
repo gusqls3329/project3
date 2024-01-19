@@ -2,6 +2,7 @@ package com.team5.projrental.payment.review;
 
 import com.team5.projrental.payment.review.model.DelRivewDto;
 import com.team5.projrental.payment.review.model.RivewDto;
+import com.team5.projrental.payment.review.model.RiviewVo;
 import com.team5.projrental.payment.review.model.UpRieDto;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -14,4 +15,5 @@ public interface PaymentReviewMapper {
 
     int selReview(Integer iuser, Integer ipayment);
     int selBuyRew(Integer iuser);
+    RiviewVo selPatchRev(Integer ireview);
 }

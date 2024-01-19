@@ -6,16 +6,11 @@
 
     <insert id="insReview">
         INSERT INTO t_review
-        <set>
-            ibuyer = #{iuser}
-            ,ipayment = #{ipayment}
-            <if test="contents =! null and contents != '' ">
-            , contents = #{contents}
-            </if>
-            <if test="rating =! null and rating != '' ">
-            , rating = #{rating}
-            </if>
-        </set>
+        set
+        ibuyer = #{iuser}
+        ,ipayment = #{ipayment}
+        , contents = #{contents}
+        , rating = #{rating}
     </insert>
 
 
@@ -31,14 +26,9 @@
 
     <update id="upReview">
         update t_review
-        <set>
-            <if test="contents =! null and contents != '' ">
-                , contents = #{contents}
-            </if>
-            <if test="rating =! null and rating != '' ">
-                , rating = #{rating}
-            </if>
-        </set>
+        set
+        contents = #{contents}
+        ,rating = #{rating}
         where ireview = #{ireview}
     </update>
 
@@ -46,7 +36,7 @@
         update t_review
         set contents = null
         , rating =null
-        where ibuyer = #{iuser} and ipayment = #{ipayment}
+        where ireview = #{ireview}
     </update>
 
     <select id="selReview">
@@ -60,5 +50,11 @@
         SELECT ipayment
         FROM t_payment
         WHERE ibuyer = #{iuser}
+    </select>
+
+    <select id="selPatchRev">
+        select ibuyer, ipayment
+        FROM t_review
+        WHERE ireview = 1;
     </select>
 </mapper>

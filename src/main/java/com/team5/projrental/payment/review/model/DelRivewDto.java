@@ -14,5 +14,5 @@ public class DelRivewDto {
 
     @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
     @Min(value = 1, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
-    private int ipayment;
+    private int ireview;
 }
