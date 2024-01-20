@@ -2,7 +2,7 @@ package com.team5.projrental.mypage;
 
 import com.team5.projrental.common.SecurityProperties;
 import com.team5.projrental.common.security.AuthenticationFacade;
-import com.team5.projrental.common.utils.AxisGenerator;
+import com.team5.projrental.common.utils.KakaoAxisGenerator;
 import com.team5.projrental.common.utils.CookieUtils;
 import com.team5.projrental.common.utils.MyFileUtils;
 import com.team5.projrental.mypage.model.PaymentSelDto;
@@ -14,13 +14,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -45,7 +42,7 @@ class MypageServiceTest {
     @MockBean
     private AuthenticationFacade authenticationFacade;
     @MockBean
-    private AxisGenerator axisGenerator;
+    private KakaoAxisGenerator axisGenerator;
     @MockBean
     private MyFileUtils myFileUtils;
     @MockBean

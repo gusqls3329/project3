@@ -6,13 +6,12 @@ import com.team5.projrental.common.model.restapi.Addrs;
 import com.team5.projrental.common.security.AuthenticationFacade;
 import com.team5.projrental.common.security.JwtTokenProvider;
 import com.team5.projrental.common.security.model.SecurityPrincipal;
-import com.team5.projrental.common.utils.AxisGenerator;
+import com.team5.projrental.common.utils.KakaoAxisGenerator;
 import com.team5.projrental.common.utils.CookieUtils;
 import com.team5.projrental.common.utils.MyFileUtils;
 import com.team5.projrental.user.model.*;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mindrot.jbcrypt.BCrypt;
@@ -22,13 +21,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.awaitility.Awaitility.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @Slf4j
@@ -48,7 +42,7 @@ public class UserServiceTest {
     @MockBean
     private AuthenticationFacade authenticationFacade;
     @MockBean
-    private AxisGenerator axisGenerator;
+    private KakaoAxisGenerator axisGenerator;
     @MockBean
     private MyFileUtils myFileUtils;
     @MockBean
