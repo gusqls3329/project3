@@ -20,7 +20,7 @@
             C.istatus AS cancel,
             D.iuser AS targetIuser,
             D.nick AS targetNick,
-            D.stored_pic AS userStoredPic,
+            D.stored_pic AS userStoredPic
         FROM t_product A
         JOIN t_product_payment B
         ON A.iproduct = B.iproduct

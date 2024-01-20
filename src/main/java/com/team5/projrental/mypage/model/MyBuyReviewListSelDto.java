@@ -14,7 +14,7 @@ public class MyBuyReviewListSelDto {
     @JsonIgnore
     private int startIdx;
     @JsonIgnore
-    private int rowCount = 10;
+    private int rowCount = 10;//
 
     public void setPage(int page) {
         this.startIdx = (page-1) * this.rowCount;

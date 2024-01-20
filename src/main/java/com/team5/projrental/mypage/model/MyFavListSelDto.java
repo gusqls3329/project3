@@ -14,6 +14,7 @@ public class MyFavListSelDto {
     @JsonIgnore
     private int startIdx;
 
+    @JsonIgnore
     private int rowCount = 10;
 
     public void setPage(int page) {
