@@ -65,7 +65,8 @@
         U.phone,
         PA.code
         <if test="flag == 1">
-            , U.phone, PA.code, PA.created_at as createdAt
+            , U.phone, PA.code, PA.created_at as createdAt,
+            if(PA.ibuyer = #{iuser}, 1, if(P.iuser = #{iuser}, 2, 0)) as role
         </if>
         from t_payment PA
         join t_product_payment PP on PA.ipayment = PP.ipayment
@@ -81,7 +82,7 @@
             P.iuser or U.iuser = PA.ibuyer
         </if>
         <where>
-            PA.istatus in (-3, -2, 0, 1, 2, 3)
+            PA.istatus in (-4, -3, -2, 0, 1, 2, 3)
             <if test="role != null and role == 1">
                 and PA.ibuyer = #{iuser}
             </if>
@@ -99,6 +100,6 @@
 
     <update id="updateIstatusOverRentalEndDate">
         update t_payment set istatus = -4
-        where rental_end_date <![CDATA[<]]> #{now} and istatus in (0, 2, 3)
+        where rental_end_date <![CDATA[<=]]> #{now} and istatus in (0, 2, 3)
     </update>
 </mapper>
