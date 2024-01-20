@@ -35,11 +35,9 @@ import static com.team5.projrental.common.exception.ErrorCode.*;
 @RequiredArgsConstructor
 public class PaymentService {
 
-
     private final PaymentRepository paymentRepository;
     private final ProductRepository productRepository;
     private final AuthenticationFacade authenticationFacade;
-    private final MyFileUtils myFileUtils;
 
     @Transactional
     public ResVo postPayment(PaymentInsDto paymentInsDto) {
@@ -50,7 +48,7 @@ public class PaymentService {
         if (totalRentalPrice == null || totalRentalPrice == 0) {
             throw new NoSuchProductException(NO_SUCH_PRODUCT_EX_MESSAGE);
         }
-        paymentInsDto.setIbuyer(authenticationFacade.getLoginUserPk());
+        paymentInsDto.setIbuyer(getLoginUserPk());
         CommonUtils.ifFalseThrow(NoSuchUserException.class, NO_SUCH_USER_EX_MESSAGE,
                 productRepository.findIuserCountBy(paymentInsDto.getIbuyer()));
         CommonUtils.ifBeforeThrow(BadDateInfoException.class, RENTAL_END_DATE_MUST_BE_AFTER_THAN_RENTAL_START_DATE_EX_MESSAGE,
@@ -94,6 +92,8 @@ public class PaymentService {
         throw new WrapRuntimeException(SERVER_ERR_MESSAGE);
 
     }
+
+
 
     /**
      * div == 3
@@ -139,7 +139,7 @@ public class PaymentService {
         if (checkResult == null) {
             throw new NoSuchProductException(NO_SUCH_PRODUCT_EX_MESSAGE);
         }
-        int iuser = authenticationFacade.getLoginUserPk();
+        int iuser = getLoginUserPk();
         if (checkResult.getISeller() != iuser && checkResult.getIBuyer() != iuser) {
             throw new NoSuchUserException(NO_SUCH_USER_EX_MESSAGE);
         }
@@ -167,7 +167,7 @@ public class PaymentService {
     }
 
     public List<PaymentListVo> getAllPayment(Integer role, int page) {
-        int iuser = authenticationFacade.getLoginUserPk();
+        int iuser = getLoginUserPk();
         List<GetPaymentListResultDto> paymentBy = paymentRepository.findPaymentBy(new GetPaymentListDto(iuser, role, page));
         List<PaymentListVo> result = new ArrayList<>();
         CommonUtils.checkNullOrZeroIfCollectionThrow(NoSuchPaymentException.class, NO_SUCH_PAYMENT_EX_MESSAGE, paymentBy);
@@ -187,7 +187,7 @@ public class PaymentService {
 
         // 가져오기
         GetPaymentListResultDto aPayment;
-        int iuser = authenticationFacade.getLoginUserPk();
+        int iuser = getLoginUserPk();
         try {
             aPayment = paymentRepository.findPaymentBy(new GetPaymentListDto(iuser, ipayment,
                     Flag.ONE.getValue())).get(0);
@@ -266,6 +266,10 @@ public class PaymentService {
             }
         }
         throw new BadDivInformationException(BAD_DIV_INFO_EX_MESSAGE);
+    }
+
+    private int getLoginUserPk() {
+        return authenticationFacade.getLoginUserPk();
     }
 
 
