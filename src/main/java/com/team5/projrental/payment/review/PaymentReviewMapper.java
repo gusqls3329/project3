@@ -14,6 +14,7 @@ public interface PaymentReviewMapper {
     int upReview(UpRieDto dto);
     int delReview(DelRivewDto dto);
 
+    int selReIstatus(Integer ipayment);
     int selReview(Integer iuser, Integer ipayment);
     CheckIsBuyer selBuyRew(Integer iuser, Integer ipayment);
     RiviewVo selPatchRev(Integer ireview);
