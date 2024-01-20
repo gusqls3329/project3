@@ -14,13 +14,14 @@ public class PaymentVo extends PaymentListVo {
     private String phone;
     private String payment; // ipayment 를 자바에서 파싱
     private String code;
+    private Integer role;
     private LocalDateTime createdAt;
 
 
     public PaymentVo(Integer iuser, String nick, String userPic, Integer ipayment, Integer iproduct, String prodPic,
                      String status,
                      LocalDate rentalStartDate, LocalDate rentalEndDate, Integer rentalDuration, Integer price, Integer deposit,
-                     String phone, String payment, String code, LocalDateTime createdAt) {
+                     String phone, String payment, String code, Integer role,  LocalDateTime createdAt) {
         super(iuser, nick, userPic, ipayment, iproduct, prodPic, status, rentalStartDate, rentalEndDate, rentalDuration, price,
                 deposit);
         this.phone = phone;

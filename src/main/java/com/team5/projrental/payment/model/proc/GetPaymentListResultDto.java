@@ -26,5 +26,6 @@ public class GetPaymentListResultDto {
     // for a payment
     private String phone;
     private String code;
+    private Integer role;
     private LocalDateTime createdAt;
 }

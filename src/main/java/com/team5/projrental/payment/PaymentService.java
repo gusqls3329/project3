@@ -211,6 +211,7 @@ public class PaymentService {
                 aPayment.getPhone(),
                 PAYMENT_METHODS.get(aPayment.getIpayment()),
                 aPayment.getCode(),
+                aPayment.getRole(),
                 aPayment.getCreatedAt()
         );
     }
