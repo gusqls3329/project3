@@ -27,7 +27,7 @@ public class KakaoAxisGenerator implements AxisGenerator{
     private final ObjectMapper objectMapper;
 
     /**
-     * 해당 기능이 필요할 경우 KakaoAxisGenerator 를 DI 받아 사용해야 함.
+     * 해당 기능이 필요할 경우 AxisGenerator 를 DI 받아 사용해야 함.
      * ㄴ> @Retry 어노테이션을 적용하기 위함.
      * @param addr
      * @return Map<String, Double>
