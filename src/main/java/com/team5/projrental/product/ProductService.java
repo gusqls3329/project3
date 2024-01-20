@@ -32,7 +32,6 @@ import static com.team5.projrental.common.exception.ErrorCode.*;
 @RequiredArgsConstructor
 public class ProductService {
 
-
     private final RefProductRepository productRepository;
 
     private final AxisGenerator axisGenerator;
@@ -91,7 +90,7 @@ public class ProductService {
 
         // 사진을 '제외한' 모든 정보 획득 & 제공된 카테고리 검증 (category -> icategory)
         GetProductResultDto productBy = productRepository.findProductBy(
-                new GetProductBaseDto(icategory, iproduct, authenticationFacade.getLoginUserPk())
+                new GetProductBaseDto(icategory, iproduct, getLoginUserPk())
         );
 
         // 결과물 없음 여부 검증
@@ -137,6 +136,8 @@ public class ProductService {
     }
 
 
+
+
     /**
      * 제품 & 제품 사진 등록<br><br>
      * pics + mainPic 개수 검증 - 10개 이하 -> iuser 가 존재하는지 검증 -> category 존재여부 검증 ->
@@ -162,7 +163,7 @@ public class ProductService {
         }
 
         // iuser 있는지 체크
-        int loginIuser = authenticationFacade.getLoginUserPk();
+        int loginIuser = getLoginUserPk();
         dto.setIuser(loginIuser);
         CommonUtils.ifFalseThrow(NoSuchUserException.class, NO_SUCH_USER_EX_MESSAGE, productRepository.findIuserCountBy(dto.getIuser()));
 
@@ -254,7 +255,7 @@ public class ProductService {
         // 병합하지 않아도 되는 데이터 검증
 
 
-        dto.setIuser(authenticationFacade.getLoginUserPk());
+        dto.setIuser(getLoginUserPk());
         // 카테고리 검증
         CommonUtils.ifCategoryNotContainsThrowOrReturn(dto.getIcategory());
         UpdProdBasicDto fromDb =
@@ -369,7 +370,7 @@ public class ProductService {
      * @return ResVo
      */
     public ResVo delProduct(Integer iproduct, Integer div) {
-        int iuser = authenticationFacade.getLoginUserPk();
+        int iuser = getLoginUserPk();
         DelProductBaseDto delProductBaseDto = new DelProductBaseDto(iproduct, iuser, div * -1);
         if (productRepository.updateProductStatus(delProductBaseDto) == 0) {
             throw new BadInformationException(BAD_INFO_EX_MESSAGE);
@@ -379,7 +380,7 @@ public class ProductService {
     }
 
     public List<ProductUserVo> getUserProductList(Integer page) {
-        int iuser = authenticationFacade.getLoginUserPk();
+        int iuser = getLoginUserPk();
         List<GetProductListResultDto> productListBy = productRepository.findProductListBy(new GetProductListDto(iuser, page));
         CommonUtils.checkNullOrZeroIfCollectionThrow(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE, productListBy);
 
@@ -421,6 +422,10 @@ public class ProductService {
         CommonUtils.ifAnyNullThrow(NotEnoughInfoException.class, CAN_NOT_BLANK_EX_MESSAGE,
                 iproduct, page, reviewPerPage);
         return productRepository.getReview(new ReviewGetDto(iproduct, (page - 1) * reviewPerPage, reviewPerPage));
+    }
+
+    private int getLoginUserPk() {
+        return authenticationFacade.getLoginUserPk();
     }
 
 
