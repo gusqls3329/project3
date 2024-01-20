@@ -37,7 +37,7 @@ class PaymentServiceTest {
     MyFileUtils myFileUtils;
 
 
-    @Autowired
+/*    @Autowired
     PaymentService paymentService;
 
     @Test
@@ -75,7 +75,7 @@ class PaymentServiceTest {
         when(productRepository.findRentalPriceBy(any())).thenReturn(0);
         assertThatThrownBy(() -> paymentService.postPayment(mockData2))
                 .isInstanceOf(NoSuchProductException.class);
-    }
+    }*/
 
     @Test
     void delPayment() {

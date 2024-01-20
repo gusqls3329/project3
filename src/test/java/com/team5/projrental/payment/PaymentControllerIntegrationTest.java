@@ -90,7 +90,7 @@ class PaymentControllerIntegrationTest {
                 .paymentMethod("credit-card")
                 .rentalStartDate(LocalDate.of(2025, 1, 2))
                 .rentalEndDate(LocalDate.of(2025, 3, 3))
-                .depositPer(51)
+                //.depositPer(51)
                 .build();
 
         String json = objectMapper.writeValueAsString(dto);

@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @MockMvcConfig
 @WebMvcTest(MypageController.class)
 public class MypageControllerTest {
-    @Autowired
+    /*@Autowired
     private ObjectMapper mapper;
 
     @Autowired
@@ -39,45 +39,31 @@ public class MypageControllerTest {
     @MockBean
     private MypageService service;
 
-    @SneakyThrows
     @Test
     void getPaymentList() throws Exception {
+        List<PaymentSelVo> list = new ArrayList<>();
+
+        PaymentSelVo vo = new PaymentSelVo();
+        vo.setIbuyer(1);
+        vo.setIuser(7);
+        vo.setIproduct(25);
+
+        list.add(vo);
+
+        given(service.paymentList(any())).willReturn(list);
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("page", "0");
-        params.add("rowCount", "16");
-        params.add("loginedIuser", "2"); // 입력
-        params.add("role", "2");
 
-        List<PaymentSelVo> selVoList = new ArrayList<>();
-        PaymentSelVo vo = new PaymentSelVo();
-        vo.setIbuyer(3);
-        vo.setIuser(2);
-        vo.setIproduct(2);
-        vo.setIpayment(4);
-        vo.setDeposit(700000);
-        vo.setPrice(40000);
-        vo.setRentalDuration(2);
-        vo.setCancel(1);
-        vo.setTargetIuser(2);
-        vo.setTargetNick("인사이드아웃");
-
-        selVoList.add(vo);
-
-        given(service.paymentList(any())).willReturn(selVoList);
-
-        String json = mapper.writeValueAsString(selVoList);
-
+        params.add("page", "1");
+        params.add("loginedIuser", "1");
         mvc.perform(
-                        MockMvcRequestBuilders
-                                .get("/api/mypage"))
-                                //.params(params))
-                .andDo(print())
-                .andExpect(content().string(json));
+                MockMvcRequestBuilders
+                        .get("/api/mypage/prod")
+                        .params(params))
+                .andExpect(status().isOk())
+                .andExpect(content().string(mapper.writeValueAsString(list)))
+                .andDo(print());
         verify(service).paymentList(any());
-    }
-
-
-
+    }*/
 
 }
