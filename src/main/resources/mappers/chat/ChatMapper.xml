@@ -52,7 +52,9 @@
         WHERE B.iuser = #{loginedIuser}
         AND C.iuser != #{loginedIuser}
         ORDER BY A.last_msg_at DESC
-        LIMIT #{startIdx}, #{rowCount}
+        <if test="page != null and rowCount != null">
+            LIMIT #{startIdx}, #{rowCount}
+        </if>
     </select>
 
 
@@ -65,7 +67,9 @@
         ON A.iuser = B.iuser
         WHERE A.ichat =#{ichat}
         ORDER BY A.seq DESC
-        LIMIT #{startIdx}, #{rowCount}
+        <if test="page != null and rowCount != null">
+            LIMIT #{startIdx}, #{rowCount}
+        </if>
     </select>
 
 

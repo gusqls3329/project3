@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class ChatMsgPushVo extends ChatMsgSelVo {
-    private int ichat;
+    private int ichat; // 채팅 방 번호(PK)
 }

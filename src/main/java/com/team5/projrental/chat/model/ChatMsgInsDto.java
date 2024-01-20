@@ -10,7 +10,7 @@ import org.hibernate.validator.constraints.Range;
 @Data
 public class ChatMsgInsDto {
 
-    @Range(min = 1)
+    @Range(min = 1, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private int ichat; // 채팅방 고유 번호(채팅방 PK)
 
     @JsonIgnore

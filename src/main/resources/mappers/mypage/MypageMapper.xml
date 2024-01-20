@@ -7,7 +7,6 @@
             A.iproduct,
             A.title,
             A.stored_pic AS productStoredPic,
-            A.request_pic AS productRequestPic,
             A.deposit,
             A.iuser,
             C.ipayment,
@@ -22,7 +21,6 @@
             D.iuser AS targetIuser,
             D.nick AS targetNick,
             D.stored_pic AS userStoredPic,
-            D.request_pic AS userRequestPic
         FROM t_product A
         JOIN t_product_payment B
         ON A.iproduct = B.iproduct
@@ -40,7 +38,7 @@
     </select>
 
     <select id="getIbuyerReviewList">
-        SELECT B.ibuyer, A.nick, A.stored_pic AS loginedUserPic, D.iproduct, D.title, D.stored_pic AS prodPic, B.ireview, B.raiting, B.`contents`
+        SELECT B.ibuyer, A.nick, A.stored_pic AS loginedUserPic, D.iproduct, D.title, D.stored_pic AS prodPic, B.ireview, B.rating, B.`contents`
         FROM t_user A
         LEFT JOIN t_review B
         ON A.iuser = B.ibuyer
@@ -52,7 +50,7 @@
     </select>
 
     <select id="getFavList">
-        SELECT B.iuser AS loginedIuser, A.iproduct, A.price, A.deposit, A.title, A.stored_pic, A.iproduct, A.iproduct, B.nick, B.stored_pic
+        SELECT B.iuser AS loginedIuser, A.iproduct, A.price, A.deposit, A.title, A.stored_pic AS prodPic, A.iproduct, A.iproduct, B.nick, B.stored_pic AS pic
         FROM t_product A
         LEFT JOIN t_user B
         ON A.iuser = B.iuser

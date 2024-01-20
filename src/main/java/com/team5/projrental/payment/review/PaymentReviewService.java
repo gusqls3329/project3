@@ -1,12 +1,16 @@
 package com.team5.projrental.payment.review;
 
 import com.team5.projrental.common.Const;
+import com.team5.projrental.common.exception.ErrorCode;
+import com.team5.projrental.common.exception.ErrorMessage;
 import com.team5.projrental.common.exception.base.BadInformationException;
 import com.team5.projrental.common.security.AuthenticationFacade;
+import com.team5.projrental.common.utils.CommonUtils;
 import com.team5.projrental.payment.review.model.DelRivewDto;
 import com.team5.projrental.payment.review.model.RivewDto;
 import com.team5.projrental.payment.review.model.RiviewVo;
 import com.team5.projrental.payment.review.model.UpRieDto;
+import com.team5.projrental.user.model.CheckIsBuyer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,15 +31,24 @@ public class PaymentReviewService {
         dto.setIuser(loginUserPk);
         int selReview = reviewMapper.selReview(loginUserPk, dto.getIpayment());
         if (selReview == 0) {
-            int buyCheck = reviewMapper.selBuyRew(loginUserPk, dto.getIpayment());
-            if (buyCheck == dto.getIpayment()) {
+            CheckIsBuyer buyCheck = reviewMapper.selBuyRew(loginUserPk, dto.getIpayment());
+            CommonUtils.ifAnyNullThrow(BadInformationException.class, ErrorCode.BAD_INFO_EX_MESSAGE,
+                    buyCheck);
+            if (buyCheck.getIsBuyer() == 0) {
+                dto.setContents(null);
+                dto.setRating(null);
+            }
+            if (buyCheck.getIsExists() != 0) {
                 int result = reviewMapper.insReview(dto);
                 if (result != 1) {
                     throw new BadInformationException(ILLEGAL_EX_MESSAGE);
                 } else {
-                    int result2 = reviewMapper.upProductIstatus(dto.getIpayment());
-                    if (result2 != 1) {
-                        throw new BadInformationException(ILLEGAL_EX_MESSAGE);
+                    if (reviewMapper.selReview(null, dto.getIpayment()) == 2) {
+                        int result2 = reviewMapper.upProductIstatus(dto.getIpayment());
+
+                        if (result2 != 1) {
+                            throw new BadInformationException(ILLEGAL_EX_MESSAGE);
+                        }
                     }
                     return Const.SUCCESS;
                 }
