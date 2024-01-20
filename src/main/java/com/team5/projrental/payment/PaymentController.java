@@ -71,7 +71,7 @@ public class PaymentController {
             description = "<strong>로그인한 유저가 구매중이거나 판매중인 결제 목록 전체 조회</strong><br>" +
                     "[ [v] : 필수값 ]<br>" +
                     "[v] role: <br>" +
-                    " ㄴ> 로그인한 유저가 구매한 상품기준, 2: 로그인한 유저가 판매중인 상품들<br>" +
+                    " ㄴ> 1: 로그인한 유저가 구매한 상품기준, 2: 로그인한 유저가 판매중인 상품기준<br>" +
                     "[v] page: 페이징<br>" +
                     "<br>" +
                     "성공시: <br>" +
@@ -122,6 +122,7 @@ public class PaymentController {
                     "payment: 결제 수단 -> credit-card, kakao-pay<br>" +
                     "istatus: 제품 상태<br>" +
                     "code: 제품 고유 코드<br>" +
+                    "role: 로그인한 유저가 판매자인지 구매자인지 여부 (1: 판매자, 2: 구매자) - 리뷰 분기용" +
                     "createdAt: 결제 일자<br>" +
                     "iuser: 거래 상대 유저의 PK<br>" +
                     "nick: 거래 상대 유저의 닉네임<br>" +
