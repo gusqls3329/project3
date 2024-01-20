@@ -7,7 +7,7 @@ import com.team5.projrental.common.exception.base.*;
 import com.team5.projrental.common.exception.checked.FileNotContainsDotException;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.model.restapi.Addrs;
-import com.team5.projrental.common.utils.KakaoAxisGenerator;
+import com.team5.projrental.common.utils.AxisGenerator;
 import com.team5.projrental.common.utils.CommonUtils;
 import com.team5.projrental.common.utils.CookieUtils;
 import com.team5.projrental.common.security.AuthenticationFacade;
@@ -40,7 +40,7 @@ public class UserService {
     private final SecurityProperties securityProperties;
     private final CookieUtils cookieUtils;
     private final AuthenticationFacade authenticationFacade;
-    private final KakaoAxisGenerator axisGenerator;
+    private final AxisGenerator axisGenerator;
     private final MyFileUtils myFileUtils;
 
     public int postSignup(UserSignupDto dto) {

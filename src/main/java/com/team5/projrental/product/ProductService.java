@@ -1,17 +1,20 @@
 package com.team5.projrental.product;
 
 import com.team5.projrental.common.aop.anno.CountView;
-import com.team5.projrental.common.exception.*;
+import com.team5.projrental.common.exception.BadMainPicException;
+import com.team5.projrental.common.exception.IllegalProductPicsException;
+import com.team5.projrental.common.exception.NoSuchProductException;
+import com.team5.projrental.common.exception.NoSuchUserException;
 import com.team5.projrental.common.exception.base.*;
 import com.team5.projrental.common.exception.checked.FileNotContainsDotException;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.model.restapi.Addrs;
-import com.team5.projrental.common.utils.KakaoAxisGenerator;
+import com.team5.projrental.common.security.AuthenticationFacade;
+import com.team5.projrental.common.utils.AxisGenerator;
 import com.team5.projrental.common.utils.CommonUtils;
 import com.team5.projrental.common.utils.MyFileUtils;
 import com.team5.projrental.product.model.*;
 import com.team5.projrental.product.model.proc.*;
-import com.team5.projrental.common.security.AuthenticationFacade;
 import com.team5.projrental.product.model.review.ReviewGetDto;
 import com.team5.projrental.product.model.review.ReviewResultVo;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +37,7 @@ public class ProductService {
 
     private final RefProductRepository productRepository;
 
-    private final KakaoAxisGenerator axisGenerator;
+    private final AxisGenerator axisGenerator;
 
     private final AuthenticationFacade authenticationFacade;
 
