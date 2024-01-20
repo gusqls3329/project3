@@ -44,7 +44,7 @@ public class PaymentReviewController {
     @DeleteMapping
     @Operation(summary = "리뷰 삭제", description = "해당 거래에 등록한 리뷰 삭제")
     @Parameters(value = {
-            @Parameter(name="ipayment", description = "후기 등록하는 제품의 결제PK")
+            @Parameter(name="ireview", description = "작성한 리뷰 PK")
     })
     public ResVo delReview(@Validated @RequestBody DelRivewDto dto){
         return new ResVo(reviewService.delReview(dto));

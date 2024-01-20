@@ -33,18 +33,27 @@
     </update>
 
     <update id="delReview">
-        update t_review
-        set contents = null
-        , rating =null
-        where ireview = #{ireview}
+        update t_review r
+        JOIN t_payment p
+        ON r.ipayment = p.ipayment
+        SET r.contents = null
+        , r.rating = null
+        WHERE r.ireview = #{ireview}
+        AND p.istatus = #{istatus}
     </update>
+
+    <select id="selReIstatus">
+        SELECT istatus
+        FROM t_payment
+        WHERE ipayment = #{ipayment}
+    </select>
 
     <select id="selReview">
         SELECT COUNT(ireview)
         FROM t_review
         WHERE
         <if test="iuser != null and iuser != 0">
-        ibuyer = #{iuser} and
+            ibuyer = #{iuser} and
         </if>
         ipayment = #{ipayment}
     </select>
@@ -62,6 +71,5 @@
         FROM t_review
         WHERE ireview = #{ireview}
     </select>
-
 
 </mapper>
