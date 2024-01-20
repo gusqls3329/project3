@@ -1,7 +1,7 @@
 package com.team5.projrental.common.fortest;
 
 import com.team5.projrental.common.model.restapi.Addrs;
-import com.team5.projrental.common.utils.AxisGenerator;
+import com.team5.projrental.common.utils.KakaoAxisGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @RequiredArgsConstructor
 public class RestApiTest {
 
-    private final AxisGenerator axisGenerator;
+    private final KakaoAxisGenerator axisGenerator;
 
     @GetMapping("/test/rest-api")
     public String test(@RequestParam String query) {

@@ -6,7 +6,7 @@ import com.team5.projrental.common.exception.base.*;
 import com.team5.projrental.common.exception.checked.FileNotContainsDotException;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.model.restapi.Addrs;
-import com.team5.projrental.common.utils.AxisGenerator;
+import com.team5.projrental.common.utils.KakaoAxisGenerator;
 import com.team5.projrental.common.utils.CommonUtils;
 import com.team5.projrental.common.utils.MyFileUtils;
 import com.team5.projrental.product.model.*;
@@ -34,7 +34,7 @@ public class ProductService {
 
     private final RefProductRepository productRepository;
 
-    private final AxisGenerator axisGenerator;
+    private final KakaoAxisGenerator axisGenerator;
 
     private final AuthenticationFacade authenticationFacade;
 

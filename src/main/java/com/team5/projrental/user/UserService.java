@@ -3,13 +3,11 @@ package com.team5.projrental.user;
 import com.team5.projrental.common.Const;
 import com.team5.projrental.common.SecurityProperties;
 import com.team5.projrental.common.exception.BadAddressInfoException;
-import com.team5.projrental.common.exception.RestApiException;
 import com.team5.projrental.common.exception.base.*;
 import com.team5.projrental.common.exception.checked.FileNotContainsDotException;
-import com.team5.projrental.common.exception.user.BadIdInfoException;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.model.restapi.Addrs;
-import com.team5.projrental.common.utils.AxisGenerator;
+import com.team5.projrental.common.utils.KakaoAxisGenerator;
 import com.team5.projrental.common.utils.CommonUtils;
 import com.team5.projrental.common.utils.CookieUtils;
 import com.team5.projrental.common.security.AuthenticationFacade;
@@ -23,7 +21,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.units.qual.C;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -43,7 +40,7 @@ public class UserService {
     private final SecurityProperties securityProperties;
     private final CookieUtils cookieUtils;
     private final AuthenticationFacade authenticationFacade;
-    private final AxisGenerator axisGenerator;
+    private final KakaoAxisGenerator axisGenerator;
     private final MyFileUtils myFileUtils;
 
     public int postSignup(UserSignupDto dto) {

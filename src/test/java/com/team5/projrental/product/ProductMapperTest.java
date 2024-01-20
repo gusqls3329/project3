@@ -1,14 +1,8 @@
 package com.team5.projrental.product;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.team5.projrental.common.utils.AxisGenerator;
-import com.team5.projrental.common.utils.CommonUtils;
-import com.team5.projrental.product.model.ProductUpdDto;
-import com.team5.projrental.product.model.innermodel.StoredFileInfo;
 import com.team5.projrental.product.model.proc.*;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;

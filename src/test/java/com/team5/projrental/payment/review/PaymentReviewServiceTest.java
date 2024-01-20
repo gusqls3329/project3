@@ -1,27 +1,17 @@
 package com.team5.projrental.payment.review;
 
-import com.team5.projrental.common.SecurityProperties;
 import com.team5.projrental.common.security.AuthenticationFacade;
-import com.team5.projrental.common.security.JwtTokenProvider;
-import com.team5.projrental.common.utils.AxisGenerator;
-import com.team5.projrental.common.utils.CookieUtils;
-import com.team5.projrental.common.utils.MyFileUtils;
 import com.team5.projrental.payment.review.model.DelRivewDto;
 import com.team5.projrental.payment.review.model.RivewDto;
 import com.team5.projrental.payment.review.model.RiviewVo;
 import com.team5.projrental.payment.review.model.UpRieDto;
-import com.team5.projrental.user.UserMapper;
-import com.team5.projrental.user.UserService;
 import com.team5.projrental.user.model.CheckIsBuyer;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.junit.jupiter.api.Assertions.*;

@@ -3,10 +3,9 @@ package com.team5.projrental.product;
 import com.team5.projrental.common.exception.base.BadInformationException;
 import com.team5.projrental.common.exception.NoSuchProductException;
 import com.team5.projrental.common.model.ResVo;
-import com.team5.projrental.common.utils.AxisGenerator;
+import com.team5.projrental.common.utils.KakaoAxisGenerator;
 import com.team5.projrental.common.utils.MyFileUtils;
 import com.team5.projrental.product.model.ProductListVo;
-import com.team5.projrental.product.model.innermodel.StoredFileInfo;
 import com.team5.projrental.product.model.proc.GetProductListResultDto;
 import com.team5.projrental.common.security.AuthenticationFacade;
 import org.junit.jupiter.api.Test;
@@ -30,7 +29,7 @@ class ProductServiceTest {
     ProductRepository productRepository;
 
     @MockBean
-    AxisGenerator axisGenerator;
+    KakaoAxisGenerator axisGenerator;
     @MockBean
     AuthenticationFacade authenticationFacade;
 
