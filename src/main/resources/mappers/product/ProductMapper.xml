@@ -115,6 +115,7 @@
         P.rental_price as rentalPrice, P.rental_start_date as rentalStartDate,
         P.rental_end_date as rentalEndDate, (select count(L.iproduct) from t_like L where L.iproduct = P.iproduct) prodLike,
         P.iuser, P.contents, P.deposit, P.buy_date as buyDate, COUNT(L.iproduct) as prodLike, P.x, P.y,
+<!--        todo ??????????????????????????????-->
         if(count(L.iuser) = 0, 0, 1) as isLiked
         from t_product P
         join t_user U on P.iuser = U.iuser
