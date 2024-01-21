@@ -90,10 +90,10 @@ public class ProductService {
     @CountView
     public ProductVo getProduct(Integer icategory, Integer iproduct) {
 
-
+        int loginUserPk = getLoginUserPk();
         // 사진을 '제외한' 모든 정보 획득 & 제공된 카테고리 검증 (category -> icategory)
         GetProductResultDto productBy = productRepository.findProductBy(
-                new GetProductBaseDto(icategory, iproduct, getLoginUserPk())
+                new GetProductBaseDto(icategory, iproduct, loginUserPk)
         );
 
         // 결과물 없음 여부 검증
