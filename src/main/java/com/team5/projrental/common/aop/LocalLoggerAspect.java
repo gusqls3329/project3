@@ -17,10 +17,11 @@ import java.time.format.DateTimeFormatter;
 @Slf4j
 @Profile({"local", "hyunmin"})
 public class LocalLoggerAspect {
-    private long startTime;
-    private long endTime;
+    private ThreadLocal<Long> startTime;
+    private ThreadLocal<Long> endTime;
 
     @Pointcut("execution(* com.team5.projrental..*Controller*.*(..))")
+
     public void controller() {
     }
 
@@ -45,7 +46,7 @@ public class LocalLoggerAspect {
                 joinPoint.getTarget(),
                 joinPoint.getArgs(),
                 DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now()));
-        this.startTime = System.currentTimeMillis();
+        this.startTime.set(System.currentTimeMillis());
     }
 
     @AfterReturning(value = "controller() || service() || repository() || mapper()",
@@ -53,13 +54,17 @@ public class LocalLoggerAspect {
     public void afterReturn(JoinPoint joinPoint, Object returnVal) {
         boolean flag = false;
         if (joinPoint.getSignature().getDeclaringTypeName().contains("ontroller")) {
-            this.endTime = System.currentTimeMillis();
+            this.endTime.set(System.currentTimeMillis());
             flag = true;
         }
         log.info("\nRETURN \n\t{}\nRETURN VAL \n\t{}\n", joinPoint.getSignature(), returnVal);
         if (flag) {
-            log.info("\nDURATION \n\t{}ms\n\n----------- END -----------", this.endTime - this.startTime);
+            log.info("\nDURATION \n\t{}ms\n\n----------- END -----------", this.endTime.get() - this.startTime.get());
+            this.endTime.remove();
+            this.startTime.remove();
         }
+
+
     }
 
 
