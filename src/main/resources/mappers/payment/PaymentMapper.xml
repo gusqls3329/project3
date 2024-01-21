@@ -93,7 +93,7 @@
                 and U.iuser != #{iuser} and PA.ipayment = #{ipayment}
             </if>
         </where>
-        <if test="page != null and page != 0 and paymentPerPage != null and paymentPerPage != 0">
+        <if test="page != null and paymentPerPage != null and paymentPerPage != 0">
             limit #{page}, #{paymentPerPage}
         </if>
     </select>
