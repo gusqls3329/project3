@@ -19,7 +19,7 @@ bin/
 !**/src/test/**/bin/
 
 ### IntelliJ IDEA ###
-#src/main/resources/application.yaml
+src/main/resources/application-hyunmin.yaml
 .idea
 *.iws
 *.iml
