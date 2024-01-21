@@ -58,7 +58,7 @@ public class LocalLoggerAspect {
         }
         log.info("\nRETURN \n\t{}\nRETURN VAL \n\t{}\n", joinPoint.getSignature(), returnVal);
         if (flag) {
-            log.info("\nDURATION \n\t{}ms", this.endTime - this.startTime);
+            log.info("\nDURATION \n\t{}ms\n\n----------- END -----------", this.endTime - this.startTime);
         }
     }
 

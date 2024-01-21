@@ -40,7 +40,9 @@ public class ExceptionResolver {
         eBase.getAllErrors().forEach(e1 -> {
             sb.append(e1.getDefaultMessage());
             log.warn("error message = {}", e1);
+
         });
+        log.warn("error message", eBase);
         String errorMessage = sb.toString();
         int errorCode = Arrays.stream(ErrorCode.values()).filter(e -> e.getMessage().equals(errorMessage)).findFirst()
                 .orElse(ErrorCode.SERVER_ERR_MESSAGE).getCode();
