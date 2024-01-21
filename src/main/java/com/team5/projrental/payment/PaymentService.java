@@ -2,20 +2,22 @@ package com.team5.projrental.payment;
 
 import com.team5.projrental.common.Flag;
 import com.team5.projrental.common.Role;
-import com.team5.projrental.common.exception.*;
+import com.team5.projrental.common.exception.BadDivInformationException;
+import com.team5.projrental.common.exception.NoSuchPaymentException;
+import com.team5.projrental.common.exception.NoSuchProductException;
+import com.team5.projrental.common.exception.NoSuchUserException;
 import com.team5.projrental.common.exception.base.BadDateInfoException;
 import com.team5.projrental.common.exception.base.BadInformationException;
 import com.team5.projrental.common.exception.base.BadProductInfoException;
 import com.team5.projrental.common.exception.base.WrapRuntimeException;
 import com.team5.projrental.common.model.ResVo;
+import com.team5.projrental.common.security.AuthenticationFacade;
 import com.team5.projrental.common.utils.CommonUtils;
-import com.team5.projrental.common.utils.MyFileUtils;
 import com.team5.projrental.payment.model.PaymentInsDto;
 import com.team5.projrental.payment.model.PaymentListVo;
 import com.team5.projrental.payment.model.PaymentVo;
 import com.team5.projrental.payment.model.proc.*;
 import com.team5.projrental.product.ProductRepository;
-import com.team5.projrental.common.security.AuthenticationFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -94,7 +96,6 @@ public class PaymentService {
     }
 
 
-
     /**
      * div == 3
      * -3: ex (이미 완료된 거래)
@@ -168,7 +169,7 @@ public class PaymentService {
 
     public List<PaymentListVo> getAllPayment(Integer role, int page) {
         int iuser = getLoginUserPk();
-        List<GetPaymentListResultDto> paymentBy = paymentRepository.findPaymentBy(new GetPaymentListDto(iuser, role, page));
+        List<GetPaymentListResultDto> paymentBy = paymentRepository.findPaymentBy(new GetPaymentListDto(iuser, role, page, true));
         List<PaymentListVo> result = new ArrayList<>();
         CommonUtils.checkNullOrZeroIfCollectionThrow(NoSuchPaymentException.class, NO_SUCH_PAYMENT_EX_MESSAGE, paymentBy);
         paymentBy.forEach(p -> result.add(new PaymentListVo(
