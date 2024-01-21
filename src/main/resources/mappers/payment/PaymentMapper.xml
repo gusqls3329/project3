@@ -14,7 +14,7 @@
     <!--    -->
     <!--    -->
 
-<!--    -->
+    <!--    -->
     <select id="getValidationInfoFromProduct">
         select P.deposit, P.price, PA.rental_start_date as rentalStartDate, PA.rental_end_date as rentalEndDate
         from t_product P
@@ -22,7 +22,7 @@
         left join t_payment PA on PP.ipayment = PA.ipayment
         where P.iproduct = #{iproduct}
     </select>
-<!--    -->
+    <!--    -->
 
     <insert id="insPayment" useGeneratedKeys="true" keyProperty="ipayment">
         insert into t_payment (ibuyer, ipayment_method, rental_start_date, rental_end_date, rental_duration,
@@ -70,16 +70,19 @@
         </if>
         from t_payment PA
         join t_product_payment PP on PA.ipayment = PP.ipayment
+        <if test="flag == 1 and role == null or role == 0">
+            and PA.ipayment = #{ipayment}
+        </if>
         join t_product P on PP.iproduct = P.iproduct
-        join t_user U on U.iuser =
+        join t_user U on
         <if test="role != null and role == 1">
-            P.iuser
+            U.iuser = P.iuser
         </if>
         <if test="role != null and role == 2">
-            PA.ibuyer
+            U.iuser = PA.ibuyer
         </if>
-        <if test="role == null or role == 0">
-            P.iuser or U.iuser = PA.ibuyer
+        <if test="flag == 1 and role == null or role == 0">
+            if(P.iuser = #{iuser}, PA.ibuyer = U.iuser, P.iuser = U.iuser)
         </if>
         <where>
             PA.istatus in (-4, -3, -2, 0, 1, 2, 3)
@@ -90,7 +93,7 @@
                 and P.iuser = #{iuser}
             </if>
             <if test="flag == 1">
-                and U.iuser != #{iuser} and PA.ipayment = #{ipayment}
+                and PA.ibuyer = #{iuser} or P.iuser = #{iuser}
             </if>
         </where>
         <if test="page != null and paymentPerPage != null and paymentPerPage != 0">

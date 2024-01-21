@@ -190,8 +190,7 @@ public class PaymentService {
         GetPaymentListResultDto aPayment;
         int iuser = getLoginUserPk();
         try {
-            aPayment = paymentRepository.findPaymentBy(new GetPaymentListDto(iuser, ipayment,
-                    Flag.ONE.getValue())).get(0);
+            aPayment = paymentRepository.findPaymentBy(new GetPaymentListDto(iuser, Flag.ONE.getValue(), ipayment)).get(0);
         } catch (IndexOutOfBoundsException e) {
             throw new NoSuchPaymentException(NO_SUCH_PAYMENT_EX_MESSAGE);
         }
