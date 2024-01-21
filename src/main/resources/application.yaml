@@ -34,8 +34,7 @@ spring:
     url: jdbc:mariadb://localhost:3306/projrental
     username: even_last_5
     password: fines
-  profiles:
-    active: docker
+
 #
 file:
   base-package: /home/download/
