@@ -72,8 +72,7 @@ public class CommonAspect {
         throw ex;
     }
 
-    @Around(value = "execution(* com.team5.projrental.payment.PaymentRepository.updateStatusIfOverRentalEndDate(..))" +
-            "&& args(now)")
+    @Around("execution(* com.team5.projrental.payment.PaymentRepository.updateStatusIfOverRentalEndDate(..)) && args(now)")
     public int doLog(ProceedingJoinPoint joinPoint, LocalDate now) throws Throwable {
 
         int changedColumn = (int) joinPoint.proceed();

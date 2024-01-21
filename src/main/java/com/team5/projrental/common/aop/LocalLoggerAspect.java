@@ -9,14 +9,8 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 @Aspect
 @Component
@@ -62,22 +56,7 @@ public class LocalLoggerAspect {
             this.endTime = System.currentTimeMillis();
             flag = true;
         }
-        Map<String, String> result = new HashMap<>();
-        Class<?> clazz = returnVal.getClass();
-        Field[] declaredFields = clazz.getDeclaredFields();
-        Method[] declaredMethods = clazz.getDeclaredMethods();
-        Arrays.stream(declaredFields).forEach(f -> Arrays.stream(declaredMethods).forEach(m -> {
-            if (m.getName().toLowerCase().contains("get") && m.getName().toLowerCase().contains(f.getName())) {
-                try {
-                    Object invoke = m.invoke(returnVal);
-                    if(invoke == null) return;
-                    result.put(f.getName(), String.valueOf(invoke));
-                } catch (IllegalAccessException | InvocationTargetException e) {
-                    e.printStackTrace();
-                }
-            }
-        }));
-        log.info("\nRETURN \n\t{}\nRETURN VAL \n\t{}\n", joinPoint.getSignature(), result.isEmpty() ? "empty" : result);
+        log.info("\nRETURN \n\t{}\nRETURN VAL \n\t{}\n", joinPoint.getSignature(), returnVal);
         if (flag) {
             log.info("\nDURATION \n\t{}ms", this.endTime - this.startTime);
         }
