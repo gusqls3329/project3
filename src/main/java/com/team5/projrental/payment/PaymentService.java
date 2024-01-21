@@ -128,6 +128,7 @@ public class PaymentService {
      * @param div
      * @return ResVo
      */
+    @Transactional
     public ResVo delPayment(Integer ipayment, Integer div) {
 
         // 데이터 검증
@@ -161,7 +162,7 @@ public class PaymentService {
         // 객체 생성
         DelPaymentDto delPaymentDto = new DelPaymentDto(ipayment, istatusForUpdate);
 
-        if (paymentRepository.deletePayment(delPaymentDto) != 0) {
+        if (paymentRepository.deletePayment(delPaymentDto) == 0) {
             throw new WrapRuntimeException(SERVER_ERR_MESSAGE);
         }
         return new ResVo(istatusForUpdate);
@@ -247,18 +248,25 @@ public class PaymentService {
             Role.buyer ->
          */
         if (role == null) throw new BadInformationException(BAD_INFO_EX_MESSAGE);
+        if (istatus == 3 && role == Role.BUYER || istatus == 2 && role == Role.SELLER)
+            // 이미 취소한 상태. 
+            /* TODO 2024-01-21 일 23:17 
+                에러 메시지 디테일하게?
+                --by Hyunmin
+            */
+            throw new BadDivInformationException(BAD_DIV_INFO_EX_MESSAGE);
         if (div == 1 || div == 2) {
             if (istatus == -3 || istatus == 1 || (div == 1 && istatus == -2)) {
                 return div * -1;
             }
         }
         if (div == 3) {
-            if (istatus == 0 || istatus == -4) {
+            if (istatus == 0) {
                 if (role == Role.BUYER) {
-                    return 2;
+                    return 3;
                 }
                 if (role == Role.SELLER) {
-                    return 3;
+                    return 2;
                 }
             }
             if (istatus == 2 && role == Role.BUYER || istatus == 3 && role == Role.SELLER) {
