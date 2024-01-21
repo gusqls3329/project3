@@ -21,8 +21,7 @@ server:
       max: 200
 
 
-#local
----
+#
 spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
@@ -31,32 +30,50 @@ spring:
     password: green502
   profiles:
     active: local
-#
-
-#fcm:
-#  certification: serviceAccountKey.json
 
 logging:
   level:
     -com.team5.projrental: DEBUG
 
-
 file:
   base-package: D:/projrental/download/pics/
-
-#docker
----
-
-spring:
-  datasource:
-    driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:3306/projrental
-    username: even_last_5
-    password: fines
-  profiles:
-    active: docker
-
-file:
-  base-package: /home/download/pics/
+#
+##local
+#---
+#spring:
+#  datasource:
+#    driver-class-name: org.mariadb.jdbc.Driver
+#    url: jdbc:mariadb://localhost:3306/projrental
+#    username: root
+#    password: green502
+#  profiles:
+#    active: local
+##
+#
+##fcm:
+##  certification: serviceAccountKey.json
+#
+#logging:
+#  level:
+#    -com.team5.projrental: DEBUG
+#
+#
+#file:
+#  base-package: D:/projrental/download/pics/
+#
+##docker
+#---
+#
+#spring:
+#  datasource:
+#    driver-class-name: org.mariadb.jdbc.Driver
+#    url: jdbc:mariadb://localhost:3306/projrental
+#    username: even_last_5
+#    password: fines
+#  profiles:
+#    active: docker
+#
+#file:
+#  base-package: /home/download/pics/
 
 
