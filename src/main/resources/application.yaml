@@ -28,8 +28,6 @@ spring:
     url: jdbc:mariadb://localhost:3306/projrental
     username: root
     password: green502
-  profiles:
-    active: local
 
 logging:
   level:
