@@ -1,6 +1,4 @@
 ##docker
-
-
 app: #속성을 바꿀 수 있는 부분 들은 상수 처럼 쓰기 편하도록 만들어놓음
   jwt:
     secret: akjw4egoiaj409gj2a094jg02984jgasegsegase9024jg09ftglk #JWT를 만들 때 쓰는 키, 길이가 짧으면 에러터짐
@@ -23,11 +21,6 @@ server:
     threads:
       max: 200
 
-
-#
-
-#---
-#
 spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
@@ -35,8 +28,25 @@ spring:
     username: even_last_5
     password: fines
 
-#
 file:
   base-package: /home/download/
+---
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/projrental
+    username: root
+    password: green502
+  config:
+    activate:
+      on-profile: local
+
+logging:
+  level:
+    -com.team5.projrental: DEBUG
+
+file:
+  base-package: D:/projrental/download/pics/
+
 
 
