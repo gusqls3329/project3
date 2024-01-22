@@ -20,6 +20,9 @@ import org.springframework.http.MediaType;
 
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -31,6 +34,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.team5.projrental.common.security.AuthenticationFacade;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 @SpringBootTest
 @MockMvcConfig
@@ -61,15 +66,17 @@ class PaymentReviewControllerTest {
         given(authenticationFacade.getLoginUserPk()).willReturn(4);
         given(service.postReview(any(RivewDto.class))).willReturn(Const.SUCCESS);
 
-        // Act and Assert
-        mvc.perform(MockMvcRequestBuilders.post("/api/pay/review")
+
+        mvc.perform(MockMvcRequestBuilders
+                        .post("/api/pay/review")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(dto)))
-                .andExpect(status().isOk()).andExpect(content().json("{\"result\":1}"));
+                .andExpect(status().isOk())
+                .andExpect(content().json("{\"result\":1}"));
 
 
         verify(service).postReview(any());
-        //verify(authenticationFacade).getLoginUserPk(); :오류발생
+        // verify(authenticationFacade).getLoginUserPk();
     }
 
 
@@ -88,27 +95,29 @@ class PaymentReviewControllerTest {
                         .patch("/api/pay/review")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(dto)))
-                .andExpect(status().isOk()).andExpect(content().json("{\"result\":1}"));
+                .andExpect(status().isOk())
+                .andExpect(content().json("{\"result\":1}"));
 
         verify(service).patchReview(any());
     }
 
     @Test
     void delReview() throws Exception {
-        DelRivewDto dto = new DelRivewDto();
-        dto.setIuser(1);
-        dto.setIreview(2);
-        dto.setIstatus(1);
+        ResVo vo = new ResVo(Const.SUCCESS);
+        MultiValueMap<String, String> requestParams = new LinkedMultiValueMap();
+        requestParams.add("rev", "2");
 
         given(authenticationFacade.getLoginUserPk()).willReturn(1);
         given(service.delReview(any(DelRivewDto.class))).willReturn(Const.SUCCESS);
 
+
         mvc.perform(MockMvcRequestBuilders
-                .delete("/api/pay/review")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(dto)))
+                        .delete("/api/pay/review")
+                        .params(requestParams))
                 .andExpect(status().isOk())
-                .andExpect(content().json("{\"result\":1}"));
+                .andExpect(content().string(mapper.writeValueAsString(vo)))
+                .andDo(print());
         verify(service).delReview(any());
+
     }
 }
