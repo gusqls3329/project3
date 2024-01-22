@@ -7,6 +7,7 @@ import com.team5.projrental.common.model.ErrorResultVo;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.product.model.ProductUserVo;
 import com.team5.projrental.product.model.ProductVo;
+import com.team5.projrental.product.model.review.ReviewResultVo;
 import com.team5.projrental.user.model.SigninDto;
 import com.team5.projrental.user.model.SigninVo;
 import org.junit.jupiter.api.BeforeEach;
@@ -115,17 +116,30 @@ class ProductControllerIntegTest {
         String response = mockMvc.perform(MockMvcRequestBuilders.get("/api/prod/list?page=1")
                 .header("Authorization", token)
         ).andReturn().getResponse().getContentAsString();
-        ProductUserVo[] productUserVos = om.readValue(response, ProductUserVo[].class);
+        List<ProductUserVo> results = Arrays.asList(om.readValue(response, new TypeReference<>(){}));
 
         assertThat(results.size()).isEqualTo(2);
         results.forEach(r -> {
-            assertThat(r.getCategory()).isEqualTo(3);
+            assertThat(r.getCategory()).isEqualTo("Galaxy");
             assertThat(r.getRentalEndDate()).isEqualTo(LocalDate.of(2024, 3, 18));
         });
+
 
     }
 
     @Test
-    void getAllReviews() {
+    void getAllReviews() throws Exception {
+
+        String response = mockMvc.perform(MockMvcRequestBuilders.get("/api/prod/review/11?page=1")
+                .header("Authorization", token)
+        ).andReturn().getResponse().getContentAsString();
+
+        List<ReviewResultVo> results = om.readValue(response, new TypeReference<>() {
+        });
+
+        assertThat(results.size()).isEqualTo(2);
+        assertThat(results.get(0).getIreview()).isEqualTo(3);
+        assertThat(results.get(1).getIreview()).isEqualTo(5);
+
     }
 }
