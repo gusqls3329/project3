@@ -1,10 +1,11 @@
 package com.team5.projrental.chat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.firebase.ErrorCode;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
+import com.team5.projrental.common.exception.ErrorCode;
+import com.team5.projrental.common.exception.base.NotEnoughInfoException;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.chat.model.*;
 import com.team5.projrental.common.security.AuthenticationFacade;
@@ -49,9 +50,10 @@ public class ChatService {
         int istatus = mapper.delBeforeChatIstatus(dto);
 
 
-
         //상대유저가 채팅방 나갔을 경우 예외처리
         CommonUtils.ifChatUserStatusThrowOrReturn(istatus);
+
+
 
         int affectedRows = mapper.insChatMsg(dto);
         if (affectedRows == 1) {
