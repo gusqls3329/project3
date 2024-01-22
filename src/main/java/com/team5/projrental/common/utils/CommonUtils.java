@@ -1,5 +1,6 @@
 package com.team5.projrental.common.utils;
 
+import com.team5.projrental.common.Checker;
 import com.team5.projrental.common.exception.ErrorCode;
 import com.team5.projrental.common.exception.IllegalCategoryException;
 import com.team5.projrental.common.exception.IllegalPaymentMethodException;
@@ -8,7 +9,9 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static com.team5.projrental.common.Const.*;
@@ -20,11 +23,12 @@ public class CommonUtils {
 
 
     public static boolean notBetweenChecker(LocalDate refStartDate, LocalDate refEndDate,
-                                             LocalDate newStartDate, LocalDate newEndDate) {
+                                            LocalDate newStartDate, LocalDate newEndDate) {
 
         return newStartDate.isBefore(refStartDate) && newEndDate.isBefore(refStartDate)
                 || newStartDate.isAfter(refEndDate) && newEndDate.isAfter(refEndDate);
     }
+
     /**
      * Integer n 이 null 이거나 0 이면 예외 유발
      *
@@ -176,6 +180,12 @@ public class CommonUtils {
         }
     }
 
+    //
+    public static void check(Class<? extends RuntimeException> ex, ErrorCode err, Checker checker) {
+        if (checker.check()) {
+            thrown(ex, err);
+        }
+    }
 
     //
 
