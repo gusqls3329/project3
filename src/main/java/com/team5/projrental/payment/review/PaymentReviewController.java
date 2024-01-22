@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@RestController //RestController : 모든응답이 json: 프론트는 응답을 json으로 받음
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/api/pay/review")
@@ -43,12 +43,15 @@ public class PaymentReviewController {
 
     @DeleteMapping
     @Operation(summary = "리뷰 삭제", description = "해당 거래에 등록한 리뷰 삭제")
-    @Parameters(value = {
-            @Parameter(name="ireview", description = "작성한 리뷰 PK")
-    })
-    public ResVo delReview(@Validated @RequestBody DelRivewDto dto){
+//    @Parameters(value = {
+//            @Parameter(name="ireview", description = "작성한 리뷰 PK")
+//    })
+    public ResVo delReview(@Validated @RequestParam("rev") int ireview){
+        DelRivewDto dto = new DelRivewDto();
+        dto.setIreview(ireview);
         return new ResVo(reviewService.delReview(dto));
     }
+
 
 
 
