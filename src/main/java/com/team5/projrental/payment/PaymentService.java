@@ -175,7 +175,7 @@ public class PaymentService {
         CommonUtils.checkNullOrZeroIfCollectionThrow(NoSuchPaymentException.class, NO_SUCH_PAYMENT_EX_MESSAGE, paymentBy);
         paymentBy.forEach(p -> result.add(new PaymentListVo(
                 p.getIuser(), p.getNick(), p.getUserStoredPic(),
-                p.getIpayment(), p.getIproduct(), p.getProdStoredPic(), STATUS.get(p.getIstatus()), p.getRentalStartDate(),
+                p.getIpayment(), p.getIproduct(), p.getProdStoredPic(), p.getIstatus(), p.getRentalStartDate(),
                 p.getRentalEndDate(),
                 p.getRentalDuration(), p.getPrice(), p.getDeposit())
         ));
@@ -202,8 +202,8 @@ public class PaymentService {
                 aPayment.getUserStoredPic(),
                 aPayment.getIpayment(),
                 aPayment.getIproduct(),
-                STATUS.get(aPayment.getIstatus()), // status resolver ?
                 aPayment.getProdStoredPic(),
+                aPayment.getIstatus(), // status resolver ?
                 aPayment.getRentalStartDate(),
                 aPayment.getRentalEndDate(),
                 aPayment.getRentalDuration(),
