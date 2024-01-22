@@ -94,7 +94,7 @@ public class UserControllerTest {
                         .patch("/api/user/id")
                         .content(mapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
-                .andExpect(content().string(mapper.writeValueAsString(vo)))
+                .andExpect(content().)
                 .andDo(print());
 
 
