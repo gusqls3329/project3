@@ -1,15 +1,13 @@
 package com.team5.projrental.common;
 
 import com.team5.projrental.common.exception.*;
-import com.team5.projrental.common.exception.base.BadInformationException;
-import com.team5.projrental.common.exception.base.IllegalException;
-import com.team5.projrental.common.exception.base.NoSuchDataException;
-import com.team5.projrental.common.exception.base.WrapRuntimeException;
+import com.team5.projrental.common.exception.base.*;
 import com.team5.projrental.common.model.ErrorResultVo;
 import com.team5.projrental.common.exception.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.ErrorResponseException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -24,6 +22,15 @@ public class ExceptionResolver {
 
 
     // 400
+    @ExceptionHandler
+    public ResponseEntity<ErrorResultVo> resolve(NotEnoughInfoException e) {
+        log.warn("error message", e);
+        return ResponseEntity.status(e.getErrorCode().getCode())
+                .body(ErrorResultVo.builder().errorCode(e.getErrorCode().getCode())
+//                        .message(e.getErrorCode().getMessage()).build());
+                        .message(e.getMessage()).build());
+    }
+
     @ExceptionHandler({MethodArgumentTypeMismatchException.class})
     public ResponseEntity<ErrorResultVo> resolve(MethodArgumentTypeMismatchException eBase) {
         log.warn("error message", eBase);
