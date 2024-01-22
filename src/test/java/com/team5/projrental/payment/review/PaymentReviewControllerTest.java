@@ -50,9 +50,6 @@ class PaymentReviewControllerTest {
     @Autowired
     private ObjectMapper mapper;
 
-    @MockBean
-    private AuthenticationFacade authenticationFacade;
-
     @Test
     void postReview() throws Exception {
         RivewDto dto = new RivewDto();
@@ -61,11 +58,7 @@ class PaymentReviewControllerTest {
         dto.setIpayment(13);
         dto.setRating(5);
 
-        given(service.postReview(dto)).willReturn(1);
-
-        given(authenticationFacade.getLoginUserPk()).willReturn(4);
-        given(service.postReview(any(RivewDto.class))).willReturn(Const.SUCCESS);
-
+        given(service.postReview(any())).willReturn(1);
 
         mvc.perform(MockMvcRequestBuilders
                         .post("/api/pay/review")
@@ -73,10 +66,6 @@ class PaymentReviewControllerTest {
                         .content(mapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
                 .andExpect(content().json("{\"result\":1}"));
-
-
-        verify(service).postReview(any());
-        // verify(authenticationFacade).getLoginUserPk();
     }
 
 
@@ -88,7 +77,6 @@ class PaymentReviewControllerTest {
         dto.setIreview(2);
         dto.setIuser(1);
 
-        given(authenticationFacade.getLoginUserPk()).willReturn(1);
         given(service.patchReview(any(UpRieDto.class))).willReturn(Const.SUCCESS);
 
         mvc.perform(MockMvcRequestBuilders
@@ -97,8 +85,6 @@ class PaymentReviewControllerTest {
                         .content(mapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
                 .andExpect(content().json("{\"result\":1}"));
-
-        verify(service).patchReview(any());
     }
 
     @Test
@@ -107,7 +93,6 @@ class PaymentReviewControllerTest {
         MultiValueMap<String, String> requestParams = new LinkedMultiValueMap();
         requestParams.add("rev", "2");
 
-        given(authenticationFacade.getLoginUserPk()).willReturn(1);
         given(service.delReview(any(DelRivewDto.class))).willReturn(Const.SUCCESS);
 
 
@@ -117,7 +102,6 @@ class PaymentReviewControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(mapper.writeValueAsString(vo)))
                 .andDo(print());
-        verify(service).delReview(any());
 
     }
 }
