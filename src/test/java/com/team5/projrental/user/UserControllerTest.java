@@ -85,23 +85,19 @@ public class UserControllerTest {
     @Test
     void getFindUid() throws Exception {
         FindUidDto dto = new FindUidDto();
+        dto.setPhone("010-7777-6666");
         FindUidVo vo = service.getFindUid(dto);
 
-        dto.setPhone("010-7777-6666");
-        given(service.getFindUid(dto)).willReturn(vo);
-    /*
+
         mvc.perform(
                 MockMvcRequestBuilders
                         .patch("/api/user/id")
                         .content(mapper.writeValueAsString(dto)))
-
                 .andExpect(status().isOk())
                 .andExpect(content().string(mapper.writeValueAsString(vo)))
                 .andDo(print());
 
 
-     */
-        verify(service).getFindUid(dto);
     }
 
     @Test
@@ -110,6 +106,7 @@ public class UserControllerTest {
         dto.setPhone("010-7777-6666");
         dto.setUid("dongdong12");
         dto.setUpw("testpassword");
+
 
         given(service.getFindUpw(dto)).willReturn(Const.SUCCESS);
         verify(service).getFindUpw(dto);
