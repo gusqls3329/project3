@@ -113,7 +113,7 @@ public class ProductService {
         // 거래 불가능 날짜
         List<CanNotRentalDate> lendDates = productRepository.getLendDatesBy(productBy.getIproduct());
         // 거래불가능 날짜 전부 세팅하기
-        if(!(lendDates == null) || !(lendDates.isEmpty())) {
+        if (!(lendDates == null) || !(lendDates.isEmpty())) {
             List<LocalDate> disabledDates = new ArrayList<>();
             lendDates.forEach(d -> {
                 while (true) {
@@ -138,8 +138,6 @@ public class ProductService {
         result.setProdPics(resultEctPic);
         return result;
     }
-
-
 
 
     /**
@@ -258,26 +256,23 @@ public class ProductService {
         }
         // 병합하지 않아도 되는 데이터 검증
 
-
-        dto.setIuser(getLoginUserPk());
+        int loginUserPk = getLoginUserPk();
         // 카테고리 검증
-        CommonUtils.ifCategoryNotContainsThrowOrReturn(dto.getIcategory());
+        if (dto.getIcategory() != null && dto.getIcategory() > 0 && dto.getIcategory() < 23) {
+            CommonUtils.ifCategoryNotContainsThrowOrReturn(dto.getIcategory());
+        }
         UpdProdBasicDto fromDb =
-                productRepository.findProductByForUpdate(new GetProductBaseDto(dto.getIcategory(), dto.getIproduct(), dto.getIuser()));
+                productRepository.findProductByForUpdate(new GetProductBaseDto(dto.getIproduct(), loginUserPk));
 
-        // 가격이나 보증금퍼센트가 변경되면 변경된 보증금 가격으로 바꾸기 위한 로직
-        Integer resolvedDepositPer = CommonUtils.getDepositPerFromPrice(dto.getPrice() == null ? fromDb.getPrice() : dto.getPrice(),
-                dto.getDepositPer() == null ? fromDb.getDepositPer() : dto.getDepositPer());
+
         // 병합
         Integer price = dto.getPrice() == null ? fromDb.getPrice() : dto.getPrice();
         UpdProdBasicDto mergedData = new UpdProdBasicDto(
                 dto.getPrice() == null ? fromDb.getPrice() : dto.getPrice(),
-                CommonUtils.getDepositFromPer(dto.getPrice() == null ? fromDb.getPrice() : dto.getPrice(),
-                        dto.getDepositPer() == null ? resolvedDepositPer : dto.getDepositPer()),
+                getDepositFromPerByUtils(dto, fromDb),
                 dto.getBuyDate() == null ? fromDb.getBuyDate() : dto.getBuyDate(),
                 dto.getRentalStartDate() == null ? fromDb.getRentalStartDate() : dto.getRentalStartDate(),
-                dto.getRentalEndDate() == null ? fromDb.getRentalEndDate() : dto.getRentalEndDate(),
-                dto.getDepositPer() == null ? resolvedDepositPer : dto.getDepositPer()
+                dto.getRentalEndDate() == null ? fromDb.getRentalEndDate() : dto.getRentalEndDate()
         );
         int dbPicsCount = productRepository.findPicsCount(dto.getIproduct());
 
@@ -307,10 +302,11 @@ public class ProductService {
                 BadDateInfoException.class, BUY_DATE_MUST_BE_LATER_THAN_TODAY_EX_MESSAGE,
                 LocalDate.now(), mergedData.getBuyDate()
         );
-        CommonUtils.ifBeforeThrow(
-                BadDateInfoException.class, RENTAL_DATE_MUST_BE_BEFORE_THAN_TODAY_EX_MESSAGE,
-                mergedData.getRentalStartDate(), LocalDate.now()
-        );
+        // 수정일기준에서는 렌탈 시작일이 오늘보다 이후일 필요가 없음 (오히려 그럴수 없음)
+//        CommonUtils.ifBeforeThrow(
+//                BadDateInfoException.class, RENTAL_DATE_MUST_BE_BEFORE_THAN_TODAY_EX_MESSAGE,
+//                mergedData.getRentalStartDate(), LocalDate.now()
+//        );
         CommonUtils.ifBeforeThrow(BadDateInfoException.class, RENTAL_END_DATE_MUST_BE_AFTER_THAN_RENTAL_START_DATE_EX_MESSAGE
                 , mergedData.getRentalEndDate(), mergedData.getRentalStartDate());
         // 날짜 검증 끝
@@ -335,6 +331,7 @@ public class ProductService {
 
 
             // update 할 객체 세팅
+            dto.setIuser(loginUserPk);
             dto.setStoredMainPic(dto.getMainPic() == null ? null : myFileUtils.savePic(dto.getMainPic(), CATEGORY_PRODUCT_MAIN,
                     String.valueOf(dto.getIproduct())));
             dto.setDeposit(dto.getDepositPer() == null ? null : CommonUtils.getDepositFromPer(price, dto.getDepositPer()));
@@ -350,6 +347,18 @@ public class ProductService {
             throw new BadProductInfoException(BAD_PRODUCT_INFO_EX_MESSAGE);
         }
         return new ResVo(SUCCESS);
+    }
+
+    private Integer getDepositFromPerByUtils(ProductUpdDto dto, UpdProdBasicDto fromDb) {
+        return CommonUtils.getDepositFromPer(
+                dto.getPrice() == null ? fromDb.getPrice() : dto.getPrice(),
+                // 가격이나 보증금퍼센트가 변경되면 변경된 보증금 가격으로 바꾸기 위한 로직
+                dto.getDepositPer() == null ?
+                        CommonUtils.getDepositPerFromPrice(dto.getPrice() == null ?
+                                        fromDb.getPrice() :
+                                        dto.getPrice(),
+                                fromDb.getDeposit()) :
+                        dto.getDepositPer());
     }
 
     /**
@@ -431,7 +440,6 @@ public class ProductService {
     private int getLoginUserPk() {
         return authenticationFacade.getLoginUserPk();
     }
-
 
 
 }
