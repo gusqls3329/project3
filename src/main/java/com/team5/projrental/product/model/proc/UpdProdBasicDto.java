@@ -27,4 +27,11 @@ public class UpdProdBasicDto {
     //
     private Integer depositPer;
 
+    public UpdProdBasicDto(Integer price, Integer deposit, LocalDate buyDate, LocalDate rentalStartDate, LocalDate rentalEndDate) {
+        this.price = price;
+        this.deposit = deposit;
+        this.buyDate = buyDate;
+        this.rentalStartDate = rentalStartDate;
+        this.rentalEndDate = rentalEndDate;
+    }
 }
