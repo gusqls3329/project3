@@ -92,6 +92,7 @@ public class UserControllerTest {
         mvc.perform(
                 MockMvcRequestBuilders
                         .patch("/api/user/id")
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
                 .andExpect(content().string(mapper.writeValueAsString(vo)))
@@ -109,14 +110,14 @@ public class UserControllerTest {
         dto.setUpw("testpassword");
 
         given(service.getFindUpw(dto)).willReturn(Const.SUCCESS);
-        /*
+    /*
         mvc.perform(MockMvcRequestBuilders
-                .post("/api/user/pw")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString())
-        )
-
-         */
+                    .post("/api/user/pw")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(mapper.writeValueAsString(dto)))
+                .andExpect(status().isOk())
+                .andExpect(content().string(mapper.writeValueAsString(vo)));
+     */
         verify(service).getFindUpw(dto);
     }
 
