@@ -130,8 +130,8 @@ public class CommonUtils {
         return (int) (price * percent * 0.01);
     }
 
-    public static Integer getDepositPerFromPrice(Integer price, Integer rentalPrice) {
-        return (price / rentalPrice);
+    public static Integer getDepositPerFromPrice(Integer price, Integer deposit) {
+        return (price / deposit);
     }
 
     public static void ifAnyNullThrow(Class<? extends RuntimeException> ex, ErrorCode err, Object... objs) {

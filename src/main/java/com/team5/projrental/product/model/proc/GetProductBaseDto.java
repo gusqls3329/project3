@@ -16,6 +16,10 @@ public class GetProductBaseDto {
         this.iproduct = iproduct;
         this.iuser = iuser;
     }
+    public GetProductBaseDto( Integer iproduct, Integer iuser) {
+        this.iproduct = iproduct;
+        this.iuser = iuser;
+    }
 
     public GetProductBaseDto(Integer iproduct) {
         this.iproduct = iproduct;

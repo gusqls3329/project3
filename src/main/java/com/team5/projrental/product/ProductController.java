@@ -201,7 +201,7 @@ public class ProductController {
         return productService.putProduct(mainPic, pics, dto);
     }
 
-    @Operation(summary = "제품 수정 or 삭제",
+    @Operation(summary = "제품 숨김 or 삭제",
             description = "<strong>제품의 수정 또는 삭제 요청</strong><br>" +
                     "[ [v] : 필수값 ]<br>" +
                     "[v] iproduct: 수정 또는 삭제 요청할 제품의 PK<br>" +
