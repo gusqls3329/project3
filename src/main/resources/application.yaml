@@ -16,7 +16,7 @@ springdoc:
 spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:3306/projrental
+    url: jdbc:mariadb://192.168.0.144:3306/projrental
     username: root
     password: green502
 
@@ -34,12 +34,12 @@ server:
 spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:3306/projrental
+    url: jdbc:mariadb://192.168.0.144:3306/db_even_last_5
     username: even_last_5
     password: fines
   config:
     activate:
-      on-profile: prod
+      on-profile: "prod"
 file:
   base-package: /home/download/
 
