@@ -18,6 +18,12 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequestMapping("/api/pay/review")
 public class PaymentReviewController {
+    /* TODO 2024-01-22 Mon 17:45
+        리뷰 등록할 때 해당 제품의 판매자 의 rating (t_user 의) 평균 내서 update 하는 로직 추가하기
+        --by Hyunmin
+    */
+
+
     private final PaymentReviewService reviewService;
     @PostMapping
     @Operation(summary = "리뷰 작성", description = "해당 거래의 리뷰 작성")
