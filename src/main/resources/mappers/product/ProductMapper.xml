@@ -173,7 +173,7 @@
         select price, deposit, buy_date as buyDate, rental_start_date as rentalStartDate,
         rental_end_date as rentalEndDate
         from t_product
-        where iproduct = #{iproduct} and icategory = #{icategory} and istatus = 0
+        where iproduct = #{iproduct} and istatus = 0
 
     </select>
 
