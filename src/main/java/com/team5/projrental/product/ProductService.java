@@ -61,8 +61,6 @@ public class ProductService {
                                               int page) {
         // page 는 페이징에 맞게 변환되어 넘어옴.
 
-        // sort 검증
-        if (sort != null && sort != 1 && sort != 2) throw new BadInformationException(BAD_SORT_EX_MESSAGE);
         // 카테고리 검증
         // search 의 length 가 2 이상으로 validated 되었으므로 문제 없음.
         GetProductListDto getProductListDto = new GetProductListDto(sort, search, icategory, page);
@@ -113,7 +111,7 @@ public class ProductService {
         // 거래 불가능 날짜
         List<CanNotRentalDate> lendDates = productRepository.getLendDatesBy(productBy.getIproduct());
         // 거래불가능 날짜 전부 세팅하기
-        if (!(lendDates == null) || !(lendDates.isEmpty())) {
+        if (!(lendDates == null) && !(lendDates.isEmpty())) {
             List<LocalDate> disabledDates = new ArrayList<>();
             lendDates.forEach(d -> {
                 while (true) {
@@ -151,10 +149,6 @@ public class ProductService {
      */
     @Transactional
     public ResVo postProduct(MultipartFile mainPic, List<MultipartFile> pics, ProductInsDto dto) {
-        /* TODO: 2024-01-10
-            security 적용시 모든 iuser 가 있는부분 로직 변경, 모델 변경 해야함.
-            --by Hyunmin */
-
 
         CommonUtils.ifAllNullThrow(BadMainPicException.class, BAD_PIC_EX_MESSAGE, mainPic);
 
@@ -193,10 +187,7 @@ public class ProductService {
         InsProdBasicInfoDto insProdBasicInfoDto = new InsProdBasicInfoDto(dto, addrs.getAddress_name(), Double.parseDouble(addrs.getX()),
                 Double.parseDouble(addrs.getY()));
         try {
-
-
             if (productRepository.saveProduct(insProdBasicInfoDto) == 1) {
-
                 // 사진은 완전히 따로 저장해야함 (useGeneratedKey)
                 // 프로필 사진 저장
                 if (mainPic != null) {
@@ -249,10 +240,13 @@ public class ProductService {
                 dto.getRentalEndDate(), dto.getDelPics());
 
         // 삭제사진 필요시 삭제
+        // -*
         if (dto.getDelPics() != null && !dto.getDelPics().isEmpty()) {
-            if (productRepository.deletePics(dto.getIproduct(), dto.getDelPics()) == 0) {
-                throw new WrapRuntimeException(SERVER_ERR_MESSAGE);
-            }
+            CommonUtils.check(WrapRuntimeException.class, SERVER_ERR_MESSAGE,
+                    () -> productRepository.deletePics(dto.getIproduct(), dto.getDelPics()) == 0);
+//            if (productRepository.deletePics(dto.getIproduct(), dto.getDelPics()) == 0) {
+//                throw new WrapRuntimeException(SERVER_ERR_MESSAGE);
+//            }
         }
         // 병합하지 않아도 되는 데이터 검증
 
@@ -343,9 +337,12 @@ public class ProductService {
             throw new BadMainPicException(BAD_PIC_EX_MESSAGE);
         }
         // do update
-        if (productRepository.updateProduct(dto) == 0) {
-            throw new BadProductInfoException(BAD_PRODUCT_INFO_EX_MESSAGE);
-        }
+        // -*
+        CommonUtils.check(BadProductInfoException.class, BAD_PRODUCT_INFO_EX_MESSAGE,
+                () -> productRepository.updateProduct(dto) == 0);
+//        if (productRepository.updateProduct(dto) == 0) {
+//            throw new BadProductInfoException(BAD_PRODUCT_INFO_EX_MESSAGE);
+//        }
         return new ResVo(SUCCESS);
     }
 
@@ -385,10 +382,12 @@ public class ProductService {
     public ResVo delProduct(Integer iproduct, Integer div) {
         int iuser = getLoginUserPk();
         DelProductBaseDto delProductBaseDto = new DelProductBaseDto(iproduct, iuser, div * -1);
-        if (productRepository.updateProductStatus(delProductBaseDto) == 0) {
-            throw new BadInformationException(BAD_INFO_EX_MESSAGE);
-        }
-
+        // -*
+        CommonUtils.check(BadInformationException.class, BAD_INFO_EX_MESSAGE,
+                () -> productRepository.updateProductStatus(delProductBaseDto) == 0);
+//        if (productRepository.updateProductStatus(delProductBaseDto) == 0) {
+//            throw new BadInformationException(BAD_INFO_EX_MESSAGE);
+//        }
         return new ResVo(SUCCESS);
     }
 
@@ -400,7 +399,6 @@ public class ProductService {
         List<ProductUserVo> result = new ArrayList<>();
         productListBy.forEach(product -> {
             ProductUserVo productListVo = new ProductUserVo(product);
-
             result.add(productListVo);
         });
 
@@ -411,7 +409,6 @@ public class ProductService {
     public List<ReviewResultVo> getAllReviews(Integer iproduct, Integer page) {
         CommonUtils.ifFalseThrow(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE,
                 productRepository.findIproductCountBy(iproduct));
-
         return getReview(iproduct, page, totalReviewPerPage);
     }
 
