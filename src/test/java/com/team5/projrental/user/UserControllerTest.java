@@ -2,11 +2,12 @@ package com.team5.projrental.user;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.team5.projrental.common.Const;
 import com.team5.projrental.common.model.ResVo;
+import com.team5.projrental.common.security.AuthenticationFacade;
 import com.team5.projrental.common.security.filter.JwtAuthenticationFilter;
-import com.team5.projrental.user.model.FindUidDto;
-import com.team5.projrental.user.model.SelUserVo;
-import com.team5.projrental.user.model.UserSignupDto;
+import com.team5.projrental.user.model.*;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.codec.CharEncoding;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,7 +33,10 @@ public class UserControllerTest {
     @Autowired private ObjectMapper mapper;
     @MockBean private UserService service;
     @MockBean private JwtAuthenticationFilter jwtAuthenticationFilter;
+    @MockBean private AuthenticationFacade authenticationFacade;
+
     @Autowired private UserController controller;
+
 
 
     @Test
@@ -40,9 +44,15 @@ public class UserControllerTest {
     void postSignup() throws Exception {
         ResVo result = new ResVo(2);
         UserSignupDto dto = new UserSignupDto();
+        dto.setAddr("대구 동구 방촌동");
+        dto.setRestAddr("a아파트");
         dto.setUid("testuid");
         dto.setUpw("testupw");
-        given(service.postSignup(any())).willReturn(result.getResult());
+        dto.setNick("testNickname");
+        dto.setPhone("010-4114-9922");
+        dto.setEmail("khi05040@naver.com");
+        dto.setIsValid(2);
+        //given(service.postSignup(dto).willReturn(Const.SUCCESS);
 
         mvc.perform(
                         MockMvcRequestBuilders
@@ -59,6 +69,11 @@ public class UserControllerTest {
 
     @Test
     void postSignin() throws Exception {
+        SigninDto dto = new SigninDto();
+
+        dto.setUid("dongdong12");
+        dto.setUpw("dongdong12");
+       // given(service.postSignin(any(), any())).willReturn();
     }
 
     void getSignOut() throws Exception {}
@@ -69,9 +84,36 @@ public class UserControllerTest {
 
     @Test
     void getFindUid() throws Exception {
+        FindUidDto dto = new FindUidDto();
+        FindUidVo vo = service.getFindUid(dto);
+
+        dto.setPhone("010-7777-6666");
+        given(service.getFindUid(dto)).willReturn(vo);
+    /*
+        mvc.perform(
+                MockMvcRequestBuilders
+                        .patch("/api/user/id")
+                        .content(mapper.writeValueAsString(dto)))
+
+                .andExpect(status().isOk())
+                .andExpect(content().string(mapper.writeValueAsString(vo)))
+                .andDo(print());
+
+
+     */
+        verify(service).getFindUid(dto);
     }
 
-    void getFindUpw() throws Exception {}
+    @Test
+    void getFindUpw() throws Exception {
+        FindUpwDto dto = new FindUpwDto();
+        dto.setPhone("010-7777-6666");
+        dto.setUid("dongdong12");
+        dto.setUpw("testpassword");
+
+        given(service.getFindUpw(dto)).willReturn(Const.SUCCESS);
+        verify(service).getFindUpw(dto);
+    }
 
     void putUser () throws Exception {}
 
