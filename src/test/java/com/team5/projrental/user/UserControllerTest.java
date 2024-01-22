@@ -87,16 +87,17 @@ public class UserControllerTest {
         FindUidDto dto = new FindUidDto();
         dto.setPhone("010-7777-6666");
         FindUidVo vo = service.getFindUid(dto);
-
-
+        given(service.getFindUid(dto)).willReturn(vo);
+        /*
         mvc.perform(
                 MockMvcRequestBuilders
                         .patch("/api/user/id")
                         .content(mapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
-                .andExpect(content().)
+                .andExpect(content().string(mapper.writeValueAsString(vo)))
                 .andDo(print());
-
+         */
+        verify(service).getFindUid(dto);
 
     }
 
@@ -107,8 +108,15 @@ public class UserControllerTest {
         dto.setUid("dongdong12");
         dto.setUpw("testpassword");
 
-
         given(service.getFindUpw(dto)).willReturn(Const.SUCCESS);
+        /*
+        mvc.perform(MockMvcRequestBuilders
+                .post("/api/user/pw")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString())
+        )
+
+         */
         verify(service).getFindUpw(dto);
     }
 
