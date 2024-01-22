@@ -1,74 +1,117 @@
 package com.team5.projrental.product;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.team5.projrental.common.exception.base.BadInformationException;
+import com.team5.projrental.common.model.ErrorResultVo;
 import com.team5.projrental.common.model.ResVo;
-import com.team5.projrental.product.model.*;
-import com.team5.projrental.product.model.proc.GetProductListResultDto;
+import com.team5.projrental.product.model.ProductUpdDto;
+import com.team5.projrental.user.model.SigninDto;
+import com.team5.projrental.user.model.SigninVo;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultHandler;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import java.io.FileInputStream;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
-@ExtendWith(SpringExtension.class)
-@Import({ProductController.class})
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Transactional
 class ProductControllerTest {
 
-
-    @MockBean
-    ProductService productService;
+    String token;
 
     @Autowired
-    ProductController productController;
+    MockMvc mockMvc;
+
+    @Autowired
+    ObjectMapper om;
+
+    @Autowired
+    ProductController controller;
+
+    @BeforeEach
+    public void before() throws Exception {
+        SigninDto dto = new SigninDto();
+        dto.setUid("qwqwqw11");
+        dto.setUpw("12121212");
+
+        String contentAsString = mockMvc.perform(MockMvcRequestBuilders.post("/api/user")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(om.writeValueAsString(dto)))
+                .andReturn().getResponse().getContentAsString();
+        SigninVo signinVo = om.readValue(contentAsString, SigninVo.class);
+        this.token = "Bearer " + signinVo.getAccessToken();
+
+    }
 
     @Test
     void getProductList() {
 
-        when(productService.getProductList(null, null, 1, 1)).thenReturn(List.of(new ProductListVo(new GetProductListResultDto())));
-        productController.getProductList(null, null, 1, 1);
 
     }
 
     @Test
     void getProduct() {
-
-        productController.getProduct(1, 1);
-
     }
 
     @Test
     void postProduct() {
-//        when(productService.postProduct(any())).thenReturn(new ResVo(1));
-//        assertThat(productController.postProduct(new ProductInsDto()).getResult()).isEqualTo(1);
-
     }
-
-    /*
-    @Test
-    void putProduct() {
-
-        when(productService.putProduct(any())).thenReturn(new ResVo(1));
-
-        assertThat(productController.putProduct(new ProductUpdDto()).getResult()).isEqualTo(1);
-
-    }
-
-     */
 
     @Test
-    void delProduct() {
+    void putProduct() throws Exception {
 
-        when(productService.delProduct(any(), any())).thenReturn(new ResVo(1));
-        assertThat(productController.delProduct(1, 1).getResult()).isEqualTo(1);
 
     }
 
+    //
+    @Test
+    void delProduct() throws Exception {
+
+        /*
+        {
+          "result": 1
+        }
+         */
+
+        String result = mockMvc.perform(MockMvcRequestBuilders.delete("/api/prod/11?div=1")
+                .header("Authorization", token)
+        ).andReturn().getResponse().getContentAsString();
+
+        ResVo resVo = om.readValue(result, ResVo.class);
+        assertThat(resVo.getResult()).isEqualTo(1);
+
+        String result2 = mockMvc.perform(MockMvcRequestBuilders.delete("/api/prod/10?div=1")
+                .header("Authorization", token)
+        ).andReturn().getResponse().getContentAsString();
+
+        ErrorResultVo errorResultVo = om.readValue(result2, ErrorResultVo.class);
+        org.junit.jupiter.api.Assertions.assertEquals(errorResultVo.getErrorCode(), 468);
+
+
+    }
+
+    @Test
+    void getUserProductList() {
+    }
+
+    @Test
+    void getAllReviews() {
+    }
 }
