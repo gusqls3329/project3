@@ -2,6 +2,7 @@ package com.team5.projrental.mypage;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team5.projrental.MockMvcConfig;
+import com.team5.projrental.common.security.AuthenticationFacade;
 import com.team5.projrental.mypage.model.PaymentSelVo;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @MockMvcConfig
 @WebMvcTest(MypageController.class)
 public class MypageControllerTest {
-    /*@Autowired
+    @Autowired
     private ObjectMapper mapper;
 
     @Autowired
@@ -38,6 +39,9 @@ public class MypageControllerTest {
 
     @MockBean
     private MypageService service;
+
+    @MockBean
+    private AuthenticationFacade authenticationFacade;
 
     @Test
     void getPaymentList() throws Exception {
@@ -54,6 +58,7 @@ public class MypageControllerTest {
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 
+
         params.add("page", "1");
         params.add("loginedIuser", "1");
         mvc.perform(
@@ -64,6 +69,6 @@ public class MypageControllerTest {
                 .andExpect(content().string(mapper.writeValueAsString(list)))
                 .andDo(print());
         verify(service).paymentList(any());
-    }*/
+    }
 
 }
