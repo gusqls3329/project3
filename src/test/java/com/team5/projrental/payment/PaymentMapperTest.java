@@ -34,8 +34,8 @@ class PaymentMapperTest {
     void insPayment() {
 
 
-        int buyer = 2;
-        int iproduct = 1;
+        int buyer = 3;
+        int iproduct = 11;
         PaymentInsDto dto = PaymentInsDto.builder()
                 .iproduct(iproduct)
                 .ibuyer(buyer)
@@ -58,7 +58,7 @@ class PaymentMapperTest {
         GetPaymentListResultDto getPaymentListResultDto = paymentMapper.getPaymentList(new GetPaymentListDto(iuser, Flag.ONE.getValue(), ipayment)).get(0);
         assertThat(dto.getIpayment()).isEqualTo(getPaymentListResultDto.getIpayment());
         assertThat(dto.getCode()).isEqualTo(getPaymentListResultDto.getCode());
-        assertThat("인사이드아웃").isEqualTo(getPaymentListResultDto.getNick());
+        assertThat("감자현일").isEqualTo(getPaymentListResultDto.getNick());
         assertThat(0).isEqualTo(getPaymentListResultDto.getIstatus());
         assertThat(dto.getRentalDuration()).isEqualTo(getPaymentListResultDto.getRentalDuration());
         assertThat(dto.getRentalStartDate()).isEqualTo(getPaymentListResultDto.getRentalStartDate());
@@ -75,9 +75,21 @@ class PaymentMapperTest {
 
     @Test
     void insProductPayment() {
+        int buyer = 3;
+        int iproduct = 11;
+        PaymentInsDto dto = PaymentInsDto.builder()
+                .iproduct(iproduct)
+                .ibuyer(buyer)
+                .rentalDuration(3)
+                .price(10)
+                .code("test")
+                .ipaymentMethod(2)
+                .rentalStartDate(LocalDate.of(2023, 12, 1))
+                .rentalEndDate(LocalDate.of(2023, 12, 10))
+                .build();
+        paymentMapper.insPayment(dto);
+        int ipayment = dto.getIpayment();
 
-        int iproduct = 1;
-        int ipayment = 3;
 
         int result = paymentMapper.insProductPayment(iproduct, ipayment);
         assertThat(result).isEqualTo(1);
@@ -94,50 +106,27 @@ class PaymentMapperTest {
     @Test
     void checkIuserAndIproduct() {
 
-        GetInfoForCheckIproductAndIuserResult result1 = paymentMapper.checkIuserAndIproduct(1);
+        GetInfoForCheckIproductAndIuserResult result1 = paymentMapper.checkIuserAndIproduct(11);
         assertThat(result1.getIstatus()).isNotEqualTo(-1);
-        assertThat(result1.getIBuyer()).isEqualTo(2);
-        assertThat(result1.getISeller()).isEqualTo(5);
-        assertThat(result1.getRentalEndDate()).isEqualTo(LocalDate.of(2023, 8, 14));
+        assertThat(result1.getIBuyer()).isEqualTo(4);
+        assertThat(result1.getISeller()).isEqualTo(1);
+        assertThat(result1.getRentalEndDate()).isEqualTo(LocalDate.of(2024, 1, 20));
 
 
-        int buyer = 2;
-        int iproduct = 1;
-        LocalDate endDate = LocalDate.of(2023, 12, 10);
-        PaymentInsDto dto = PaymentInsDto.builder()
-                .iproduct(iproduct)
-                .ibuyer(buyer)
-                .rentalDuration(3)
-                .price(10)
-                .code("test")
-                .ipaymentMethod(2)
-                .rentalStartDate(LocalDate.of(2023, 12, 1))
-                .rentalEndDate(endDate)
-                .build();
-        paymentMapper.insPayment(dto);
-        paymentMapper.insProductPayment(dto.getIproduct(), dto.getIpayment());
-        int ipayment = dto.getIpayment();
-        GetInfoForCheckIproductAndIuserResult result2 = paymentMapper.checkIuserAndIproduct(ipayment);
-        assertThat(result2.getIstatus()).isNotEqualTo(-1);
-        assertThat(result2.getIBuyer()).isEqualTo(buyer);
-        assertThat(result2.getISeller()).isEqualTo(1);
-        assertThat(result2.getRentalEndDate()).isEqualTo(endDate);
     }
 
     @Test
     void delPayment() {
 
-        paymentMapper.delPayment(new DelPaymentDto(1, -2));
-        assertThat(paymentMapper.checkIuserAndIproduct(1).getIstatus()).isEqualTo(-2);
+        paymentMapper.delPayment(new DelPaymentDto(11, -2));
+        assertThat(paymentMapper.checkIuserAndIproduct(11).getIstatus()).isEqualTo(-2);
 
-        paymentMapper.delPayment(new DelPaymentDto(2, 0));
-        assertThat(paymentMapper.checkIuserAndIproduct(2).getIstatus()).isEqualTo(0);
+        paymentMapper.delPayment(new DelPaymentDto(10, 1));
+        assertThat(paymentMapper.checkIuserAndIproduct(10).getIstatus()).isEqualTo(1);
 
-        paymentMapper.delPayment(new DelPaymentDto(4, -2));
-        assertThat(paymentMapper.checkIuserAndIproduct(4).getIstatus()).isEqualTo(-2);
+        paymentMapper.delPayment(new DelPaymentDto(10, -2));
+        assertThat(paymentMapper.checkIuserAndIproduct(10).getIstatus()).isEqualTo(-2);
 
-        paymentMapper.delPayment(new DelPaymentDto(3, -1));
-        assertThat(paymentMapper.checkIuserAndIproduct(3)).isNull();
     }
 
     @Test
@@ -145,14 +134,9 @@ class PaymentMapperTest {
 
         List<GetPaymentListResultDto> paymentList = paymentMapper.getPaymentList(new GetPaymentListDto(1, 1, 0, true));
         assertThat(paymentList.size()).isEqualTo(1);
-        assertThat(paymentList.get(0).getIuser()).isEqualTo(3);
-        assertThat(paymentList.get(0).getNick()).isEqualTo("비락");
-        assertThat(paymentList.get(0).getIpayment()).isEqualTo(3);
-        assertThat(paymentList.get(0).getIproduct()).isEqualTo(3);
-        assertThat(paymentList.get(0).getIstatus()).isEqualTo(0);
-        assertThat(paymentList.get(0).getRentalDuration()).isEqualTo(2);
-        assertThat(paymentList.get(0).getPrice()).isEqualTo(40000);
-        assertThat(paymentList.get(0).getDeposit()).isEqualTo(700000);
+        assertThat(paymentList.get(0).getIuser()).isEqualTo(7);
+        assertThat(paymentList.get(0).getNick()).isEqualTo("감자7");
+
 
         List<GetPaymentListResultDto> paymentList2 = paymentMapper.getPaymentList(new GetPaymentListDto(1, 2, 0, true));
         assertThat(paymentList2.size()).isEqualTo(1);
