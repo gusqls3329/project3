@@ -24,6 +24,7 @@ public class ProductListVo {
     private LocalDate rentalEndDate;
     private String addr;
     private Integer prodLike;
+    private Integer istatus;
 
     public ProductListVo(GetProductListResultDto dto) {
         this.iuser = dto.getIuser();
@@ -37,6 +38,7 @@ public class ProductListVo {
         this.prodLike = dto.getProdLike();
         this.userPic = dto.getUserStoredPic();
         this.prodPic = dto.getProdMainStoredPic();
+        this.istatus = dto.getIstatus();
     }
 
     public ProductListVo(GetProductResultDto dto) {
@@ -49,6 +51,7 @@ public class ProductListVo {
         this.rentalEndDate = dto.getRentalEndDate();
         this.addr = dto.getAddr();
         this.prodLike = dto.getProdLike();
+        this.istatus = dto.getIstatus();
     }
 
 }
