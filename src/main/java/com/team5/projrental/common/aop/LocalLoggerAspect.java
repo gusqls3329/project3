@@ -15,7 +15,7 @@ import java.time.format.DateTimeFormatter;
 @Aspect
 @Component
 @Slf4j
-@Profile({"local", "hyunmin"})
+@Profile({"default", "hyunmin"})
 public class LocalLoggerAspect {
     private ThreadLocal<Long> startTime;
     private ThreadLocal<Long> endTime;
