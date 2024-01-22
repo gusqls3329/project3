@@ -32,9 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Transactional
 class PaymentControllerIntegrationTest {
-    /* TODO: 1/16/24
-        파싱 에러, @Validated 에러 ExceptionResolver 에 추가할것.
-        --by Hyunmin */
+
 
     @Autowired
     MockMvc mockMvc;

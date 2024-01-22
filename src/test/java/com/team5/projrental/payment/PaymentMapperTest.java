@@ -139,15 +139,15 @@ class PaymentMapperTest {
 
 
         List<GetPaymentListResultDto> paymentList2 = paymentMapper.getPaymentList(new GetPaymentListDto(1, 2, 0, true));
-        assertThat(paymentList2.size()).isEqualTo(1);
-        assertThat(paymentList2.get(0).getIuser()).isEqualTo(2);
-        assertThat(paymentList2.get(0).getNick()).isEqualTo("인사이드아웃");
-        assertThat(paymentList2.get(0).getIpayment()).isEqualTo(5);
-        assertThat(paymentList2.get(0).getIproduct()).isEqualTo(1);
+        assertThat(paymentList2.size()).isEqualTo(6);
+        assertThat(paymentList2.get(0).getIuser()).isEqualTo(3);
+        assertThat(paymentList2.get(0).getNick()).isEqualTo("감자현일");
+        assertThat(paymentList2.get(0).getIpayment()).isEqualTo(9);
+        assertThat(paymentList2.get(0).getIproduct()).isEqualTo(10);
         assertThat(paymentList2.get(0).getIstatus()).isEqualTo(0);
-        assertThat(paymentList2.get(0).getRentalDuration()).isEqualTo(1);
-        assertThat(paymentList2.get(0).getPrice()).isEqualTo(40000);
-        assertThat(paymentList2.get(0).getDeposit()).isEqualTo(700000);
+        assertThat(paymentList2.get(0).getRentalDuration()).isEqualTo(2);
+        assertThat(paymentList2.get(0).getPrice()).isEqualTo(100000);
+        assertThat(paymentList2.get(0).getDeposit()).isEqualTo(1200000);
 
 
         //
@@ -156,7 +156,7 @@ class PaymentMapperTest {
         int beforeRole2 = paymentMapper.getPaymentList(new GetPaymentListDto(1, 2, 0, true)).size();
         for (int i = 1; i < 5; i++) {
             int buyer = 2;
-            int iproduct = 1;
+            int iproduct = 11;
             LocalDate endDate = LocalDate.of(2023, 12, 10);
             PaymentInsDto dto = PaymentInsDto.builder()
                     .iproduct(iproduct)
