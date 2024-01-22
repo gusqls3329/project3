@@ -1,6 +1,5 @@
 package com.team5.projrental.common.utils;
 
-import com.team5.projrental.common.Checker;
 import com.team5.projrental.common.exception.ErrorCode;
 import com.team5.projrental.common.exception.IllegalCategoryException;
 import com.team5.projrental.common.exception.IllegalPaymentMethodException;
@@ -177,13 +176,6 @@ public class CommonUtils {
         if (instance instanceof Collection<?>) {
             checkSizeIfUnderLimitNumThrow(ex, err,
                     ((Collection<?>) instance).stream(), 1);
-        }
-    }
-
-    //
-    public static void check(Class<? extends RuntimeException> ex, ErrorCode err, Checker checker) {
-        if (checker.check()) {
-            thrown(ex, err);
         }
     }
 

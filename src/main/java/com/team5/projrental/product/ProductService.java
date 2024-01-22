@@ -242,11 +242,9 @@ public class ProductService {
         // 삭제사진 필요시 삭제
         // -*
         if (dto.getDelPics() != null && !dto.getDelPics().isEmpty()) {
-            CommonUtils.check(WrapRuntimeException.class, SERVER_ERR_MESSAGE,
-                    () -> productRepository.deletePics(dto.getIproduct(), dto.getDelPics()) == 0);
-//            if (productRepository.deletePics(dto.getIproduct(), dto.getDelPics()) == 0) {
-//                throw new WrapRuntimeException(SERVER_ERR_MESSAGE);
-//            }
+            if (productRepository.deletePics(dto.getIproduct(), dto.getDelPics()) == 0) {
+                throw new WrapRuntimeException(SERVER_ERR_MESSAGE);
+            }
         }
         // 병합하지 않아도 되는 데이터 검증
 
@@ -337,12 +335,9 @@ public class ProductService {
             throw new BadMainPicException(BAD_PIC_EX_MESSAGE);
         }
         // do update
-        // -*
-        CommonUtils.check(BadProductInfoException.class, BAD_PRODUCT_INFO_EX_MESSAGE,
-                () -> productRepository.updateProduct(dto) == 0);
-//        if (productRepository.updateProduct(dto) == 0) {
-//            throw new BadProductInfoException(BAD_PRODUCT_INFO_EX_MESSAGE);
-//        }
+        if (productRepository.updateProduct(dto) == 0) {
+            throw new BadProductInfoException(BAD_PRODUCT_INFO_EX_MESSAGE);
+        }
         return new ResVo(SUCCESS);
     }
 
@@ -382,12 +377,9 @@ public class ProductService {
     public ResVo delProduct(Integer iproduct, Integer div) {
         int iuser = getLoginUserPk();
         DelProductBaseDto delProductBaseDto = new DelProductBaseDto(iproduct, iuser, div * -1);
-        // -*
-        CommonUtils.check(BadInformationException.class, BAD_INFO_EX_MESSAGE,
-                () -> productRepository.updateProductStatus(delProductBaseDto) == 0);
-//        if (productRepository.updateProductStatus(delProductBaseDto) == 0) {
-//            throw new BadInformationException(BAD_INFO_EX_MESSAGE);
-//        }
+        if (productRepository.updateProductStatus(delProductBaseDto) == 0) {
+            throw new BadInformationException(BAD_INFO_EX_MESSAGE);
+        }
         return new ResVo(SUCCESS);
     }
 
