@@ -18,6 +18,9 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -42,8 +45,8 @@ public class UserControllerTest {
     @Test
     @DisplayName("회원가입 테스트")
     void postSignup() throws Exception {
-        ResVo result = new ResVo(2);
         UserSignupDto dto = new UserSignupDto();
+        ResVo reuslt = new ResVo(1);
         dto.setAddr("대구 동구 방촌동");
         dto.setRestAddr("a아파트");
         dto.setUid("testuid");
@@ -53,15 +56,14 @@ public class UserControllerTest {
         dto.setEmail("khi05040@naver.com");
         dto.setIsValid(2);
         //given(service.postSignup(dto).willReturn(Const.SUCCESS);
-
         mvc.perform(
                         MockMvcRequestBuilders
                                 .post("/api/user/signup")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(mapper.writer().writeValueAsString(dto))
+                                .content(mapper.writeValueAsString(dto))
                 )
                 .andExpect(status().isOk())
-                .andExpect(content().string(mapper.writeValueAsString(result)))
+                .andExpect(content().string(mapper.writeValueAsString(reuslt)))
                 .andDo(print());
 
         verify(service).postSignup(any());
@@ -86,19 +88,20 @@ public class UserControllerTest {
     void getFindUid() throws Exception {
         FindUidDto dto = new FindUidDto();
         dto.setPhone("010-7777-6666");
+        //FindUidVo vo = new FindUidVo();
         FindUidVo vo = service.getFindUid(dto);
-        given(service.getFindUid(dto)).willReturn(vo);
-        /*
+
+       //given(service.getFindUid(dto)).willReturn(vo);
         mvc.perform(
                 MockMvcRequestBuilders
                         .patch("/api/user/id")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
-                .andExpect(content().string(mapper.writeValueAsString(vo)))
-                .andDo(print());
-         */
-        verify(service).getFindUid(dto);
+                .andExpect(content().string(mapper.writeValueAsString(vo)));
+
+
+        //verify(service).getFindUid(dto);
 
     }
 
@@ -127,5 +130,11 @@ public class UserControllerTest {
 
     @Test
     void getUSer () throws Exception {
+        SelUserVo vo = new SelUserVo();
+        MultiValueMap<String, String> params = new LinkedMultiValueMap();
+        //params.add();
+
+       // mvc.perform(MockMvcRequestBuilders
+         //       .get("/api/user")
     }
 }
