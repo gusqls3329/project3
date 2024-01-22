@@ -39,10 +39,6 @@ class ProductServiceTest {
     @Autowired
     ProductService productService;
 
-    @Test
-    void axisGeneratorTest() {
-
-    }
 
     @Test
     void getProductList() {

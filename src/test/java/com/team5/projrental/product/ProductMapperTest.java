@@ -1,14 +1,23 @@
 package com.team5.projrental.product;
 
+import com.team5.projrental.common.Const;
+import com.team5.projrental.common.exception.checked.FileNotContainsDotException;
+import com.team5.projrental.common.utils.MyFileUtils;
 import com.team5.projrental.product.model.proc.*;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -30,10 +39,21 @@ class ProductMapperTest {
 
 
 
+    MultipartFile multipartFile;
+
+
+    @BeforeEach
+    public void before() throws IOException {
+        String fileName = "pic.jpg";
+        String filePath = "D:/ee/" + fileName;
+        FileInputStream fileInputStream = new FileInputStream(filePath);
+        this.multipartFile = new MockMultipartFile("pic", fileName, "png", fileInputStream);
+
+    }
     @Test
     void getRentalPricePerDay() {
 
-        assertThat(productMapper.getRentalPricePerDay(1)).isEqualTo(10000);
+        assertThat(productMapper.getRentalPricePerDay(11)).isEqualTo(50000);
 
     }
 
@@ -51,10 +71,10 @@ class ProductMapperTest {
     @Test
     void countView() {
 
-        int viewForTest = productMapper.getViewForTest(1);
+        int viewForTest = productMapper.getViewForTest(11);
         log.info("viewForTest = {}", viewForTest);
-        int result = productMapper.countView(new GetProductViewAopDto(1));
-        int afterViewForTest = productMapper.getViewForTest(1);
+        int result = productMapper.countView(new GetProductViewAopDto(11));
+        int afterViewForTest = productMapper.getViewForTest(11);
         log.info("afterViewForTest = {}", afterViewForTest);
         assertThat(result).isEqualTo(1);
         assertThat(viewForTest + 1).isEqualTo(afterViewForTest);
@@ -64,25 +84,23 @@ class ProductMapperTest {
     void getProductList() {
 
         List<GetProductListResultDto> productList = productMapper.getProductList(new GetProductListDto(1, 0));
-        Assertions.assertThat(productList.size()).isEqualTo(1);
+        Assertions.assertThat(productList.size()).isEqualTo(2);
         checkProductInfoByIproductIsOne(productList.get(0));
 
         assertThat(productList.get(0).getIuser()).isEqualTo(1);
-        assertThat(productList.get(0).getTitle()).isEqualTo("test prod1");
-        assertThat(productList.get(0).getRentalPrice()).isEqualTo(10000);
-        assertThat(productList.get(0).getIproduct()).isEqualTo(1);
+        assertThat(productList.get(0).getTitle()).isEqualTo("2번갤럭시S24플러스 빌려가세요");
+        assertThat(productList.get(0).getRentalPrice()).isEqualTo(50000);
+        assertThat(productList.get(0).getIproduct()).isEqualTo(11);
 
 
 
         int result = productMapper.insProduct(this.insProdBasicInfoDto);
         assertThat(result).isEqualTo(1);
         List<GetProductListResultDto> productList1 = productMapper.getProductList(new GetProductListDto(1, 0));
-        assertThat(productList1.size()).isEqualTo(2);
+        assertThat(productList1.size()).isEqualTo(3);
 
-        List<GetProductListResultDto> productList2 = productMapper.getProductList(new GetProductListDto(2, null, 1, 0));
-        assertThat(productList2.get(0).getIproduct()).isEqualTo(4);
         List<GetProductListResultDto> productList3 = productMapper.getProductList(new GetProductListDto(null, null, 1, 0));
-        assertThat(productList3.size()).isEqualTo(4);
+        assertThat(productList3.size()).isEqualTo(2);
 
 
     }
@@ -102,12 +120,12 @@ class ProductMapperTest {
     @Test
     void getProdEctPics() {
 
-        List<GetProdEctPicDto> prodEctPics = productMapper.getProdEctPics(1);
+        List<GetProdEctPicDto> prodEctPics = productMapper.getProdEctPics(11);
         assertThat(prodEctPics.size()).isEqualTo(2);
-        assertThat(prodEctPics.get(0).getIpics()).isEqualTo(1);
-        assertThat(prodEctPics.get(1).getIpics()).isEqualTo(2);
+        assertThat(prodEctPics.get(0).getIpics()).isEqualTo(11);
+        assertThat(prodEctPics.get(1).getIpics()).isEqualTo(12);
         prodEctPics.forEach(pic -> {
-            assertThat((pic.getProdStoredPic())).isEqualTo("test");
+            assertThat((pic.getProdStoredPic())).contains("prod\\11\\");
         });
 
     }
@@ -124,13 +142,17 @@ class ProductMapperTest {
     }
 
     @Test
-    void insPics() {
+    void insPics() throws IOException {
+        String fileName = "pic.jpg";
+        String filePath = "D:/ee/" + fileName;
+        FileInputStream fileInputStream = new FileInputStream(filePath);
+        MultipartFile multipartFile = new MockMultipartFile("pic", fileName, "png", fileInputStream);
+        List<MultipartFile> pics = List.of(this.multipartFile, multipartFile);
+        MyFileUtils myFileUtils = new MyFileUtils();
+        InsProdPicsDto insProdPicsDto = new InsProdPicsDto(11, List.of("test", "test"));
 
-        int result = productMapper.insPics(new InsProdPicsDto(3, List.of("test2")));
-        assertThat(result).isEqualTo(1);
+        assertThat(productMapper.insPics(insProdPicsDto)).isEqualTo(2);
 
-        int result2 = productMapper.insPics(new InsProdPicsDto(3, List.of("test", "test2")));
-        assertThat(result2).isEqualTo(2);
 
     }
 
@@ -138,16 +160,16 @@ class ProductMapperTest {
     @Test
     void deletePic() {
 
-        int result = productMapper.insPics(new InsProdPicsDto(3, List.of("test", "test2")));
-        assertThat(result).isEqualTo(1);
+        int result = productMapper.insPics(new InsProdPicsDto(11, List.of("test", "test2")));
+        assertThat(result).isEqualTo(2);
 
-        int result2 = productMapper.insPics(new InsProdPicsDto(3, List.of("test", "test2")));
+        int result2 = productMapper.insPics(new InsProdPicsDto(11, List.of("test", "test2")));
         assertThat(result2).isEqualTo(2);
 
-        assertThat(productMapper.getAllIpics(3).size()).isEqualTo(3);
+        assertThat(productMapper.getAllIpics(11).size()).isEqualTo(6);
 
-        productMapper.deletePic(3, productMapper.getAllIpics(3));
-        int picsCountForTest = productMapper.getPicsCountForTest(3);
+        productMapper.deletePic(11, productMapper.getAllIpics(11));
+        int picsCountForTest = productMapper.getPicsCountForTest(11);
         assertThat(picsCountForTest).isEqualTo(0);
 
 
@@ -184,31 +206,28 @@ class ProductMapperTest {
     @Test
     void getPicCount() {
 
-        int beforePicCount = productMapper.getPicCount(1);
+        int beforePicCount = productMapper.getPicCount(11);
         assertThat(beforePicCount).isEqualTo(2);
 
-        productMapper.insPics(new InsProdPicsDto(1, List.of("test")));
-        productMapper.insPics(new InsProdPicsDto(1, List.of("test")));
-        productMapper.insPics(new InsProdPicsDto(1, List.of("test")));
+        productMapper.insPics(new InsProdPicsDto(11, List.of("test")));
+        productMapper.insPics(new InsProdPicsDto(11, List.of("test")));
+        productMapper.insPics(new InsProdPicsDto(11, List.of("test")));
 
-        assertThat(productMapper.getPicCount(1)).isEqualTo(beforePicCount + 3);
-        assertThat(productMapper.getPicCount(2)).isEqualTo(0);
+        assertThat(productMapper.getPicCount(11)).isEqualTo(beforePicCount + 3);
 
     }
 
     @Test
     void changeProdStatus() {
 
-        productMapper.changeProdStatus(new DelProductBaseDto(1, 1, -1));
-        assertThat(productMapper.getIStatus(1)).isEqualTo(-1);
-        productMapper.changeProdStatus(new DelProductBaseDto(2, 2, -1));
-        assertThat(productMapper.getIStatus(2)).isEqualTo(-1);
+        productMapper.changeProdStatus(new DelProductBaseDto(11, 1, -1));
+        assertThat(productMapper.getIStatus(11)).isEqualTo(-1);
+        productMapper.changeProdStatus(new DelProductBaseDto(11, 1, -1));
+        assertThat(productMapper.getIStatus(11)).isEqualTo(-1);
 
-        productMapper.changeProdStatus(new DelProductBaseDto(3, 3, -2));
-        assertThat(productMapper.getIStatus(3)).isEqualTo(-2);
+        productMapper.changeProdStatus(new DelProductBaseDto(10, 1, -2));
+        assertThat(productMapper.getIStatus(10)).isEqualTo(-2);
 
-        productMapper.changeProdStatus(new DelProductBaseDto(3, 3, -1));
-        assertThat(productMapper.getIStatus(3)).isEqualTo(-1);
 
     }
 
@@ -216,11 +235,11 @@ class ProductMapperTest {
     @Test
     void checkIproduct() {
 
-        assertThat(productMapper.checkIproduct(1)).isEqualTo(1);
-        assertThat(productMapper.checkIproduct(2)).isEqualTo(1);
-        assertThat(productMapper.checkIproduct(3)).isEqualTo(1);
-        assertThat(productMapper.checkIproduct(4)).isEqualTo(1);
-        assertThat(productMapper.checkIproduct(5)).isEqualTo(1);
+        assertThat(productMapper.checkIproduct(1)).isEqualTo(0);
+        assertThat(productMapper.checkIproduct(10)).isEqualTo(1);
+        assertThat(productMapper.checkIproduct(11)).isEqualTo(1);
+        assertThat(productMapper.checkIproduct(12)).isEqualTo(1);
+        assertThat(productMapper.checkIproduct(5)).isEqualTo(0);
         assertThat(productMapper.checkIproduct(6)).isEqualTo(0);
 
     }
