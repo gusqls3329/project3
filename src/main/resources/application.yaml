@@ -34,7 +34,7 @@ server:
 spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:3306/projrental
+    url: jdbc:mariadb://localhost:3306/dv_even_last_5
     username: even_last_5
     password: fines
   config:
