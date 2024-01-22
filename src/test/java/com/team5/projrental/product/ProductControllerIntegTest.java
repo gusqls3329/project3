@@ -1,13 +1,14 @@
 package com.team5.projrental.product;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.team5.projrental.common.exception.base.BadInformationException;
 import com.team5.projrental.common.model.ErrorResultVo;
 import com.team5.projrental.common.model.ResVo;
-import com.team5.projrental.product.model.ProductUpdDto;
+import com.team5.projrental.product.model.ProductUserVo;
+import com.team5.projrental.product.model.ProductVo;
 import com.team5.projrental.user.model.SigninDto;
 import com.team5.projrental.user.model.SigninVo;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,22 +18,23 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultHandler;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Transactional
-class ProductControllerTest {
+class ProductControllerIntegTest {
 
     String token;
 
@@ -44,6 +46,8 @@ class ProductControllerTest {
 
     @Autowired
     ProductController controller;
+
+    MultipartFile multipartFile;
 
     @BeforeEach
     public void before() throws Exception {
@@ -58,37 +62,35 @@ class ProductControllerTest {
         SigninVo signinVo = om.readValue(contentAsString, SigninVo.class);
         this.token = "Bearer " + signinVo.getAccessToken();
 
+        String fileName = "pic.jpg";
+        String filePath = "D:/ee/" + fileName;
+        FileInputStream fileInputStream = new FileInputStream(filePath);
+        this.multipartFile = new MockMultipartFile("pic", fileName, "png", fileInputStream);
+
+
     }
+
+
 
     @Test
-    void getProductList() {
+    void getProduct() throws Exception {
+        String responseResult = mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/prod/3/11")
+                        .header("Authorization", token)
+        ).andReturn().getResponse().getContentAsString();
 
-
-    }
-
-    @Test
-    void getProduct() {
-    }
-
-    @Test
-    void postProduct() {
-    }
-
-    @Test
-    void putProduct() throws Exception {
-
+        ProductVo productVo = om.readValue(responseResult, ProductVo.class);
+        assertThat(productVo.getDeposit()).isEqualTo(1200000);
+        assertThat(productVo.getIsLiked()).isEqualTo(0);
 
     }
+
+
+
 
     //
     @Test
     void delProduct() throws Exception {
-
-        /*
-        {
-          "result": 1
-        }
-         */
 
         String result = mockMvc.perform(MockMvcRequestBuilders.delete("/api/prod/11?div=1")
                 .header("Authorization", token)
@@ -108,7 +110,19 @@ class ProductControllerTest {
     }
 
     @Test
-    void getUserProductList() {
+    void getUserProductList() throws Exception {
+
+        String response = mockMvc.perform(MockMvcRequestBuilders.get("/api/prod/list?page=1")
+                .header("Authorization", token)
+        ).andReturn().getResponse().getContentAsString();
+        ProductUserVo[] productUserVos = om.readValue(response, ProductUserVo[].class);
+
+        assertThat(results.size()).isEqualTo(2);
+        results.forEach(r -> {
+            assertThat(r.getCategory()).isEqualTo(3);
+            assertThat(r.getRentalEndDate()).isEqualTo(LocalDate.of(2024, 3, 18));
+        });
+
     }
 
     @Test

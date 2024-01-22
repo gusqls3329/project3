@@ -108,7 +108,7 @@ public class ProductController {
                     "실패시: <br>" +
                     "message: 에러 발생 사유<br>errorCode: 에러 코드")
     @Validated
-    @GetMapping("/api/prod/{icategory}/{iproduct}")
+    @GetMapping("/{icategory}/{iproduct}")
     public ProductVo getProduct(@PathVariable
                                 @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
                                 @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)

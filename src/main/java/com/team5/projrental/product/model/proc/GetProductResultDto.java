@@ -17,5 +17,6 @@ public class GetProductResultDto extends GetProductListResultDto{
     private LocalDate buyDate;
     private Double x;
     private Double y;
+    private Integer isLiked;
 
 }
