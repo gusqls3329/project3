@@ -92,6 +92,7 @@ public class PaymentReviewService {
                 //삭제전 작성한 iuser가 거래한 리뷰가 존재하는지 확인
                 Integer selReview = reviewMapper.selReview(loginUserPk, check.getIpayment());
                 if (selReview == 1) {
+                    dto.setIstatus(istatus);
                     int result = reviewMapper.delReview(dto);
                     if (result != 1) {
                         throw new BadInformationException(ILLEGAL_EX_MESSAGE);

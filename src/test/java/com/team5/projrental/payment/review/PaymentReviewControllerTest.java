@@ -50,9 +50,6 @@ class PaymentReviewControllerTest {
     @Autowired
     private ObjectMapper mapper;
 
-    @MockBean
-    private AuthenticationFacade authenticationFacade;
-
     @Test
     void postReview() throws Exception {
         RivewDto dto = new RivewDto();
