@@ -54,8 +54,9 @@ public class UserControllerTest {
         dto.setPhone("010-4114-9922");
         dto.setEmail("khi05040@naver.com");
         dto.setIsValid(2);
-        ResVo reuslt = new ResVo(1);
-        //given(service.postSignup(dto)).willReturn(Const.SUCCESS);
+        ResVo result = new ResVo(1);
+        //int reuslt = service.postSignup(dto);
+        //given(service.postSignup(dto)).willReturn(reuslt);
        mvc.perform(
                         MockMvcRequestBuilders
                                 .post("/api/user/signup")
@@ -63,20 +64,17 @@ public class UserControllerTest {
                                 .content(mapper.writeValueAsString(dto))
                 )
                 .andExpect(status().isOk())
-                .andExpect(content().string(mapper.writeValueAsString(reuslt)))
+                .andExpect(content().string(mapper.writeValueAsString(result)))
                 .andDo(print());
-
-
         //verify(service).postSignup(dto);
     }
 
     @Test
     void postSignin() throws Exception {
         SigninDto dto = new SigninDto();
-
         dto.setUid("dongdong12");
         dto.setUpw("dongdong12");
-       // given(service.postSignin(any(), any())).willReturn();
+        // given(service.postSignin(any(), any())).willReturn();
     }
 
     void getSignOut() throws Exception {}
@@ -100,7 +98,6 @@ public class UserControllerTest {
                         .content(mapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
                 .andExpect(content().string(mapper.writeValueAsString(vo)));
-
         */
         verify(service).getFindUid(dto);
 
@@ -131,6 +128,7 @@ public class UserControllerTest {
         dto.setNick("testnick");
         int result = service.putUser(dto);
         given(service.putUser(dto)).willReturn(result);
+
         /*
         mvc.perform(MockMvcRequestBuilders
                 .put("/api/user")
@@ -140,9 +138,7 @@ public class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(mapper.writeValueAsString(result)))
                 .andDo(print());
-
          */
-
         verify(service).putUser(dto);
     }
 
@@ -151,10 +147,6 @@ public class UserControllerTest {
     @Test
     void getUSer () throws Exception {
         SelUserVo vo = new SelUserVo();
-        MultiValueMap<String, String> params = new LinkedMultiValueMap();
-        //params.add();
-
-       // mvc.perform(MockMvcRequestBuilders
-         //       .get("/api/user")
+        //MultiValueMap<String, String> params = new LinkedMultiValueMap();
     }
 }
