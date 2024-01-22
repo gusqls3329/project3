@@ -47,12 +47,9 @@ public class PaymentService {
         // 1일당 가격 가져오기
         Integer totalRentalPrice = productRepository.findRentalPriceBy(paymentInsDto.getIproduct());
         // request 데이터 검증
-        // -*
-        CommonUtils.check(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE,
-                () -> totalRentalPrice == null || totalRentalPrice == 0);
-//        if (totalRentalPrice == null || totalRentalPrice == 0) {
-//            throw new NoSuchProductException(NO_SUCH_PRODUCT_EX_MESSAGE);
-//        }
+        if (totalRentalPrice == null || totalRentalPrice == 0) {
+            throw new NoSuchProductException(NO_SUCH_PRODUCT_EX_MESSAGE);
+        }
         paymentInsDto.setIbuyer(getLoginUserPk());
         CommonUtils.ifFalseThrow(NoSuchUserException.class, NO_SUCH_USER_EX_MESSAGE,
                 productRepository.findIuserCountBy(paymentInsDto.getIbuyer()));
@@ -89,7 +86,7 @@ public class PaymentService {
 //                return new ResVo(1);
 //            }
 //        }
-        // -*
+
 
         if (paymentRepository.savePayment(paymentInsDto) != 0) {
             if (paymentRepository.saveProductPayment(paymentInsDto.getIproduct(), paymentInsDto.getIpayment()) != 0) {
@@ -144,36 +141,25 @@ public class PaymentService {
 //                productRepository.findIuserCountBy(iuser));
 
         GetInfoForCheckIproductAndIuserResult checkResult = paymentRepository.checkIuserAndIproduct(ipayment);
-        // -*
-        CommonUtils.check(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE,
-                () -> checkResult == null);
-//        if (checkResult == null) {
-//            throw new NoSuchProductException(NO_SUCH_PRODUCT_EX_MESSAGE);
-//        }
+        if (checkResult == null) {
+            throw new NoSuchProductException(NO_SUCH_PRODUCT_EX_MESSAGE);
+        }
         int iuser = getLoginUserPk();
-        // -*
-        CommonUtils.check(NoSuchUserException.class, NO_SUCH_USER_EX_MESSAGE,
-                () -> checkResult.getISeller() != iuser && checkResult.getIBuyer() != iuser);
-//        if (checkResult.getISeller() != iuser && checkResult.getIBuyer() != iuser) {
-//            throw new NoSuchUserException(NO_SUCH_USER_EX_MESSAGE);
-//        }
+
+        if (checkResult.getISeller() != iuser && checkResult.getIBuyer() != iuser) {
+            throw new NoSuchUserException(NO_SUCH_USER_EX_MESSAGE);
+        }
 
         // 취소요청이 아니면 오늘이 반납일보다 이후여야만 함.
         // 오늘이 반납일보다 이후가 아닌데 (대여 중인데) 삭제나 숨김 요청을 한 경우
-        // -*
-        CommonUtils.check(BadDateInfoException.class, BAD_RENTAL_DEL_EX_MESSAGE,
-                () -> div != 3 && !LocalDate.now().isAfter(checkResult.getRentalEndDate()));
-//        if (div != 3 && !LocalDate.now().isAfter(checkResult.getRentalEndDate())) {
-//            throw new BadDateInfoException(BAD_RENTAL_DEL_EX_MESSAGE);
-//        }
 
+        if (div != 3 && !LocalDate.now().isAfter(checkResult.getRentalEndDate())) {
+            throw new BadDateInfoException(BAD_RENTAL_DEL_EX_MESSAGE);
+        }
         // 반납일이 오늘보다 이후인데 취소요청을 한 경우
-        // -*
-        CommonUtils.check(BadDateInfoException.class, BAD_RENTAL_CANCEL_EX_MESSAGE,
-                () -> div == 3 && LocalDate.now().isAfter(checkResult.getRentalEndDate()));
-//        if (div == 3 && LocalDate.now().isAfter(checkResult.getRentalEndDate())) {
-//            throw new BadDateInfoException(BAD_RENTAL_CANCEL_EX_MESSAGE);
-//        }
+        if (div == 3 && LocalDate.now().isAfter(checkResult.getRentalEndDate())) {
+            throw new BadDateInfoException(BAD_RENTAL_CANCEL_EX_MESSAGE);
+        }
 
 
         // 변경할 istatus 생성
@@ -182,12 +168,9 @@ public class PaymentService {
         // 객체 생성
         DelPaymentDto delPaymentDto = new DelPaymentDto(ipayment, istatusForUpdate);
 
-        // -*
-        CommonUtils.check(WrapRuntimeException.class, SERVER_ERR_MESSAGE,
-                () -> paymentRepository.deletePayment(delPaymentDto) == 0);
-//        if (paymentRepository.deletePayment(delPaymentDto) == 0) {
-//            throw new WrapRuntimeException(SERVER_ERR_MESSAGE);
-//        }
+        if (paymentRepository.deletePayment(delPaymentDto) == 0) {
+            throw new WrapRuntimeException(SERVER_ERR_MESSAGE);
+        }
         return new ResVo(istatusForUpdate);
     }
 
@@ -270,15 +253,14 @@ public class PaymentService {
         취소 요청시:
             Role.buyer ->
          */
-        // -*
-        CommonUtils.check(BadInformationException.class, BAD_INFO_EX_MESSAGE,
-                () -> role == null);
-//        if (role == null) throw new BadInformationException(BAD_INFO_EX_MESSAGE);
-        CommonUtils.check(BadDivInformationException.class, BAD_DIV_INFO_EX_MESSAGE,
-                () -> istatus == 3 && role == Role.BUYER || istatus == 2 && role == Role.SELLER);
-//        if (istatus == 3 && role == Role.BUYER || istatus == 2 && role == Role.SELLER)
-//            // 이미 취소한 상태.
-//            throw new BadDivInformationException(BAD_DIV_INFO_EX_MESSAGE);
+        if (role == null) throw new BadInformationException(BAD_INFO_EX_MESSAGE);
+        if (istatus == 3 && role == Role.BUYER || istatus == 2 && role == Role.SELLER)
+            // 이미 취소한 상태.
+            /* TODO 2024-01-21 일 23:17
+                에러 메시지 디테일하게?
+                --by Hyunmin
+            */
+            throw new BadDivInformationException(BAD_DIV_INFO_EX_MESSAGE);
         if (div == 1 || div == 2) {
             if (istatus == -3 || istatus == 1 || (div == 1 && istatus == -2)) {
                 return div * -1;
