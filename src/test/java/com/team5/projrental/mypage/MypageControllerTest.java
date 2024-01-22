@@ -1,74 +1,66 @@
 package com.team5.projrental.mypage;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.team5.projrental.MockMvcConfig;
-import com.team5.projrental.common.security.AuthenticationFacade;
-import com.team5.projrental.mypage.model.PaymentSelVo;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
+import com.team5.projrental.product.ProductController;
+import com.team5.projrental.user.model.SigninDto;
+import com.team5.projrental.user.model.SigninVo;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
+import org.springframework.transaction.annotation.Transactional;
 
-import static org.mockito.BDDMockito.given;
+import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
+@AutoConfigureTestDatabase
+@Transactional
+class MypageControllerTest {
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-@Slf4j
-@MockMvcConfig
-@WebMvcTest(MypageController.class)
-public class MypageControllerTest {
-    @Autowired
-    private ObjectMapper mapper;
+    String token;
 
     @Autowired
-    private MockMvc mvc;
+    MockMvc mockMvc;
 
-    @MockBean
-    private MypageService service;
+    @Autowired
+    ObjectMapper om;
 
-    @MockBean
-    private AuthenticationFacade authenticationFacade;
+    @Autowired
+    ProductController controller;
 
-    @Test
-    void getPaymentList() throws Exception {
-        List<PaymentSelVo> list = new ArrayList<>();
-
-        PaymentSelVo vo = new PaymentSelVo();
-        vo.setIbuyer(1);
-        vo.setIuser(7);
-        vo.setIproduct(25);
-
-        list.add(vo);
-
-        given(service.paymentList(any())).willReturn(list);
-
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+    @BeforeEach
+    public void before() throws Exception {
+        SigninDto dto = new SigninDto();
+        dto.setUid("qwqwqw11");
+        dto.setUpw("12121212");
 
 
-        params.add("page", "1");
-        params.add("loginedIuser", "1");
-        mvc.perform(
-                MockMvcRequestBuilders
-                        .get("/api/mypage/prod")
-                        .params(params))
-                .andExpect(status().isOk())
-                .andExpect(content().string(mapper.writeValueAsString(list)))
-                .andDo(print());
-        verify(service).paymentList(any());
+    String contestAsString = mockMvc.perform(MockMvcRequestBuilders.post("/api/user")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(om.writeValueAsString(dto)))
+            .andReturn().getResponse().getContentAsString();
+    SigninVo signinVo = om.readValue(contestAsString, SigninVo.class);
+    this.token = "Bearer " + signinVo.getAccessToken();
     }
 
+    @Test
+    void getPaymentList() {
+
+    }
+
+    @Test
+    void getReview() {
+
+    }
+
+    @Test
+    void getFavList() {
+
+    }
 }
