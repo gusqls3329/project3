@@ -16,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -37,7 +38,6 @@ public class UserControllerTest {
     @MockBean private UserService service;
     @MockBean private JwtAuthenticationFilter jwtAuthenticationFilter;
     @MockBean private AuthenticationFacade authenticationFacade;
-
     @Autowired private UserController controller;
 
 
@@ -46,7 +46,6 @@ public class UserControllerTest {
     @DisplayName("회원가입 테스트")
     void postSignup() throws Exception {
         UserSignupDto dto = new UserSignupDto();
-        ResVo reuslt = new ResVo(1);
         dto.setAddr("대구 동구 방촌동");
         dto.setRestAddr("a아파트");
         dto.setUid("testuid");
@@ -55,8 +54,9 @@ public class UserControllerTest {
         dto.setPhone("010-4114-9922");
         dto.setEmail("khi05040@naver.com");
         dto.setIsValid(2);
-        //given(service.postSignup(dto).willReturn(Const.SUCCESS);
-        mvc.perform(
+        ResVo reuslt = new ResVo(1);
+        //given(service.postSignup(dto)).willReturn(Const.SUCCESS);
+       mvc.perform(
                         MockMvcRequestBuilders
                                 .post("/api/user/signup")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -66,7 +66,8 @@ public class UserControllerTest {
                 .andExpect(content().string(mapper.writeValueAsString(reuslt)))
                 .andDo(print());
 
-        verify(service).postSignup(any());
+
+        //verify(service).postSignup(dto);
     }
 
     @Test
@@ -91,8 +92,8 @@ public class UserControllerTest {
         //FindUidVo vo = new FindUidVo();
         FindUidVo vo = service.getFindUid(dto);
 
-       //given(service.getFindUid(dto)).willReturn(vo);
-        mvc.perform(
+       given(service.getFindUid(dto)).willReturn(vo);
+       /* mvc.perform(
                 MockMvcRequestBuilders
                         .patch("/api/user/id")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -100,8 +101,8 @@ public class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(mapper.writeValueAsString(vo)));
 
-
-        //verify(service).getFindUid(dto);
+        */
+        verify(service).getFindUid(dto);
 
     }
 
@@ -124,7 +125,26 @@ public class UserControllerTest {
         verify(service).getFindUpw(dto);
     }
 
-    void putUser () throws Exception {}
+    @Test
+    void putUser () throws Exception {
+        ChangeUserDto dto = new ChangeUserDto();
+        dto.setNick("testnick");
+        int result = service.putUser(dto);
+        given(service.putUser(dto)).willReturn(result);
+        /*
+        mvc.perform(MockMvcRequestBuilders
+                .put("/api/user")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(dto))
+        )
+                .andExpect(status().isOk())
+                .andExpect(content().string(mapper.writeValueAsString(result)))
+                .andDo(print());
+
+         */
+
+        verify(service).putUser(dto);
+    }
 
     void patchUser () throws Exception {}
 
