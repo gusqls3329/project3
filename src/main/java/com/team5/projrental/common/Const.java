@@ -50,14 +50,15 @@ public interface Const {
     /*
         --------- STATUS MAP ---------
      */
-    Map<Integer, String> STATUS = Map.of(
-            -3, "cancel",
-            -2, "",
-            -1, "del",
-            0, "rent",
-            1, "succ",
-            2, "c-seller",
-            3, "c-buyer");
+//    Map<Integer, String> STATUS = Map.of(
+//            -4, "expired",
+//            -3, "cancel",
+//            -2, "",
+//            -1, "del",
+//            0, "rent",
+//            1, "succ",
+//            2, "c-seller",
+//            3, "c-buyer");
 
     //
     /*

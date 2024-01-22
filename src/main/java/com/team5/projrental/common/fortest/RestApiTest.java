@@ -2,6 +2,7 @@ package com.team5.projrental.common.fortest;
 
 import com.team5.projrental.common.model.restapi.Addrs;
 import com.team5.projrental.common.utils.KakaoAxisGenerator;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,6 +16,7 @@ public class RestApiTest {
 
     private final KakaoAxisGenerator axisGenerator;
 
+    @Operation(hidden = true)
     @GetMapping("/test/rest-api")
     public String test(@RequestParam String query) {
         StringBuilder sb = new StringBuilder();
