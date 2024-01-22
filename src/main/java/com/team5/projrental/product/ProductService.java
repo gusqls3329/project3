@@ -113,17 +113,18 @@ public class ProductService {
         // 거래 불가능 날짜
         List<CanNotRentalDate> lendDates = productRepository.getLendDatesBy(productBy.getIproduct());
         // 거래불가능 날짜 전부 세팅하기
-        List<LocalDate> disabledDates = new ArrayList<>();
-        lendDates.forEach(d -> {
-            while (true) {
-                LocalDate rentalDateWalker = d.getRentalStartDate();
-                disabledDates.add(rentalDateWalker);
-                rentalDateWalker = rentalDateWalker.plusDays(1);
-                if (!rentalDateWalker.isAfter(d.getRentalEndDate())) break;
-            }
-        });
-        result.setDisabledDates(disabledDates);
-
+        if(!(lendDates == null) || !(lendDates.isEmpty())) {
+            List<LocalDate> disabledDates = new ArrayList<>();
+            lendDates.forEach(d -> {
+                while (true) {
+                    LocalDate rentalDateWalker = d.getRentalStartDate();
+                    disabledDates.add(rentalDateWalker);
+                    rentalDateWalker = rentalDateWalker.plusDays(1);
+                    if (!rentalDateWalker.isAfter(d.getRentalEndDate())) break;
+                }
+            });
+            result.setDisabledDates(disabledDates);
+        }
         // 사진
         List<GetProdEctPicDto> ectPics = productRepository.findPicsBy(productPK);
 

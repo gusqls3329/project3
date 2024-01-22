@@ -20,6 +20,11 @@ public class LocalLoggerAspect {
     private ThreadLocal<Long> startTime;
     private ThreadLocal<Long> endTime;
 
+    public LocalLoggerAspect() {
+        this.startTime = new ThreadLocal<>();
+        this.endTime = new ThreadLocal<>();
+    }
+
     @Pointcut("execution(* com.team5.projrental..*Controller*.*(..))")
 
     public void controller() {
