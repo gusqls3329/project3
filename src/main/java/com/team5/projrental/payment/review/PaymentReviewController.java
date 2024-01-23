@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-@RestController //RestController : 모든응답이 json: 프론트는 응답을 json으로 받음
+@RestController
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/api/pay/review")

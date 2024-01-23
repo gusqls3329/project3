@@ -228,7 +228,7 @@ public class UserService {
 //                                iproduct = {1, 5, 7}
 //                                iuser = {5, 7, 8}
                     List<SeldelUserPayDto> payDtos = mapper.seldelUserPay(entity.getIuser());
-                    /* ------------- */
+
                     List<Integer> iproducts = new ArrayList<>();
                     List<Integer> iusers = new ArrayList<>();
 
@@ -240,8 +240,8 @@ public class UserService {
                     mapper.delUserPorc2(iproducts);
                     mapper.delUserPorc(iusers);
                     mapper.delUpUserPay(iusers);
-                    /* ------------- */
                 }
+
                 int result = mapper.delUser(dto);
                 if (result == 1) {
                     return Const.SUCCESS;
