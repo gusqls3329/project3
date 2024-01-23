@@ -215,7 +215,7 @@ public class UserService {
             String hashedPw = entity.getUpw();
             boolean checkPw = BCrypt.checkpw(dto.getUpw(), hashedPw);
             if (checkPw) {
-                if (check == null || check != 0 ) {
+                if (check != null && check != 0 ) {
                     throw new IllegalException(CAN_NOT_DEL_USER_EX_MESSAGE);
                 } else {
                     // 채팅 개수 가져오기 && 채팅 삭제
@@ -246,7 +246,7 @@ public class UserService {
     }
 
     public SelUserVo getUser(Integer iuser) {
-        if (iuser == null || iuser == 0) { //내가 아닐때.
+        if (iuser == null || iuser == 0) { //나일때
             int loginUserPk = authenticationFacade.getLoginUserPk();
             SelUserVo vo1 = mapper.selUser(loginUserPk);
             return vo1;
