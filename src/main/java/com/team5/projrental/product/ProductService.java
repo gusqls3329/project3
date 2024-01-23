@@ -144,38 +144,6 @@ public class ProductService {
         return result;
     }
 
-    private List<LocalDate> getDisabledDates(int iproduct, LocalDate refStartDate) {
-
-        return getDisabledDates(iproduct, refStartDate, LocalDate.of(refStartDate.getYear(), refStartDate.getMonth(),
-                refStartDate.lengthOfMonth()));
-    }
-
-    private List<LocalDate> getDisabledDates(int iproduct, LocalDate refStartDate, LocalDate refEndDate) {
-
-        final int stockCount = productRepository.findStockCountBy(iproduct);
-        List<CanNotRentalDateVo> disabledRefDates = productRepository.findDisabledDatesBy(new CanNotRentalDateDto(iproduct, refStartDate, refEndDate));
-        List<LocalDate> disabledDates = new ArrayList<>();
-        LocalDate dateWalker = LocalDate.of(refStartDate.getYear(), refStartDate.getMonth(), refStartDate.getDayOfMonth());
-
-        while (true) {
-            LocalDate lambdaDateWalker = dateWalker;
-            if (disabledRefDates.stream().filter(
-                    d -> lambdaDateWalker.isEqual(d.getRentalEndDate()) || lambdaDateWalker.isBefore(d.getRentalEndDate())
-                            &&
-                            lambdaDateWalker.isEqual(d.getRentalStartDate()) || lambdaDateWalker.isAfter(d.getRentalStartDate())
-            ).count() >= stockCount) {
-
-                disabledDates.add(LocalDate.of(dateWalker.getYear(),
-                        dateWalker.getMonth(),
-                        dateWalker.getDayOfMonth()));
-            }
-
-            if (refEndDate.isEqual(refStartDate)) break;
-            dateWalker = dateWalker.plusDays(1);
-        }
-
-        return disabledDates;
-    }
 
     /**
      * 제품 & 제품 사진 등록<br><br>
@@ -386,7 +354,7 @@ public class ProductService {
         if (productRepository.updateProduct(dto) == 0) {
             throw new BadProductInfoException(BAD_PRODUCT_INFO_EX_MESSAGE);
         }
-        
+
         // 유예된 사진파일 실제로 삭제
         if (flag) { // flag 가 true 라는것은 dto.getDelPics() 에 값이 있다는것.
             // 실제 사진 삭제
@@ -484,5 +452,38 @@ public class ProductService {
         return authenticationFacade.getLoginUserPk();
     }
 
+
+    private List<LocalDate> getDisabledDates(int iproduct, LocalDate refStartDate) {
+
+        return getDisabledDates(iproduct, refStartDate, LocalDate.of(refStartDate.getYear(), refStartDate.getMonth(),
+                refStartDate.lengthOfMonth()));
+    }
+
+    private List<LocalDate> getDisabledDates(int iproduct, LocalDate refStartDate, LocalDate refEndDate) {
+
+        final int stockCount = productRepository.findStockCountBy(iproduct);
+        List<CanNotRentalDateVo> disabledRefDates = productRepository.findDisabledDatesBy(new CanNotRentalDateDto(iproduct, refStartDate, refEndDate));
+        List<LocalDate> disabledDates = new ArrayList<>();
+        LocalDate dateWalker = LocalDate.of(refStartDate.getYear(), refStartDate.getMonth(), refStartDate.getDayOfMonth());
+
+        while (true) {
+            LocalDate lambdaDateWalker = dateWalker;
+            if (disabledRefDates.stream().filter(
+                    d -> lambdaDateWalker.isEqual(d.getRentalEndDate()) || lambdaDateWalker.isBefore(d.getRentalEndDate())
+                            &&
+                            lambdaDateWalker.isEqual(d.getRentalStartDate()) || lambdaDateWalker.isAfter(d.getRentalStartDate())
+            ).count() >= stockCount) {
+
+                disabledDates.add(LocalDate.of(dateWalker.getYear(),
+                        dateWalker.getMonth(),
+                        dateWalker.getDayOfMonth()));
+            }
+
+            if (refEndDate.isEqual(refStartDate)) break;
+            dateWalker = dateWalker.plusDays(1);
+        }
+
+        return disabledDates;
+    }
 
 }
