@@ -280,17 +280,19 @@ public class ProductService {
 
         // 삭제사진 필요시 삭제
         // -*
+        List<String> delPicsPath = null;
+        boolean flag = false;
         if (dto.getDelPics() != null && !dto.getDelPics().isEmpty()) {
             // 실제 사진 삭제를 위해 사진 경로 미리 가져오기
-            List<String> delPicsPath = productRepository.getPicsAllBy(dto.getDelPics());
+            delPicsPath = productRepository.getPicsAllBy(dto.getDelPics());
             if (delPicsPath.isEmpty()) throw new BadInformationException(BAD_INFO_EX_MESSAGE);
             // 사진 삭제
             if (productRepository.deletePics(dto.getIproduct(), dto.getDelPics()) == 0) {
                 throw new WrapRuntimeException(SERVER_ERR_MESSAGE);
             }
-            // 실제 사진 삭제
-            delPicsPath.forEach(myFileUtils::delCurPic);
-
+            // 실제 사진 삭제는 마지막에 에러가 없으면 실행. (유예)
+            // flag 가 true 면 파일을 삭제할것임.
+            flag = true;
         }
         // 병합하지 않아도 되는 데이터 검증
 
@@ -383,6 +385,12 @@ public class ProductService {
         // do update
         if (productRepository.updateProduct(dto) == 0) {
             throw new BadProductInfoException(BAD_PRODUCT_INFO_EX_MESSAGE);
+        }
+        
+        // 유예된 사진파일 실제로 삭제
+        if (flag) { // flag 가 true 라는것은 dto.getDelPics() 에 값이 있다는것.
+            // 실제 사진 삭제
+            delPicsPath.forEach(myFileUtils::delCurPic);
         }
         return new ResVo(SUCCESS);
     }
