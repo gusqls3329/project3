@@ -43,7 +43,6 @@ public class ChatService {
 
     //
     public ResVo postChatMsg(ChatMsgInsDto dto) {
-
         int loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setLoginedIuser(loginUserPk);
 
@@ -153,5 +152,4 @@ public class ChatService {
         vo.setOtherPersonPic(entity.getStoredPic());
         return vo;
     }
-
 }

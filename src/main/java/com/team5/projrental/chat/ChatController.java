@@ -35,7 +35,6 @@ public class ChatController {
             @Parameter(name = "iproduct", description = "제품 PK"),
             @Parameter(name = "otherPersonIuser", description = "상대유저 PK")})
     public ChatSelVo PostChat(@RequestBody ChatInsDto dto) {
-
         return service.postChat(dto);
     }
 
