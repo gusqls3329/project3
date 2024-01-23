@@ -215,7 +215,7 @@ public class UserService {
         Integer check = mapper.selpatchUser(entity.getIuser());
         if (loginUserPk == entity.getIuser()) {
             String hashedPw = entity.getUpw();
-            boolean checkPw = BCrypt.checkpw(dto.getUpw(), hashedPw);
+            boolean checkPw = passwordEncoder.matches(dto.getUpw(), hashedPw);
             if (checkPw) {
                 if (check != null && check != 0 ) {
                     throw new IllegalException(CAN_NOT_DEL_USER_EX_MESSAGE);
