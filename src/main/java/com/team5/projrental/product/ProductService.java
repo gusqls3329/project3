@@ -35,6 +35,10 @@ import static com.team5.projrental.common.exception.ErrorCode.*;
 @RequiredArgsConstructor
 public class ProductService {
 
+    /* TODO 2024-01-23 Tue 18:1
+        코드 리펙토링
+        --by Hyunmin
+    */
     private final RefProductRepository productRepository;
 
     private final AxisGenerator axisGenerator;

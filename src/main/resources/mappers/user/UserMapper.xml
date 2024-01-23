@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team5.projrental.user.UserMapper">
-    <insert id="insUser" useGeneratedKeys="true"  keyProperty="iuser">
+    <insert id="insUser" useGeneratedKeys="true" keyProperty="iuser">
         INSERT INTO t_user
         SET addr = #{addr}
         , rest_addr = #{restAddr}
@@ -15,8 +15,8 @@
     </insert>
 
 
-<!--    t_auth join 필요 없음 user 데이터만 가져오기.
-     -->
+    <!--    t_auth join 필요 없음 user 데이터만 가져오기.
+         -->
     <select id="selSignin">
         SELECT u.iuser, a.auth, u.upw, u.uid, firebase_token AS firebaseToken
         FROM t_user u
@@ -86,40 +86,57 @@
         from t_product P
         join t_user U on P.iuser = U.iuser and P.istatus IN (-1, -2)
         left join t_product_payment PP on PP.iproduct = P.iproduct
-        left join t_payment PA on PA.ipayment = PP.ipayment  AND PA.istatus IN (1, -1, -2, -3)
+        left join t_payment PA on PA.ipayment = PP.ipayment AND PA.istatus IN (1, -1, -2, -3)
         where P.iuser = #{iuser}
         or PA.ibuyer = #{iuser}
     </select>
     <update id="delUpUserPay">
         update t_payment
         set ibuyer = null
-        where ibuyer = #{iuser}
+        where ibuyer in (
+        <foreach collection="iusers" item="iuser" separator=",">
+            iuser
+        </foreach>
+        )
     </update>
 
     <delete id="delUserProPic">
         DELETE FROM t_pics
-        where iproduct = #{iproduct}
+        where iproduct in (
+        <foreach collection="iproducts" item="iproduct" separator=",">
+            iproduct
+        </foreach>
+        )
     </delete>
+
     <delete id="delUserPorc2">
         DELETE FROM t_product_payment
-        where iproduct = #{iproduct}
+        where iproduct  in (
+        <foreach collection="iproducts" item="iproduct" separator=",">
+            iproduct
+        </foreach>
+        )
     </delete>
     <delete id="delUserPorc">
         DELETE FROM t_product
-        where iuser = #{iuser}
+        where iuser in (
+        <foreach collection="iusers" item="iuser" separator=",">
+            iuser
+        </foreach>
+        )
     </delete>
 
-<!--    채팅 개수 가져오기 -> 채팅 개수가 1이상일 경우만 수행,
-                            채팅 삭제 개수가 채팅 개수와 동일하지 않으면 예외 발생-->
+    <!--    채팅 개수 가져오기 -> 채팅 개수가 1이상일 경우만 수행,
+                                채팅 삭제 개수가 채팅 개수와 동일하지 않으면 예외 발생-->
     <select id="getUserChatCount">
         select count(ichat) from t_chat_user where iuser = #{iuser}
     </select>
-<!--    -->
-<!--    채팅 삭제 (-1 인 곳만)-->
+    <!--    -->
+    <!--    채팅 삭제 (-1 인 곳만)-->
     <delete id="delUserChat">
         delete from t_chat_user where iuser = #{iuser} and istatus = -1
     </delete>
-<!--    -->
+    <!--    -->
     <select id="selUser">
         SELECT y, x, nick, stored_pic, phone, email, raiting, CONCAT_WS(addr, rest_addr)
         FROM t_user
@@ -147,7 +164,7 @@
         WHERE uid = #{obj}
     </select>
 
-    <select id = "checkUserNick">
+    <select id="checkUserNick">
         SELECT count(iuser)
         FROM t_user
         WHERE nick = #{obj}
