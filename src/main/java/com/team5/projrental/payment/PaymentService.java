@@ -36,7 +36,10 @@ import static com.team5.projrental.common.exception.ErrorCode.*;
 @Slf4j
 @RequiredArgsConstructor
 public class PaymentService {
-
+    /* TODO 2024-01-23 Tue 18:1
+        코드 리펙토링
+        --by Hyunmin
+    */
     private final PaymentRepository paymentRepository;
     private final ProductRepository productRepository;
     private final AuthenticationFacade authenticationFacade;

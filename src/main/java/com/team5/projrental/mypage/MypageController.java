@@ -32,34 +32,27 @@ public class MypageController {
         PaymentSelDto dto = new PaymentSelDto();
         dto.setPage(page);
         dto.setRole(role);
-
         return service.paymentList(dto);
     }
 
     @Validated
     @GetMapping("/review")
     @Operation(summary = "로그인 유저가 작성한 후기", description = "로그인 유저가 빌린내역 중 작성된 후기")
-    @Parameters(value = {
-            @Parameter(name = "page", description = "페이지"),
-            })
+    @Parameters(value = {@Parameter(name = "page", description = "페이지")})
     public List<MyBuyReviewListSelVo> getReview(@RequestParam @Min(1) int page) {
 
         MyBuyReviewListSelDto dto = new MyBuyReviewListSelDto();
         dto.setPage(page);
-
         return service.selIbuyerReviewList(dto);
     }
 
     @Validated
     @GetMapping("/fav")
     @Operation(summary = "로그인 유저가 찜한 목록", description = "로그인 유저가 찜한 목록")
-    @Parameters(value = {
-            @Parameter(name = "page", description = "페이지"),
-    })
-    public List<MyFavListSelVo> getFavList(@RequestParam @Min(1)int page) {
+    @Parameters(value = {@Parameter(name = "page", description = "페이지")})
+    public List<MyFavListSelVo> getFavList(@Validated @RequestParam @Min(1)int page) {
         MyFavListSelDto dto = new MyFavListSelDto();
         dto.setPage(page);
-
         return service.selMyFavList(dto);
     }
 }

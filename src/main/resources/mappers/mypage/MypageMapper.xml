@@ -35,6 +35,9 @@
             where A.iuser = #{loginedIuser}
         </if>
         ORDER BY B.ipayment DESC
+        <if test="page != null and rowCount != null">
+            LIMIT #{startIdx}, #{rowCount}
+        </if>
     </select>
 
     <select id="getIbuyerReviewList">
@@ -46,7 +49,10 @@
         ON B.ipayment = C.ipayment
         LEFT JOIN t_product D
         ON C.iproduct = D.iproduct
-        WHERE B.ibuyer = #{ibuyer};
+        WHERE B.ibuyer = #{ibuyer}
+        <if test="page != null and rowCount != null">
+            LIMIT #{startIdx}, #{rowCount}
+        </if>
     </select>
 
     <select id="getFavList">
@@ -54,7 +60,11 @@
         FROM t_product A
         LEFT JOIN t_user B
         ON A.iuser = B.iuser
-        WHERE A.iuser = #{loginedIuser};
+        WHERE A.iuser = #{loginedIuser}
+        ORDER BY B.ipayment DESC
+        <if test="page != null and rowCount != null">
+            LIMIT #{startIdx}, #{rowCount}
+        </if>
     </select>
 
 </mapper>

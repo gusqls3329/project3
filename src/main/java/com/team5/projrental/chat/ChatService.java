@@ -5,6 +5,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
 import com.team5.projrental.common.exception.ErrorCode;
+import com.team5.projrental.common.exception.base.BadInformationException;
 import com.team5.projrental.common.exception.base.NotEnoughInfoException;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.chat.model.*;
@@ -123,10 +124,11 @@ public class ChatService {
         Integer isExixtChat = mapper.selChatUserCheck(dto);
 
         if (isExixtChat != null) {
-            return null;
+            throw new BadInformationException(ErrorCode.ILLEGAL_EX_MESSAGE);
         }
         int loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setLoginedIuser(loginUserPk);
+
         mapper.insChat(dto);
 
         mapper.insChatUser(ChatUserInsDto.builder()
