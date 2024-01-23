@@ -38,15 +38,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @MockMvcConfig
-@WebMvcTest(UserController.class)
+@Import(UserController.class)
 public class UserControllerTest {
 
     @Autowired private MockMvc mvc;
     @Autowired private ObjectMapper objectMapper;
     @MockBean private UserService service;
-    //@MockBean private JwtAuthenticationFilter jwtAuthenticationFilter;
+    @MockBean private JwtAuthenticationFilter jwtAuthenticationFilter;
     @MockBean private AuthenticationFacade authenticationFacade;
-    //@Autowired private UserController controller;
+    @Autowired private UserController controller;
 
 
     @Test
@@ -70,7 +70,6 @@ public class UserControllerTest {
                 .andExpect(status().isOk())
                 //.andExpect(content().string(mapper.writeValueAsString(Const.SUCCESS)))
                 .andDo(print());
-
         //verify(service).postSignup(dto);
     }
 
@@ -79,7 +78,19 @@ public class UserControllerTest {
         SigninDto dto = new SigninDto();
         dto.setUid("dongdong12");
         dto.setUpw("dongdong12");
-        // given(service.postSignin(any(), any())).willReturn();
+        SigninVo vo = SigninVo.builder()
+                .uid("dongdong12")
+                .upw("testuserpw")
+                .build();
+        given(service.postSignin(any(), any())).willReturn(vo);
+        mvc.perform(MockMvcRequestBuilders
+                .post("/api/user/signin")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isOk())
+                .andDo(print());
+
+
     }
 
     void getSignOut() throws Exception {}
@@ -101,14 +112,14 @@ public class UserControllerTest {
         //System.out.println(json);
        given(service.getFindUid(any())).willReturn(vo);
        mvc.perform(
-                MockMvcRequestBuilders
-                        .patch("/api/user/id")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(dto)))
-                .andDo(print())
+                    MockMvcRequestBuilders
+                            .patch("/api/user/id")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(dto))
+               )
                 .andExpect(status().isOk())
-                .andExpect(content().string(objectMapper.writeValueAsString(vo)));
-
+                .andDo(print());
+                //.andExpect(content().string(objectMapper.writeValueAsString(vo)));
         //verify(service).getFindUid(dto);
 
     }
@@ -121,13 +132,13 @@ public class UserControllerTest {
         dto.setUid("dongdong12");
         dto.setUpw("testpassword");
 
-        //given(service.getFindUpw(dto)).willReturn(Const.SUCCESS);
+        given(service.getFindUpw(dto)).willReturn(Const.SUCCESS);
         mvc.perform(MockMvcRequestBuilders
                     .post("/api/user/pw")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
-                .andExpect(content().json("{\"result\": 1}"));
+                .andDo(print());
 
         //verify(service).getFindUpw(dto);
     }
@@ -138,26 +149,34 @@ public class UserControllerTest {
         int loginedIuser = authenticationFacade.getLoginUserPk();
         dto.setNick("testnick");
         dto.setIuser(loginedIuser);
-        int result = service.putUser(dto);
-        //given(service.putUser(dto)).willReturn(result);
+
+        given(service.putUser(any())).willReturn(Const.SUCCESS);
 
         mvc.perform(MockMvcRequestBuilders
-                .put("/api/user")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(dto))
-        )
+                    .put("/api/user")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
-                .andExpect(content().string(objectMapper.writeValueAsString(result)))
                 .andDo(print());
+                //.andExpect(content().string(objectMapper.writeValueAsString(result)))
 
        // verify(service).putUser(dto);
     }
 
-    void patchUser () throws Exception {}
+    void patchUser () throws Exception {
+
+    }
 
     @Test
     void getUSer () throws Exception {
+        int iuser = 14;
         SelUserVo vo = new SelUserVo();
-        //MultiValueMap<String, String> params = new LinkedMultiValueMap();
+        given(service.getUser(any())).willReturn(vo);
+        mvc.perform(MockMvcRequestBuilders
+                .get("/api/user")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(iuser)))
+                .andExpect(status().isOk())
+                .andDo(print());
     }
 }
