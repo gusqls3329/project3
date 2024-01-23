@@ -104,8 +104,8 @@ class ProductControllerIntegTest {
                 .header("Authorization", token)
         ).andReturn().getResponse().getContentAsString();
 
-        ErrorResultVo errorResultVo = om.readValue(result2, ErrorResultVo.class);
-        org.junit.jupiter.api.Assertions.assertEquals(errorResultVo.getErrorCode(), 468);
+        ResVo resVo2 = om.readValue(result2, ResVo.class);
+        org.junit.jupiter.api.Assertions.assertEquals((resVo2.getResult()), 1);
 
 
     }
