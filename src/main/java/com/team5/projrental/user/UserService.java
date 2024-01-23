@@ -225,8 +225,6 @@ public class UserService {
                         throw new IllegalException(CAN_NOT_DEL_USER_EX_MESSAGE);
                     }
 
-//                                iproduct = {1, 5, 7}
-//                                iuser = {5, 7, 8}
                     List<SeldelUserPayDto> payDtos = mapper.seldelUserPay(entity.getIuser());
 
                     List<Integer> iproducts = new ArrayList<>();
