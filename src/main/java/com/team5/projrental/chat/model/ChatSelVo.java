@@ -16,5 +16,5 @@ public class ChatSelVo {
     private String otherPersonPic; // 상대방 유저 사진
 
     @JsonIgnore
-    private String istatus;
+    private int istatus;
 }
