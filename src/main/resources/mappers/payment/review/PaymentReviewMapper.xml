@@ -4,7 +4,7 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team5.projrental.payment.review.PaymentReviewMapper">
 
-    <insert id="insReview">
+    <insert id="insReview" useGeneratedKeys="true" keyProperty="ireview">
         INSERT INTO t_review
         set
         ibuyer = #{iuser}
@@ -71,5 +71,36 @@
         FROM t_review
         WHERE ireview = #{ireview}
     </select>
+
+    <!--평균 별점올리기-->
+
+    <select id="selUser">
+        SELECT u.iuser
+        FROM t_user u
+        JOIN t_review r ON r.ibuyer = u.iuser
+        JOIN t_payment pa ON pa.ipayment = r.ipayment
+        JOIN t_product_payment pp ON pp.ipayment = pa.ipayment
+        JOIN t_product p ON pp.iproduct = p.iproduct
+        WHERE r.contents IS NOT NULL AND r.rating IS NOT NULL
+        and r.ireview = #{ireview}
+    </select>
+    
+    <select id="selRat">
+        SELECT count(u.iuser) as countIuser, u.rating
+        FROM t_user u
+        JOIN t_review r ON r.ibuyer = u.iuser
+        JOIN t_payment pa ON pa.ipayment = r.ipayment
+        JOIN t_product_payment pp ON pp.ipayment = pa.ipayment
+        JOIN t_product p ON pp.iproduct = p.iproduct
+        WHERE r.contents IS NOT NULL AND r.rating IS NOT NULL
+        AND u.iuser = #{iuser}
+    </select>
+
+    <update id="upRating">
+        update t_user
+        set rating = #{rating}
+        where iuser = #{iuser}
+    </update>
+
 
 </mapper>

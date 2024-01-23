@@ -6,10 +6,7 @@ import com.team5.projrental.common.exception.ErrorMessage;
 import com.team5.projrental.common.exception.base.BadInformationException;
 import com.team5.projrental.common.security.AuthenticationFacade;
 import com.team5.projrental.common.utils.CommonUtils;
-import com.team5.projrental.payment.review.model.DelRivewDto;
-import com.team5.projrental.payment.review.model.RivewDto;
-import com.team5.projrental.payment.review.model.RiviewVo;
-import com.team5.projrental.payment.review.model.UpRieDto;
+import com.team5.projrental.payment.review.model.*;
 import com.team5.projrental.user.model.CheckIsBuyer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,17 +44,29 @@ public class PaymentReviewService {
                     if (result != 1) {
                         throw new BadInformationException(ILLEGAL_EX_MESSAGE);
                     } else {
-                        if (reviewMapper.selReview(null, dto.getIpayment()) == 2) {
+                        //if (reviewMapper.selReview(null, dto.getIpayment()) == 2) {
                             int result2 = reviewMapper.upProductIstatus(dto.getIpayment());
-
-                            if (result2 != 1) {
-                                throw new BadInformationException(ILLEGAL_EX_MESSAGE);
+                            log.info("dto.getIreview:{}",dto.getIreview());
+                            if (result2 == 1) {
+                                if(dto.getContents() != null && dto.getRating() != null){
+                                    int chIuser = reviewMapper.selUser(dto.getIreview());
+                                    SelRatVo rating = reviewMapper.selRat(chIuser);
+                                    double average = rating.getCountIuser() * rating.getRating();
+                                    double averageRat = (rating.getCountIuser()+1)/(average+dto.getRating());
+                                    UpRating uprating = new UpRating();
+                                    uprating.setIuser(chIuser);
+                                    uprating.setRating(averageRat);
+                                    int upRating = reviewMapper.upRating(uprating);
+                                    if(upRating == 1){
+                                        return Const.SUCCESS;
+                                    }
+                                }
                             }
+                            throw new BadInformationException(ILLEGAL_EX_MESSAGE);
                         }
-                        return Const.SUCCESS;
                     }
-                }
-                throw new BadInformationException(ILLEGAL_EX_MESSAGE);
+                //}
+             //   throw new BadInformationException(ILLEGAL_EX_MESSAGE);
             }
             throw new BadInformationException(REVIEW_ALREADY_EXISTS_EX_MESSAGE);
         }
@@ -89,9 +98,6 @@ public class PaymentReviewService {
             // 리뷰를 삭제하기전 t_payment의 istatus를 확인해 삭제가능한 상태가 맞는지 확인
             Integer istatus = reviewMapper.selReIstatus(check.getIpayment());
             if (istatus == 1 || istatus == -2 || istatus == -3) {
-                //삭제전 작성한 iuser가 거래한 리뷰가 존재하는지 확인
-                Integer selReview = reviewMapper.selReview(loginUserPk, check.getIpayment());
-                if (selReview == 1) {
                     dto.setIstatus(istatus);
                     int result = reviewMapper.delReview(dto);
                     if (result != 1) {
@@ -102,7 +108,5 @@ public class PaymentReviewService {
                 throw new BadInformationException(NO_SUCH_REVIEW_EX_MESSAGE);
             }
             throw new BadInformationException(ILLEGAL_EX_MESSAGE);
-        }
-        throw new BadInformationException(ILLEGAL_EX_MESSAGE);
     }
 }
