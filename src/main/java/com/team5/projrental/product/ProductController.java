@@ -2,18 +2,14 @@ package com.team5.projrental.product;
 
 import com.team5.projrental.common.Const;
 import com.team5.projrental.common.exception.ErrorMessage;
-import com.team5.projrental.common.model.ErrorResultVo;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.product.model.*;
 import com.team5.projrental.product.model.review.ReviewResultVo;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.regex.qual.Regex;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.validation.annotation.Validated;
@@ -46,8 +42,10 @@ public class ProductController {
                     "<br><br>" +
                     "성공시:<br>" +
                     "[<br>" +
-                    "  nick<br> " +
-                    "  userPic<br>" +
+                    "  iuser(판매자의)<br>" +
+                    "  nick(판매자의)<br> " +
+                    "  userPic(판매자의)<br>" +
+                    "  iauth(판매자의)<br>" +
                     "  iproduct<br> " +
                     "  title<br> " +
                     "  prodPic<br> " +
@@ -56,7 +54,9 @@ public class ProductController {
                     "  rentalEndDate<br> " +
                     "  addr(rest_addr 까지 포함)<br> " +
                     "  prodLike(제품의 좋아요 수)<br>" +
-                    "] (배열)" +
+                    "] (배열)<br>" +
+                    "istatus: 해당 제품의 상태 -> 0: 활성화 됨, -1: 삭제됨, -2: 숨김<br>" +
+                    "inventory: 해당 상품의 물품 총 보유량 (재고 - '전체 재고')" +
                     "<br><br>" +
                     "실패시:<br>" +
                     "message: 에러 발생 사유<br>errorCode: 에러 코드")
@@ -90,6 +90,7 @@ public class ProductController {
                     "iuser(판매자의)<br> " +
                     "nick(판매자의)<br> " +
                     "userPic(판매자의)<br> " +
+                    "iauth(판매자의><br>" +
                     "title<br> " +
                     "contents<br> " +
                     "mainPic<br> " +
@@ -104,7 +105,10 @@ public class ProductController {
                     "y<br> " +
                     "isLiked(로그인한 유저가 좋아요를 눌렀는지 여부 - 0: 누르지 않음, 1: 누름<br> " +
                     "reviews: 해당 제품에 작성된 리뷰<br>" +
-                    "disabledDates: 이미 거래진행중인 날짜들 (거래 불가능한 날짜들) <br><br>" +
+                    "disabledDates: 이미 거래진행중인 날짜들 (거래 불가능한 날짜들) <br>" +
+                    "istatus: 해당 제품의 상태 -> 0: 활성화 됨, -1: 삭제됨, -2: 숨김<br>" +
+                    "inventory: 해당 상품의 물품 총 보유량 (재고 - '전체 재고')" +
+                    "<br><br>" +
                     "실패시: <br>" +
                     "message: 에러 발생 사유<br>errorCode: 에러 코드")
     @Validated
@@ -140,10 +144,11 @@ public class ProductController {
                     "[v] price: 자신이 평가한 제품의 절대가격 -> null 불가능<br>" +
                     "[v] rentalPrice: 1일당 대여 가격 -> null 불가능<br>" +
                     "[v] depositPer: 보증금 가격 비율 (price 기준 비율) -> null 불가능<br>" +
-                    "buyDate: 자신이 제품을 구매한 날짜<br>" +
-                    "rentalStartDate: 대여 시작 가능 날짜<br>" +
-                    "rentalEndDate: 대여 마감 날짜<br>" +
-                    "icategory: 카테고리 (숫자) -> null 불가능, 1 이상" +
+                    "[v] buyDate: 자신이 제품을 구매한 날짜<br>" +
+                    "[v] rentalStartDate: 대여 시작 가능 날짜<br>" +
+                    "[v] rentalEndDate: 대여 마감 날짜<br>" +
+                    "[v] icategory: 카테고리 (숫자) -> null 불가능, 1 이상<br>" +
+                    "[v] inventory: 해당 재품 총 보유량 (전체 재고)" +
                     "<br><br>" +
                     "성공시: <br>" +
                     "result: 등록된 제품의 PK" +
@@ -181,6 +186,7 @@ public class ProductController {
                     "rentalPrice: 1일당 대여 가격<br>" +
                     "depositPer: 수정할 보증금 가격 비율 (price 가 수정되면 수정된 price 기준, 수정되지 않으면 이미 저장된 price 기준<br>" +
                     "buyDate: 수정할 자신이 제품을 구매한 날짜<br>" +
+                    "inventory: 해당 재품 총 보유량 (전체 재고)<br>" +
                     "rentalStartDate: 수정할 대여 시작 가능 날짜<br>" +
                     "rentalEndDate: 수정할 대여 마감 날짜<br>" +
                     "delPics: 삭제된 사진들의 ipics 값들 -> 제품 조회시 사진에대한 ipics 값들이 제공됨. <br>  " +
@@ -255,7 +261,7 @@ public class ProductController {
 
     }
 
-    @Operation(summary = "<strong>해당 제품에 작성된 모든 리뷰</strong><br>",
+    @Operation(summary = "해당 제품에 작성된 모든 리뷰",
     description = "성공시:<br>" +
             "[<br>" +
             "  ireview: 리뷰의 PK<br>" +

@@ -1,6 +1,6 @@
 package com.team5.projrental.product;
 
-import com.team5.projrental.product.model.CanNotRentalDate;
+import com.team5.projrental.product.model.CanNotRentalDateVo;
 import com.team5.projrental.product.model.ProductUpdDto;
 import com.team5.projrental.product.model.proc.*;
 import com.team5.projrental.product.model.review.ReviewGetDto;
@@ -69,7 +69,11 @@ public interface ProductMapper {
 
     List<ReviewResultVo> getReview(ReviewGetDto dto);
 
-    List<CanNotRentalDate> getLendStartDateAndEndDate(Integer iproduct);
+    List<CanNotRentalDateVo> getLendStartDateAndEndDate(Integer iproduct);
 
     List<String> getPicsAllBy(List<Integer> ipics);
+
+    List<CanNotRentalDateVo> findDisabledDatesBy(CanNotRentalDateDto dto);
+
+    int findStockCountBy(int iproduct);
 }

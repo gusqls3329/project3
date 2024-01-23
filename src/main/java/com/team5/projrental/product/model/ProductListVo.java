@@ -4,7 +4,6 @@ import com.team5.projrental.product.model.proc.GetProductListResultDto;
 import com.team5.projrental.product.model.proc.GetProductResultDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.core.io.Resource;
 
 import java.time.LocalDate;
 
@@ -15,6 +14,7 @@ public class ProductListVo {
     private Integer iuser;
     private String nick;
     private String userPic;
+    private Integer iauth;
 
     private Integer iproduct;
     private String title;
@@ -25,10 +25,12 @@ public class ProductListVo {
     private String addr;
     private Integer prodLike;
     private Integer istatus;
+    private Integer inventory;
 
     public ProductListVo(GetProductListResultDto dto) {
         this.iuser = dto.getIuser();
         this.nick = dto.getNick();
+        this.iauth = dto.getIauth();
         this.iproduct = dto.getIproduct();
         this.title = dto.getTitle();
         this.rentalPrice = dto.getRentalPrice();
@@ -44,6 +46,7 @@ public class ProductListVo {
     public ProductListVo(GetProductResultDto dto) {
         this.iuser = dto.getIuser();
         this.nick = dto.getNick();
+        this.iauth = dto.getIauth();
         this.iproduct = dto.getIproduct();
         this.title = dto.getTitle();
         this.rentalPrice = dto.getRentalPrice();

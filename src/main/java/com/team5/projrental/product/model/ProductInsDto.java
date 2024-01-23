@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductInsDto {
-//    @NotNull
+    //    @NotNull
     @JsonIgnore
     private Integer iuser;
     @NotBlank(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
@@ -42,13 +42,16 @@ public class ProductInsDto {
     @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
     @PastOrPresent(message = ErrorMessage.ILLEGAL_DATE_EX_MESSAGE)
     private LocalDate buyDate;
+    @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
     @FutureOrPresent(message = ErrorMessage.ILLEGAL_DATE_EX_MESSAGE)
     private LocalDate rentalStartDate;
+    @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
     @FutureOrPresent(message = ErrorMessage.ILLEGAL_DATE_EX_MESSAGE)
     private LocalDate rentalEndDate;
     @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
     @Min(value = 1, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private Integer icategory;
-
-
+    @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
+    @Min(1)
+    private Integer inventory;
 }
