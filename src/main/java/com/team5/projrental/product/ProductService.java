@@ -462,7 +462,8 @@ public class ProductService {
     private List<LocalDate> getDisabledDates(int iproduct, LocalDate refStartDate, LocalDate refEndDate) {
 
         final int stockCount = productRepository.findStockCountBy(iproduct);
-        List<CanNotRentalDateVo> disabledRefDates = productRepository.findDisabledDatesBy(new CanNotRentalDateDto(iproduct, refStartDate, refEndDate));
+        List<CanNotRentalDateVo> disabledRefDates =
+                productRepository.findDisabledDatesBy(new CanNotRentalDateDto(iproduct, refStartDate, refEndDate));
         List<LocalDate> disabledDates = new ArrayList<>();
         LocalDate dateWalker = LocalDate.of(refStartDate.getYear(), refStartDate.getMonth(), refStartDate.getDayOfMonth());
 
@@ -479,7 +480,7 @@ public class ProductService {
                         dateWalker.getDayOfMonth()));
             }
 
-            if (refEndDate.isEqual(refStartDate)) break;
+            if (refEndDate.isEqual(dateWalker)) break;
             dateWalker = dateWalker.plusDays(1);
         }
 
