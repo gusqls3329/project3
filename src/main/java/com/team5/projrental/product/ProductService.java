@@ -242,9 +242,16 @@ public class ProductService {
         // 삭제사진 필요시 삭제
         // -*
         if (dto.getDelPics() != null && !dto.getDelPics().isEmpty()) {
+            // 실제 사진 삭제를 위해 사진 경로 미리 가져오기
+            List<String> delPicsPath = productRepository.getPicsAllBy(dto.getDelPics());
+            if(delPicsPath.isEmpty()) throw new BadInformationException(BAD_INFO_EX_MESSAGE);
+            // 사진 삭제
             if (productRepository.deletePics(dto.getIproduct(), dto.getDelPics()) == 0) {
                 throw new WrapRuntimeException(SERVER_ERR_MESSAGE);
             }
+            // 실제 사진 삭제
+            delPicsPath.forEach(myFileUtils::delCurPic);
+
         }
         // 병합하지 않아도 되는 데이터 검증
 
