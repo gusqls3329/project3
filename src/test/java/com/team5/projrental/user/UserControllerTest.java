@@ -163,7 +163,23 @@ public class UserControllerTest {
        // verify(service).putUser(dto);
     }
 
+    @Test
     void patchUser () throws Exception {
+        DelUserDto dto = new DelUserDto();
+        int logindIuser =authenticationFacade.getLoginUserPk();
+        dto.setIuser(logindIuser);
+        dto.setUid("dongdong12");
+        dto.setUpw("dongdong12");
+        dto.setPhone("010-7777-6666");
+
+        given(service.patchUser(any())).willReturn(Const.SUCCESS);
+
+        mvc.perform(MockMvcRequestBuilders
+                .patch("/api/user")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isOk())
+                .andDo(print());
 
     }
 
