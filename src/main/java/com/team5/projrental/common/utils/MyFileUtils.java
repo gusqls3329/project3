@@ -8,7 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -85,8 +84,8 @@ public class MyFileUtils {
 
     //
 
-    public void delFolderTrigger(String relativePayh) {
-        delFolder(basePath + relativePayh);
+    public void delFolderTrigger(String relativePath) {
+        delFolder(Paths.get(basePath, relativePath).toString());
     }
 
     public void delFolder(String folderPath) {
@@ -103,6 +102,13 @@ public class MyFileUtils {
                 }
             }
             folder.delete();
+        }
+    }
+
+    public void delCurPic(String restPath) {
+        File file = new File(basePath, restPath);
+        if (file.exists()) {
+            file.delete();
         }
     }
 }

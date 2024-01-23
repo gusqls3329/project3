@@ -2,14 +2,11 @@ package com.team5.projrental.product.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.team5.projrental.common.exception.ErrorMessage;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -42,8 +39,12 @@ public class ProductInsDto {
     @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
     @Range(min = 50, max = 100, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private Integer depositPer;
+    @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
+    @PastOrPresent(message = ErrorMessage.ILLEGAL_DATE_EX_MESSAGE)
     private LocalDate buyDate;
+    @FutureOrPresent(message = ErrorMessage.ILLEGAL_DATE_EX_MESSAGE)
     private LocalDate rentalStartDate;
+    @FutureOrPresent(message = ErrorMessage.ILLEGAL_DATE_EX_MESSAGE)
     private LocalDate rentalEndDate;
     @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
     @Min(value = 1, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)

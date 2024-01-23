@@ -87,7 +87,7 @@ public class ProductService {
      */
     @CountView
     public ProductVo getProduct(Integer icategory, Integer iproduct) {
-
+        
         int loginUserPk = getLoginUserPk();
         // 사진을 '제외한' 모든 정보 획득 & 제공된 카테고리 검증 (category -> icategory)
         GetProductResultDto productBy = productRepository.findProductBy(
@@ -96,7 +96,7 @@ public class ProductService {
 
         // 결과물 없음 여부 검증
         // iproduct 가 존재하는 제품이라는것 보장됨.
-        CommonUtils.ifAnyNullThrow(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE, productBy, productBy.getIproduct());
+        CommonUtils.ifAnyNullThrow(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE, productBy);
         // 검증 완
 
         // 사진, 리뷰를 가져오기 위한 iproduct 획득
@@ -242,9 +242,16 @@ public class ProductService {
         // 삭제사진 필요시 삭제
         // -*
         if (dto.getDelPics() != null && !dto.getDelPics().isEmpty()) {
+            // 실제 사진 삭제를 위해 사진 경로 미리 가져오기
+            List<String> delPicsPath = productRepository.getPicsAllBy(dto.getDelPics());
+            if(delPicsPath.isEmpty()) throw new BadInformationException(BAD_INFO_EX_MESSAGE);
+            // 사진 삭제
             if (productRepository.deletePics(dto.getIproduct(), dto.getDelPics()) == 0) {
                 throw new WrapRuntimeException(SERVER_ERR_MESSAGE);
             }
+            // 실제 사진 삭제
+            delPicsPath.forEach(myFileUtils::delCurPic);
+
         }
         // 병합하지 않아도 되는 데이터 검증
 
