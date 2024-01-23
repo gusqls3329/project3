@@ -47,7 +47,7 @@
         ON B.ichat = C.ichat
         INNER JOIN t_user D
         ON C.iuser = D.iuser
-        INNER JOIN t_product E
+        LEFT JOIN t_product E
         ON A.iproduct = E.iproduct
         WHERE B.iuser = #{loginedIuser}
         AND C.iuser != #{loginedIuser}
@@ -65,7 +65,7 @@
         FROM t_chat_message A
         INNER JOIN t_user B
         ON A.iuser = B.iuser
-        WHERE A.ichat =#{ichat}
+        WHERE A.ichat =#{ichat} AND istatus = -1
         ORDER BY A.seq DESC
         <if test="page != null and rowCount != null">
             LIMIT #{startIdx}, #{rowCount}
