@@ -21,10 +21,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.checkerframework.checker.units.qual.A;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.team5.projrental.common.exception.ErrorCode.*;
@@ -223,15 +225,22 @@ public class UserService {
                         throw new IllegalException(CAN_NOT_DEL_USER_EX_MESSAGE);
                     }
 
-
+//                                iproduct = {1, 5, 7}
+//                                iuser = {5, 7, 8}
                     List<SeldelUserPayDto> payDtos = mapper.seldelUserPay(entity.getIuser());
+                    /* ------------- */
+                    List<Integer> iproducts = new ArrayList<>();
+                    List<Integer> iusers = new ArrayList<>();
 
                     for (SeldelUserPayDto list : payDtos) {
-                        mapper.delUserProPic(list.getIproduct());
-                        mapper.delUserPorc2(list.getIproduct());
-                        mapper.delUserPorc(list.getIuser());
-                        mapper.delUpUserPay(list.getIuser());
+                        iproducts.add(list.getIproduct());
+                        iusers.add(list.getIuser());
                     }
+                    mapper.delUserProPic(iproducts);
+                    mapper.delUserPorc2(iproducts);
+                    mapper.delUserPorc(iusers);
+                    mapper.delUpUserPay(iusers);
+                    /* ------------- */
                 }
                 int result = mapper.delUser(dto);
                 if (result == 1) {
