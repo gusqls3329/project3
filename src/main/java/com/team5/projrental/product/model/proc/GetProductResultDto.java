@@ -18,5 +18,7 @@ public class GetProductResultDto extends GetProductListResultDto{
     private Double x;
     private Double y;
     private Integer isLiked;
+    //
+    private Integer stockCount;
 
 }

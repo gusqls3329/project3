@@ -91,7 +91,7 @@ public class ProductService {
      */
     @CountView
     public ProductVo getProduct(Integer icategory, Integer iproduct) {
-        
+
         int loginUserPk = getLoginUserPk();
         // 사진을 '제외한' 모든 정보 획득 & 제공된 카테고리 검증 (category -> icategory)
         GetProductResultDto productBy = productRepository.findProductBy(
@@ -103,30 +103,33 @@ public class ProductService {
         CommonUtils.ifAnyNullThrow(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE, productBy);
         // 검증 완
 
-        // 사진, 리뷰를 가져오기 위한 iproduct 획득
+        // 사진, 리뷰, 거래 불가능 날짜를 가져오기 위한 iproduct 획득
         Integer productPK = productBy.getIproduct();
         // 리턴 객체 생성
         ProductVo result = new ProductVo(productBy);
 
         // 리뷰
-        List<ReviewResultVo> reviews = getReview(productBy.getIproduct(), 1, inProductReviewPerPage);
+        List<ReviewResultVo> reviews = getReview(productPK, 1, inProductReviewPerPage);
         result.setReviews(reviews);
 
-        // 거래 불가능 날짜
-        List<CanNotRentalDate> lendDates = productRepository.getLendDatesBy(productBy.getIproduct());
-        // 거래불가능 날짜 전부 세팅하기
-        if (!(lendDates == null) && !(lendDates.isEmpty())) {
-            List<LocalDate> disabledDates = new ArrayList<>();
-            lendDates.forEach(d -> {
-                while (true) {
-                    LocalDate rentalDateWalker = d.getRentalStartDate();
-                    disabledDates.add(rentalDateWalker);
-                    rentalDateWalker = rentalDateWalker.plusDays(1);
-                    if (!rentalDateWalker.isAfter(d.getRentalEndDate())) break;
-                }
-            });
-            result.setDisabledDates(disabledDates);
-        }
+        //거래 불가능 날짜 가져오기
+        result.setDisabledDates(getDisabledDates(productPK, LocalDate.now()));
+
+//        // 거래 불가능 날짜
+//        List<CanNotRentalDateVo> lendDates = productRepository.getLendDatesBy(productBy.getIproduct());
+//        // 거래불가능 날짜 전부 세팅하기
+//        if (!(lendDates == null) && !(lendDates.isEmpty())) {
+//            List<LocalDate> disabledDates = new ArrayList<>();
+//            lendDates.forEach(d -> {
+//                while (true) {
+//                    LocalDate rentalDateWalker = d.getRentalStartDate();
+//                    disabledDates.add(rentalDateWalker);
+//                    rentalDateWalker = rentalDateWalker.plusDays(1);
+//                    if (!rentalDateWalker.isAfter(d.getRentalEndDate())) break;
+//                }
+//            });
+//            result.setDisabledDates(disabledDates);
+//        }
         // 사진
         List<GetProdEctPicDto> ectPics = productRepository.findPicsBy(productPK);
 
@@ -141,6 +144,38 @@ public class ProductService {
         return result;
     }
 
+    private List<LocalDate> getDisabledDates(int iproduct, LocalDate refStartDate) {
+
+        return getDisabledDates(iproduct, refStartDate, LocalDate.of(refStartDate.getYear(), refStartDate.getMonth(),
+                refStartDate.lengthOfMonth()));
+    }
+
+    private List<LocalDate> getDisabledDates(int iproduct, LocalDate refStartDate, LocalDate refEndDate) {
+
+        final int stockCount = productRepository.findStockCountBy(iproduct);
+        List<CanNotRentalDateVo> disabledRefDates = productRepository.findDisabledDatesBy(new CanNotRentalDateDto(iproduct, refStartDate, refEndDate));
+        List<LocalDate> disabledDates = new ArrayList<>();
+        LocalDate dateWalker = LocalDate.of(refStartDate.getYear(), refStartDate.getMonth(), refStartDate.getDayOfMonth());
+
+        while (true) {
+            LocalDate lambdaDateWalker = dateWalker;
+            if (disabledRefDates.stream().filter(
+                    d -> lambdaDateWalker.isEqual(d.getRentalEndDate()) || lambdaDateWalker.isBefore(d.getRentalEndDate())
+                            &&
+                            lambdaDateWalker.isEqual(d.getRentalStartDate()) || lambdaDateWalker.isAfter(d.getRentalStartDate())
+            ).count() >= stockCount) {
+
+                disabledDates.add(LocalDate.of(dateWalker.getYear(),
+                        dateWalker.getMonth(),
+                        dateWalker.getDayOfMonth()));
+            }
+
+            if (refEndDate.isEqual(refStartDate)) break;
+            dateWalker = dateWalker.plusDays(1);
+        }
+
+        return disabledDates;
+    }
 
     /**
      * 제품 & 제품 사진 등록<br><br>
@@ -241,14 +276,14 @@ public class ProductService {
                 dto.getPics(), dto.getPrice(),
                 dto.getRentalPrice(), dto.getDeposit(),
                 dto.getBuyDate(), dto.getRentalStartDate(),
-                dto.getRentalEndDate(), dto.getDelPics());
+                dto.getRentalEndDate(), dto.getDelPics(), dto.getInventory());
 
         // 삭제사진 필요시 삭제
         // -*
         if (dto.getDelPics() != null && !dto.getDelPics().isEmpty()) {
             // 실제 사진 삭제를 위해 사진 경로 미리 가져오기
             List<String> delPicsPath = productRepository.getPicsAllBy(dto.getDelPics());
-            if(delPicsPath.isEmpty()) throw new BadInformationException(BAD_INFO_EX_MESSAGE);
+            if (delPicsPath.isEmpty()) throw new BadInformationException(BAD_INFO_EX_MESSAGE);
             // 사진 삭제
             if (productRepository.deletePics(dto.getIproduct(), dto.getDelPics()) == 0) {
                 throw new WrapRuntimeException(SERVER_ERR_MESSAGE);

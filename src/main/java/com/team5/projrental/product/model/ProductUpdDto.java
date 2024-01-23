@@ -2,7 +2,6 @@ package com.team5.projrental.product.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.team5.projrental.common.exception.ErrorMessage;
-import com.team5.projrental.product.model.innermodel.StoredFileInfo;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -44,6 +43,8 @@ public class ProductUpdDto {
     private Integer rentalPrice;
     @Range(min = 70, max = 100, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private Integer depositPer;
+    @Min(1)
+    private Integer inventory;
     private LocalDate buyDate;
     private LocalDate rentalStartDate;
     private LocalDate rentalEndDate;

@@ -63,7 +63,7 @@
 
 
     <select id="getProductList">
-        select U.iuser, U.nick, U.stored_pic as userStoredPic,
+        select U.iuser, U.nick, U.stored_pic as userStoredPic, U.iauth,
         P.iproduct, concat(P.addr, ' ', P.rest_addr) as addr, P.title, P.stored_pic as prodMainStoredPic,
         P.rental_price as rentalPrice,
         P.rental_start_date as rentalStartDate, P.rental_end_date as rentalEndDate, COUNT(L.iproduct) as prodLike, P.istatus
@@ -109,7 +109,7 @@
     </select>
 
     <select id="getProduct">
-        select U.iuser, U.nick, U.stored_pic as userStoredPic,
+        select U.iuser, U.nick, U.stored_pic as userStoredPic, U.iauth,
         P.iproduct, concat(P.addr, ' ', P.rest_addr) as addr, P.title, P.stored_pic as
         prodMainStoredPic,
         P.rental_price as rentalPrice, P.rental_start_date as rentalStartDate,
@@ -125,6 +125,15 @@
             P.icategory = #{icategory}
         </where>
 
+    </select>
+<!--    거래 불가능 날짜 가져오기-->
+    <select id="findDisabledDatesBy">
+        select rental_start_date as rentalStartDate, rental_end_date as rentalEndDate
+        from t_payment
+        where ipayment = #{ipayment}
+            and rental_end_date >= #{refStartDate}
+            and rental_start_date <![CDATA[<=]]> #{rentalEndDate}
+            and istatus in (0, -4, 2, 3)
     </select>
 
     <select id="getProdEctPics">
@@ -143,10 +152,12 @@
     <insert id="insProduct" useGeneratedKeys="true" keyProperty="iproduct">
         insert into t_product
         (iuser, title, contents, addr, rest_addr,
-        price, rental_price, deposit, buy_date, rental_start_date, rental_end_date, icategory, x, y)
+        price, rental_price, deposit, buy_date, rental_start_date, rental_end_date, icategory, x, y,
+        inventory)
         values
         (#{iuser}, #{title}, #{contents}, #{addr}, #{restAddr},
-        #{price}, #{rentalPrice}, #{deposit}, #{buyDate}, #{rentalStartDate}, #{rentalEndDate}, #{icategory}, #{x}, #{y})
+        #{price}, #{rentalPrice}, #{deposit}, #{buyDate}, #{rentalStartDate}, #{rentalEndDate}, #{icategory}, #{x}, #{y},
+        #{inventory})
     </insert>
 
     <insert id="insPics">
@@ -226,6 +237,9 @@
             <if test="y != null">
                 , y = #{y}
             </if>
+            <if test="inventory != null">
+                , inventory = #{inventory}
+            </if>
         </set>
         where iproduct = #{iproduct} and iuser = #{iuser}
 
@@ -283,6 +297,12 @@
             pic
         </foreach>
         )
+    </select>
+
+
+    <select id="findStockCountBy">
+        select stock_count as stockCount
+        from t_product where iproduct = #{iproduct}
     </select>
 
 </mapper>

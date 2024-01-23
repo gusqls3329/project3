@@ -14,6 +14,7 @@ public class GetProductListResultDto {
     private Integer iuser;
     private String nick;
     private String userStoredPic;
+    private Integer iauth;
 
     private Integer iproduct;
     private String addr;
