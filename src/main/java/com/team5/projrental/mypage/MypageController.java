@@ -19,7 +19,7 @@ import java.util.List;
 @RequestMapping("/api/mypage")
 public class MypageController {
     private final MypageService service;
-//테스트
+//테스트 상원
     @Validated
     @GetMapping("/prod")
     @Operation(summary = "대여리스트", description = "대여관련 내역")
