@@ -16,10 +16,10 @@ public interface UserMapper {
     int changeUser(ChangeUserDto dto);
     int delUser(DelUserDto dto);
     List<SeldelUserPayDto> seldelUserPay(int iuser);
-    int delUpUserPay(int iuser);
-    int delUserProPic(int iproduct);
-    int delUserPorc2(int iproduct);
-    int delUserPorc(int iuser);
+    int delUpUserPay(List<Integer> iuser);
+    int delUserProPic(List<Integer> iproduct);
+    int delUserPorc2(List<Integer> iproduct);
+    int delUserPorc(List<Integer> iuser);
 
     SelUserVo selUser(int iuser);
     Integer selpatchUser(int iuser);

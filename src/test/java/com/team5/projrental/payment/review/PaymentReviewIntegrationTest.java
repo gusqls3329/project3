@@ -73,14 +73,13 @@ public class PaymentReviewIntegrationTest {
         dto.setIpayment(15);
         dto.setRating(5);
         dto.setIuser(4);
-        String json = mapper.writeValueAsString(dto);
-        System.out.println("json: " + json);
+
         MvcResult mr = mockMvc.perform(
                         MockMvcRequestBuilders
                                 .post("/api/pay/review")
                                 .header("Authorization", token)
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(json))
+                                .content(mapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andReturn();

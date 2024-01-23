@@ -93,13 +93,14 @@
     <update id="delUpUserPay">
         update t_payment
         set ibuyer = null
-        where ibuyer = #{iuser}
+        where ibuyer in (
+        <foreach collection="iusers" item="iuser" separator=",">
+            iuser
+        </foreach>
+        )
     </update>
 
     <delete id="delUserProPic">
-        <!--        DELETE FROM t_pics-->
-        <!--        where iproduct = #{iproduct}-->
-        <!--    ******-->
         DELETE FROM t_pics
         where iproduct in (
         <foreach collection="iproducts" item="iproduct" separator=",">
@@ -107,14 +108,22 @@
         </foreach>
         )
     </delete>
-    <!--    ******-->
+
     <delete id="delUserPorc2">
         DELETE FROM t_product_payment
-        where iproduct = #{iproduct}
+        where iproduct  in (
+        <foreach collection="iproducts" item="iproduct" separator=",">
+            iproduct
+        </foreach>
+        )
     </delete>
     <delete id="delUserPorc">
         DELETE FROM t_product
-        where iuser = #{iuser}
+        where iuser in (
+        <foreach collection="iusers" item="iuser" separator=",">
+            iuser
+        </foreach>
+        )
     </delete>
 
     <!--    채팅 개수 가져오기 -> 채팅 개수가 1이상일 경우만 수행,
