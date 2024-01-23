@@ -30,7 +30,7 @@ public class PaymentReviewController {
     @Parameters(value = {
             @Parameter(name="ipayment", description = "후기 등록하는 제품의 결제PK")
             , @Parameter(name="contents", description = "null 허용")
-            , @Parameter(name="raiting", description = "null 허용 , 별점 등록 시 0~5점 등록 가능")
+            , @Parameter(name="rating", description = "null 허용 , 별점 등록 시 0~5점 등록 가능")
     })
     public ResVo postReview(@Validated @RequestBody RivewDto dto){
         return new ResVo(reviewService.postReview(dto));
@@ -41,7 +41,7 @@ public class PaymentReviewController {
     @Parameters(value = {
             @Parameter(name="ireview", description = "작성한 리뷰 PK")
             , @Parameter(name="contents", description = "null 허용")
-            , @Parameter(name="raiting", description = "null 허용 , 별점 등록 시 0~5점 등록 가능")
+            , @Parameter(name="rating", description = "null 허용 , 별점 등록 시 0~5점 등록 가능")
     })
     public ResVo patchReview(@Validated @RequestBody UpRieDto dto){
         return new ResVo(reviewService.patchReview(dto));

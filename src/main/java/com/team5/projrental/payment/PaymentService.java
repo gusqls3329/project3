@@ -57,7 +57,8 @@ public class PaymentService {
                 paymentInsDto.getRentalEndDate(), paymentInsDto.getRentalStartDate());
 
         // iproduct 는 문제 없음이 검증된 상태.
-        List<GetDepositAndPriceFromProduct> validationInfoFromProduct = paymentRepository.getValidationInfoFromProduct(paymentInsDto.getIproduct());
+        List<GetDepositAndPriceFromProduct> validationInfoFromProduct =
+                paymentRepository.getValidationInfoFromProduct(paymentInsDto.getIproduct());
 
         // deposit 과 price 는 일정함. 따라서
         GetDepositAndPriceFromProduct depositInfo = validationInfoFromProduct.get(0);
@@ -85,6 +86,8 @@ public class PaymentService {
 //                return new ResVo(1);
 //            }
 //        }
+
+
         if (paymentRepository.savePayment(paymentInsDto) != 0) {
             if (paymentRepository.saveProductPayment(paymentInsDto.getIproduct(), paymentInsDto.getIpayment()) != 0) {
                 return new ResVo(SUCCESS);
@@ -142,11 +145,14 @@ public class PaymentService {
             throw new NoSuchProductException(NO_SUCH_PRODUCT_EX_MESSAGE);
         }
         int iuser = getLoginUserPk();
+
         if (checkResult.getISeller() != iuser && checkResult.getIBuyer() != iuser) {
             throw new NoSuchUserException(NO_SUCH_USER_EX_MESSAGE);
         }
+
         // 취소요청이 아니면 오늘이 반납일보다 이후여야만 함.
         // 오늘이 반납일보다 이후가 아닌데 (대여 중인데) 삭제나 숨김 요청을 한 경우
+
         if (div != 3 && !LocalDate.now().isAfter(checkResult.getRentalEndDate())) {
             throw new BadDateInfoException(BAD_RENTAL_DEL_EX_MESSAGE);
         }
@@ -249,8 +255,8 @@ public class PaymentService {
          */
         if (role == null) throw new BadInformationException(BAD_INFO_EX_MESSAGE);
         if (istatus == 3 && role == Role.BUYER || istatus == 2 && role == Role.SELLER)
-            // 이미 취소한 상태. 
-            /* TODO 2024-01-21 일 23:17 
+            // 이미 취소한 상태.
+            /* TODO 2024-01-21 일 23:17
                 에러 메시지 디테일하게?
                 --by Hyunmin
             */

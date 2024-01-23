@@ -8,7 +8,9 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static com.team5.projrental.common.Const.*;
@@ -20,16 +22,16 @@ public class CommonUtils {
 
 
     public static boolean notBetweenChecker(LocalDate refStartDate, LocalDate refEndDate,
-                                             LocalDate newStartDate, LocalDate newEndDate) {
+                                            LocalDate newStartDate, LocalDate newEndDate) {
 
         return newStartDate.isBefore(refStartDate) && newEndDate.isBefore(refStartDate)
                 || newStartDate.isAfter(refEndDate) && newEndDate.isAfter(refEndDate);
     }
+
     /**
      * Integer n 이 null 이거나 0 이면 예외 유발
-     *
      * @param ex
-     * @param message
+     * @param err
      * @param n
      */
     public static void ifObjNullOrZeroThrow(Class<? extends RuntimeException> ex, ErrorCode err, Integer n) {
@@ -51,12 +53,11 @@ public class CommonUtils {
 
     /**
      * Stream<T> collection(리스트, 맵, 셋 등) 의 .size() 가 int limitNum 에 제공된 숫자보다 크면(초과) 예외 발생
-     *
      * @param ex
      * @param err
      * @param collection
      * @param limitNum
-     * @param Stream<T>
+     * @param <T>
      */
     public static <T> void checkSizeIfOverLimitNumThrow(Class<? extends RuntimeException> ex, ErrorCode err, Stream<T> collection,
                                                         int limitNum) {
@@ -176,14 +177,12 @@ public class CommonUtils {
         }
     }
 
-
     //
 
     /**
      * 예외 throw 메소드 (내부)
-     *
      * @param ex
-     * @param message
+     * @param err
      */
     private static void thrown(Class<? extends RuntimeException> ex, ErrorCode err) {
         try {
