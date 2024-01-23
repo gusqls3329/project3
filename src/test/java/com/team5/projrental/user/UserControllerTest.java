@@ -2,6 +2,7 @@ package com.team5.projrental.user;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.team5.projrental.MockMvcConfig;
 import com.team5.projrental.common.Const;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.security.AuthenticationFacade;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
@@ -33,43 +35,42 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@MockMvcConfig
 @WebMvcTest(UserController.class)
 public class UserControllerTest {
 
     @Autowired private MockMvc mvc;
-    @Autowired private ObjectMapper mapper;
+    @Autowired private ObjectMapper objectMapper;
     @MockBean private UserService service;
-    @MockBean private JwtAuthenticationFilter jwtAuthenticationFilter;
+    //@MockBean private JwtAuthenticationFilter jwtAuthenticationFilter;
     @MockBean private AuthenticationFacade authenticationFacade;
-    @Autowired private UserController controller;
-
+    //@Autowired private UserController controller;
 
 
     @Test
     @DisplayName("회원가입 테스트")
     void postSignup() throws Exception {
-        //UserSignupDto dto = new UserSignupDto();
-        Map<String, String> map = new HashMap<>();
-        map.put("addr", "대구 동구 방촌동");
-        map.put("restAddr", "a아파트");
-        map.put("uid", "testuserid");
-        map.put("upw", "testuserpw");
-        map.put("nick", "testNickname");
-        map.put("phone", "010-4114-9922");
-        map.put("email", "khi05040@naver.com");
-        map.put("IsValid", "2");
+        UserSignupDto dto = new UserSignupDto();
+        dto.setUid("testuserid");
+        dto.setUpw("testuserpw");
+        dto.setPhone("010-4114-9922");
+        dto.setEmail("khi05040@naver.com");
+
         //ResVo result = new ResVo(1);
         //int reuslt = service.postSignup(dto);
-        //given(service.postSignup(dto)).willReturn(reuslt);
-       mvc.perform(
+        given(service.postSignup(any())).willReturn(Const.SUCCESS);
+        mvc.perform(
                         MockMvcRequestBuilders
                                 .post("/api/user/signup")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(mapper.writeValueAsString(map))
+                                .content(objectMapper.writeValueAsString(dto))
                 )
                 .andExpect(status().isOk())
-                //.andExpect(content().string(mapper.writeValueAsString(result)))
+                //.andExpect(content().string(mapper.writeValueAsString(Const.SUCCESS)))
                 .andDo(print());
+
         //verify(service).postSignup(dto);
     }
 
@@ -91,20 +92,22 @@ public class UserControllerTest {
     void getFindUid() throws Exception {
         FindUidDto dto = new FindUidDto();
         dto.setPhone("010-7777-6666");
-        FindUidVo vo = service.getFindUid(dto);
 
-        String json = mapper.writeValueAsString(dto);
-        System.out.println(json);
+        FindUidVo vo = new FindUidVo();
+        vo.setUid("dongdong12");
+        vo.setIuser(14);
 
-       //given(service.getFindUid(dto)).willReturn(vo);
+        //String json = objectMapper.writeValueAsString(dto);
+        //System.out.println(json);
+       given(service.getFindUid(any())).willReturn(vo);
        mvc.perform(
                 MockMvcRequestBuilders
                         .patch("/api/user/id")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(json))
-                .andDo(print());
-                //.andExpect(status().isOk())
-                //.andExpect(content().json("{\"iuser\":\"14\",\"uid\":\"dongdong12\"}"));
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string(objectMapper.writeValueAsString(vo)));
 
         //verify(service).getFindUid(dto);
 
@@ -113,20 +116,20 @@ public class UserControllerTest {
     @Test
     void getFindUpw() throws Exception {
         FindUpwDto dto = new FindUpwDto();
+        //ResVo result = new ResVo(1);
         dto.setPhone("010-7777-6666");
         dto.setUid("dongdong12");
         dto.setUpw("testpassword");
 
-        given(service.getFindUpw(dto)).willReturn(Const.SUCCESS);
-    /*
+        //given(service.getFindUpw(dto)).willReturn(Const.SUCCESS);
         mvc.perform(MockMvcRequestBuilders
                     .post("/api/user/pw")
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(mapper.writeValueAsString(dto)))
+                    .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
-                .andExpect(content().string(mapper.writeValueAsString(vo)));
-     */
-        verify(service).getFindUpw(dto);
+                .andExpect(content().json("{\"result\": 1}"));
+
+        //verify(service).getFindUpw(dto);
     }
 
     @Test
@@ -141,10 +144,10 @@ public class UserControllerTest {
         mvc.perform(MockMvcRequestBuilders
                 .put("/api/user")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(dto))
+                .content(objectMapper.writeValueAsString(dto))
         )
                 .andExpect(status().isOk())
-                .andExpect(content().string(mapper.writeValueAsString(result)))
+                .andExpect(content().string(objectMapper.writeValueAsString(result)))
                 .andDo(print());
 
        // verify(service).putUser(dto);
