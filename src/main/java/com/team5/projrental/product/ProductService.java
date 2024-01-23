@@ -467,7 +467,7 @@ public class ProductService {
         List<LocalDate> disabledDates = new ArrayList<>();
         LocalDate dateWalker = LocalDate.of(refStartDate.getYear(), refStartDate.getMonth(), refStartDate.getDayOfMonth());
 
-        while (true) {
+        while (!dateWalker.isAfter(refEndDate)) {
             LocalDate lambdaDateWalker = dateWalker;
             if (disabledRefDates.stream().filter(
                     d -> lambdaDateWalker.isEqual(d.getRentalEndDate()) || lambdaDateWalker.isBefore(d.getRentalEndDate())
@@ -479,8 +479,6 @@ public class ProductService {
                         dateWalker.getMonth(),
                         dateWalker.getDayOfMonth()));
             }
-
-            if (refEndDate.isEqual(dateWalker)) break;
             dateWalker = dateWalker.plusDays(1);
         }
 
