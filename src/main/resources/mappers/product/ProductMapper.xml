@@ -276,5 +276,13 @@
         WHERE PP.iproduct = #{iproduct}
     </select>
 
+    <select id="getPicsAllBy">
+        select stored_pic from t_pics where ipics in
+        (
+        <foreach collection="ipcis" item="pic" separator=", ">
+            pic
+        </foreach>
+        )
+    </select>
 
 </mapper>

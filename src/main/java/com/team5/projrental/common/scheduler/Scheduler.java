@@ -17,7 +17,7 @@ import java.time.LocalDate;
 public class Scheduler {
 
     private final PaymentRepository paymentRepository;
-
+    /*
     @Scheduled(cron = "1/20 0-3 0 * * *")
     @Retry(5)
     public void updateStatusIfOverRentalEndDate() {
@@ -28,5 +28,5 @@ public class Scheduler {
     @EventListener(ApplicationReadyEvent.class)
     public void postConstruct() {
         updateStatusIfOverRentalEndDate();
-    }
+    }*/
 }

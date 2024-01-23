@@ -1,7 +1,6 @@
 package com.team5.projrental.product;
 
 import com.team5.projrental.product.model.CanNotRentalDate;
-import com.team5.projrental.product.model.ProductToggleFavDto;
 import com.team5.projrental.product.model.ProductUpdDto;
 import com.team5.projrental.product.model.proc.*;
 import com.team5.projrental.product.model.review.ReviewGetDto;
@@ -102,4 +101,8 @@ public class ProductRepository implements RefProductRepository {
         return productMapper.getLendStartDateAndEndDate(iproduct);
     }
 
+    @Override
+    public List<String> getPicsAllBy(List<Integer> ipics) {
+        return productMapper.getPicsAllBy(ipics);
+    }
 }
