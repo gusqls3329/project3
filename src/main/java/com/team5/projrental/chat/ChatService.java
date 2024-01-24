@@ -108,6 +108,9 @@ public class ChatService {
 
     //채팅방 입장시 메세지 내용 불러오기
     public List<ChatMsgSelVo> getMsgAll(ChatMsgSelDto dto) {
+        int loginUserPk = authenticationFacade.getLoginUserPk();
+        dto.setLoginedIuser(loginUserPk);
+
         List<ChatMsgSelVo> list = mapper.selChatMsgAll(dto);
         return list;
     }
