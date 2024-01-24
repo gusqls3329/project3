@@ -10,8 +10,6 @@ import org.hibernate.validator.constraints.Range;
 @Data
 public class ChatMsgInsDto {
 
-    @NotBlank
-    @Range(min = 1, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private int ichat; // 채팅방 고유 번호(채팅방 PK)
 
     @JsonIgnore
@@ -20,7 +18,6 @@ public class ChatMsgInsDto {
     @JsonIgnore
     private int loginedIuser; // 로그인 유저 PK
 
-    @NotBlank(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
     private String msg; // 전송할 메세지 내용
 
 
