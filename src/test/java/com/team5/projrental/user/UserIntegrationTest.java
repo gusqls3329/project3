@@ -5,6 +5,7 @@ import com.team5.projrental.common.Const;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.security.AuthenticationFacade;
 import com.team5.projrental.user.model.*;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -12,12 +13,14 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import static org.assertj.core.api.Assertions.*;
 import java.io.FileInputStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -31,6 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Transactional(rollbackFor = Exception.class)
+//@Rollback(value = false)
 public class UserIntegrationTest {
 
     @Autowired
@@ -40,6 +44,7 @@ public class UserIntegrationTest {
 
     @Autowired UserController controller;
 
+    @Autowired UserService service;
     AuthenticationFacade authenticationFacade;
     MultipartFile multipartFile;
 
@@ -103,8 +108,24 @@ public class UserIntegrationTest {
         dto.setPhone("010-7777-6666");
 
         String json = objectMapper.writeValueAsString(dto);
+//        FindUidVo result = controller.getFindUid(dto);
+//        FindUidVo result2 = service.getFindUid(dto);
+//        assertEquals(result.getUid(), result2.getUid());
 
-        MvcResult mr = mvc.perform(
+        String response = mvc.perform(
+                MockMvcRequestBuilders
+                        .post("/api/user/id")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        FindUidVo result = objectMapper.readValue(response, FindUidVo.class);
+        FindUidVo vo = new FindUidVo();
+        vo.setUid("dongdong12");
+        Assertions.assertEquals(vo.getUid(), result.getUid());
+
+        /*MvcResult mr = mvc.perform(
                 MockMvcRequestBuilders
                         .post("/api/user/id")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -112,18 +133,43 @@ public class UserIntegrationTest {
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andReturn();
-
-        //FindUidVo vo = objectMapper.readValue(mr, FindUidVo.class)
+        FindUidVo vo = objectMapper.readValue(mr, FindUidVo.class)*/
 
     }
 
     @Test
     void getFindUpw() throws Exception {
+        FindUpwDto dto = new FindUpwDto();
+        dto.setUid("dongdong12");
+        dto.setPhone("010-7777-6666");
+        dto.setUpw("testuserpw");
 
+        String response = mvc.perform(
+                MockMvcRequestBuilders
+                        .patch("/api/user/pw")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        ResVo result = objectMapper.readValue(response, ResVo.class);
+        Assertions.assertEquals(Const.SUCCESS, result.getResult());
     }
 
     @Test
     void putUser () throws Exception {
+        ChangeUserDto dto = new ChangeUserDto();
+        dto.setUpw("dongdong1212");
+        dto.setNick("동동이테스트");
+
+        String response = mvc.perform(
+                MockMvcRequestBuilders
+                        .put("/api/user")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+        //int result = objectMapper.readValue(response, ResVo.class)
 
     }
 
