@@ -23,9 +23,4 @@ public class RivewDto {
     @Max(value = 5, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private Integer rating;
 
-    @JsonIgnore
-    private int ireview;
-
-    @JsonIgnore
-    private int checkIuser;
 }

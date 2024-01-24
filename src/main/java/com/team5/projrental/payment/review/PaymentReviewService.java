@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import static com.team5.projrental.common.exception.ErrorCode.ILLEGAL_EX_MESSAGE;
 import static com.team5.projrental.common.exception.ErrorMessage.NO_SUCH_REVIEW_EX_MESSAGE;
 import static com.team5.projrental.common.exception.ErrorMessage.REVIEW_ALREADY_EXISTS_EX_MESSAGE;
@@ -46,19 +48,14 @@ public class PaymentReviewService {
                     } else {
                         //if (reviewMapper.selReview(null, dto.getIpayment()) == 2) {
                             int result2 = reviewMapper.upProductIstatus(dto.getIpayment());
-                            log.info("dto.getIreview:{}",dto.getIreview());
                             if (result2 == 1) {
                                 if(dto.getContents() != null && dto.getRating() != null){
-                                    int chIuser = reviewMapper.selUser(dto.getIreview());
-                                    SelRatVo rating = reviewMapper.selRat(chIuser);
-                                    for (Integer total : rating.getTotalRat()){
-                                        if (total == null){
-                                             int a = rating.getCountIuser() - 1;
-                                            dto.setCheckIuser(a);
-                                        }
-                                    }
-                                    double average = (dto.getCheckIuser()-1) * rating.getAverageRat();
-                                    double averageRat = (average+dto.getRating())/(dto.getCheckIuser());
+                                    int chIuser = reviewMapper.selUser(dto.getIpayment());
+                                    SelRatVo countIuser = reviewMapper.selRat(chIuser);
+
+                                    double average = (countIuser.getCountIre()-1) * countIuser.getRating();
+                                    double averageRat = (average+dto.getRating()) / countIuser.getCountIre();
+
                                     UpRating uprating = new UpRating();
                                     uprating.setIuser(chIuser);
                                     uprating.setRating(averageRat);
