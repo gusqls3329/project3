@@ -42,8 +42,8 @@ public class PaymentRepository {
         return paymentMapper.getPaymentList(getPaymentListDto);
     }
 
-   /* public int updateStatusIfOverRentalEndDate(LocalDate now) {
+   public int updateStatusIfOverRentalEndDate(LocalDate now) {
         return paymentMapper.updateIstatusOverRentalEndDate(now);
-    }*/
+    }
 
 }
