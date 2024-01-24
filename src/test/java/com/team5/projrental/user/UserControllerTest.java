@@ -74,6 +74,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @DisplayName("로그인 테스트")
     void postSignin() throws Exception {
         SigninDto dto = new SigninDto();
         dto.setUid("dongdong12");
