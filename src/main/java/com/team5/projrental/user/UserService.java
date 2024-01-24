@@ -66,8 +66,8 @@ public class UserService {
         if (result == 1) {
             if (dto.getPic() != null) {
                 log.info("사진 :{}", dto.getPic());
-                String path = "/user/";
-                myFileUtils.delFolderTrigger(path);
+
+                myFileUtils.delFolderTrigger(Const.CATEGORY_USER);
                 try {
                     String savedPicFileNm = String.valueOf(
                             myFileUtils.savePic(dto.getPic(), Const.CATEGORY_USER,
@@ -177,7 +177,7 @@ public class UserService {
         dto.setAddr(addrs.getAddress_name());
 
 
-        String path = "/user/" + dto.getIuser();
+        String path = Const.CATEGORY_USER + dto.getIuser();
         myFileUtils.delFolderTrigger(path);
         try {
             String savedPicFileNm = String.valueOf(
