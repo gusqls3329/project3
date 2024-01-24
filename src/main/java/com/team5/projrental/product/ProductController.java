@@ -258,6 +258,7 @@ public class ProductController {
     @Operation(summary = "특정 유저의 모든 제품 목록 조회",
             description = "<strong>특정 유저의 모든 제품목록 조회</strong><br>" +
                     "[ [v] : 필수값]<br>" +
+                    "iuser: 대상 유저의 PK값 (제공되지 않을시 기본적으로 로그인 유저의 모든 제품이 조회됨)" +
                     "[v] page: 페이징" +
                     "<br><br>" +
                     "성공시: <br>" +
@@ -277,11 +278,14 @@ public class ProductController {
                     "message: 에러 발생 사유<br>errorCode: 에러 코드")
     @Validated
     @GetMapping("/list")
-    public List<ProductUserVo> getUserProductList(@RequestParam
+    public List<ProductUserVo> getUserProductList(@RequestParam(required = false)
+                                                  @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
+                                                  Integer iuser,
+                                                  @RequestParam
                                                   @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
                                                   @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
                                                   @NotNull Integer page) {
-        return productService.getUserProductList((page - 1) * Const.PROD_PER_PAGE);
+        return productService.getUserProductList(iuser, (page - 1) * Const.PROD_PER_PAGE);
 
     }
 
