@@ -43,7 +43,6 @@ public interface ProductMapper {
     //
 
     List<GetProductListResultDto> getProductList(GetProductListDto getProductListDto);
-
     GetProductResultDto getProduct(GetProductBaseDto getProductBaseDto);
 
     List<String> getProdEctPics(Integer productPK);

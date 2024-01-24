@@ -63,22 +63,14 @@
 
 
     <select id="getProductList">
-        select U.iuser, U.nick, U.stored_pic as userStoredPic, U.iauth,
-        P.iproduct, concat(P.addr, ' ', P.rest_addr) as addr, P.title, P.stored_pic as prodMainStoredPic,
-        P.rental_price as rentalPrice,
-        P.rental_start_date as rentalStartDate, P.rental_end_date as rentalEndDate, COUNT(L.iproduct) as prodLike, P.istatus
-        <if test="iuser != null">
-            , C.category
-        </if>
-        <if test="sort == 1">
-            , (select count(L.iproduct) from t_like L where L.iproduct = P.iproduct) as prodLike
-        </if>
+        select U.iuser, U.nick, U.stored_pic as userStoredPic, U.iauth, P.iproduct,
+        concat(P.addr, ' ', P.rest_addr) as addr, P.title, P.stored_pic as prodMainStoredPic,
+        P.rental_price as rentalPrice, P.rental_start_date as rentalStartDate,
+        P.rental_end_date as rentalEndDate, (select count(L.iproduct) from t_like L where L.iproduct = P.iproduct) as prodLike, P.istatus,
+        if(L.iuser > 0, 1, 0) as isLiked, P.view, P.inventory
         from t_product P
         join t_user U on P.iuser = U.iuser
-        left join t_like L on P.iproduct = L.iproduct
-        <if test="iuser != null">
-            join t_category C on P.icategory = C.icategory
-        </if>
+        left join t_like L on P.iproduct = L.iproduct and L.iuser = #{loginedIuser}
         <where>
             P.istatus = 0
             <if test="icategory != null and icategory != 0">
@@ -87,8 +79,8 @@
             <if test="search != null">
                 and P.title like concat('%', #{search}, '%')
             </if>
-            <if test="iuser != null">
-                and P.iuser = #{iuser}
+            <if test="targetIuser != null">
+                and P.iuser = #{targetIuser}
             </if>
         </where>
         group by P.iproduct
@@ -105,8 +97,10 @@
             limit #{page}, #{prodPerPage}
         </if>
 
-
     </select>
+
+
+
 
     <select id="getProduct">
         select U.iuser, U.nick, U.stored_pic as userStoredPic, U.iauth,
@@ -115,7 +109,7 @@
         P.rental_price as rentalPrice, P.rental_start_date as rentalStartDate,
         P.rental_end_date as rentalEndDate, COUNT(L.iproduct) as prodLike, P.istatus,
         P.contents, P.deposit, P.buy_date as buyDate, P.x, P.y,
-        if(count(L.iuser) = 0, 0, 1) as isLiked
+        if(L.iuser > 0, 1, 0) as isLiked, P.view, P.inventory
         from t_product P
         join t_user U on P.iuser = U.iuser
         left join t_like L on P.iproduct = L.iproduct and L.iuser = #{iuser}
