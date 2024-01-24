@@ -13,7 +13,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -91,7 +90,13 @@ public class CommonAspect {
     }
 
 
-    @Before("execution(* com.team5.projrental.payment.PaymentService.postPayment(..)) && args(dto)")
+    //    @Before("execution(* com.team5.projrental.payment.PaymentService.postPayment(..)) && args(dto)")
+//    public void deleteCache(JoinPoint joinPoint, PaymentInsDto dto) {
+//        log.debug("[deleteCache AOP] {}", joinPoint.getSignature());
+//        disabledCache.remove(dto.getIproduct());
+//    }
+
+    @AfterReturning("execution(* com.team5.projrental.payment.PaymentService.postPayment(..)) && args(dto)")
     public void deleteCache(JoinPoint joinPoint, PaymentInsDto dto) {
         log.debug("[deleteCache AOP] {}", joinPoint.getSignature());
         disabledCache.remove(dto.getIproduct());
