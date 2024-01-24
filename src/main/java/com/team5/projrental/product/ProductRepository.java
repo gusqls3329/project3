@@ -55,7 +55,7 @@ public class ProductRepository implements RefProductRepository {
         return productMapper.getProduct(getProductBaseDto);
     }
     @Override
-    public List<GetProdEctPicDto> findPicsBy(Integer productPK) {
+    public List<String> findPicsBy(Integer productPK) {
         return productMapper.getProdEctPics(productPK);
     }
     @Override

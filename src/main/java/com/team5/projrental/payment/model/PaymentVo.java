@@ -1,11 +1,14 @@
 package com.team5.projrental.payment.model;
 
+import com.team5.projrental.payment.model.proc.GetPaymentListResultDto;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.core.io.Resource;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import static com.team5.projrental.common.Const.PAYMENT_METHODS;
 
 @Getter
 @Setter
@@ -29,5 +32,18 @@ public class PaymentVo extends PaymentListVo {
         this.code = code;
         this.role = role;
         this.createdAt = createdAt;
+    }
+
+    public PaymentVo(GetPaymentListResultDto dto) {
+        super(dto.getIuser(), dto.getNick(), dto.getUserStoredPic(), dto.getIpayment(), dto.getIproduct(),
+                dto.getProdStoredPic(), dto.getIstatus(), dto.getRentalStartDate(), dto.getRentalEndDate(),
+                dto.getRentalDuration(),
+                dto.getPrice(), dto.getDeposit());
+
+        this.phone = dto.getPhone();
+        this.payment = PAYMENT_METHODS.get(dto.getIpayment());
+        this.code = dto.getCode();
+        this.role = dto.getRole();
+        this.createdAt = dto.getCreatedAt();
     }
 }

@@ -3,6 +3,7 @@ package com.team5.projrental.payment.review;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.payment.review.model.DelRivewDto;
 import com.team5.projrental.payment.review.model.RivewDto;
+import com.team5.projrental.payment.review.model.SelRatVo;
 import com.team5.projrental.payment.review.model.UpRieDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -57,8 +58,6 @@ public class PaymentReviewController {
         dto.setIreview(ireview);
         return new ResVo(reviewService.delReview(dto));
     }
-
-
 
 
 }

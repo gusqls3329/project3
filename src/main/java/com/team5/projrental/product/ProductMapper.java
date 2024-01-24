@@ -46,7 +46,7 @@ public interface ProductMapper {
 
     GetProductResultDto getProduct(GetProductBaseDto getProductBaseDto);
 
-    List<GetProdEctPicDto> getProdEctPics(Integer productPK);
+    List<String> getProdEctPics(Integer productPK);
 
 
     int insProduct(InsProdBasicInfoDto insProdBasicInfoDto);
