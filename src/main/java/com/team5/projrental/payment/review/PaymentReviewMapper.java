@@ -4,6 +4,8 @@ import com.team5.projrental.payment.review.model.*;
 import com.team5.projrental.user.model.CheckIsBuyer;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface PaymentReviewMapper {
     int insReview(RivewDto dto);
@@ -17,7 +19,7 @@ public interface PaymentReviewMapper {
     RiviewVo selPatchRev(Integer ireview);
 
     // 평균 별점올리기
-    int selUser(Integer ireview);
+    int selUser(Integer ipayment);
     SelRatVo selRat(Integer iuser);
     int upRating(UpRating rating);
 }

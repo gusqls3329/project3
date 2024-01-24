@@ -3,6 +3,7 @@ package com.team5.projrental.user;
 import com.team5.projrental.common.Const;
 import com.team5.projrental.common.SecurityProperties;
 import com.team5.projrental.common.exception.BadAddressInfoException;
+import com.team5.projrental.common.exception.ErrorMessage;
 import com.team5.projrental.common.exception.base.*;
 import com.team5.projrental.common.exception.checked.FileNotContainsDotException;
 import com.team5.projrental.common.model.ResVo;
@@ -47,11 +48,18 @@ public class UserService {
 
     public int postSignup(UserSignupDto dto) {
 
-
         String hashedPw = passwordEncoder.encode(dto.getUpw());
         dto.setUpw(hashedPw);
         // 대구 달서구 용산1동 -> x: xxx.xxxxx y: xx.xxxxx address_name: 대구 달서구 용산1동
+        if(dto.getCompNm() != null && dto.getCompCode() != 0){
+            if(dto.getCompCode()<1000000000 || dto.getCompCode()>9999999999L){
+                throw new BadInformationException(ILLEGAL_RANGE_EX_MESSAGE);
+            }
 
+        }
+        if ((dto.getCompCode() == 0L && dto.getCompNm() != null) || (dto.getCompCode() != 0L && dto.getCompNm() == null)) {
+            throw new BadInformationException(BAD_INFO_EX_MESSAGE);
+        }
         Addrs addrs = axisGenerator.getAxis(dto.getAddr());
         CommonUtils.ifAnyNullThrow(BadAddressInfoException.class, BAD_ADDRESS_INFO_EX_MESSAGE,
                 addrs, addrs.getAddress_name(), addrs.getX(), addrs.getY());
@@ -60,13 +68,8 @@ public class UserService {
         dto.setAddr(addrs.getAddress_name());
 
         int result = mapper.insUser(dto);
-
-        log.debug("dto : {}", dto);
-
         if (result == 1) {
             if (dto.getPic() != null) {
-                log.info("사진 :{}", dto.getPic());
-
                 myFileUtils.delFolderTrigger(Const.CATEGORY_USER);
                 try {
                     String savedPicFileNm = String.valueOf(
@@ -80,31 +83,54 @@ public class UserService {
                     throw new BadInformationException(BAD_PIC_EX_MESSAGE);
                 }
             }
-            return Const.SUCCESS;
+            if (dto.getCompNm() != null && dto.getCompCode() != 0) {
+                int a = mapper.insauth(dto.getIuser());
+                if (a == 1) {
+                    UserSignUpComDto comDto = new UserSignUpComDto();
+                    comDto.setCompCode(dto.getCompCode());
+                    comDto.setCompNm(dto.getCompNm());
+                    comDto.setIuser(dto.getIuser());
+                    int aa = mapper.insCom(comDto);
+                    if (aa != 1) {
+                        throw new BadInformationException(BAD_INFO_EX_MESSAGE);
+                    }
+                    int auth = authenticationFacade.getLoginUserAuth();
+                    return auth;
+                }
+                throw new BadInformationException(ILLEGAL_EX_MESSAGE);
+
+            }
+            if (dto.getCompNm() == null && dto.getCompCode() == 0) {
+                int auth = authenticationFacade.getLoginUserAuth();
+                return auth;
+            }
         }
+
         throw new BadInformationException(BAD_INFO_EX_MESSAGE);
     }
 
 
     public SigninVo postSignin(HttpServletResponse res, SigninDto dto) {
         UserEntity entity = mapper.selSignin(dto);
-
         if (entity == null) {
             throw new NoSuchDataException(NO_SUCH_ID_EX_MESSAGE);
         } else if (!passwordEncoder.matches(dto.getUpw(), entity.getUpw())) {
             throw new NoSuchDataException(NO_SUCH_PASSWORD_EX_MESSAGE);
         }
 
-        SecurityPrincipal principal = SecurityPrincipal.builder().iuser(entity.getIuser()).build();
+        SecurityPrincipal principal = SecurityPrincipal.builder()
+                .iuser(entity.getIuser())
+                .iauth(entity.getIauth()).build();
         String at = jwtTokenProvider.generateAccessToken(principal);
         String rt = jwtTokenProvider.generateRefreshToken(principal);
-        if(res != null) {
+        if (res != null) {
             int rtCookieMaxAge = (int) (securityProperties.getJwt().getRefreshTokenExpiry() / 1000);
             cookieUtils.deleteCookie(res, "rt");
             cookieUtils.setCookie(res, "rt", rt, rtCookieMaxAge);
         }
         return SigninVo.builder()
                 .result(String.valueOf(Const.SUCCESS))
+                .iauth(entity.getIauth())
                 .iuser(entity.getIuser())
                 .auth(entity.getAuth())
                 .firebaseToken(entity.getFirebaseToken())
@@ -135,18 +161,19 @@ public class UserService {
                 .accessToken(at).build();
     }
 
-    public int patchUserFirebaseToken(UserFirebaseTokenPatchDto dto) { //FirebaseToken을 발급 : Firebase방식 : 메시지를 보낼때 ip대신 고유값(Firebase)을 가지고 있는사람에게 메시지 전달
+    public ResVo patchUserFirebaseToken(UserFirebaseTokenPatchDto dto) { //FirebaseToken을 발급 : Firebase방식 : 메시지를 보낼때 ip대신 고유값(Firebase)을 가지고 있는사람에게 메시지 전달
         int loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setIuser(loginUserPk);
         int result = mapper.updUserFirebaseToken(dto);
         if (result == 1) {
-            return Const.SUCCESS;
+            return new ResVo(Const.SUCCESS);
         }
         throw new BadInformationException(AUTHENTICATION_FAIL_EX_MESSAGE);
     }
 
     public FindUidVo getFindUid(FindUidDto phone) {
         FindUidVo vo = mapper.selFindUid(phone);
+        vo.setIauth(authenticationFacade.getLoginUserAuth());
         if (vo == null) {
             throw new BadInformationException(NO_SUCH_USER_EX_MESSAGE);
         }
@@ -158,7 +185,8 @@ public class UserService {
         dto.setUpw(hashedPw);
         int result = mapper.upFindUpw(dto);
         if (result == 1) {
-            return Const.SUCCESS;
+            int auth = authenticationFacade.getLoginUserAuth();
+            return auth;
         }
         throw new BadInformationException(NO_SUCH_USER_EX_MESSAGE);
     }
@@ -193,7 +221,8 @@ public class UserService {
         dto.setUpw(hashedPw);
         int result = mapper.changeUser(dto);
         if (result == 1) {
-            return Const.SUCCESS;
+            int auth = authenticationFacade.getLoginUserAuth();
+            return auth;
         }
         throw new BadDateInfoException(AUTHENTICATION_FAIL_EX_MESSAGE);
     }
@@ -217,11 +246,11 @@ public class UserService {
             String hashedPw = entity.getUpw();
             boolean checkPw = passwordEncoder.matches(dto.getUpw(), hashedPw);
             if (checkPw) {
-                if (check != null && check != 0 ) {
+                if (check != null && check != 0) {
                     throw new IllegalException(CAN_NOT_DEL_USER_EX_MESSAGE);
                 } else {
                     // 채팅 개수 가져오기 && 채팅 삭제
-                    if(!mapper.getUserChatCount(loginUserPk).equals(mapper.delUserChat(loginUserPk))){
+                    if (!mapper.getUserChatCount(loginUserPk).equals(mapper.delUserChat(loginUserPk))) {
                         throw new IllegalException(CAN_NOT_DEL_USER_EX_MESSAGE);
                     }
 
@@ -256,11 +285,13 @@ public class UserService {
         if (iuser == null || iuser == 0) { //나일때
             int loginUserPk = authenticationFacade.getLoginUserPk();
             SelUserVo vo1 = mapper.selUser(loginUserPk);
+            vo1.setIauth(authenticationFacade.getLoginUserAuth());
             return vo1;
         }
         SelUserVo vo2 = mapper.selUser(iuser);
         vo2.setEmail(null);
         vo2.setPhone(null);
+        vo2.setIauth(authenticationFacade.getLoginUserAuth());
         return vo2;
     }
 

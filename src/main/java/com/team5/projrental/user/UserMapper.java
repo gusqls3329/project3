@@ -8,6 +8,8 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
     int insUser(UserSignupDto dto);
+    int insCom(UserSignUpComDto dto);
+    int insauth(int iuser);
     UserEntity selSignin(SigninDto dto);
     int updUserFirebaseToken(UserFirebaseTokenPatchDto dto);
 
