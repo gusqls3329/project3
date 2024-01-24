@@ -116,7 +116,4 @@ public class PaymentReviewService {
             throw new BadInformationException(ILLEGAL_EX_MESSAGE);
     }
 
-    public SelRatVo SelRatVo(int iuser){
-        return reviewMapper.selRat(iuser);
-    }
 }
