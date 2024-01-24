@@ -17,6 +17,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static com.team5.projrental.common.exception.ErrorMessage.*;
@@ -288,5 +289,26 @@ public class ProductController {
         return productService.getAllReviews(iproduct, page);
     }
 
+    @Operation(summary = "월별 대여 불가능한 날짜들 조회",
+            description = "성공시:<br>" +
+                    "[<br>" +
+                    "  거래 불가능한 개별 날짜들 (yyyy-MM-dd)" +
+                    "] (배열)<br><br>" +
+                    "실패시:<br>" +
+                    "message: 에러 발생 사유<br>errorCode: 에러 코드")
+    @Validated
+    @GetMapping("/disabled-date/{iproduct}")
+    public List<LocalDate> getDisabledDate(@PathVariable
+                                           @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
+                                           Integer iproduct,
+                                           @RequestParam
+                                           @Range(min = 2000, max = 9999, message = ILLEGAL_RANGE_EX_MESSAGE)
+                                           Integer y,
+                                           @RequestParam
+                                           @Range(min = 1, max = 12, message = ILLEGAL_RANGE_EX_MESSAGE)
+                                           Integer m) {
+        return productService.getDisabledDate(iproduct, y, m);
+
+    }
 
 }
