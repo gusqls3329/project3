@@ -67,10 +67,10 @@ public class UserIntegrationTest {
         //dto.setY(124);
         //dto.setChPic("pic.jpg");
 
-        *//*String fileName = "pic.jpg";
+        String fileName = "pic.jpg";
         String filePath = "D:/ee/" + fileName;
         FileInputStream fileInputStream = new FileInputStream(filePath);
-        this.multipartFile = new MockMultipartFile("pic", fileName, "png", fileInputStream);*//*
+        this.multipartFile = new MockMultipartFile("pic", fileName, "png", fileInputStream);
 
         //dto.setPic(this.multipartFile);
 
@@ -121,7 +121,7 @@ public class UserIntegrationTest {
         vo.setUid("qwqwqw123");
         Assertions.assertEquals(vo.getUid(), result.getUid());
 
-        *//*MvcResult mr = mvc.perform(
+        MvcResult mr = mvc.perform(
                 MockMvcRequestBuilders
                         .post("/api/user/id")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -129,7 +129,7 @@ public class UserIntegrationTest {
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andReturn();
-        FindUidVo vo = objectMapper.readValue(mr, FindUidVo.class)*//*
+        FindUidVo vo = objectMapper.readValue(mr, FindUidVo.class)
 
     }
 
