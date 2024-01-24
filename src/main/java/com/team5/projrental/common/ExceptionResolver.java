@@ -118,8 +118,8 @@ public class ExceptionResolver {
     @ExceptionHandler
     public ResponseEntity<ErrorResultVo> resolve(HttpMessageNotReadableException e) {
         log.warn("error message", e);
-        return ResponseEntity.status(4000)
-                .body(ErrorResultVo.builder().errorCode(4000)
+        return ResponseEntity.status(400)
+                .body(ErrorResultVo.builder().errorCode(400)
                         .message("잘못된 요청 입니다.").build());
     }
 
@@ -127,8 +127,8 @@ public class ExceptionResolver {
     @ExceptionHandler
     public ResponseEntity<ErrorResultVo> resolve(WrapRuntimeException e) {
         log.warn("error message", e);
-        return ResponseEntity.status(5000)
-                .body(ErrorResultVo.builder().errorCode(5000)
+        return ResponseEntity.status(500)
+                .body(ErrorResultVo.builder().errorCode(500)
                         .message(ErrorCode.SERVER_ERR_MESSAGE.getMessage()).errorCode(500).build());
 
     }
@@ -136,8 +136,8 @@ public class ExceptionResolver {
     @ExceptionHandler
     public ResponseEntity<ErrorResultVo> resolve(RuntimeException e) {
         log.warn("error message", e);
-        return ResponseEntity.status(5000)
-                .body(ErrorResultVo.builder().errorCode(5000)
+        return ResponseEntity.status(500)
+                .body(ErrorResultVo.builder().errorCode(500)
                         .message(ErrorCode.SERVER_ERR_MESSAGE.getMessage()).errorCode(500).build());
 
     }

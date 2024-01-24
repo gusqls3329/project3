@@ -77,7 +77,7 @@ public class ProductService {
         List<GetProductListResultDto> products =
                 productRepository.findProductListBy(new GetProductListDto(sort, search, icategory, page, getLoginUserPk(), prodPerPage));
         // 결과물 없음 여부 체크 (결과물 없으면 빈 객체 리턴)
-        if(!CommonUtils.checkNullOrZeroIfCollectionReturnFalse(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE,
+        if (!CommonUtils.checkNullOrZeroIfCollectionReturnFalse(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE,
                 products)) return new ArrayList<>();
 
         // 검증 이상 무
@@ -465,26 +465,37 @@ public class ProductService {
     }
 
     private List<LocalDate> getDisabledDates(int iproduct, LocalDate refStartDate) {
-
-        return getDisabledDates(iproduct, refStartDate, LocalDate.of(refStartDate.getYear(), refStartDate.getMonth(),
-                refStartDate.lengthOfMonth()));
+        LocalDate forRefEndDate = refStartDate.plusMonths(ADD_MONTH_NUM_FOR_DISABLED_DATE);
+        return getDisabledDates(iproduct, refStartDate, LocalDate.of(forRefEndDate.getYear(), forRefEndDate.getMonth(),
+                forRefEndDate.lengthOfMonth()));
     }
 
     private List<LocalDate> getDisabledDates(int iproduct, LocalDate refStartDate, LocalDate refEndDate) {
 
-        final int stockCount = productRepository.findStockCountBy(iproduct);
+        final Integer stockCount = productRepository.findStockCountBy(iproduct);
+        CommonUtils.ifAnyNullThrow(BadProductInfoException.class, BAD_PRODUCT_INFO_EX_MESSAGE,
+                stockCount);
         List<CanNotRentalDateVo> disabledRefDates =
                 productRepository.findDisabledDatesBy(new CanNotRentalDateDto(iproduct, refStartDate, refEndDate));
+        // 만약 해당 월들 사이에 이미 거래중인 건이 없다면 곧바로 빈 배열 리턴.
+        if (disabledRefDates == null || disabledRefDates.isEmpty()) return new ArrayList<>();
+
+        // 거래 불가능한 날짜들 담을 객체 미리 생성
         List<LocalDate> disabledDates = new ArrayList<>();
+
+        // 검사 시작일부터 하루씩 더해질 객체 생성
         LocalDate dateWalker = LocalDate.of(refStartDate.getYear(), refStartDate.getMonth(), refStartDate.getDayOfMonth());
 
+        // 작업 시작
         while (!dateWalker.isAfter(refEndDate)) {
             LocalDate lambdaDateWalker = dateWalker;
-            if (disabledRefDates.stream().filter(
-                    d -> lambdaDateWalker.isEqual(d.getRentalEndDate()) || lambdaDateWalker.isBefore(d.getRentalEndDate())
-                            &&
-                            lambdaDateWalker.isEqual(d.getRentalStartDate()) || lambdaDateWalker.isAfter(d.getRentalStartDate())
-            ).count() >= stockCount) {
+            long count = disabledRefDates.stream().filter(
+                    d -> lambdaDateWalker.isEqual(d.getRentalEndDate()) ||
+                            lambdaDateWalker.isEqual(d.getRentalStartDate()) ||
+                            lambdaDateWalker.isBefore(d.getRentalEndDate()) && lambdaDateWalker.isAfter(d.getRentalStartDate()
+                            )
+            ).count();
+            if (count >= stockCount) {
 
                 disabledDates.add(LocalDate.of(dateWalker.getYear(),
                         dateWalker.getMonth(),

@@ -74,5 +74,5 @@ public interface ProductMapper {
 
     List<CanNotRentalDateVo> findDisabledDatesBy(CanNotRentalDateDto dto);
 
-    int findStockCountBy(int iproduct);
+    Integer findStockCountBy(int iproduct);
 }
