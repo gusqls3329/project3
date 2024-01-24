@@ -2,17 +2,21 @@ package com.team5.projrental.common.aop;
 
 import com.team5.projrental.common.aop.anno.Retry;
 import com.team5.projrental.common.threadpool.MyThreadPoolHolder;
+import com.team5.projrental.payment.model.PaymentInsDto;
 import com.team5.projrental.product.ProductRepository;
 import com.team5.projrental.product.model.ProductVo;
 import com.team5.projrental.product.model.proc.GetProductViewAopDto;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 
 @Aspect
@@ -22,10 +26,12 @@ public class CommonAspect {
 
     private final ProductRepository productRepository;
     private final ExecutorService threadPool;
+    public Map<Integer, List<LocalDate>> disabledCache;
 
     public CommonAspect(ProductRepository productRepository, MyThreadPoolHolder threadPool) {
         this.productRepository = productRepository;
         this.threadPool = threadPool.getThreadPool();
+        disabledCache = new HashMap<>();
     }
 
 
@@ -80,5 +86,46 @@ public class CommonAspect {
                 now, changedColumn);
         return changedColumn;
     }
+
+
+    @Before("execution(* com.team5.projrental.payment.PaymentService.postPayment(..)) && args(dto)")
+    public void deleteCache(JoinPoint joinPoint, PaymentInsDto dto) {
+        log.debug("[deleteCache AOP] {}", joinPoint.getSignature());
+        disabledCache.remove(dto.getIproduct());
+    }
+
+    @Around("execution(* com.team5.projrental.product.ProductController.getDisabledDate(..)) && args(iproduct, ..)")
+    public Object returnCacheIfContains(ProceedingJoinPoint joinPoint, Integer iproduct) {
+        List<LocalDate> inCache = disabledCache.get(iproduct);
+        log.debug("[returnCacheIfContains] inCache: {}", inCache);
+        try {
+            return inCache != null ? inCache : joinPoint.proceed();
+        } catch (Throwable e) {
+            log.debug("[returnCacheIfContains] error: ", e);
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    @AfterReturning(value = "execution(* com.team5.projrental.product.ProductController.getDisabledDate(..)) && args(iproduct, " +
+            "..)",
+            returning = "disabledDates", argNames = "joinPoint,iproduct,disabledDates")
+    public void addCache(JoinPoint joinPoint, Integer iproduct, List<LocalDate> disabledDates) {
+        log.debug("[addCache AOP] {}", joinPoint.getSignature());
+        if (disabledCache.size() < 51) {
+            disabledCache.put(iproduct, disabledDates);
+        }
+        disabledCache.keySet().forEach(k -> log.debug("[addCache AOP] total Cache = key: {}, values: {}", k,
+                disabledCache.get(k)));
+
+
+        log.debug("[addCache AOP] memory check {}/{} free: {}",
+                Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory(),
+                Runtime.getRuntime().totalMemory(),
+                Runtime.getRuntime().freeMemory()
+        );
+
+    }
+
 
 }
