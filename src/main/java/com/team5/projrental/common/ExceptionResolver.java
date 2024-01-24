@@ -16,6 +16,8 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import java.util.Arrays;
 
+import static com.team5.projrental.common.exception.ErrorCode.BAD_TYPE_EX_MESSAGE;
+
 @RestControllerAdvice
 @Slf4j
 public class ExceptionResolver {
@@ -34,10 +36,10 @@ public class ExceptionResolver {
     @ExceptionHandler({MethodArgumentTypeMismatchException.class})
     public ResponseEntity<ErrorResultVo> resolve(MethodArgumentTypeMismatchException eBase) {
         log.warn("error message", eBase);
-        return ResponseEntity.status(400)
-                .body(ErrorResultVo.builder().errorCode(400)
+        return ResponseEntity.status(4000)
+                .body(ErrorResultVo.builder().errorCode(BAD_TYPE_EX_MESSAGE.getCode())
 //                        .message(e.getErrorCode().getMessage()).build());
-                        .message("잘못된 타입을 입력하였습니다.").build());
+                        .message(BAD_TYPE_EX_MESSAGE.getMessage()).build());
     }
 
 
@@ -116,8 +118,8 @@ public class ExceptionResolver {
     @ExceptionHandler
     public ResponseEntity<ErrorResultVo> resolve(HttpMessageNotReadableException e) {
         log.warn("error message", e);
-        return ResponseEntity.status(400)
-                .body(ErrorResultVo.builder().errorCode(400)
+        return ResponseEntity.status(4000)
+                .body(ErrorResultVo.builder().errorCode(4000)
                         .message("잘못된 요청 입니다.").build());
     }
 
@@ -125,8 +127,8 @@ public class ExceptionResolver {
     @ExceptionHandler
     public ResponseEntity<ErrorResultVo> resolve(WrapRuntimeException e) {
         log.warn("error message", e);
-        return ResponseEntity.status(500)
-                .body(ErrorResultVo.builder().errorCode(500)
+        return ResponseEntity.status(5000)
+                .body(ErrorResultVo.builder().errorCode(5000)
                         .message(ErrorCode.SERVER_ERR_MESSAGE.getMessage()).errorCode(500).build());
 
     }
@@ -134,8 +136,8 @@ public class ExceptionResolver {
     @ExceptionHandler
     public ResponseEntity<ErrorResultVo> resolve(RuntimeException e) {
         log.warn("error message", e);
-        return ResponseEntity.status(500)
-                .body(ErrorResultVo.builder().errorCode(500)
+        return ResponseEntity.status(5000)
+                .body(ErrorResultVo.builder().errorCode(5000)
                         .message(ErrorCode.SERVER_ERR_MESSAGE.getMessage()).errorCode(500).build());
 
     }

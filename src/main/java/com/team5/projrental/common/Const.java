@@ -45,6 +45,7 @@ public interface Const {
         --by Hyunmin */
     int IN_PRODUCT_REVIEW_PER_PAGE = 4;
     int TOTAL_REVIEW_PER_PAGE = 10;
+    int MAIN_PROD_PER_PAGE = 8;
     //
 
     /*
