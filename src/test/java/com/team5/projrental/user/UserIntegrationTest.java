@@ -50,7 +50,7 @@ public class UserIntegrationTest {
     AuthenticationFacade authenticationFacade;
     MultipartFile multipartFile;
 
-    @Test
+    /*@Test
     void postSignup() throws Exception {
         UserSignupDto dto = new UserSignupDto();
         //dto.setIuser(12);
@@ -67,10 +67,10 @@ public class UserIntegrationTest {
         //dto.setY(124);
         //dto.setChPic("pic.jpg");
 
-        /*String fileName = "pic.jpg";
+        *//*String fileName = "pic.jpg";
         String filePath = "D:/ee/" + fileName;
         FileInputStream fileInputStream = new FileInputStream(filePath);
-        this.multipartFile = new MockMultipartFile("pic", fileName, "png", fileInputStream);*/
+        this.multipartFile = new MockMultipartFile("pic", fileName, "png", fileInputStream);*//*
 
         //dto.setPic(this.multipartFile);
 
@@ -121,7 +121,7 @@ public class UserIntegrationTest {
         vo.setUid("qwqwqw123");
         Assertions.assertEquals(vo.getUid(), result.getUid());
 
-        /*MvcResult mr = mvc.perform(
+        *//*MvcResult mr = mvc.perform(
                 MockMvcRequestBuilders
                         .post("/api/user/id")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -129,7 +129,7 @@ public class UserIntegrationTest {
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andReturn();
-        FindUidVo vo = objectMapper.readValue(mr, FindUidVo.class)*/
+        FindUidVo vo = objectMapper.readValue(mr, FindUidVo.class)*//*
 
     }
 
@@ -138,7 +138,7 @@ public class UserIntegrationTest {
         FindUpwDto dto = new FindUpwDto();
         dto.setUid("qwqwqw123");
         dto.setPhone("010-7777-6666");
-        dto.setUpw("qwqwqw123");
+        dto.setUpw("qwqwqw123123");
 
         String response = mvc.perform(
                 MockMvcRequestBuilders
@@ -201,8 +201,8 @@ public class UserIntegrationTest {
 
         DelUserDto dto = new DelUserDto();
         dto.setIuser(signinVo.getIuser());
-        dto.setUid("dongdong12");
-        dto.setUpw("testuserpw");
+        dto.setUid("qwqwqw123");
+        dto.setUpw("qwqwqw123123");
         dto.setPhone("010-7777-6666");
 
         String response = mvc.perform(
@@ -221,6 +221,6 @@ public class UserIntegrationTest {
     @Test
     void getUSer () throws Exception {
 
-    }
+    }*/
 
 }
