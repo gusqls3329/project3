@@ -59,9 +59,5 @@ public class PaymentReviewController {
         return new ResVo(reviewService.delReview(dto));
     }
 
-    @GetMapping
-    @Operation(summary = "테스트", description = "테스트")
-    public SelRatVo SelRatVo(int iuser){
-        return reviewService.SelRatVo(iuser);
-    }
+
 }
