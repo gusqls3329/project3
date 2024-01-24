@@ -496,7 +496,6 @@ public class ProductService {
                             )
             ).count();
             if (count >= stockCount) {
-
                 disabledDates.add(LocalDate.of(dateWalker.getYear(),
                         dateWalker.getMonth(),
                         dateWalker.getDayOfMonth()));
