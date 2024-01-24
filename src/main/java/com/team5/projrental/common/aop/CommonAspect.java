@@ -1,5 +1,6 @@
 package com.team5.projrental.common.aop;
 
+import com.team5.projrental.common.Const;
 import com.team5.projrental.common.aop.anno.Retry;
 import com.team5.projrental.common.threadpool.MyThreadPoolHolder;
 import com.team5.projrental.payment.model.PaymentInsDto;
@@ -16,7 +17,9 @@ import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
 @Aspect
@@ -112,7 +115,7 @@ public class CommonAspect {
             returning = "disabledDates", argNames = "joinPoint,iproduct,disabledDates")
     public void addCache(JoinPoint joinPoint, Integer iproduct, List<LocalDate> disabledDates) {
         log.debug("[addCache AOP] {}", joinPoint.getSignature());
-        if (disabledCache.size() < 51) {
+        if (disabledCache.size() <= Const.DISABLED_CACHE_MAX_NUM) {
             disabledCache.put(iproduct, disabledDates);
         }
         disabledCache.keySet().forEach(k -> log.debug("[addCache AOP] total Cache = key: {}, values: {}", k,
