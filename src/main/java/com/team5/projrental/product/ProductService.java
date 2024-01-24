@@ -401,9 +401,11 @@ public class ProductService {
         return new ResVo(SUCCESS);
     }
 
-    public List<ProductUserVo> getUserProductList(Integer page) {
+    public List<ProductUserVo> getUserProductList(Integer iuser, Integer page) {
         List<GetProductListResultDto> productListBy =
-                productRepository.findProductListBy(new GetProductListDto(getLoginUserPk(), page));
+                productRepository.findProductListBy(new GetProductListDto(
+                        iuser == null ? getLoginUserPk() : iuser, page
+                ));
         CommonUtils.checkNullOrZeroIfCollectionThrow(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE, productListBy);
 
         List<ProductUserVo> result = new ArrayList<>();
