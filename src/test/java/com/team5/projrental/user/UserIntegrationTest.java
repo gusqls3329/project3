@@ -42,6 +42,8 @@ public class UserIntegrationTest {
     @Autowired
     ObjectMapper objectMapper;
 
+    String token;
+
     @Autowired UserController controller;
 
     @Autowired UserService service;
@@ -51,7 +53,7 @@ public class UserIntegrationTest {
     @Test
     void postSignup() throws Exception {
         UserSignupDto dto = new UserSignupDto();
-        dto.setIuser(17);
+        //dto.setIuser(12);
         dto.setAddr("대구 동구 방촌동");
         dto.setRestAddr("AA아파트");
         dto.setUid("testuserid");
@@ -60,34 +62,28 @@ public class UserIntegrationTest {
         dto.setPhone("010-4114-9922");
         dto.setEmail("test@naver.com");
         dto.setIsValid(2);
-       // dto.setChPic("pic.jpg");
-        dto.setY(148);
-        dto.setX(149.1);
-        /*
-        String fileName = "pic.jpg";
+        //int userTest = service.postSignup(dto);
+        //dto.setX(123);
+        //dto.setY(124);
+        //dto.setChPic("pic.jpg");
+
+        /*String fileName = "pic.jpg";
         String filePath = "D:/ee/" + fileName;
         FileInputStream fileInputStream = new FileInputStream(filePath);
-        this.multipartFile = new MockMultipartFile("pic", fileName, "png", fileInputStream);
+        this.multipartFile = new MockMultipartFile("pic", fileName, "png", fileInputStream);*/
 
-        dto.setPic(this.multipartFile);
+        //dto.setPic(this.multipartFile);
 
-         */
-        String json = objectMapper.writeValueAsString(dto);
-        System.out.println(json);
-
-        MvcResult mr = mvc.perform(
+        String response = mvc.perform(
                 MockMvcRequestBuilders
                         .post("/api/user/signup")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(json))
+                        .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
-                .andDo(print())
-                .andReturn();
+                .andReturn().getResponse().getContentAsString();
+        ResVo result = objectMapper.readValue(response, ResVo.class);
+        Assertions.assertEquals(Const.SUCCESS, result.getResult());
 
-        String content = mr.getResponse().getContentAsString();
-
-        ResVo vo = objectMapper.readValue(content, ResVo.class); // json을 자바객체로?
-        assertEquals(true, vo.getResult() > 0);
 
 
     }
@@ -122,7 +118,7 @@ public class UserIntegrationTest {
 
         FindUidVo result = objectMapper.readValue(response, FindUidVo.class);
         FindUidVo vo = new FindUidVo();
-        vo.setUid("dongdong12");
+        vo.setUid("qwqwqw123");
         Assertions.assertEquals(vo.getUid(), result.getUid());
 
         /*MvcResult mr = mvc.perform(
@@ -140,9 +136,9 @@ public class UserIntegrationTest {
     @Test
     void getFindUpw() throws Exception {
         FindUpwDto dto = new FindUpwDto();
-        dto.setUid("dongdong12");
+        dto.setUid("qwqwqw123");
         dto.setPhone("010-7777-6666");
-        dto.setUpw("testuserpw");
+        dto.setUpw("qwqwqw123");
 
         String response = mvc.perform(
                 MockMvcRequestBuilders
@@ -158,23 +154,67 @@ public class UserIntegrationTest {
 
     @Test
     void putUser () throws Exception {
+        SigninDto sDto = new SigninDto();
+        sDto.setUid("qwqwqw123");
+        sDto.setUpw("qwqwqw123123");
+
+        String contentAsString = mvc.perform(MockMvcRequestBuilders.post("/api/user")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(sDto)))
+                .andReturn().getResponse().getContentAsString();
+        SigninVo signinVo = objectMapper.readValue(contentAsString, SigninVo.class);
+        this.token = "Bearer " + signinVo.getAccessToken();
+
+        // -----------
         ChangeUserDto dto = new ChangeUserDto();
-        dto.setUpw("dongdong1212");
-        dto.setNick("동동이테스트");
+
+        dto.setIuser(signinVo.getIuser());
+        //dto.setUpw("testuserpw12");
+        dto.setNick("dongdongtest");
 
         String response = mvc.perform(
                 MockMvcRequestBuilders
                         .put("/api/user")
+                        //.header("Authorization", this.token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
-        //int result = objectMapper.readValue(response, ResVo.class)
+        ResVo result = objectMapper.readValue(response, ResVo.class);
+        Assertions.assertEquals(Const.SUCCESS, result.getResult());
 
     }
 
     @Test
     void patchUser () throws Exception {
+        SigninDto sDto = new SigninDto();
+        sDto.setUid("qwqwqw123");
+        sDto.setUpw("qwqwqw123123");
+
+        String contentAsString = mvc.perform(MockMvcRequestBuilders.post("/api/user")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(sDto)))
+                .andReturn().getResponse().getContentAsString();
+        SigninVo signinVo = objectMapper.readValue(contentAsString, SigninVo.class);
+        this.token = "Bearer " + signinVo.getAccessToken();
+        // -------
+
+        DelUserDto dto = new DelUserDto();
+        dto.setIuser(signinVo.getIuser());
+        dto.setUid("dongdong12");
+        dto.setUpw("testuserpw");
+        dto.setPhone("010-7777-6666");
+
+        String response = mvc.perform(
+                MockMvcRequestBuilders
+                        .patch("/api/user")
+                        //.header("Authorization", this.token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+        ResVo result = objectMapper.readValue(response, ResVo.class);
+        Assertions.assertEquals(Const.SUCCESS, result.getResult());
 
     }
 
