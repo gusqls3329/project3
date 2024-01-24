@@ -2,6 +2,7 @@ package com.team5.projrental.product;
 
 import com.team5.projrental.common.aop.anno.CountView;
 import com.team5.projrental.common.exception.BadMainPicException;
+import com.team5.projrental.common.exception.BadWordException;
 import com.team5.projrental.common.exception.IllegalProductPicsException;
 import com.team5.projrental.common.exception.NoSuchProductException;
 import com.team5.projrental.common.exception.base.*;
@@ -16,8 +17,10 @@ import com.team5.projrental.product.model.*;
 import com.team5.projrental.product.model.proc.*;
 import com.team5.projrental.product.model.review.ReviewGetDto;
 import com.team5.projrental.product.model.review.ReviewResultVo;
+import com.vane.badwordfiltering.BadWordFiltering;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,6 +49,7 @@ public class ProductService {
 
     private final MyFileUtils myFileUtils;
 
+
     /*
         ------- Logic -------
      */
@@ -61,16 +65,20 @@ public class ProductService {
     public List<ProductListVo> getProductList(Integer sort,
                                               String search,
                                               int icategory,
-                                              int page) {
+                                              int page,
+                                              int prodPerPage) {
         // page 는 페이징에 맞게 변환되어 넘어옴.
+
+        // iuser 가져오기 -> isLiked 를 위해서
 
         // 카테고리 검증
         CommonUtils.ifCategoryNotContainsThrow(icategory);
         // search 의 length 가 2 이상으로 validated 되었으므로 문제 없음.
         List<GetProductListResultDto> products =
-                productRepository.findProductListBy(new GetProductListDto(sort, search, icategory, page));
-        // 결과물 없음 여부 체크
-        CommonUtils.checkNullOrZeroIfCollectionThrow(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE, products);
+                productRepository.findProductListBy(new GetProductListDto(sort, search, icategory, page, getLoginUserPk(), prodPerPage));
+        // 결과물 없음 여부 체크 (결과물 없으면 빈 객체 리턴)
+        if (!CommonUtils.checkNullOrZeroIfCollectionReturnFalse(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE,
+                products)) return new ArrayList<>();
 
         // 검증 이상 무
         List<ProductListVo> result = new ArrayList<>();
@@ -141,6 +149,10 @@ public class ProductService {
      */
     @Transactional
     public ResVo postProduct(MultipartFile mainPic, List<MultipartFile> pics, ProductInsDto dto) {
+
+        // 욕설 포함시 예외 발생
+        CommonUtils.ifContainsBadWordThrow(BadWordException.class, BAD_WORD_EX_MESSAGE,
+                dto.getTitle(), dto.getContents(), dto.getRestAddr());
 
         CommonUtils.ifAllNullThrow(BadMainPicException.class, BAD_PIC_EX_MESSAGE, mainPic);
 
@@ -231,6 +243,11 @@ public class ProductService {
 
         if (mainPic != null) dto.setMainPic(mainPic);
         if (pics != null && !pics.isEmpty()) dto.setPics(pics);
+
+        CommonUtils.ifContainsBadWordThrow(BadWordException.class, BAD_WORD_EX_MESSAGE,
+                dto.getTitle() == null ? "" : dto.getTitle(),
+                dto.getContents() == null ? "" : dto.getContents(),
+                dto.getRestAddr() == null ? "" : dto.getRestAddr());
 
         // 삭제사진 필요시 삭제
         // -*
@@ -448,27 +465,37 @@ public class ProductService {
     }
 
     private List<LocalDate> getDisabledDates(int iproduct, LocalDate refStartDate) {
-
-        return getDisabledDates(iproduct, refStartDate, LocalDate.of(refStartDate.getYear(), refStartDate.getMonth(),
-                refStartDate.lengthOfMonth()));
+        LocalDate forRefEndDate = refStartDate.plusMonths(ADD_MONTH_NUM_FOR_DISABLED_DATE);
+        return getDisabledDates(iproduct, refStartDate, LocalDate.of(forRefEndDate.getYear(), forRefEndDate.getMonth(),
+                forRefEndDate.lengthOfMonth()));
     }
 
     private List<LocalDate> getDisabledDates(int iproduct, LocalDate refStartDate, LocalDate refEndDate) {
 
-        final int stockCount = productRepository.findStockCountBy(iproduct);
+        final Integer stockCount = productRepository.findStockCountBy(iproduct);
+        CommonUtils.ifAnyNullThrow(BadProductInfoException.class, BAD_PRODUCT_INFO_EX_MESSAGE,
+                stockCount);
         List<CanNotRentalDateVo> disabledRefDates =
                 productRepository.findDisabledDatesBy(new CanNotRentalDateDto(iproduct, refStartDate, refEndDate));
+        // 만약 해당 월들 사이에 이미 거래중인 건이 없다면 곧바로 빈 배열 리턴.
+        if (disabledRefDates == null || disabledRefDates.isEmpty()) return new ArrayList<>();
+
+        // 거래 불가능한 날짜들 담을 객체 미리 생성
         List<LocalDate> disabledDates = new ArrayList<>();
+
+        // 검사 시작일부터 하루씩 더해질 객체 생성
         LocalDate dateWalker = LocalDate.of(refStartDate.getYear(), refStartDate.getMonth(), refStartDate.getDayOfMonth());
 
+        // 작업 시작
         while (!dateWalker.isAfter(refEndDate)) {
             LocalDate lambdaDateWalker = dateWalker;
-            if (disabledRefDates.stream().filter(
-                    d -> lambdaDateWalker.isEqual(d.getRentalEndDate()) || lambdaDateWalker.isBefore(d.getRentalEndDate())
-                            &&
-                            lambdaDateWalker.isEqual(d.getRentalStartDate()) || lambdaDateWalker.isAfter(d.getRentalStartDate())
-            ).count() >= stockCount) {
-
+            long count = disabledRefDates.stream().filter(
+                    d -> lambdaDateWalker.isEqual(d.getRentalEndDate()) ||
+                            lambdaDateWalker.isEqual(d.getRentalStartDate()) ||
+                            lambdaDateWalker.isBefore(d.getRentalEndDate()) && lambdaDateWalker.isAfter(d.getRentalStartDate()
+                            )
+            ).count();
+            if (count >= stockCount) {
                 disabledDates.add(LocalDate.of(dateWalker.getYear(),
                         dateWalker.getMonth(),
                         dateWalker.getDayOfMonth()));

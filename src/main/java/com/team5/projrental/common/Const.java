@@ -45,6 +45,8 @@ public interface Const {
         --by Hyunmin */
     int IN_PRODUCT_REVIEW_PER_PAGE = 4;
     int TOTAL_REVIEW_PER_PAGE = 10;
+    int MAIN_PROD_PER_PAGE = 8;
+    int ADD_MONTH_NUM_FOR_DISABLED_DATE = 1; // 2개월치 조회시 1 필요, 3개월치 조회시 2 필요 ...
     //
 
     /*

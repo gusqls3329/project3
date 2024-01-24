@@ -43,7 +43,6 @@ public interface ProductMapper {
     //
 
     List<GetProductListResultDto> getProductList(GetProductListDto getProductListDto);
-
     GetProductResultDto getProduct(GetProductBaseDto getProductBaseDto);
 
     List<String> getProdEctPics(Integer productPK);
@@ -75,5 +74,5 @@ public interface ProductMapper {
 
     List<CanNotRentalDateVo> findDisabledDatesBy(CanNotRentalDateDto dto);
 
-    int findStockCountBy(int iproduct);
+    Integer findStockCountBy(int iproduct);
 }

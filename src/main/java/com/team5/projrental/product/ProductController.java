@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.team5.projrental.common.exception.ErrorMessage.*;
@@ -30,6 +31,26 @@ public class ProductController {
 
     private final ProductService productService;
 
+    @Operation(summary = "메인페이지용 카테고리별 상품 (8개씩 조회)",
+            description = "<strong>메인페이지용 카테고리별 상품 (8개씩 조회)</strong><br>" +
+                    "[ [v] : 필수값 ]<br>" +
+                    "[v] c: 조회할 카테고리 PK (1 개 이상, 4개 까지 요청 가능)<br>" +
+                    "    ㄴ> 쿼리 파라미터로 제공 & 구분자 ',' 또는 &로 구분하여 여러개 전송 가능" +
+                    "    ㄴ>/api/prod/main?c=1,2,3,4 또는 /api/prod/main?c=1&c=2&c=3&c=4" +
+                    "<br><br>" +
+                    "성공시: <br>" +
+                    "result: 1<br><br>" +
+                    "실패시:<br>" +
+                    "message: 에러 발생 사유<br>errorCode: 에러 코드")
+    @Validated
+    @GetMapping("/main")
+    public List<ProductListVo> getMainPage(@RequestParam("c")
+                                           @Size(min = 1, max = 4)
+                                           List<Integer> icategories) {
+        List<ProductListVo> result = new ArrayList<>();
+        icategories.forEach(num -> result.addAll(productService.getProductList(null, null, num, 0, Const.MAIN_PROD_PER_PAGE)));
+        return result;
+    }
 
     @Operation(summary = "특정 카테고리의 제품목록 가져오기",
             description = "<strong>제품목록 조회</strong><br>" +
@@ -78,7 +99,7 @@ public class ProductController {
                                               @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
                                               Integer icategory) {
 
-        return productService.getProductList(sort, search, icategory, (page - 1) * Const.PROD_PER_PAGE);
+        return productService.getProductList(sort, search, icategory, (page - 1) * Const.PROD_PER_PAGE, Const.PROD_PER_PAGE);
     }
 
     //

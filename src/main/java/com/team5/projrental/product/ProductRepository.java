@@ -50,6 +50,7 @@ public class ProductRepository implements RefProductRepository {
     public List<GetProductListResultDto> findProductListBy(GetProductListDto getProductListDto) {
         return productMapper.getProductList(getProductListDto);
     }
+
     @Override
     public GetProductResultDto findProductBy(GetProductBaseDto getProductBaseDto) {
         return productMapper.getProduct(getProductBaseDto);
@@ -113,7 +114,7 @@ public class ProductRepository implements RefProductRepository {
 
 
     @Override
-    public int findStockCountBy(int iproduct) {
+    public Integer findStockCountBy(int iproduct) {
         return productMapper.findStockCountBy(iproduct);
     }
 }

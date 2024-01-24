@@ -106,8 +106,8 @@ public class UserController {
             , @Parameter(name = "phone", description = "휴대폰 번호 (형식 : 010-1111-2222)")
     })
     @PutMapping
-    public int putUser(@RequestPart @Validated ChangeUserDto dto) {
-        return service.putUser(dto);
+    public ResVo putUser(@RequestPart @Validated ChangeUserDto dto) {
+        return new ResVo(service.putUser(dto));
     }
 
     @Operation(summary = "회원탈퇴", description = "유저 삭제 : 유저정보, 상품, 결제정보 등 삭제")
@@ -117,8 +117,8 @@ public class UserController {
             , @Parameter(name = "phone", description = "휴대폰 번호 (형식 : 010-1111-2222)")
     })
     @PatchMapping
-    public int patchUser(@RequestBody @Validated DelUserDto dto) {
-        return service.patchUser(dto);
+    public ResVo patchUser(@RequestBody @Validated DelUserDto dto) {
+        return new ResVo(service.patchUser(dto));
     }
 
     @Operation(summary = "유저 정보 조회", description = "유저 개인 정보 조회, (iauth:권한)")

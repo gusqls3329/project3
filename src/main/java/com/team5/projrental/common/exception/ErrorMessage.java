@@ -14,12 +14,14 @@ public interface ErrorMessage {
     String RENTAL_END_DATE_MUST_BE_AFTER_THAN_RENTAL_START_DATE_EX_MESSAGE = "대여 종료일은 대여 시작일 보다 같거나 이후어야합니다.";
     String CAN_NOT_BLANK_EX_MESSAGE = "필수값이 제공되지 않았습니다.";
     String AUTHENTICATION_FAIL_EX_MESSAGE = "인증에 실패하였습니다.";
+    String REVIEW_ALREADY_EXISTS_EX_MESSAGE = "작성하신 리뷰가 존재합니다.";
     //
     String NO_SUCH_USER_EX_MESSAGE = "잘못된 유저 정보 입니다.";
     String NO_SUCH_PRODUCT_EX_MESSAGE = "해당하는 상품이 없습니다.";
     String NO_SUCH_PAYMENT_EX_MESSAGE = "조회된 결제 정보가 없습니다.";
     String NO_SUCH_ID_EX_MESSAGE = "아이디가 존재하지 않습니다";
     String NO_SUCH_PASSWORD_EX_MESSAGE = "비밀번호가 틀렸습니다";
+    String NO_SUCH_REVIEW_EX_MESSAGE = "작성하신 리뷰가 없습니다.";
     //
     String BAD_ADDRESS_INFO_EX_MESSAGE = "잘못된 주소 입니다.";
     String BAD_INFO_EX_MESSAGE = "잘못된 정보 입니다.";
@@ -31,8 +33,8 @@ public interface ErrorMessage {
     String BAD_ID_EX_MESSAGE = "이미 존재하는 아이디 입니다.";
     String BAD_NICK_EX_MESSAGE = "이미 존재하는 닉네임 입니다.";
     String BAD_PRODUCT_INFO_EX_MESSAGE = "잘못된 제품 정보 입니다.";
-    String REVIEW_ALREADY_EXISTS_EX_MESSAGE = "작성하신 리뷰가 존재합니다.";
-    String NO_SUCH_REVIEW_EX_MESSAGE = "작성하신 리뷰가 없습니다.";
+    String BAD_TYPE_EX_MESSAGE = "잘못된 타입을 입력하였습니다.";
+    String BAD_WORD_EX_MESSAGE = "비속어를 포함할 수 없습니다.";
     //
     String ALL_INFO_NOT_EXISTS_EX_MESSAGE = "모든 정보가 제공되지 않음";
     //
