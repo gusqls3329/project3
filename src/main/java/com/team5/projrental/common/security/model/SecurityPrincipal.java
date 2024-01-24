@@ -9,4 +9,5 @@ import lombok.*;
 @Builder
 public class SecurityPrincipal {
     private int iuser;
+    private int iauth;
 }

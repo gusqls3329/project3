@@ -12,4 +12,5 @@ public class SelUserVo {
     private String phone;
     private String email;
     private int rating;
+    private int iauth;
 }

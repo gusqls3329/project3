@@ -54,7 +54,7 @@ public class PaymentReviewService {
                                     SelRatVo countIuser = reviewMapper.selRat(chIuser);
 
                                     double average = (countIuser.getCountIre()-1) * countIuser.getRating();
-                                    double averageRat = (average+dto.getRating()) / countIuser.getCountIre();
+                                    double averageRat = Math.round((average+dto.getRating()) / countIuser.getCountIre());
 
                                     UpRating uprating = new UpRating();
                                     uprating.setIuser(chIuser);

@@ -33,7 +33,7 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    @Operation(summary = "회원가입", description = "유저 회원가입")
+    @Operation(summary = "회원가입", description = "유저 회원가입, 권한이 리턴됨")
     @Parameters(value = {
             @Parameter(name="addr", description = "동/면/읍까지의 주소")
             , @Parameter(name="restAddr", description = "나머지 주소")
@@ -43,6 +43,8 @@ public class UserController {
             , @Parameter(name="pic", description = "사진")
             , @Parameter(name="phone", description = "휴대폰 번호 (형식 : 010-1111-2222)")
             , @Parameter(name="email", description = "이메일 (형식 : aaa@naver.com)")
+            , @Parameter(name="compCode", description ="사업자번호")
+            , @Parameter(name="compNm", description = "업체명")
     })
     public ResVo postSignup(@RequestPart(required = false) MultipartFile pic, @RequestPart @Validated UserSignupDto dto) {
         dto.setPic(pic);
@@ -51,7 +53,7 @@ public class UserController {
     }
 
     @PostMapping
-    @Operation(summary = "로그인", description = "유저 로그인")
+    @Operation(summary = "로그인", description = "유저 로그인(iauth:권한)")
     @Parameters(value = {
             @Parameter(name = "uid", description = "아이디")
             , @Parameter(name = "upw", description = "비밀번호")
@@ -72,10 +74,10 @@ public class UserController {
 
     @PatchMapping("/firebase-token")
     public ResVo patchUserFirebaseToken(@RequestBody UserFirebaseTokenPatchDto dto) {
-        return new ResVo(service.patchUserFirebaseToken(dto));
+        return service.patchUserFirebaseToken(dto);
     }
 
-    @Operation(summary = "아이디 찾기", description = "유저 아이디 찾기")
+    @Operation(summary = "아이디 찾기", description = "유저 아이디 찾기(iauth:권한) ")
     @Parameters(value = {
             @Parameter(name = "phone", description = "휴대폰 번호 (형식 : 010-1111-2222)")
     })
@@ -84,7 +86,7 @@ public class UserController {
         return service.getFindUid(phone);
     }
 
-    @Operation(summary = "비밀번호 변경", description = "비밀번호 찾기 불가능, 비밀번호 수정")
+    @Operation(summary = "비밀번호 변경", description = "비밀번호 찾기 불가능, 비밀번호 수정, 권한이 리턴됨")
     @Parameters(value = {
             @Parameter(name = "uid", description = "아이디")
             , @Parameter(name = "phone", description = "휴대폰 번호 (형식 : 010-1111-2222)")
@@ -119,7 +121,7 @@ public class UserController {
         return service.patchUser(dto);
     }
 
-    @Operation(summary = "유저 정보 조회", description = "유저 개인 정보 조회")
+    @Operation(summary = "유저 정보 조회", description = "유저 개인 정보 조회, (iauth:권한)")
     @Parameters(value = {
             @Parameter(name = "iuser", description = "유저 Pk값")
     })
