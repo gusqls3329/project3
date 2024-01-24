@@ -19,5 +19,4 @@ public class MyBuyReviewListSelDto {
     public void setPage(int page) {
         this.startIdx = (page-1) * this.rowCount;
     }
-
 }
