@@ -2,6 +2,7 @@ package com.team5.projrental.product;
 
 import com.team5.projrental.common.aop.anno.CountView;
 import com.team5.projrental.common.exception.BadMainPicException;
+import com.team5.projrental.common.exception.BadWordException;
 import com.team5.projrental.common.exception.IllegalProductPicsException;
 import com.team5.projrental.common.exception.NoSuchProductException;
 import com.team5.projrental.common.exception.base.*;
@@ -150,7 +151,8 @@ public class ProductService {
     public ResVo postProduct(MultipartFile mainPic, List<MultipartFile> pics, ProductInsDto dto) {
 
         // 욕설 포함시 예외 발생
-//        CommonUtils.ifContainsBadWordThrow();
+        CommonUtils.ifContainsBadWordThrow(BadWordException.class, BAD_WORD_EX_MESSAGE,
+                dto.getTitle(), dto.getContents(), dto.getRestAddr());
 
         CommonUtils.ifAllNullThrow(BadMainPicException.class, BAD_PIC_EX_MESSAGE, mainPic);
 
@@ -241,6 +243,11 @@ public class ProductService {
 
         if (mainPic != null) dto.setMainPic(mainPic);
         if (pics != null && !pics.isEmpty()) dto.setPics(pics);
+
+        CommonUtils.ifContainsBadWordThrow(BadWordException.class, BAD_WORD_EX_MESSAGE,
+                dto.getTitle() == null ? "" : dto.getTitle(),
+                dto.getContents() == null ? "" : dto.getContents(),
+                dto.getRestAddr() == null ? "" : dto.getRestAddr());
 
         // 삭제사진 필요시 삭제
         // -*

@@ -3,6 +3,7 @@ package com.team5.projrental.user;
 import com.team5.projrental.common.Const;
 import com.team5.projrental.common.SecurityProperties;
 import com.team5.projrental.common.exception.BadAddressInfoException;
+import com.team5.projrental.common.exception.BadWordException;
 import com.team5.projrental.common.exception.ErrorMessage;
 import com.team5.projrental.common.exception.base.*;
 import com.team5.projrental.common.exception.checked.FileNotContainsDotException;
@@ -48,11 +49,14 @@ public class UserService {
 
     public int postSignup(UserSignupDto dto) {
 
+        CommonUtils.ifContainsBadWordThrow(BadWordException.class, BAD_WORD_EX_MESSAGE,
+                dto.getNick(), dto.getRestAddr(), dto.getCompNm() == null ? "" : dto.getCompNm());
+
         String hashedPw = passwordEncoder.encode(dto.getUpw());
         dto.setUpw(hashedPw);
         // 대구 달서구 용산1동 -> x: xxx.xxxxx y: xx.xxxxx address_name: 대구 달서구 용산1동
-        if(dto.getCompNm() != null && dto.getCompCode() != 0){
-            if(dto.getCompCode()<1000000000 || dto.getCompCode()>9999999999L){
+        if (dto.getCompNm() != null && dto.getCompCode() != 0) {
+            if (dto.getCompCode() < 1000000000 || dto.getCompCode() > 9999999999L) {
                 throw new BadInformationException(ILLEGAL_RANGE_EX_MESSAGE);
             }
 
@@ -192,6 +196,12 @@ public class UserService {
     }
 
     public int putUser(ChangeUserDto dto) {
+
+        CommonUtils.ifContainsBadWordThrow(BadWordException.class, BAD_WORD_EX_MESSAGE,
+                dto.getNick() == null ? "" : dto.getNick(),
+                dto.getCompNm() == null ? "" : dto.getCompNm(),
+                dto.getRestAddr() == null ? "" : dto.getRestAddr());
+
         int loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setIuser(loginUserPk);
 

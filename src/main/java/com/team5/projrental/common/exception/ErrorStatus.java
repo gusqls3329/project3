@@ -37,6 +37,7 @@ public enum ErrorStatus {
     BAD_ID_EX_MESSAGE(4392),
     BAD_PRODUCT_INFO_EX_MESSAGE(4391),
     BAD_TYPE_EX_MESSAGE(4390),
+    BAD_WORD_EX_MESSAGE(4389),
 
 
     //

@@ -26,6 +26,10 @@ public class PaymentReviewService {
     private final AuthenticationFacade authenticationFacade;
 
     public int postReview(RivewDto dto) {
+        if (dto.getContents() != null && !dto.getContents().isBlank()) {
+            dto.setContents(CommonUtils.ifContainsBadWordChangeThat(dto.getContents()));
+        }
+
         int loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setIuser(loginUserPk);
         //t_payment 상태가 -4 일때만 리뷰쓸수 있도록
@@ -47,29 +51,29 @@ public class PaymentReviewService {
                         throw new BadInformationException(ILLEGAL_EX_MESSAGE);
                     } else {
                         //if (reviewMapper.selReview(null, dto.getIpayment()) == 2) {
-                            int result2 = reviewMapper.upProductIstatus(dto.getIpayment());
-                            if (result2 == 1) {
-                                if(dto.getContents() != null && dto.getRating() != null){
-                                    int chIuser = reviewMapper.selUser(dto.getIpayment());
-                                    SelRatVo countIuser = reviewMapper.selRat(chIuser);
+                        int result2 = reviewMapper.upProductIstatus(dto.getIpayment());
+                        if (result2 == 1) {
+                            if (dto.getContents() != null && dto.getRating() != null) {
+                                int chIuser = reviewMapper.selUser(dto.getIpayment());
+                                SelRatVo countIuser = reviewMapper.selRat(chIuser);
 
-                                    double average = (countIuser.getCountIre()-1) * countIuser.getRating();
-                                    double averageRat = Math.round((average+dto.getRating()) / countIuser.getCountIre());
+                                double average = (countIuser.getCountIre() - 1) * countIuser.getRating();
+                                double averageRat = Math.round((average + dto.getRating()) / countIuser.getCountIre());
 
-                                    UpRating uprating = new UpRating();
-                                    uprating.setIuser(chIuser);
-                                    uprating.setRating(averageRat);
-                                    int upRating = reviewMapper.upRating(uprating);
-                                    if(upRating == 1){
-                                        return Const.SUCCESS;
-                                    }
+                                UpRating uprating = new UpRating();
+                                uprating.setIuser(chIuser);
+                                uprating.setRating(averageRat);
+                                int upRating = reviewMapper.upRating(uprating);
+                                if (upRating == 1) {
+                                    return Const.SUCCESS;
                                 }
                             }
-                            throw new BadInformationException(ILLEGAL_EX_MESSAGE);
                         }
+                        throw new BadInformationException(ILLEGAL_EX_MESSAGE);
                     }
+                }
                 //}
-             //   throw new BadInformationException(ILLEGAL_EX_MESSAGE);
+                //   throw new BadInformationException(ILLEGAL_EX_MESSAGE);
             }
             throw new BadInformationException(REVIEW_ALREADY_EXISTS_EX_MESSAGE);
         }
@@ -79,6 +83,9 @@ public class PaymentReviewService {
     public int patchReview(UpRieDto dto) {
         int loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setIuser(loginUserPk);
+        if (dto.getContents() != null && !dto.getContents().isBlank()) {
+            dto.setContents(CommonUtils.ifContainsBadWordChangeThat(dto.getContents()));
+        }
         //수정전 리뷰를 작성한 사람이 iuser가 맞는지 확인
         RiviewVo check = reviewMapper.selPatchRev(dto.getIreview());
         if (check.getIbuyer() == loginUserPk) {
@@ -101,16 +108,16 @@ public class PaymentReviewService {
             // 리뷰를 삭제하기전 t_payment의 istatus를 확인해 삭제가능한 상태가 맞는지 확인
             Integer istatus = reviewMapper.selReIstatus(check.getIpayment());
             if (istatus == 1 || istatus == -2 || istatus == -3) {
-                    dto.setIstatus(istatus);
-                    int result = reviewMapper.delReview(dto);
-                    if (result != 1) {
-                        throw new BadInformationException(ILLEGAL_EX_MESSAGE);
-                    }
-                    return Const.SUCCESS;
+                dto.setIstatus(istatus);
+                int result = reviewMapper.delReview(dto);
+                if (result != 1) {
+                    throw new BadInformationException(ILLEGAL_EX_MESSAGE);
                 }
-                throw new BadInformationException(NO_SUCH_REVIEW_EX_MESSAGE);
+                return Const.SUCCESS;
             }
-            throw new BadInformationException(ILLEGAL_EX_MESSAGE);
+            throw new BadInformationException(NO_SUCH_REVIEW_EX_MESSAGE);
+        }
+        throw new BadInformationException(ILLEGAL_EX_MESSAGE);
     }
 
 }
