@@ -77,23 +77,25 @@
     <select id="selUser">
         SELECT u.iuser
         FROM t_user u
-        JOIN t_review r ON r.ibuyer = u.iuser
-        JOIN t_payment pa ON pa.ipayment = r.ipayment
-        JOIN t_product_payment pp ON pp.ipayment = pa.ipayment
-        JOIN t_product p ON pp.iproduct = p.iproduct
-        WHERE r.contents IS NOT NULL AND r.rating IS NOT NULL
-        and r.ireview = #{ireview}
+        JOIN t_product p
+        ON p.iuser = u.iuser
+        JOIN t_product_payment pp
+        ON pp.iproduct = p.iproduct
+        JOIN t_review r
+        on pp.ipayment = r.ipayment
+        WHERE r.ireview = #{ireview}
     </select>
     
     <select id="selRat">
-        SELECT count(u.iuser) as countIuser, u.rating
+        SELECT r.rating as totalRat, u.rating as averageRat, COUNT(u.iuser) as countIuser
         FROM t_user u
-        JOIN t_review r ON r.ibuyer = u.iuser
-        JOIN t_payment pa ON pa.ipayment = r.ipayment
-        JOIN t_product_payment pp ON pp.ipayment = pa.ipayment
-        JOIN t_product p ON pp.iproduct = p.iproduct
-        WHERE r.contents IS NOT NULL AND r.rating IS NOT NULL
-        AND u.iuser = #{iuser}
+        JOIN t_product p
+        ON p.iuser = u.iuser
+        JOIN t_product_payment pp
+        ON pp.iproduct = p.iproduct
+        JOIN t_review r
+        on pp.ipayment = r.ipayment
+        WHERE u.iuser = #{iuser}
     </select>
 
     <update id="upRating">

@@ -25,4 +25,7 @@ public class RivewDto {
 
     @JsonIgnore
     private int ireview;
+
+    @JsonIgnore
+    private int checkIuser;
 }

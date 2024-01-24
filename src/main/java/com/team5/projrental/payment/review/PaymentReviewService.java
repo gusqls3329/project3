@@ -51,8 +51,14 @@ public class PaymentReviewService {
                                 if(dto.getContents() != null && dto.getRating() != null){
                                     int chIuser = reviewMapper.selUser(dto.getIreview());
                                     SelRatVo rating = reviewMapper.selRat(chIuser);
-                                    double average = rating.getCountIuser() * rating.getRating();
-                                    double averageRat = (rating.getCountIuser()+1)/(average+dto.getRating());
+                                    for (Integer total : rating.getTotalRat()){
+                                        if (total == null){
+                                             int a = rating.getCountIuser() - 1;
+                                            dto.setCheckIuser(a);
+                                        }
+                                    }
+                                    double average = (dto.getCheckIuser()-1) * rating.getAverageRat();
+                                    double averageRat = (average+dto.getRating())/(dto.getCheckIuser());
                                     UpRating uprating = new UpRating();
                                     uprating.setIuser(chIuser);
                                     uprating.setRating(averageRat);
@@ -108,5 +114,9 @@ public class PaymentReviewService {
                 throw new BadInformationException(NO_SUCH_REVIEW_EX_MESSAGE);
             }
             throw new BadInformationException(ILLEGAL_EX_MESSAGE);
+    }
+
+    public SelRatVo SelRatVo(int iuser){
+        return reviewMapper.selRat(iuser);
     }
 }
