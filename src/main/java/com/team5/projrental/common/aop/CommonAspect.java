@@ -115,19 +115,19 @@ public class CommonAspect {
             returning = "disabledDates", argNames = "joinPoint,iproduct,disabledDates")
     public void addCache(JoinPoint joinPoint, Integer iproduct, List<LocalDate> disabledDates) {
         log.debug("[addCache AOP] {}", joinPoint.getSignature());
-        if (disabledCache.size() <= Const.DISABLED_CACHE_MAX_NUM) {
-            disabledCache.put(iproduct, disabledDates);
-        }
-        disabledCache.keySet().forEach(k -> log.debug("[addCache AOP] total Cache = key: {}, values: {}", k,
-                disabledCache.get(k)));
+        threadPool.execute(() -> {
+            if (disabledCache.size() <= Const.DISABLED_CACHE_MAX_NUM) {
+                disabledCache.put(iproduct, disabledDates);
+            }
+            disabledCache.keySet().forEach(k -> log.debug("[addCache AOP] total Cache = key: {}, values: {}", k,
+                    disabledCache.get(k)));
 
-
-        log.debug("[addCache AOP] memory check {}/{} free: {}",
-                Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory(),
-                Runtime.getRuntime().totalMemory(),
-                Runtime.getRuntime().freeMemory()
-        );
-
+            log.debug("[addCache AOP] memory check {}/{} free: {}",
+                    Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory(),
+                    Runtime.getRuntime().totalMemory(),
+                    Runtime.getRuntime().freeMemory()
+            );
+        });
     }
 
 
