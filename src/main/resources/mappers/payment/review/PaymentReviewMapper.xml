@@ -72,4 +72,29 @@
         WHERE ireview = #{ireview}
     </select>
 
+    <!--평균 별점올리기-->
+
+    <select id="selUser">
+        SELECT P.iuser
+        FROM t_product P
+        JOIN t_product_payment PA ON P.iproduct = PA.iproduct
+        WHERE PA.ipayment = #{ipayment}
+    </select>
+    
+    <select id="selRat">
+        SELECT COUNT(R.ireview) as countIre, U.rating
+        from t_product P
+        JOIN t_product_payment PP ON P.iproduct = PP.iproduct
+        JOIN t_review R ON R.ipayment = PP.ipayment
+        JOIN t_user U ON U.iuser = P.iuser
+        WHERE P.iuser = #{iuser}
+    </select>
+
+    <update id="upRating">
+        update t_user
+        set rating = #{rating}
+        where iuser = #{iuser}
+    </update>
+
+
 </mapper>

@@ -1,11 +1,10 @@
 package com.team5.projrental.payment.review;
 
-import com.team5.projrental.payment.review.model.DelRivewDto;
-import com.team5.projrental.payment.review.model.RivewDto;
-import com.team5.projrental.payment.review.model.RiviewVo;
-import com.team5.projrental.payment.review.model.UpRieDto;
+import com.team5.projrental.payment.review.model.*;
 import com.team5.projrental.user.model.CheckIsBuyer;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 @Mapper
 public interface PaymentReviewMapper {
@@ -18,4 +17,9 @@ public interface PaymentReviewMapper {
     int selReview(Integer iuser, Integer ipayment);
     CheckIsBuyer selBuyRew(Integer iuser, Integer ipayment);
     RiviewVo selPatchRev(Integer ireview);
+
+    // 평균 별점올리기
+    int selUser(Integer ipayment);
+    SelRatVo selRat(Integer iuser);
+    int upRating(UpRating rating);
 }

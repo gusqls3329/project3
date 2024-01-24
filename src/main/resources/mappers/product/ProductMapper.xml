@@ -137,7 +137,7 @@
     </select>
 
     <select id="getProdEctPics">
-        select ipics, stored_pic as prodStoredPic from t_pics
+        select stored_pic as prodStoredPic from t_pics
         where iproduct = #{iproduct}
     </select>
 

@@ -8,6 +8,7 @@ import com.team5.projrental.product.model.review.ReviewResultVo;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.Length;
@@ -16,6 +17,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static com.team5.projrental.common.exception.ErrorMessage.*;
@@ -161,6 +163,7 @@ public class ProductController {
                              @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
                              MultipartFile mainPic,
                              @RequestPart(required = false)
+                             @Size(max = 9)
                              List<MultipartFile> pics,
                              @Validated
                              @RequestPart
@@ -262,17 +265,17 @@ public class ProductController {
     }
 
     @Operation(summary = "해당 제품에 작성된 모든 리뷰",
-    description = "성공시:<br>" +
-            "[<br>" +
-            "  ireview: 리뷰의 PK<br>" +
-            "  contents: 리뷰 내용<br>" +
-            "  rating: 평가한 별점 (0~5)<br>" +
-            "  iuser: 리뷰를 작성한 유저의 PK<br>" +
-            "  nick: 리뷰를 작성한 유저의 닉네임<br>" +
-            "  profPic: 리뷰를 작성한 유저의 사진<br>" +
-            "] (배열)<br><br>" +
-            "실패시:<br>" +
-            "message: 에러 발생 사유<br>errorCode: 에러 코드")
+            description = "성공시:<br>" +
+                    "[<br>" +
+                    "  ireview: 리뷰의 PK<br>" +
+                    "  contents: 리뷰 내용<br>" +
+                    "  rating: 평가한 별점 (0~5)<br>" +
+                    "  iuser: 리뷰를 작성한 유저의 PK<br>" +
+                    "  nick: 리뷰를 작성한 유저의 닉네임<br>" +
+                    "  profPic: 리뷰를 작성한 유저의 사진<br>" +
+                    "] (배열)<br><br>" +
+                    "실패시:<br>" +
+                    "message: 에러 발생 사유<br>errorCode: 에러 코드")
     @Validated
     @GetMapping("/review/{iproduct}")
     public List<ReviewResultVo> getAllReviews(@PathVariable
@@ -286,5 +289,26 @@ public class ProductController {
         return productService.getAllReviews(iproduct, page);
     }
 
+    @Operation(summary = "월별 대여 불가능한 날짜들 조회",
+            description = "성공시:<br>" +
+                    "[<br>" +
+                    "  거래 불가능한 개별 날짜들 (yyyy-MM-dd)" +
+                    "] (배열)<br><br>" +
+                    "실패시:<br>" +
+                    "message: 에러 발생 사유<br>errorCode: 에러 코드")
+    @Validated
+    @GetMapping("/disabled-date/{iproduct}")
+    public List<LocalDate> getDisabledDate(@PathVariable
+                                           @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
+                                           Integer iproduct,
+                                           @RequestParam
+                                           @Range(min = 2000, max = 9999, message = ILLEGAL_RANGE_EX_MESSAGE)
+                                           Integer y,
+                                           @RequestParam
+                                           @Range(min = 1, max = 12, message = ILLEGAL_RANGE_EX_MESSAGE)
+                                           Integer m) {
+        return productService.getDisabledDate(iproduct, y, m);
+
+    }
 
 }

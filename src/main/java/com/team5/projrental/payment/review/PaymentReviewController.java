@@ -7,7 +7,6 @@ import com.team5.projrental.payment.review.model.UpRieDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -57,8 +56,6 @@ public class PaymentReviewController {
         dto.setIreview(ireview);
         return new ResVo(reviewService.delReview(dto));
     }
-
-
 
 
 }

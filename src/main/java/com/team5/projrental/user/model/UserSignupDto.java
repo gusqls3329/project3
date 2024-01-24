@@ -2,9 +2,7 @@ package com.team5.projrental.user.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.team5.projrental.common.exception.ErrorMessage;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
@@ -52,11 +50,17 @@ public class UserSignupDto {
     @Range(min = 2, max = 2, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private Integer isValid;
 
+    private long compCode;
+
+    @Length(max = 20, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
+    private String compNm;
+
     @JsonIgnore
     private double x;
     @JsonIgnore
     private double y;
     @JsonIgnore
     private String chPic;
-
+    @JsonIgnore
+    private int iauth;
 }

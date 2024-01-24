@@ -18,7 +18,7 @@ public class ProductListVo {
 
     private Integer iproduct;
     private String title;
-    private String prodPic;
+    private String prodMainPic;
     private Integer rentalPrice;
     private LocalDate rentalStartDate;
     private LocalDate rentalEndDate;
@@ -39,7 +39,7 @@ public class ProductListVo {
         this.addr = dto.getAddr();
         this.prodLike = dto.getProdLike();
         this.userPic = dto.getUserStoredPic();
-        this.prodPic = dto.getProdMainStoredPic();
+        this.prodMainPic = dto.getProdMainStoredPic();
         this.istatus = dto.getIstatus();
     }
 

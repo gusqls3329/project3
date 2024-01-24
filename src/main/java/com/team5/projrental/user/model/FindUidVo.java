@@ -10,4 +10,5 @@ public class FindUidVo {
     @JsonIgnore
     private int iuser;
     private String uid;
+    private int iauth;
 }
