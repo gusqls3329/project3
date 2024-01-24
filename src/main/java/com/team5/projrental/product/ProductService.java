@@ -405,6 +405,10 @@ public class ProductService {
         return getReview(iproduct, page, TOTAL_REVIEW_PER_PAGE);
     }
 
+    public List<LocalDate> getDisabledDate(Integer iproduct, Integer y, Integer m) {
+        return getDisabledDates(iproduct, LocalDate.of(y, m, 1));
+    }
+
     /*
         ------- Inner Methods -------
      */
