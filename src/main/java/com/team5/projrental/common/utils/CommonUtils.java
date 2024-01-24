@@ -88,7 +88,7 @@ public class CommonUtils {
      *
      * @param icategory
      */
-    public static void ifCategoryNotContainsThrowOrReturn(Integer icategory) {
+    public static void ifCategoryNotContainsThrow(Integer icategory) {
 //        Map<Integer, String> categories = CATEGORIES;
 //        return categories.keySet().stream().filter(k -> categories.get(k).equals(category))
 //                .findAny().orElseThrow(() -> new IllegalCategoryException(ILLEGAL_CATEGORY_EX_MESSAGE));

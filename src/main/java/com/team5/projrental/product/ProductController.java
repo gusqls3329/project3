@@ -8,6 +8,7 @@ import com.team5.projrental.product.model.review.ReviewResultVo;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.Length;
@@ -161,6 +162,7 @@ public class ProductController {
                              @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
                              MultipartFile mainPic,
                              @RequestPart(required = false)
+                             @Size(max = 9)
                              List<MultipartFile> pics,
                              @Validated
                              @RequestPart
@@ -262,17 +264,17 @@ public class ProductController {
     }
 
     @Operation(summary = "해당 제품에 작성된 모든 리뷰",
-    description = "성공시:<br>" +
-            "[<br>" +
-            "  ireview: 리뷰의 PK<br>" +
-            "  contents: 리뷰 내용<br>" +
-            "  rating: 평가한 별점 (0~5)<br>" +
-            "  iuser: 리뷰를 작성한 유저의 PK<br>" +
-            "  nick: 리뷰를 작성한 유저의 닉네임<br>" +
-            "  profPic: 리뷰를 작성한 유저의 사진<br>" +
-            "] (배열)<br><br>" +
-            "실패시:<br>" +
-            "message: 에러 발생 사유<br>errorCode: 에러 코드")
+            description = "성공시:<br>" +
+                    "[<br>" +
+                    "  ireview: 리뷰의 PK<br>" +
+                    "  contents: 리뷰 내용<br>" +
+                    "  rating: 평가한 별점 (0~5)<br>" +
+                    "  iuser: 리뷰를 작성한 유저의 PK<br>" +
+                    "  nick: 리뷰를 작성한 유저의 닉네임<br>" +
+                    "  profPic: 리뷰를 작성한 유저의 사진<br>" +
+                    "] (배열)<br><br>" +
+                    "실패시:<br>" +
+                    "message: 에러 발생 사유<br>errorCode: 에러 코드")
     @Validated
     @GetMapping("/review/{iproduct}")
     public List<ReviewResultVo> getAllReviews(@PathVariable
