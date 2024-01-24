@@ -30,6 +30,8 @@ public class ChangeUserDto {
 
     private String restAddr;
 
+    private long compCode;
+    private String compNm;
 
     @Pattern(regexp = "\\w+@\\w+\\.\\w+(\\.\\w+)?", message = ErrorMessage.BAD_INFO_EX_MESSAGE)
     private String email;

@@ -39,7 +39,7 @@ public class UserSignupDto {
     private MultipartFile pic;
 
     @NotBlank(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
-    @Pattern(regexp = "(01)\\d-\\d{3,4}-\\d{4}", message = ErrorMessage.BAD_INFO_EX_MESSAGE)
+    @Pattern(regexp = "(0)\\d{2}-\\d{3,4}-\\d{4}", message = ErrorMessage.BAD_INFO_EX_MESSAGE)
     private String phone;
 
     @Pattern(regexp = "\\w+@\\w+\\.\\w+(\\.\\w+)?", message = ErrorMessage.BAD_INFO_EX_MESSAGE)
