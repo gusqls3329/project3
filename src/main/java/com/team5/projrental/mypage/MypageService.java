@@ -31,6 +31,7 @@ public class MypageService {
 
     public List<MyFavListSelVo> selMyFavList(MyFavListSelDto dto) {
         int loginUserPk = authenticationFacade.getLoginUserPk();
+        dto.setPage(dto.getPage());
         dto.setLoginedIuser(loginUserPk);
 
         return mapper.getFavList(dto);

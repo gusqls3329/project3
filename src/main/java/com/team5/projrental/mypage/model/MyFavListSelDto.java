@@ -7,9 +7,7 @@ import org.hibernate.validator.constraints.Range;
 
 @Data
 public class MyFavListSelDto {
-    @Range(min = 1, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private int page;
-    @Range(min = 1, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private int loginedIuser;
     @JsonIgnore
     private int startIdx;
