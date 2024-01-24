@@ -50,6 +50,7 @@ public class ProductRepository implements RefProductRepository {
     public List<GetProductListResultDto> findProductListBy(GetProductListDto getProductListDto) {
         return productMapper.getProductList(getProductListDto);
     }
+
     @Override
     public GetProductResultDto findProductBy(GetProductBaseDto getProductBaseDto) {
         return productMapper.getProduct(getProductBaseDto);

@@ -16,8 +16,10 @@ import com.team5.projrental.product.model.*;
 import com.team5.projrental.product.model.proc.*;
 import com.team5.projrental.product.model.review.ReviewGetDto;
 import com.team5.projrental.product.model.review.ReviewResultVo;
+import com.vane.badwordfiltering.BadWordFiltering;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,6 +48,7 @@ public class ProductService {
 
     private final MyFileUtils myFileUtils;
 
+
     /*
         ------- Logic -------
      */
@@ -61,16 +64,20 @@ public class ProductService {
     public List<ProductListVo> getProductList(Integer sort,
                                               String search,
                                               int icategory,
-                                              int page) {
+                                              int page,
+                                              int prodPerPage) {
         // page 는 페이징에 맞게 변환되어 넘어옴.
+
+        // iuser 가져오기 -> isLiked 를 위해서
 
         // 카테고리 검증
         CommonUtils.ifCategoryNotContainsThrow(icategory);
         // search 의 length 가 2 이상으로 validated 되었으므로 문제 없음.
         List<GetProductListResultDto> products =
-                productRepository.findProductListBy(new GetProductListDto(sort, search, icategory, page));
-        // 결과물 없음 여부 체크
-        CommonUtils.checkNullOrZeroIfCollectionThrow(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE, products);
+                productRepository.findProductListBy(new GetProductListDto(sort, search, icategory, page, getLoginUserPk(), prodPerPage));
+        // 결과물 없음 여부 체크 (결과물 없으면 빈 객체 리턴)
+        if(!CommonUtils.checkNullOrZeroIfCollectionReturnFalse(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE,
+                products)) return new ArrayList<>();
 
         // 검증 이상 무
         List<ProductListVo> result = new ArrayList<>();
@@ -141,6 +148,9 @@ public class ProductService {
      */
     @Transactional
     public ResVo postProduct(MultipartFile mainPic, List<MultipartFile> pics, ProductInsDto dto) {
+
+        // 욕설 포함시 예외 발생
+//        CommonUtils.ifContainsBadWordThrow();
 
         CommonUtils.ifAllNullThrow(BadMainPicException.class, BAD_PIC_EX_MESSAGE, mainPic);
 

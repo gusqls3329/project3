@@ -24,7 +24,7 @@ public class ProductVo extends ProductListVo{
     private LocalDate buyDate;
     private Double x;
     private Double y;
-    private Integer isLiked;
+//    private Integer isLiked;
     private List<ReviewResultVo> reviews;
     private List<LocalDate> disabledDates;
 
@@ -36,6 +36,5 @@ public class ProductVo extends ProductListVo{
         this.buyDate = dto.getBuyDate();
         this.x = dto.getX();
         this.y = dto.getY();
-        this.isLiked = dto.getIsLiked();
     }
 }

@@ -25,7 +25,10 @@ public class GetProductListResultDto {
     private LocalDate rentalEndDate;
     private Integer prodLike;
     private Integer istatus;
+    private Integer isLiked;
+    private Integer view;
+    private Integer inventory;
 
     //
-    private String category;
+    private Integer icategory;
 }
