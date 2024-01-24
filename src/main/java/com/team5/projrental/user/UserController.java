@@ -118,7 +118,7 @@ public class UserController {
     })
     @PatchMapping
     public ResVo patchUser(@RequestBody @Validated DelUserDto dto) {
-        return new ResVo(service.patchUser(dto);
+        return new ResVo(service.patchUser(dto));
     }
 
     @Operation(summary = "유저 정보 조회", description = "유저 개인 정보 조회, (iauth:권한)")
