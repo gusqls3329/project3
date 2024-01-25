@@ -53,7 +53,6 @@ public class UserIntegrationTest {
     @Test
     void postSignup() throws Exception {
         UserSignupDto dto = new UserSignupDto();
-        //dto.setIuser(12);
         dto.setAddr("대구 동구 방촌동");
         dto.setRestAddr("AA아파트");
         dto.setUid("testuserid");
@@ -67,11 +66,10 @@ public class UserIntegrationTest {
         //dto.setY(124);
         //dto.setChPic("pic.jpg");
 
-        String fileName = "pic.jpg";
+        /*String fileName = "pic.jpg";
         String filePath = "D:/ee/" + fileName;
         FileInputStream fileInputStream = new FileInputStream(filePath);
-        this.multipartFile = new MockMultipartFile("pic", fileName, "png", fileInputStream);
-
+        this.multipartFile = new MockMultipartFile("pic", fileName, "png", fileInputStream);*/
         //dto.setPic(this.multipartFile);
 
         String response = mvc.perform(
@@ -90,6 +88,17 @@ public class UserIntegrationTest {
 
     @Test
     void postSignin() throws Exception {
+        SigninDto dto = new SigninDto();
+        dto.setUid("qwqwqw11");
+        dto.setUpw("12121212");
+
+        String contentAsString = mvc.perform(MockMvcRequestBuilders.post("/api/user")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andReturn().getResponse().getContentAsString();
+        SigninVo signinVo = objectMapper.readValue(contentAsString, SigninVo.class);
+        this.token = "Bearer " + signinVo.getAccessToken();
+
     }
 
     void getSignOut() throws Exception {}
@@ -221,6 +230,12 @@ public class UserIntegrationTest {
 
     @Test
     void getUSer () throws Exception {
+        int iuser = 11;
+        /*String response = mvc.perform(
+                MockMvcRequestBuilders
+                        .get("/api/user")
+                        .contentType()
+        );*/
 
     }
 

@@ -186,7 +186,7 @@ public class UserControllerTest {
 
     @Test
     void getUSer () throws Exception {
-        int iuser = 14;
+        int iuser = 1;
         SelUserVo vo = new SelUserVo();
         given(service.getUser(any())).willReturn(vo);
         mvc.perform(MockMvcRequestBuilders
