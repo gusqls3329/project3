@@ -14,7 +14,7 @@ public interface ChatMapper {
     List<ChatSelVo> selChatAll(ChatSelDto dto); // 채팅리스트
 
     int insChatUser(ChatUserInsDto dto); // 빈 채팅방에 유저 참여
-
+    List<ChatUserInsDto> insChatUserTest(ChatUserInsDto dto);
 
     Integer selChatUserCheck(ChatInsDto dto);
 

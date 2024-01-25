@@ -3,6 +3,7 @@ package com.team5.projrental.chat;
 import com.team5.projrental.chat.model.ChatInsDto;
 import com.team5.projrental.chat.model.ChatSelDto;
 import com.team5.projrental.chat.model.ChatSelVo;
+import com.team5.projrental.chat.model.ChatUserInsDto;
 import com.team5.projrental.user.model.SigninDto;
 import com.team5.projrental.user.model.SigninVo;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,18 +28,24 @@ class ChatMapperTest {
     @Autowired
     private ChatMapper mapper;
 
+        /*selVo.setIchat(1);
+        selVo.setIproduct(1);
+        selVo.setIstatus(1);
+        selVo.setLastMsg("하이용");
+        selVo.setOtherPersonIuser(2);
+        selVo.setOtherPersonNm("바보현빈");
+        selVo.setOtherPersonPic("aaa.jpg");
+        selVo.setLastMsgAt("2024-01-25");
+        selVo.setProdPic("ggg.jpg");*/
 
 
     @Test
     void insChat() {
         ChatInsDto dto = new ChatInsDto();
-        dto.setLoginedIuser(1);
-        dto.setIproduct(1);
-        dto.setIchat(1);
-        dto.setOtherPersonIuser(2);
-
-
-
+        dto.setIproduct(25);
+        int iChat = mapper.insChat(dto);
+        log.info("result : {}", iChat);
+        assertEquals(1, iChat);
 
     }
 
@@ -56,11 +64,38 @@ class ChatMapperTest {
 
     @Test
     void insChatUser() {
+        ChatUserInsDto dto = ChatUserInsDto.builder()
+                .ichat(2)
+                .iuser(1)
+                .build();
 
+        ChatUserInsDto dto2 = ChatUserInsDto.builder()
+                .ichat(2)
+                .iuser(7)
+                .build();
+
+        List<ChatUserInsDto> insChatUser = new ArrayList<>();
+        insChatUser.add(dto);
+        insChatUser.add(dto2);
+
+        int insChatUser = mapper.insChatUser(dto);
+        log.info("resultsize : {}", insChatUser);
+        assertEquals(1, insChatUser);
+        assertEquals(1, insChatUser);
     }
 
     @Test
     void selChatUserCheck() {
+        ChatInsDto dto = new ChatInsDto();
+        dto.setLoginedIuser(1);
+        dto.setOtherPersonIuser(7);
+        dto.setIchat(2);
+        //dto.setIproduct(25);
+
+        Integer ichat = mapper.selChatUserCheck(dto);
+
+        assertEquals(2,ichat);
+
     }
 
     @Test
