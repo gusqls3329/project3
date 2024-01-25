@@ -20,20 +20,30 @@
     </select>
 
     <update id="upProductIstatus">
-        update t_product pr
-        JOIN t_product_payment pp
-        ON pp.iproduct = pr.iproduct
-        JOIN t_payment pa
-        ON pa.ipayment = pp.ipayment
-        set pa.istatus = 1
-        WHERE pa.ipayment = #{ipayment}
+        <!--        update t_product pr-->
+        <!--        JOIN t_product_payment pp-->
+        <!--        ON pp.iproduct = pr.iproduct-->
+        <!--        JOIN t_payment pa-->
+        <!--        ON pa.ipayment = pp.ipayment-->
+        <!--        set pa.istatus = 1-->
+        <!--        WHERE pa.ipayment = #{ipayment}-->
+
+        update t_payment
+        set istatus = 1
+        WHERE ipayment = #{ipayment}
     </update>
 
     <update id="upReview">
         update t_review
         set
-        contents = #{contents}
-        ,rating = #{rating}
+        <if test="contents != null">
+            contents = #{contents}
+        </if>
+        <if test="rating != null">
+            ,rating = #{rating}
+        </if>
+
+
         where ireview = #{ireview}
     </update>
 
@@ -41,8 +51,8 @@
         update t_review r
         JOIN t_payment p
         ON r.ipayment = p.ipayment
-        SET r.contents = null
-        , r.rating = null
+        SET r.contents = ''
+        , r.rating = 0
         WHERE r.ireview = #{ireview}
         AND p.istatus = #{istatus}
     </update>
@@ -59,7 +69,7 @@
         WHERE iuser = #{iuser} and
         ipayment = #{ipayment}
     </select>
-<!--결제의 구매자와바이어인지 / 구매자인지 바이어인지 1이면 구매자 0판매자 -->
+    <!--결제의 구매자와바이어인지 / 구매자인지 바이어인지 1이면 구매자 0판매자 -->
     <select id="selBuyRew">
         select count(PA.ipayment) as isExists, if(PA.ibuyer = #{iuser}, 1, 0) as isBuyer
         from t_product_payment PP
@@ -88,7 +98,7 @@
         from t_product P
         JOIN t_product_payment PP ON P.iproduct = PP.iproduct
         JOIN t_review R ON R.ipayment = PP.ipayment
-        JOIN t_user U ON U.iuser = P.iuser AND R.`contents` IS NOT NULL AND  R.rating IS NOT NULL
+        JOIN t_user U ON U.iuser = P.iuser AND R.rating IS NOT NULL and R.rating > 0
         WHERE P.iuser = #{iuser}
     </select>
 

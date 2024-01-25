@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.hibernate.validator.constraints.Range;
 
 @Data
 public class RivewDto {
@@ -17,9 +18,11 @@ public class RivewDto {
     private int ipayment;
 
 
+    @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
     private String contents;
 
-    @Max(value = 5, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
+
+    @Range(min = 1, max = 5, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private Integer rating;
 
 }
