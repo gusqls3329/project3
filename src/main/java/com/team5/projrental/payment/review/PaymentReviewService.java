@@ -12,10 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
-import static com.team5.projrental.common.exception.ErrorCode.BAD_PRODUCT_ISTATUS_EX_MESSAGE;
-import static com.team5.projrental.common.exception.ErrorCode.ILLEGAL_EX_MESSAGE;
+import static com.team5.projrental.common.exception.ErrorCode.*;
 import static com.team5.projrental.common.exception.ErrorMessage.NO_SUCH_REVIEW_EX_MESSAGE;
 import static com.team5.projrental.common.exception.ErrorMessage.REVIEW_ALREADY_EXISTS_EX_MESSAGE;
 
@@ -37,15 +34,14 @@ public class PaymentReviewService {
             int selReview = reviewMapper.selReview(loginUserPk, dto.getIpayment());
             if (selReview == 0) {
                 CheckIsBuyer buyCheck = reviewMapper.selBuyRew(loginUserPk, dto.getIpayment());
-                CommonUtils.ifAnyNullThrow(BadInformationException.class, ErrorCode.BAD_INFO_EX_MESSAGE,
-                        buyCheck);
+                CommonUtils.ifAnyNullThrow(BadInformationException.class, BAD_INFO_EX_MESSAGE, buyCheck);
                 if (buyCheck.getIsBuyer() == 0) {
                     dto.setContents(null);
                     dto.setRating(null);
                 }
                 int result = reviewMapper.insReview(dto);
                 if (result == 0) {
-                    throw new BadInformationException(ILLEGAL_EX_MESSAGE);
+                    throw new BadInformationException(ErrorMessage.ILLEGAL_EX_MESSAGE);
                 }
 
                 if (buyCheck.getIsBuyer() == 1 && dto.getRating() != null) {
@@ -67,7 +63,7 @@ public class PaymentReviewService {
                 if (countIstatus == 2) {
                     int result2 = reviewMapper.upProductIstatus(dto.getIpayment());
                     if (result2 == 0) {
-                        throw new BadInformationException(ILLEGAL_EX_MESSAGE);
+                        throw new BadInformationException(ErrorCode.ILLEGAL_EX_MESSAGE);
                     }
                     return Const.SUCCESS;
                 } else {
@@ -83,38 +79,73 @@ public class PaymentReviewService {
     public int patchReview(UpRieDto dto) { //구매자면 잘못된요청
         int loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setIuser(loginUserPk);
-        //수정전 리뷰를 작성한 사람이 iuser가 맞는지 확인
         RiviewVo check = reviewMapper.selPatchRev(dto.getIreview());
-        if (check.getIbuyer() == loginUserPk) {
-            int result = reviewMapper.upReview(dto);
-            if (result != 1) {
+        //수정하려는 유저가 구매자가 맞는지 판마자면 수정할 수 없음
+        CheckIsBuyer buyCheck = reviewMapper.selBuyRew(loginUserPk, check.getIpayment());
+        if (buyCheck.getIsBuyer() == 1) {
+            //수정전 리뷰를 작성한 사람이 iuser가 맞는지 확인
+
+            if (check.getIuser() == loginUserPk) {
+                int result = reviewMapper.upReview(dto);
+                if (result != 1) {
+                    throw new BadInformationException(ILLEGAL_EX_MESSAGE);
+                }
+                if (buyCheck.getIsBuyer() == 1 && dto.getRating() != null) {
+                    int chIuser = reviewMapper.selUser(check.getIpayment());
+                    SelRatVo vo = reviewMapper.selRat(chIuser);
+                    double average = vo.getCountIre() * vo.getRating();
+                    double v = (average + dto.getRating()) / vo.getCountIre();
+                    double averageRat = Math.round(v * 10) / 10.0;
+                    UpRating uprating = new UpRating();
+                    uprating.setIuser(chIuser);
+                    uprating.setRating(averageRat);
+                    int upRating = reviewMapper.upRating(uprating);
+                    if (upRating != 1) {
+                        throw new BadInformationException(REVIEW_ALREADY_EXISTS_EX_MESSAGE);
+                    }
+                    return Const.SUCCESS;
+                }
                 throw new BadInformationException(ILLEGAL_EX_MESSAGE);
             }
-            return Const.SUCCESS;
+            throw new BadInformationException(ILLEGAL_EX_MESSAGE);
         }
         throw new BadInformationException(ILLEGAL_EX_MESSAGE);
     }
-
 
     public int delReview(DelRivewDto dto) {
         int loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setIuser(loginUserPk);
         //삭제전 리뷰를 작성한 사람이 iuser가 맞는지 확인
         RiviewVo check = reviewMapper.selPatchRev(dto.getIreview());
-        if (check.getIbuyer() == loginUserPk) {
-            // 리뷰를 삭제하기전 t_payment의 istatus를 확인해 삭제가능한 상태가 맞는지 확인
-            Integer istatus = reviewMapper.selReIstatus(check.getIpayment());
-            if (istatus == 1 || istatus == -2 || istatus == -3) {
-                dto.setIstatus(istatus);
-                int result = reviewMapper.delReview(dto);
-                if (result != 1) {
-                    throw new BadInformationException(ILLEGAL_EX_MESSAGE);
+            if (check.getIbuyer() == loginUserPk) {
+                // 리뷰를 삭제하기전 t_payment의 istatus를 확인해 삭제가능한 상태가 맞는지 확인
+                Integer istatus = reviewMapper.selReIstatus(check.getIpayment());
+                if (istatus == 1 || istatus == -2 || istatus == -3) {
+                    dto.setIstatus(istatus);
+                    int result = reviewMapper.delReview(dto);
+                    BeforRatingDto beforRatingDto = reviewMapper.sleDelBefor(dto.getIreview());
+                    if (result != 1) {
+                        throw new BadInformationException(ILLEGAL_EX_MESSAGE);
+                    }
+                    if(beforRatingDto.getRating() != null && beforRatingDto.getRating() != 0){
+                        int chIuser = reviewMapper.selUser(check.getIpayment());
+                        SelRatVo vo = reviewMapper.selRat(chIuser);
+                        double average = vo.getCountIre() * vo.getRating();
+                        double v = (average - beforRatingDto.getRating()) / vo.getCountIre();
+                        double averageRat = Math.round(v * 10) / 10.0;
+                        UpRating uprating = new UpRating();
+                        uprating.setIuser(chIuser);
+                        uprating.setRating(averageRat);
+                        int upRating = reviewMapper.upRating(uprating);
+                        if (upRating != 1) {
+                            throw new BadInformationException(REVIEW_ALREADY_EXISTS_EX_MESSAGE);
+                        }
+                    }
+
+                    return Const.SUCCESS;
                 }
-                return Const.SUCCESS;
-            }
-            throw new BadInformationException(NO_SUCH_REVIEW_EX_MESSAGE);
+                throw new BadInformationException(NO_SUCH_REVIEW_EX_MESSAGE);
+            } throw new BadInformationException(ILLEGAL_EX_MESSAGE);
         }
-        throw new BadInformationException(ILLEGAL_EX_MESSAGE);
-    }
 
 }
