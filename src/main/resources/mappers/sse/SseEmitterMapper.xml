@@ -21,7 +21,7 @@
     </select>
 
     <select id="findRejectedMessage">
-        select iuser, message, code, pk_num as pkNum, pk_col as pkCol from t_push_message where iuser = #{iuser}
+        select iuser, message, code, num, name from t_push_message where iuser = #{iuser}
     </select>
 
     <delete id="deleteRejectedMessage">
