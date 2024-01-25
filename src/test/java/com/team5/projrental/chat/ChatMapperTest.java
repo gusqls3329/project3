@@ -1,9 +1,6 @@
 package com.team5.projrental.chat;
 
-import com.team5.projrental.chat.model.ChatInsDto;
-import com.team5.projrental.chat.model.ChatSelDto;
-import com.team5.projrental.chat.model.ChatSelVo;
-import com.team5.projrental.chat.model.ChatUserInsDto;
+import com.team5.projrental.chat.model.*;
 import com.team5.projrental.user.model.SigninDto;
 import com.team5.projrental.user.model.SigninVo;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +37,7 @@ class ChatMapperTest {
 
 
     @Test
-    void insChat() {
+    void insChat() { // Iproduct가 있는 pk번호로 만들어야 함
         ChatInsDto dto = new ChatInsDto();
         dto.setIproduct(25);
         int iChat = mapper.insChat(dto);
@@ -63,25 +60,17 @@ class ChatMapperTest {
     }
 
     @Test
-    void insChatUser() {
+    void insChatUser() { // 채팅방이 미리 생성되어있는곳에 없는 유저를 넣어야 성공함
         ChatUserInsDto dto = ChatUserInsDto.builder()
                 .ichat(2)
                 .iuser(1)
                 .build();
 
-        ChatUserInsDto dto2 = ChatUserInsDto.builder()
-                .ichat(2)
-                .iuser(7)
-                .build();
 
-        List<ChatUserInsDto> insChatUser = new ArrayList<>();
-        insChatUser.add(dto);
-        insChatUser.add(dto2);
+        int insChatUserSize = mapper.insChatUser(dto);
 
-        int insChatUser = mapper.insChatUser(dto);
-        log.info("resultsize : {}", insChatUser);
-        assertEquals(1, insChatUser);
-        assertEquals(1, insChatUser);
+        log.info("resultsize : {}", insChatUserSize);
+        assertEquals(1, insChatUserSize);
     }
 
     @Test
@@ -100,14 +89,38 @@ class ChatMapperTest {
 
     @Test
     void insChatMsg() {
+        ChatMsgInsDto dto = new ChatMsgInsDto();
+        dto.setMsg("하이");
+        dto.setIchat(2);
+        dto.setLoginedIuser(1);
+
+        int chatMsg = mapper.insChatMsg(dto);
+
+        assertEquals(1, chatMsg);
+
     }
 
     @Test
     void selChatMsgAll() {
+        ChatMsgSelDto dto = new ChatMsgSelDto();
+        dto.setIchat(2);
+        dto.setPage(1);
+        dto.setStartIdx(1);
+        dto.setRowCount(10);
+        dto.setLoginedIuser(1);
+
+        List<ChatMsgSelVo> list = mapper.selChatMsgAll(dto);
+        assertEquals(6, list.size());
+
     }
 
     @Test
     void updChatLastMsgAfterDelByLastMsg() {
+        ChatMsgDelDto dto = new ChatMsgDelDto();
+        dto.setIuser(1);
+        dto.setIchat(2);
+        int affectedDelChat = mapper.updChatLastMsgAfterDelByLastMsg(dto);
+        assertEquals(1, affectedDelChat);
     }
 
     @Test
