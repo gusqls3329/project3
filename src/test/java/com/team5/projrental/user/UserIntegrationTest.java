@@ -198,8 +198,8 @@ public class UserIntegrationTest {
     @Test
     void patchUser () throws Exception {
         SigninDto sDto = new SigninDto();
-        sDto.setUid("qwqwqw123");
-        sDto.setUpw("qwqwqw123123");
+        sDto.setUid("qwqwqw11");
+        sDto.setUpw("12121212");
 
         String contentAsString = mvc.perform(MockMvcRequestBuilders.post("/api/user")
                         .contentType(MediaType.APPLICATION_JSON)
