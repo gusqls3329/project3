@@ -33,6 +33,7 @@ public interface ErrorMessage {
     String BAD_PRODUCT_INFO_EX_MESSAGE = "잘못된 제품 정보 입니다.";
     String REVIEW_ALREADY_EXISTS_EX_MESSAGE = "작성하신 리뷰가 존재합니다.";
     String NO_SUCH_REVIEW_EX_MESSAGE = "작성하신 리뷰가 없습니다.";
+    String BAD_PRODUCT_ISTATUS_EX_MESSAGE = "리뷰를 등록하실 수 없는 결제 상태입니다.";
     //
     String ALL_INFO_NOT_EXISTS_EX_MESSAGE = "모든 정보가 제공되지 않음";
     //
