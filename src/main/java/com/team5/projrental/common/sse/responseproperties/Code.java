@@ -10,7 +10,7 @@ public enum Code {
         this.code = code;
     }
 
-    public String get() {
-        return String.valueOf(code);
+    public int get() {
+        return code;
     }
 }
