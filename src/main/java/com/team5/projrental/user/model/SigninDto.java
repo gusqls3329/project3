@@ -1,10 +1,9 @@
 package com.team5.projrental.user.model;
 
 
-import io.swagger.v3.oas.annotations.Operation;
+import com.team5.projrental.common.exception.ErrorMessage;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
-import com.team5.projrental.common.exception.ErrorMessage;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 

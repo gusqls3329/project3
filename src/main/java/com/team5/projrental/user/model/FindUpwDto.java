@@ -1,10 +1,10 @@
 package com.team5.projrental.user.model;
 
+import com.team5.projrental.common.exception.ErrorMessage;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
-import com.team5.projrental.common.exception.ErrorMessage;
 
 
 @Data
