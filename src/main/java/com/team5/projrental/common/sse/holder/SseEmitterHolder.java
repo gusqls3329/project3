@@ -60,7 +60,7 @@ public class SseEmitterHolder {
     // 여기서 필요한건 DB에서 해당 유저에게 보내야할 푸시가 존재한다면 해당 메시지 다 담아서 푸시하기.
     public void sendFromDbMessage(Integer iuser) {
         List<RejectMessageInfo> messages = emitterRepository.findRejectedMessage(iuser);
-        messages.forEach(m -> send(m.getIuser(), "sse push", m.getMessage(), m.getCode(), m.getPkNum()));
+        messages.forEach(m -> send(m.getIuser(), null, m.getMessage(), m.getCode(), m.getPkNum()));
         int deletedPushMessageFromDb = emitterRepository.deleteRejectedMessage(iuser);
         log.debug("[SseEmitterHolder.sendFromDbMessage] deletedPushMessageFromDb = {}", deletedPushMessageFromDb);
     }
