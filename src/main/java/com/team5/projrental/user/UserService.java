@@ -142,6 +142,11 @@ public class UserService {
                 .build();
     }
 
+    public ResVo patchToken(UserFirebaseTokenPatchDto dto) {
+        dto.setIuser(authenticationFacade.getLoginUserPk());
+        return new ResVo(mapper.patchToken(dto));
+    }
+
     public int getSignOut(HttpServletResponse res) {
         cookieUtils.deleteCookie(res, "rt");
         throw new BadInformationException(AUTHENTICATION_FAIL_EX_MESSAGE);

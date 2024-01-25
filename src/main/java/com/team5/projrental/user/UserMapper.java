@@ -33,4 +33,6 @@ public interface UserMapper {
     Integer getUserChatCount(Integer iuser);
 
     Integer delUserChat(Integer iuser);
+
+    int patchToken(UserFirebaseTokenPatchDto dto);
 }
