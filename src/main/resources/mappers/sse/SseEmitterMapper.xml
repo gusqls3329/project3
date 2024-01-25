@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team5.projrental.common.sse.SseEmitterMapper">
+    <select id="findExpiredPaymentCountBy">
+        SELECT COUNT(PA.ipayment)
+        FROM t_payment PA
+        JOIN t_product_payment PP ON PA.ipayment = PP.ipayment
+        JOIN t_product P ON PP.iproduct = P.iproduct
+        WHERE PA.ibuyer = #{iuser} OR P.iuser = #{iuser} AND PA.istatus = -4
+    </select>
+
+    <select id="findDifUserBy">
+        SELECT if(P.iuser = #{iuser}, PA.ibuyer, if(PA.ibuyer = 1, P.iuser, 0)) as difIuser, COUNT(R.ireview) AS reviewCount
+        FROM t_product_payment PP
+        JOIN t_payment PA ON PP.ipayment = PA.ipayment
+        JOIN t_product P ON PP.iproduct = P.iproduct
+        LEFT JOIN t_review R ON PA.ipayment = R.ipayment
+        WHERE PA.ipayment = #{ipayment}
+    </select>
+</mapper>
