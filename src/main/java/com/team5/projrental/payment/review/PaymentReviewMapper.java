@@ -24,4 +24,5 @@ public interface PaymentReviewMapper {
     int selUser(Integer ipayment);
     SelRatVo selRat(Integer iuser);
     int upRating(UpRating rating);
+    BeforRatingDto sleDelBefor(Integer ireview);
 }
