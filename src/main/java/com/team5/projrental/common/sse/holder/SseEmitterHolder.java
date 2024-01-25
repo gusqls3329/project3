@@ -1,7 +1,6 @@
 package com.team5.projrental.common.sse.holder;
 
 import com.team5.projrental.common.sse.SseEmitterRepository;
-import com.team5.projrental.common.sse.model.CatchEventProperties;
 import com.team5.projrental.common.sse.model.RejectMessageInfo;
 import com.team5.projrental.common.sse.model.SseResponse;
 import com.team5.projrental.common.sse.responseproperties.Properties;
