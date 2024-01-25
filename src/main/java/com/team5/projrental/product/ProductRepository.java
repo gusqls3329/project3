@@ -114,7 +114,7 @@ public class ProductRepository implements RefProductRepository {
 
 
     @Override
-    public int findStockCountBy(int iproduct) {
+    public Integer findStockCountBy(int iproduct) {
         return productMapper.findStockCountBy(iproduct);
     }
 }
