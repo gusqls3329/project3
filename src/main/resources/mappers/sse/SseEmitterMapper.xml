@@ -19,4 +19,27 @@
         LEFT JOIN t_review R ON PA.ipayment = R.ipayment
         WHERE PA.ipayment = #{ipayment}
     </select>
+
+    <select id="findRejectedMessage">
+        select iuser, message, code, pk_num as pkNum, pk_col as pkCol from t_push_message where iuser = #{iuser}
+    </select>
+
+    <delete id="deleteRejectedMessage">
+        delete from t_push_message where iuser = #{iuser}
+    </delete>
+
+    <insert id="deleteRejectedMessage">
+        insert into t_push_message
+        set
+        iuser = #{iuser},
+        message = #{message},
+        code = #{code}
+        <if test="pkNum != null and pkNum > 0">
+        , pk_num = #{pkNum}
+        </if>
+        <if test="pkCol != null">
+        , pk_col = #{pkCol}
+        </if>
+    </insert>
+
 </mapper>
