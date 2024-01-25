@@ -11,6 +11,7 @@ public class RejectMessageInfo {
     private int iuser;
     private String message;
     private int code;
-    private int pkNum;
+    private int num;
+    private String name;
 
 }
