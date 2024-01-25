@@ -16,7 +16,6 @@ public class ChatSelDto {
     //@NotBlank // 스페이스바도 안됨
     //@NotEmpty // null아니면서 빈문자("") 까지 안됨
 
-    @Range(min = 1, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private int page;
 
     @JsonIgnore

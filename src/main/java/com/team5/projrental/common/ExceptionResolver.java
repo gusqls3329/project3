@@ -16,6 +16,8 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import java.util.Arrays;
 
+import static com.team5.projrental.common.exception.ErrorCode.BAD_TYPE_EX_MESSAGE;
+
 @RestControllerAdvice
 @Slf4j
 public class ExceptionResolver {
@@ -34,10 +36,10 @@ public class ExceptionResolver {
     @ExceptionHandler({MethodArgumentTypeMismatchException.class})
     public ResponseEntity<ErrorResultVo> resolve(MethodArgumentTypeMismatchException eBase) {
         log.warn("error message", eBase);
-        return ResponseEntity.status(400)
-                .body(ErrorResultVo.builder().errorCode(400)
+        return ResponseEntity.status(4000)
+                .body(ErrorResultVo.builder().errorCode(BAD_TYPE_EX_MESSAGE.getCode())
 //                        .message(e.getErrorCode().getMessage()).build());
-                        .message("잘못된 타입을 입력하였습니다.").build());
+                        .message(BAD_TYPE_EX_MESSAGE.getMessage()).build());
     }
 
 

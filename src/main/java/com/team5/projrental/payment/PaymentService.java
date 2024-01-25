@@ -63,10 +63,9 @@ public class PaymentService {
         List<GetDepositAndPriceFromProduct> validationInfoFromProduct =
                 paymentRepository.getValidationInfoFromProduct(paymentInsDto.getIproduct());
 
-        // deposit 과 price 는 일정함. 따라서
+        // deposit 과 price 는 join 할 경우 현재기준으로 조회되며, 모든 리스트에 값이 일정함. 따라서
         GetDepositAndPriceFromProduct depositInfo = validationInfoFromProduct.get(0);
-        CommonUtils.ifAnyNullThrow(BadProductInfoException.class, BAD_PRODUCT_INFO_EX_MESSAGE,
-                depositInfo);
+
 
         // 이미 등록된 날짜에는 동일한 상품이 더이상 결제등록 되지 않도록 예외처리
         validationInfoFromProduct.forEach(o -> CommonUtils.ifFalseThrow(BadDateInfoException.class, ILLEGAL_DATE_EX_MESSAGE,
@@ -178,10 +177,9 @@ public class PaymentService {
     }
 
     public List<PaymentListVo> getAllPayment(Integer role, int page) {
-        int iuser = getLoginUserPk();
-        List<GetPaymentListResultDto> paymentBy = paymentRepository.findPaymentBy(new GetPaymentListDto(iuser, role, page, true));
-        List<PaymentListVo> result = new ArrayList<>();
+        List<GetPaymentListResultDto> paymentBy = paymentRepository.findPaymentBy(new GetPaymentListDto(getLoginUserPk(), role, page, true));
         CommonUtils.checkNullOrZeroIfCollectionThrow(NoSuchPaymentException.class, NO_SUCH_PAYMENT_EX_MESSAGE, paymentBy);
+        List<PaymentListVo> result = new ArrayList<>();
         paymentBy.forEach(p -> result.add(new PaymentListVo(
                 p.getIuser(), p.getNick(), p.getUserStoredPic(),
                 p.getIpayment(), p.getIproduct(), p.getProdStoredPic(), p.getIstatus(), p.getRentalStartDate(),
@@ -198,32 +196,14 @@ public class PaymentService {
 
         // 가져오기
         GetPaymentListResultDto aPayment;
-        int iuser = getLoginUserPk();
         try {
-            aPayment = paymentRepository.findPaymentBy(new GetPaymentListDto(iuser, Flag.ONE.getValue(), ipayment)).get(0);
+            aPayment = paymentRepository.findPaymentBy(
+                    new GetPaymentListDto(getLoginUserPk(), Flag.ONE.getValue(), ipayment)
+            ).get(0);
         } catch (IndexOutOfBoundsException e) {
             throw new NoSuchPaymentException(NO_SUCH_PAYMENT_EX_MESSAGE);
         }
-
-        return new PaymentVo(
-                aPayment.getIuser(),
-                aPayment.getNick(),
-                aPayment.getUserStoredPic(),
-                aPayment.getIpayment(),
-                aPayment.getIproduct(),
-                aPayment.getProdStoredPic(),
-                aPayment.getIstatus(), // status resolver ?
-                aPayment.getRentalStartDate(),
-                aPayment.getRentalEndDate(),
-                aPayment.getRentalDuration(),
-                aPayment.getPrice(),
-                aPayment.getDeposit(),
-                aPayment.getPhone(),
-                PAYMENT_METHODS.get(aPayment.getIpayment()),
-                aPayment.getCode(),
-                aPayment.getRole(),
-                aPayment.getCreatedAt()
-        );
+        return new PaymentVo(aPayment);
     }
 
     /*

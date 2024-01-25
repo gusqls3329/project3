@@ -1,7 +1,7 @@
 package com.team5.projrental.product;
 
 
-import com.team5.projrental.product.model.CanNotRentalDate;
+import com.team5.projrental.product.model.CanNotRentalDateVo;
 import com.team5.projrental.product.model.ProductUpdDto;
 import com.team5.projrental.product.model.proc.*;
 import com.team5.projrental.product.model.review.ReviewGetDto;
@@ -31,7 +31,7 @@ public interface RefProductRepository {
 
     GetProductResultDto findProductBy(GetProductBaseDto getProductBaseDto);
 
-    List<GetProdEctPicDto> findPicsBy(Integer productPK);
+    List<String> findPicsBy(Integer productPK);
 
     int saveProduct(InsProdBasicInfoDto insProdBasicInfoDto);
 
@@ -52,7 +52,11 @@ public interface RefProductRepository {
 
     List<ReviewResultVo> getReview(ReviewGetDto dto);
 
-    List<CanNotRentalDate> getLendDatesBy(Integer iproduct);
+    List<CanNotRentalDateVo> getLendDatesBy(Integer iproduct);
 
     List<String> getPicsAllBy(List<Integer> ipics);
+
+    List<CanNotRentalDateVo> findDisabledDatesBy(CanNotRentalDateDto dto);
+
+    Integer findStockCountBy(int iproduct);
 }

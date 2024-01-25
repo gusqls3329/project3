@@ -1,6 +1,6 @@
 package com.team5.projrental.product;
 
-import com.team5.projrental.product.model.CanNotRentalDate;
+import com.team5.projrental.product.model.CanNotRentalDateVo;
 import com.team5.projrental.product.model.ProductUpdDto;
 import com.team5.projrental.product.model.proc.*;
 import com.team5.projrental.product.model.review.ReviewGetDto;
@@ -50,12 +50,13 @@ public class ProductRepository implements RefProductRepository {
     public List<GetProductListResultDto> findProductListBy(GetProductListDto getProductListDto) {
         return productMapper.getProductList(getProductListDto);
     }
+
     @Override
     public GetProductResultDto findProductBy(GetProductBaseDto getProductBaseDto) {
         return productMapper.getProduct(getProductBaseDto);
     }
     @Override
-    public List<GetProdEctPicDto> findPicsBy(Integer productPK) {
+    public List<String> findPicsBy(Integer productPK) {
         return productMapper.getProdEctPics(productPK);
     }
     @Override
@@ -97,12 +98,23 @@ public class ProductRepository implements RefProductRepository {
     }
 
     @Override
-    public List<CanNotRentalDate> getLendDatesBy(Integer iproduct) {
+    public List<CanNotRentalDateVo> getLendDatesBy(Integer iproduct) {
         return productMapper.getLendStartDateAndEndDate(iproduct);
     }
 
     @Override
     public List<String> getPicsAllBy(List<Integer> ipics) {
         return productMapper.getPicsAllBy(ipics);
+    }
+
+    @Override
+    public List<CanNotRentalDateVo> findDisabledDatesBy(CanNotRentalDateDto dto) {
+        return productMapper.findDisabledDatesBy(dto);
+    }
+
+
+    @Override
+    public Integer findStockCountBy(int iproduct) {
+        return productMapper.findStockCountBy(iproduct);
     }
 }

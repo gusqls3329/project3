@@ -3,6 +3,7 @@ package com.team5.projrental.common.utils;
 import com.team5.projrental.common.exception.ErrorCode;
 import com.team5.projrental.common.exception.IllegalCategoryException;
 import com.team5.projrental.common.exception.IllegalPaymentMethodException;
+import com.vane.badwordfiltering.BadWordFiltering;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -18,8 +19,24 @@ import static com.team5.projrental.common.exception.ErrorCode.*;
 
 @Component
 @Slf4j
-public class CommonUtils {
+public abstract class CommonUtils {
 
+    private static final BadWordFiltering badWordFiltering = new BadWordFiltering();
+
+    //
+
+    public static boolean ifContainsBadWordTrue(String... words) {
+        return Arrays.stream(words).anyMatch(badWordFiltering::blankCheck);
+    }
+
+    public static void ifContainsBadWordThrow(Class<? extends RuntimeException> ex, ErrorCode err, String... words) {
+        if(ifContainsBadWordTrue(words)) thrown(ex, err);
+    }
+
+    public static String ifContainsBadWordChangeThat(String word) {
+        return badWordFiltering.change(word);
+    }
+    //
 
     public static boolean notBetweenChecker(LocalDate refStartDate, LocalDate refEndDate,
                                             LocalDate newStartDate, LocalDate newEndDate) {
@@ -30,6 +47,7 @@ public class CommonUtils {
 
     /**
      * Integer n 이 null 이거나 0 이면 예외 유발
+     *
      * @param ex
      * @param err
      * @param n
@@ -53,6 +71,7 @@ public class CommonUtils {
 
     /**
      * Stream<T> collection(리스트, 맵, 셋 등) 의 .size() 가 int limitNum 에 제공된 숫자보다 크면(초과) 예외 발생
+     *
      * @param ex
      * @param err
      * @param collection
@@ -88,7 +107,7 @@ public class CommonUtils {
      *
      * @param icategory
      */
-    public static void ifCategoryNotContainsThrowOrReturn(Integer icategory) {
+    public static void ifCategoryNotContainsThrow(Integer icategory) {
 //        Map<Integer, String> categories = CATEGORIES;
 //        return categories.keySet().stream().filter(k -> categories.get(k).equals(category))
 //                .findAny().orElseThrow(() -> new IllegalCategoryException(ILLEGAL_CATEGORY_EX_MESSAGE));
@@ -177,10 +196,34 @@ public class CommonUtils {
         }
     }
 
+    public static boolean checkNullOrZeroIfCollectionReturnFalse(Class<? extends RuntimeException> ex, ErrorCode err,
+                                                                 Object instance) {
+        if (!ifAnyNullReturnFalse(ex, err, instance)) return false;
+        if (instance instanceof Collection<?>) {
+            return checkSizeIfUnderLimitNumReturnFalse(ex, err,
+                    ((Collection<?>) instance).stream(), 1);
+        }
+        return true;
+    }
+
+    public static <T> boolean checkSizeIfUnderLimitNumReturnFalse(Class<? extends RuntimeException> ex, ErrorCode err,
+                                                            Stream<T> collection,
+                                                            int limitNum) {
+        return collection.count() >= limitNum;
+    }
+
+    public static boolean ifAnyNullReturnFalse(Class<? extends RuntimeException> ex, ErrorCode err, Object... objs) {
+        for (Object obj : objs) {
+            if (obj == null) return false;
+        }
+        return true;
+    }
+
     //
 
     /**
      * 예외 throw 메소드 (내부)
+     *
      * @param ex
      * @param err
      */

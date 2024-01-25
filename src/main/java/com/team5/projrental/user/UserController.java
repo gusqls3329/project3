@@ -53,13 +53,25 @@ public class UserController {
     }
 
     @PostMapping
-    @Operation(summary = "로그인", description = "유저 로그인(iauth:권한)")
+    @Operation(summary = "로그인", description = "유저 로그인(iauth:권한)<br><br>" +
+            "로그인 성공시 fireBaseToken 수정부분 수행 해야함.(Patch: /api/user/fcm")
     @Parameters(value = {
             @Parameter(name = "uid", description = "아이디")
             , @Parameter(name = "upw", description = "비밀번호")
     })
     public SigninVo postSignin(HttpServletResponse res, @RequestBody @Validated SigninDto dto) {
         return service.postSignin(res, dto);
+    }
+
+    @Operation(summary = "fireBaseToken 등록", description = "발급받은 해당 유저의 브라우저에 발급된 " +
+            "fireBaseToken 을 로그인한 유저에 등록")
+    @Parameters(value = {
+            @Parameter(name = "firebaseToken", description = "토큰값")
+    })
+    @PatchMapping("/fcm")
+    public ResVo patchToken(UserFirebaseTokenPatchDto dto) {
+
+        return service.patchToken(dto);
     }
 
     @PostMapping("/signout")
@@ -106,8 +118,8 @@ public class UserController {
             , @Parameter(name = "phone", description = "휴대폰 번호 (형식 : 010-1111-2222)")
     })
     @PutMapping
-    public int putUser(@RequestPart @Validated ChangeUserDto dto) {
-        return service.putUser(dto);
+    public ResVo putUser(@RequestPart @Validated ChangeUserDto dto) {
+        return new ResVo(service.putUser(dto));
     }
 
     @Operation(summary = "회원탈퇴", description = "유저 삭제 : 유저정보, 상품, 결제정보 등 삭제")
@@ -117,8 +129,8 @@ public class UserController {
             , @Parameter(name = "phone", description = "휴대폰 번호 (형식 : 010-1111-2222)")
     })
     @PatchMapping
-    public int patchUser(@RequestBody @Validated DelUserDto dto) {
-        return service.patchUser(dto);
+    public ResVo patchUser(@RequestBody @Validated DelUserDto dto) {
+        return new ResVo(service.patchUser(dto));
     }
 
     @Operation(summary = "유저 정보 조회", description = "유저 개인 정보 조회, (iauth:권한)")

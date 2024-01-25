@@ -7,11 +7,11 @@ public class PaymentSelVo {
 
     private int ibuyer; // 빌리는사람
     private int iuser; //빌려주는사람
-
     private int iproduct; // 제품 PK
-
     private int ipayment; // 지불 PK
+    private int istatus;
 
+    private String title;
     private String productStoredPic; // 제품 대표 사진
     private int deposit; // 보증금
     private int price; // 가격

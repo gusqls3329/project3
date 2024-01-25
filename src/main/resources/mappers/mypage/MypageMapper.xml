@@ -4,23 +4,16 @@
 
     <select id="getPaymentList">
         SELECT
-            A.iproduct,
-            A.title,
-            A.stored_pic AS productStoredPic,
-            A.deposit,
-            A.iuser,
-            C.ipayment,
-            C.istatus,
-            C.ibuyer,
-            C.price,
-            C.rental_duration AS rentalDuration,
-            C.rental_start_date AS rentalStartDate,
-            C.rental_end_date AS rentalEndDate,
-            C.created_at AS createdAt,
-            C.istatus AS cancel,
-            D.iuser AS targetIuser,
-            D.nick AS targetNick,
-            D.stored_pic AS userStoredPic
+        A.iproduct, A.title, A.stored_pic AS productStoredPic, A.deposit, A.iuser,
+        C.ipayment, C.istatus, C.ibuyer, C.price,
+        C.rental_duration AS rentalDuration,
+        C.rental_start_date AS rentalStartDate,
+        C.rental_end_date AS rentalEndDate,
+        C.created_at AS createdAt,
+        C.istatus AS cancel,
+        D.iuser AS targetIuser,
+        D.nick AS targetNick,
+        D.stored_pic AS userStoredPic
         FROM t_product A
         JOIN t_product_payment B
         ON A.iproduct = B.iproduct
@@ -29,15 +22,14 @@
         LEFT JOIN t_user D
         ON A.iuser = D.iuser
         <if test="role == 1"> <!--로그인 유저가 물건 빌린 내역 볼 때-->
-            where C.ibuyer = #{loginedIuser}
+            WHERE C.ibuyer = #{loginedIuser}
         </if>
         <if test="role == 2"> <!--로그인 유저가 물건 빌려준 내역 볼 때-->
-            where A.iuser = #{loginedIuser}
+            WHERE A.iuser = #{loginedIuser}
         </if>
+        GROUP BY C.ipayment
         ORDER BY B.ipayment DESC
-        <if test="page != null and rowCount != null">
-            LIMIT #{startIdx}, #{rowCount}
-        </if>
+        LIMIT #{startIdx}, #{rowCount}
     </select>
 
     <select id="getIbuyerReviewList">
@@ -50,21 +42,27 @@
         LEFT JOIN t_product D
         ON C.iproduct = D.iproduct
         WHERE B.ibuyer = #{ibuyer}
-        <if test="page != null and rowCount != null">
-            LIMIT #{startIdx}, #{rowCount}
-        </if>
     </select>
 
     <select id="getFavList">
-        SELECT B.iuser AS loginedIuser, A.iproduct, A.price, A.deposit, A.title, A.stored_pic AS prodPic, A.iproduct, A.iproduct, B.nick, B.stored_pic AS pic
+        SELECT
+        A.updated_at AS updatedAt,
+        A.iproduct,
+        A.price,
+        A.deposit,
+        A.title,
+        A.stored_pic AS prodPic,
+        A.iproduct,
+        A.iproduct,
+        B.iuser AS loginedIuser,
+        B.nick,
+        B.stored_pic AS pic
         FROM t_product A
         LEFT JOIN t_user B
         ON A.iuser = B.iuser
         WHERE A.iuser = #{loginedIuser}
-        ORDER BY B.ipayment DESC
-        <if test="page != null and rowCount != null">
-            LIMIT #{startIdx}, #{rowCount}
-        </if>
+        ORDER BY A.updated_at DESC
+        LIMIT #{startIdx}, #{rowCount}
     </select>
 
 </mapper>
