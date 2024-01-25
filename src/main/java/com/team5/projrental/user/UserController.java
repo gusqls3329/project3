@@ -53,13 +53,25 @@ public class UserController {
     }
 
     @PostMapping
-    @Operation(summary = "로그인", description = "유저 로그인(iauth:권한)")
+    @Operation(summary = "로그인", description = "유저 로그인(iauth:권한)<br><br>" +
+            "로그인 성공시 fireBaseToken 수정부분 수행 해야함.(Patch: /api/user/fcm")
     @Parameters(value = {
             @Parameter(name = "uid", description = "아이디")
             , @Parameter(name = "upw", description = "비밀번호")
     })
     public SigninVo postSignin(HttpServletResponse res, @RequestBody @Validated SigninDto dto) {
         return service.postSignin(res, dto);
+    }
+
+    @Operation(summary = "fireBaseToken 등록", description = "발급받은 해당 유저의 브라우저에 발급된 " +
+            "fireBaseToken 을 로그인한 유저에 등록")
+    @Parameters(value = {
+            @Parameter(name = "firebaseToken", description = "토큰값")
+    })
+    @PatchMapping("/fcm")
+    public ResVo patchToken(UserFirebaseTokenPatchDto dto) {
+
+        return service.patchToken(dto);
     }
 
     @PostMapping("/signout")
