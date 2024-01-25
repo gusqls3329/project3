@@ -46,7 +46,7 @@
     </update>
 
     <select id="selFindUid">
-        SELECT uid, iuser
+        SELECT uid, iuser, iauth
         FROM t_user
         WHERE phone = #{phone}
     </select>
