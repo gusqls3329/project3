@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 
 @Aspect
@@ -33,7 +34,7 @@ public class CommonAspect {
     public CommonAspect(ProductRepository productRepository, MyThreadPoolHolder threadPool) {
         this.productRepository = productRepository;
         this.threadPool = threadPool.getThreadPool();
-        disabledCache = new HashMap<>();
+        disabledCache = new ConcurrentHashMap<>();
     }
 
 
