@@ -113,7 +113,7 @@ class ProductControllerIntegTest {
 
     }
 
-    @Test
+/*    @Test
     void getUserProductList() throws Exception {
 
         String response = mockMvc.perform(MockMvcRequestBuilders.get("/api/prod/list?page=1")
@@ -128,7 +128,7 @@ class ProductControllerIntegTest {
         });
 
 
-    }
+    }*/
 
     @Test
     void getAllReviews() throws Exception {

@@ -53,7 +53,7 @@ public class ChatController {
     @Parameters(value = {
             @Parameter(name = "page", description = "페이지"),
             @Parameter(name = "ichat", description = "채팅방 번호")})
-    public List<ChatMsgSelVo> getChatMsgAll(ChatMsgSelDto dto){
+    public List<ChatMsgSelVo> getChatMsgAll(@Validated ChatMsgSelDto dto){
         log.info("dto : {}", dto);
         return service.getMsgAll(dto);
     }
