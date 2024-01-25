@@ -100,9 +100,9 @@
             limit #{page}, #{paymentPerPage}
         </if>
     </select>
-<!--
+
     <update id="updateIstatusOverRentalEndDate">
         update t_payment set istatus = -4
         where rental_end_date <![CDATA[<=]]> #{now} and istatus in (0, 2, 3)
-    </update>-->
+    </update>
 </mapper>
