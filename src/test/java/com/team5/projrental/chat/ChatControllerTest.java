@@ -31,6 +31,7 @@ import org.springframework.util.MultiValueMap;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -94,8 +95,7 @@ class ChatControllerTest {
         vo.setOtherPersonIuser(7);
         vo.setOtherPersonNm("감자7");
         vo.setOtherPersonPic("user\\7\\cfbf8730-7ce0-40bb-9a80-4e8987fe8866.jpg");
-
-
+        when(service.postChat(any())).thenReturn(vo);
 
         String response = mockMvc.perform(MockMvcRequestBuilders
                         .post("/api/chat")
@@ -113,8 +113,6 @@ class ChatControllerTest {
         Assertions.assertEquals(vo.getIproduct(), result.getIproduct());
         Assertions.assertEquals(vo.getLastMsgAt(), result.getLastMsgAt());
         Assertions.assertEquals(vo.getOtherPersonIuser(), result.getOtherPersonIuser());
-
-
     }
 
     @Test
@@ -157,6 +155,8 @@ class ChatControllerTest {
         dto.setSeq(8);
         dto.setLoginedIuser(1);
 
+        when(service.postChatMsg(any())).thenReturn(new ResVo(1));
+
         String response = mockMvc.perform(MockMvcRequestBuilders
                         .post("/api/chat/msg")
                         .header("Authorization", token)
@@ -166,8 +166,10 @@ class ChatControllerTest {
                 .andReturn().getResponse().getContentAsString();
         System.out.println("response = " + response);
 
+
+
         ResVo result = objectMapper.readValue(response, ResVo.class);
-        Assertions.assertEquals(new ResVo(1), result.getResult());
+        Assertions.assertEquals(1, result.getResult());
     }
 
 /*    @Test
@@ -178,6 +180,10 @@ class ChatControllerTest {
     @SneakyThrows
     @Test
     void delChatMsg() {
+        ChatMsgDelDto dto = new ChatMsgDelDto();
+        dto.setIchat(1);
+        dto.setIuser(1);
+
         ResVo vo = new ResVo(Const.SUCCESS);
         MultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
         requestParams.add("iuser", "1");
@@ -189,8 +195,11 @@ class ChatControllerTest {
                         .delete("/api/chat/msg")
                         .params(requestParams))
                 .andExpect(status().isOk())
-                .andExpect(content().string(objectMapper.writeValueAsString(vo.getResult())))
                 .andDo(print());
+
+        ResVo result = controller.delChatMsg(dto);
+        Assertions.assertEquals(vo, result);
+
 
     }
 }
