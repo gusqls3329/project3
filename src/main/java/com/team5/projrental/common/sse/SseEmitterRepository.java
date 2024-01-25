@@ -26,11 +26,11 @@ public class SseEmitterRepository {
     }
 
     public int deleteRejectedMessage(int iuser) {
-        return emitterMapper.deleteRejectedMessage(iuser);
+        return emitterMapper.savePushInfoWhenNotExistsEmitterInMap(iuser);
     }
 
     public int savePushInfoWhenNotExistsEmitterInMap(RejectMessageInfo dto) {
-        return emitterMapper.deleteRejectedMessage(dto);
+        return emitterMapper.savePushInfoWhenNotExistsEmitterInMap(dto);
     }
 
 }

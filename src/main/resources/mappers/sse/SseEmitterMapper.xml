@@ -28,7 +28,7 @@
         delete from t_push_message where iuser = #{iuser}
     </delete>
 
-    <insert id="deleteRejectedMessage">
+    <insert id="savePushInfoWhenNotExistsEmitterInMap">
         insert into t_push_message
         set
         iuser = #{iuser},
