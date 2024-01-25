@@ -101,13 +101,12 @@ public class UserIntegrationTest {
     @Test
     void getFindUid() throws Exception {
         FindUidDto dto = new FindUidDto();
-        dto.setPhone("010-7777-6666");
+        dto.setPhone("010-1111-1111");
 
         String json = objectMapper.writeValueAsString(dto);
 //        FindUidVo result = controller.getFindUid(dto);
 //        FindUidVo result2 = service.getFindUid(dto);
 //        assertEquals(result.getUid(), result2.getUid());
-
         String response = mvc.perform(
                 MockMvcRequestBuilders
                         .post("/api/user/id")
@@ -118,10 +117,10 @@ public class UserIntegrationTest {
 
         FindUidVo result = objectMapper.readValue(response, FindUidVo.class);
         FindUidVo vo = new FindUidVo();
-        vo.setUid("qwqwqw123");
+        vo.setUid("qwqwqw11");
         Assertions.assertEquals(vo.getUid(), result.getUid());
 
-        MvcResult mr = mvc.perform(
+        /*MvcResult mr = mvc.perform(
                 MockMvcRequestBuilders
                         .post("/api/user/id")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -129,16 +128,18 @@ public class UserIntegrationTest {
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andReturn();
-        //FindUidVo vo = objectMapper.readValue(mr, FindUidVo.class)
+        //FindUidVo vo = objectMapper.readValue(mr, FindUidVo.class)*/
 
     }
 
     @Test
     void getFindUpw() throws Exception {
+
+        // ---
         FindUpwDto dto = new FindUpwDto();
-        dto.setUid("qwqwqw123");
-        dto.setPhone("010-7777-6666");
-        dto.setUpw("qwqwqw123123");
+        dto.setUid("qwqwqw11");
+        dto.setPhone("010-1111-1111");
+        dto.setUpw("12121212");
 
         String response = mvc.perform(
                 MockMvcRequestBuilders
@@ -155,8 +156,8 @@ public class UserIntegrationTest {
     @Test
     void putUser () throws Exception {
         SigninDto sDto = new SigninDto();
-        sDto.setUid("qwqwqw123");
-        sDto.setUpw("qwqwqw123123");
+        sDto.setUid("qwqwqw11");
+        sDto.setUpw("12121212");
 
         String contentAsString = mvc.perform(MockMvcRequestBuilders.post("/api/user")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -169,7 +170,7 @@ public class UserIntegrationTest {
         ChangeUserDto dto = new ChangeUserDto();
 
         dto.setIuser(signinVo.getIuser());
-        //dto.setUpw("testuserpw12");
+        dto.setUpw("testuserpw12");
         dto.setNick("dongdongtest");
 
         String response = mvc.perform(
@@ -201,9 +202,9 @@ public class UserIntegrationTest {
 
         DelUserDto dto = new DelUserDto();
         dto.setIuser(signinVo.getIuser());
-        dto.setUid("qwqwqw123");
-        dto.setUpw("qwqwqw123123");
-        dto.setPhone("010-7777-6666");
+        dto.setUid("qwqwqw11");
+        dto.setUpw("12121212");
+        dto.setPhone("010-1111-1111");
 
         String response = mvc.perform(
                 MockMvcRequestBuilders
