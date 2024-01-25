@@ -35,6 +35,10 @@
         WHERE u.uid = #{uid}
     </select>
 
+    <update id="patchToken">
+        update t_user set firebase_token = #{firebaseToken} where iuser = #{iuser}
+    </update>
+
     <update id="updUserFirebaseToken">
         UPDATE t_user
         SET firebase_token = #{firebaseToken}
@@ -42,7 +46,7 @@
     </update>
 
     <select id="selFindUid">
-        SELECT uid, iuser
+        SELECT uid, iuser, iauth
         FROM t_user
         WHERE phone = #{phone}
     </select>

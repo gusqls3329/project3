@@ -142,6 +142,11 @@ public class UserService {
                 .build();
     }
 
+    public ResVo patchToken(UserFirebaseTokenPatchDto dto) {
+        dto.setIuser(authenticationFacade.getLoginUserPk());
+        return new ResVo(mapper.patchToken(dto));
+    }
+
     public int getSignOut(HttpServletResponse res) {
         cookieUtils.deleteCookie(res, "rt");
         throw new BadInformationException(AUTHENTICATION_FAIL_EX_MESSAGE);
@@ -177,7 +182,7 @@ public class UserService {
 
     public FindUidVo getFindUid(FindUidDto phone) {
         FindUidVo vo = mapper.selFindUid(phone);
-        vo.setIauth(authenticationFacade.getLoginUserAuth());
+        //vo.setIauth(authenticationFacade.getLoginUserAuth());
         if (vo == null) {
             throw new BadInformationException(NO_SUCH_USER_EX_MESSAGE);
         }
@@ -187,9 +192,15 @@ public class UserService {
     public int getFindUpw(FindUpwDto dto) {
         String hashedPw = BCrypt.hashpw(dto.getUpw(), BCrypt.gensalt());
         dto.setUpw(hashedPw);
+
         int result = mapper.upFindUpw(dto);
+        FindUidDto fDto = new FindUidDto();
+        fDto.setPhone(dto.getPhone());
+        FindUidVo fVo = mapper.selFindUid(fDto);
+
         if (result == 1) {
-            int auth = authenticationFacade.getLoginUserAuth();
+            //int auth = authenticationFacade.getLoginUserAuth();
+            int auth = fVo.getIauth();
             return auth;
         }
         throw new BadInformationException(NO_SUCH_USER_EX_MESSAGE);

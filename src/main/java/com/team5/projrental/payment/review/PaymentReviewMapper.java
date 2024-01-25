@@ -9,6 +9,8 @@ import java.util.List;
 @Mapper
 public interface PaymentReviewMapper {
     int insReview(RivewDto dto);
+    int selUpProIs(Integer ipayment);
+
     int upProductIstatus(Integer ipayment);
     int upReview(UpRieDto dto);
     int delReview(DelRivewDto dto);

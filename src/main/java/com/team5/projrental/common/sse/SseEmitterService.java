@@ -16,6 +16,7 @@ public class SseEmitterService {
     private final SseEmitterHolder emitterHolder;
     private final AuthenticationFacade authenticationFacade;
 
+
     public ResponseEntity<SseEmitter> connect() {
         return ResponseEntity.ok(emitterHolder.add(authenticationFacade.getLoginUserPk()));
     }
