@@ -59,7 +59,7 @@
         WHERE iuser = #{iuser} and
         ipayment = #{ipayment}
     </select>
-<!--결제의 구매자와바이어인지 / 구매자인지 바이어인지 1이면 구매자 1이면 0판매자 -->
+<!--결제의 구매자와바이어인지 / 구매자인지 바이어인지 1이면 구매자 0판매자 -->
     <select id="selBuyRew">
         select count(PA.ipayment) as isExists, if(PA.ibuyer = #{iuser}, 1, 0) as isBuyer
         from t_product_payment PP
@@ -97,6 +97,10 @@
         set rating = #{rating}
         where iuser = #{iuser}
     </update>
-
+    <select id="sleDelBefor">
+        SELECT rating
+        FROM t_review
+        WHERE ireview = #{ireview}
+    </select>
 
 </mapper>
