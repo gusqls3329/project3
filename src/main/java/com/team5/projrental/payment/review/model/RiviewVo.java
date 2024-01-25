@@ -4,7 +4,6 @@ import lombok.Data;
 
 @Data
 public class RiviewVo {
-    private int ibuyer;
     private int ipayment;
     private Integer iuser;
 }
