@@ -32,44 +32,47 @@
 
 
     <select id="selChatAll">
-        SELECT A.ichat,
-        A.last_msg AS lastMsg,
-        A.last_msg_at AS lastMsgAt,
-        D.iuser AS otherPersonIuser,
-        D.nick AS otherPersonNm,
-        D.stored_pic AS otherPersonPic,
-        E.stored_pic AS prodPic,
-        E.iproduct
-        FROM t_chat A
-        INNER JOIN t_chat_user B <!--로그인 한 유저-->
+        SELECT B.ichat, B.iuser, C.nick AS otherPersonNm, C.stored_pic AS otherPersonPic
+        , D.last_msg AS lastMsg, D.last_msg_at AS lastMsgAt
+        , E.iproduct, E.title, E.stored_pic AS prodPic
+        FROM t_chat_user A
+        INNER JOIN t_chat_user B
         ON A.ichat = B.ichat
-        INNER JOIN t_chat_user C <!--나머지 유저-->
-        ON B.ichat = C.ichat
-        INNER JOIN t_user D
-        ON C.iuser = D.iuser
-        LEFT JOIN t_product E
-        ON A.iproduct = E.iproduct
-        WHERE B.iuser = #{loginedIuser}
-        AND C.iuser != #{loginedIuser}
-        ORDER BY A.last_msg_at DESC
-        <if test="page != null and rowCount != null">
-            LIMIT #{startIdx}, #{rowCount}
-        </if>
+        INNER JOIN t_user C
+        ON B.iuser = C.iuser
+        INNER JOIN t_chat D
+        ON B.ichat = D.ichat
+        INNER JOIN t_product E
+        ON D.iproduct = E.iproduct
+        WHERE A.iuser = #{loginedIuser} AND A.istatus != -1 AND B.iuser != #{loginedIuser}
+        ORDER BY D.last_msg_at DESC
+        LIMIT #{startIdx}, #{rowCount}
     </select>
 
 
     <select id="selChatMsgAll">
         SELECT
-        A.seq, A.msg, A.created_at AS createdAt,
-        B.iuser AS writerIuser, B.stored_pic AS writerPic
-        FROM t_chat_message A
-        INNER JOIN t_user B
-        ON A.iuser = B.iuser
-        WHERE A.ichat =#{ichat} AND istatus = -1
-        ORDER BY A.seq DESC
-        <if test="page != null and rowCount != null">
-            LIMIT #{startIdx}, #{rowCount}
-        </if>
+        F.seq,
+        F.msg,
+        F.created_at AS createdAt,
+        B.stored_pic AS prodPic,
+        C.iuser AS writerIuser,
+        C.stored_pic AS writerPic
+        FROM t_chat A
+        LEFT JOIN t_product B
+        ON A.iproduct = B.iproduct
+        LEFT JOIN t_user C
+        ON B.iuser = C.iuser
+        LEFT JOIN t_chat_user D
+        ON A.ichat = D.ichat
+        LEFT JOIN t_chat_user E
+        ON D.ichat = E.ichat
+        LEFT JOIN t_chat_message F
+        ON A.ichat = F.ichat
+        WHERE D.iuser = #{loginedIuser} AND E.iuser != #{loginedIuser} AND D.istatus != -1 AND F.ichat = #{ichat}
+        GROUP BY F.seq
+        ORDER BY F.created_at DESC
+        LIMIT #{startIdx}, #{rowCount}
     </select>
 
 

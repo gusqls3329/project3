@@ -14,6 +14,7 @@ public class GetProductListResultDto {
     private Integer iuser;
     private String nick;
     private String userStoredPic;
+    private Integer iauth;
 
     private Integer iproduct;
     private String addr;
@@ -24,7 +25,10 @@ public class GetProductListResultDto {
     private LocalDate rentalEndDate;
     private Integer prodLike;
     private Integer istatus;
+    private Integer isLiked;
+    private Integer view;
+    private Integer inventory;
 
     //
-    private String category;
+    private Integer icategory;
 }

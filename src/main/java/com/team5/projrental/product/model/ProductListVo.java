@@ -1,10 +1,11 @@
 package com.team5.projrental.product.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.team5.projrental.product.model.proc.GetProductListResultDto;
 import com.team5.projrental.product.model.proc.GetProductResultDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.core.io.Resource;
+import org.hibernate.validator.constraints.Range;
 
 import java.time.LocalDate;
 
@@ -15,20 +16,25 @@ public class ProductListVo {
     private Integer iuser;
     private String nick;
     private String userPic;
-
+    private Integer iauth;
     private Integer iproduct;
     private String title;
-    private String prodPic;
+    private String prodMainPic;
     private Integer rentalPrice;
     private LocalDate rentalStartDate;
     private LocalDate rentalEndDate;
     private String addr;
     private Integer prodLike;
     private Integer istatus;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Integer inventory;
+    private Integer isLiked;
+    private Integer view;
 
     public ProductListVo(GetProductListResultDto dto) {
         this.iuser = dto.getIuser();
         this.nick = dto.getNick();
+        this.iauth = dto.getIauth();
         this.iproduct = dto.getIproduct();
         this.title = dto.getTitle();
         this.rentalPrice = dto.getRentalPrice();
@@ -37,13 +43,16 @@ public class ProductListVo {
         this.addr = dto.getAddr();
         this.prodLike = dto.getProdLike();
         this.userPic = dto.getUserStoredPic();
-        this.prodPic = dto.getProdMainStoredPic();
+        this.prodMainPic = dto.getProdMainStoredPic();
         this.istatus = dto.getIstatus();
+        this.view = dto.getView();
+        this.isLiked = dto.getIsLiked();
     }
 
     public ProductListVo(GetProductResultDto dto) {
         this.iuser = dto.getIuser();
         this.nick = dto.getNick();
+        this.iauth = dto.getIauth();
         this.iproduct = dto.getIproduct();
         this.title = dto.getTitle();
         this.rentalPrice = dto.getRentalPrice();
@@ -51,7 +60,12 @@ public class ProductListVo {
         this.rentalEndDate = dto.getRentalEndDate();
         this.addr = dto.getAddr();
         this.prodLike = dto.getProdLike();
+        this.userPic = dto.getUserStoredPic();
+        this.prodMainPic = dto.getProdMainStoredPic();
         this.istatus = dto.getIstatus();
+        this.inventory = dto.getInventory();
+        this.view = dto.getView();
+        this.isLiked = dto.getIsLiked();
     }
 
 }

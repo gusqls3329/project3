@@ -46,13 +46,12 @@ public class ChatService {
     public ResVo postChatMsg(ChatMsgInsDto dto) {
         int loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setLoginedIuser(loginUserPk);
-
+        dto.setMsg(CommonUtils.ifContainsBadWordChangeThat(dto.getMsg()));
         int istatus = mapper.delBeforeChatIstatus(dto);
 
 
         //상대유저가 채팅방 나갔을 경우 예외처리
         CommonUtils.ifChatUserStatusThrowOrReturn(istatus);
-
 
 
         int affectedRows = mapper.insChatMsg(dto);
@@ -108,6 +107,9 @@ public class ChatService {
 
     //채팅방 입장시 메세지 내용 불러오기
     public List<ChatMsgSelVo> getMsgAll(ChatMsgSelDto dto) {
+        int loginUserPk = authenticationFacade.getLoginUserPk();
+        dto.setLoginedIuser(loginUserPk);
+
         List<ChatMsgSelVo> list = mapper.selChatMsgAll(dto);
         return list;
     }

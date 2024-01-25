@@ -35,6 +35,10 @@
         WHERE u.uid = #{uid}
     </select>
 
+    <update id="patchToken">
+        update t_user set firebase_token = #{firebaseToken} where iuser = #{iuser}
+    </update>
+
     <update id="updUserFirebaseToken">
         UPDATE t_user
         SET firebase_token = #{firebaseToken}
@@ -42,7 +46,7 @@
     </update>
 
     <select id="selFindUid">
-        SELECT uid, iuser
+        SELECT uid, iuser, iauth
         FROM t_user
         WHERE phone = #{phone}
     </select>
@@ -148,7 +152,7 @@
     </delete>
     <!--    -->
     <select id="selUser">
-        SELECT y, x, nick, stored_pic, phone, email, raiting, CONCAT_WS(addr, rest_addr)
+        SELECT y, x, nick, stored_pic, phone, email, rating, CONCAT_WS(addr, rest_addr)
         FROM t_user
         WHERE iuser = #{iuser}
     </select>
