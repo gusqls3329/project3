@@ -7,12 +7,17 @@
     <insert id="insReview">
         INSERT INTO t_review
         set
-        ibuyer = #{iuser}
+        iuser = #{iuser}
         ,ipayment = #{ipayment}
         , contents = #{contents}
         , rating = #{rating}
     </insert>
-
+    <!--selUpProIs: insert를 하고 난후 select가 2개일때 상태를 변경-->
+    <select id="selUpProIs">
+        SELECT COUNT(ireview)
+        FROM t_review
+        WHERE ipayment = #{ipayment}
+    </select>
 
     <update id="upProductIstatus">
         update t_product pr
@@ -21,7 +26,7 @@
         JOIN t_payment pa
         ON pa.ipayment = pp.ipayment
         set pa.istatus = 1
-        WHERE pa.ipayment = #{ipayment};
+        WHERE pa.ipayment = #{ipayment}
     </update>
 
     <update id="upReview">
@@ -51,13 +56,10 @@
     <select id="selReview">
         SELECT COUNT(ireview)
         FROM t_review
-        WHERE
-        <if test="iuser != null and iuser != 0">
-            ibuyer = #{iuser} and
-        </if>
+        WHERE iuser = #{iuser} and
         ipayment = #{ipayment}
     </select>
-
+<!--결제의 구매자와바이어인지 / 구매자인지 바이어인지 1이면 구매자 1이면 0판매자 -->
     <select id="selBuyRew">
         select count(PA.ipayment) as isExists, if(PA.ibuyer = #{iuser}, 1, 0) as isBuyer
         from t_product_payment PP
@@ -67,7 +69,7 @@
     </select>
 
     <select id="selPatchRev">
-        select ibuyer, ipayment
+        select iuser, ipayment
         FROM t_review
         WHERE ireview = #{ireview}
     </select>
@@ -80,13 +82,13 @@
         JOIN t_product_payment PA ON P.iproduct = PA.iproduct
         WHERE PA.ipayment = #{ipayment}
     </select>
-    
+
     <select id="selRat">
         SELECT COUNT(R.ireview) as countIre, U.rating
         from t_product P
         JOIN t_product_payment PP ON P.iproduct = PP.iproduct
         JOIN t_review R ON R.ipayment = PP.ipayment
-        JOIN t_user U ON U.iuser = P.iuser
+        JOIN t_user U ON U.iuser = P.iuser AND R.`contents` IS NOT NULL AND  R.rating IS NOT NULL
         WHERE P.iuser = #{iuser}
     </select>
 
