@@ -100,7 +100,7 @@
     <update id="updChatLastMsgAfterDelByLastMsg">
         UPDATE t_chat_user
         SET istatus = -1
-        WHERE iuser = #{iuser};
+        WHERE iuser = #{iuser} AND ichat = #{ichat} ;
     </update>
 
 
