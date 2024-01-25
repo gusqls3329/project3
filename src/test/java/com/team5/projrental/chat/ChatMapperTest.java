@@ -3,6 +3,7 @@ package com.team5.projrental.chat;
 import com.team5.projrental.chat.model.*;
 import com.team5.projrental.user.model.SigninDto;
 import com.team5.projrental.user.model.SigninVo;
+import com.team5.projrental.user.model.UserEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -125,10 +126,23 @@ class ChatMapperTest {
 
     @Test
     void updChatLastMsg() {
+        ChatMsgInsDto dto = new ChatMsgInsDto();
+        dto.setIchat(2);
+        dto.setMsg("테스트");
+
+        int affectedLastChat = mapper.updChatLastMsg(dto);
+        assertEquals(1, affectedLastChat);
     }
 
     @Test
     void selOtherPersonByLoginUser() {
+        ChatMsgInsDto dto = new ChatMsgInsDto();
+        dto.setIchat(2);
+        dto.setMsg("테스트");
+
+        UserEntity entity = mapper.selOtherPersonByLoginUser(dto);
+        log.info("entity : {}", entity);
+
     }
 
     @Test
