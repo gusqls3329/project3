@@ -258,7 +258,7 @@ public class ProductController {
     @Operation(summary = "특정 유저의 모든 제품 목록 조회",
             description = "<strong>특정 유저의 모든 제품목록 조회</strong><br>" +
                     "[ [v] : 필수값]<br>" +
-                    "iuser: 대상 유저의 PK값 (제공되지 않을시 기본적으로 로그인 유저의 모든 제품이 조회됨)" +
+                    "iuser: 대상 유저의 PK값 (제공되지 않을시 기본적으로 로그인 유저의 모든 제품이 조회됨)<br>" +
                     "[v] page: 페이징" +
                     "<br><br>" +
                     "성공시: <br>" +
