@@ -36,11 +36,11 @@ public class PaymentReviewController {
     }
 
     @PatchMapping
-    @Operation(summary = "리뷰 수정", description = "해당 거래에 등록한 리뷰 수정")
+    @Operation(summary = "리뷰 수정", description = "해당 거래에 등록한 리뷰 수정<br>")
     @Parameters(value = {
             @Parameter(name="ireview", description = "작성한 리뷰 PK")
-            , @Parameter(name="contents", description = "null 허용")
-            , @Parameter(name="rating", description = "null 허용 , 별점 등록 시 0~5점 등록 가능")
+            , @Parameter(name="contents", description = "contents 를 작성하지 않을경우 빈 문자열 제공")
+            , @Parameter(name="rating", description = "rating 을 작성하지 않을경우 0 제공")
     })
     public ResVo patchReview(@Validated @RequestBody UpRieDto dto){
         return new ResVo(reviewService.patchReview(dto));
