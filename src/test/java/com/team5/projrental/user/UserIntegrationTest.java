@@ -50,7 +50,7 @@ public class UserIntegrationTest {
     AuthenticationFacade authenticationFacade;
     MultipartFile multipartFile;
 
-    /*@Test
+    @Test
     void postSignup() throws Exception {
         UserSignupDto dto = new UserSignupDto();
         //dto.setIuser(12);
@@ -129,7 +129,7 @@ public class UserIntegrationTest {
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andReturn();
-        FindUidVo vo = objectMapper.readValue(mr, FindUidVo.class)
+        //FindUidVo vo = objectMapper.readValue(mr, FindUidVo.class)
 
     }
 
@@ -221,6 +221,6 @@ public class UserIntegrationTest {
     @Test
     void getUSer () throws Exception {
 
-    }*/
+    }
 
 }
