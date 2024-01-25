@@ -117,17 +117,18 @@ public class PaymentReviewService {
         dto.setIuser(loginUserPk);
         //삭제전 리뷰를 작성한 사람이 iuser가 맞는지 확인
         RiviewVo check = reviewMapper.selPatchRev(dto.getIreview());
-            if (check.getIbuyer() == loginUserPk) {
+            if (check.getIuser() == loginUserPk) {
+
                 // 리뷰를 삭제하기전 t_payment의 istatus를 확인해 삭제가능한 상태가 맞는지 확인
                 Integer istatus = reviewMapper.selReIstatus(check.getIpayment());
                 if (istatus == 1 || istatus == -2 || istatus == -3) {
                     dto.setIstatus(istatus);
-                    int result = reviewMapper.delReview(dto);
                     BeforRatingDto beforRatingDto = reviewMapper.sleDelBefor(dto.getIreview());
-                    if (result != 1) {
-                        throw new BadInformationException(ILLEGAL_EX_MESSAGE);
-                    }
                     if(beforRatingDto.getRating() != null && beforRatingDto.getRating() != 0){
+                        int result = reviewMapper.delReview(dto);
+                        if (result != 1) {
+                            throw new BadInformationException(ILLEGAL_EX_MESSAGE);
+                        }
                         int chIuser = reviewMapper.selUser(check.getIpayment());
                         SelRatVo vo = reviewMapper.selRat(chIuser);
                         double average = vo.getCountIre() * vo.getRating();
