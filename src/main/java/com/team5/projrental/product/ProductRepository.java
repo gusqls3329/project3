@@ -117,4 +117,14 @@ public class ProductRepository implements RefProductRepository {
     public Integer findStockCountBy(int iproduct) {
         return productMapper.findStockCountBy(iproduct);
     }
+
+    @Override
+    public String findMainPicPathForDelBy(int iproduct) {
+        return productMapper.findMainPicPathForDelBy(iproduct);
+    }
+
+    @Override
+    public List<String> findSubPicsPathForDelBy(int iproduct) {
+        return productMapper.findSubPicsPathForDelBy(iproduct);
+    }
 }

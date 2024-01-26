@@ -9,8 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -29,14 +29,18 @@ public class ProductUpdDto {
     @JsonIgnore
     private Integer iuser;
     private Integer icategory;
+    @Length(min = 2, max = 100)
     private String addr;
+    @Length(max = 20)
     private String restAddr;
+    @Length(min = 2, max = 50)
     private String title;
+    @Length(min = 2, max = 2000)
     private String contents;
-    @JsonIgnore
-    private MultipartFile mainPic;
-    @JsonIgnore
-    private List<MultipartFile> pics;
+//    @JsonIgnore
+//    private MultipartFile mainPic;
+//    @JsonIgnore
+//    private List<MultipartFile> pics;
     @Range(min = 100, max = Integer.MAX_VALUE, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private Integer price;
     @Range(min = 100, max = Integer.MAX_VALUE, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)

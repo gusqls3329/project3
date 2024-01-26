@@ -10,12 +10,13 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdProdBasicDto {
-//    private Integer icategory;
+    //    private Integer icategory;
 //    private String addr;
 //    private String restAddr;
 //    private String title;
 //    private String contents;
 //    private StoredFileInfo mainPic;
+    private String storedPic;
     private Integer price;
 //    private Integer rentalPrice;
     private Integer deposit;

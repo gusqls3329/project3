@@ -59,6 +59,7 @@ public class KakaoAxisGenerator implements AxisGenerator{
         log.debug("result = {}", result);
 
         Documents documents;
+
         try {
             documents = objectMapper.readValue(result, Documents.class);
         } catch (JsonProcessingException e) {

@@ -6,6 +6,7 @@ import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
 import java.time.LocalDate;
@@ -19,12 +20,16 @@ public class ProductInsDto {
     @JsonIgnore
     private Integer iuser;
     @NotBlank(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
+    @Length(min = 2, max = 50)
     private String title;
     @NotBlank(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
+    @Length(min = 2, max = 2000)
     private String contents;
     @NotBlank(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
+    @Length(min = 2, max = 100)
     private String addr;
     @NotBlank(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
+    @Length(max = 20)
     private String restAddr;
     @JsonIgnore
     private String mainPic;

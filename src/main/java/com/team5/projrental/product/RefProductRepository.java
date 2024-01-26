@@ -59,4 +59,8 @@ public interface RefProductRepository {
     List<CanNotRentalDateVo> findDisabledDatesBy(CanNotRentalDateDto dto);
 
     Integer findStockCountBy(int iproduct);
+
+    String findMainPicPathForDelBy(int iproduct);
+
+    List<String> findSubPicsPathForDelBy(int iproduct);
 }
