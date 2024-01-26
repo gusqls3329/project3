@@ -80,7 +80,7 @@ class ProductMapperTest {
         assertThat(viewForTest + 1).isEqualTo(afterViewForTest);
     }
 
-/*    @Test
+    @Test
     void getProductList() {
 
         List<GetProductListResultDto> productList = productMapper.getProductList(new GetProductListDto(1, 0));
@@ -103,7 +103,7 @@ class ProductMapperTest {
         assertThat(productList3.size()).isEqualTo(2);
 
 
-    }*/
+    }
 
 /*    @Test
     void getProduct() {

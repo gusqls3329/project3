@@ -40,7 +40,7 @@ class ProductServiceTest {
     ProductService productService;
 
 
-/*    @Test
+    @Test
     void getProductList() {
 
 
@@ -59,7 +59,7 @@ class ProductServiceTest {
         when(productRepository.findProductListBy(any())).thenReturn(new ArrayList<>());
         assertThatThrownBy(() -> productService.getProductList(null, null, 1, 0))
                 .isInstanceOf(NoSuchProductException.class);
-    }*/
+    }
 
 
     @Test
