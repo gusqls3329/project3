@@ -61,7 +61,9 @@ file:
 
 
 
-
+#logging:
+#  level:
+#    -com.team5.projrental: info
 
 
 
