@@ -267,13 +267,13 @@
     </update>
 
     <select id="getReview">
-        select R.ireview, R.contents, R.rating, U.nick, U.stored_pic
+        select R.ireview, R.contents, R.rating, U.iuser, U.nick, U.stored_pic as userProfPic
         from t_product_payment PP
         JOIN t_payment PA ON PP.ipayment = PA.ipayment
         JOIN t_review R ON PA.ipayment = R.ipayment
-        JOIN t_user U ON U.iuser = R.ibuyer
+        JOIN t_user U ON U.iuser = R.iuser
         where PP.iproduct = #{iproduct} and PA.istatus != -1 and PA.istatus != -2
-            and R.contents is not null and R.rating is not null
+            and R.contents != '' and R.rating > 0
         <if test="page != null and prodPerPage != null">
         limit #{page}, #{prodPerPage}
         </if>
