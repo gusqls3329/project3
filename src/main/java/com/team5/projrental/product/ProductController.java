@@ -222,7 +222,6 @@ public class ProductController {
                     "result: 1<br><br>" +
                     "실패시: <br>" +
                     "message: 에러 발생 사유<br>errorCode: 에러 코드")
-
     @PutMapping
     public ResVo putProduct(@RequestPart(required = false) MultipartFile mainPic,
                             @RequestPart(required = false) List<MultipartFile> pics,
