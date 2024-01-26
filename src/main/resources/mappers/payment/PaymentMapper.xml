@@ -16,11 +16,13 @@
 
     <!--    -->
     <select id="getValidationInfoFromProduct">
-        select P.deposit, P.price, PA.rental_start_date as rentalStartDate, PA.rental_end_date as rentalEndDate
+        select P.rental_price as rentalPrice, P.deposit, P.price, P.inventory, PA.rental_start_date as rentalStartDate,
+        PA.rental_end_date as
+        rentalEndDate
         from t_product P
         left join t_product_payment PP on P.iproduct = PP.iproduct
         left join t_payment PA on PP.ipayment = PA.ipayment
-        where P.iproduct = #{iproduct}
+        where P.iproduct = #{iproduct} and PA.istatus in (0, 2, 3) and P.istatus = 0
     </select>
     <!--    -->
 
@@ -53,10 +55,14 @@
         select
         U.iuser,
         U.nick,
-        U.stored_pic as storedPic,
+        U.stored_pic as userStoredPic,
         PA.ipayment,
         P.iproduct,
         PA.istatus,
+        <if test="flag == 1">
+            PA.ipayment_method as ipaymentMethod,
+        </if>
+        P.stored_pic as prodStoredPic,
         PA.rental_start_date as rentalStartDate,
         PA.rental_end_date as rentalEndDate,
         PA.rental_duration as rentalDuration,
@@ -85,7 +91,11 @@
             if(P.iuser = #{iuser}, PA.ibuyer = U.iuser, P.iuser = U.iuser)
         </if>
         <where>
-            PA.istatus in (-4, -3, -2, 0, 1, 2, 3)
+            PA.istatus in (-4, -3,
+            <if test="flag != 1">
+                -2,
+            </if>
+            0, 1, 2, 3)
             <if test="role != null and role == 1">
                 and PA.ibuyer = #{iuser}
             </if>

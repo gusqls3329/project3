@@ -1,6 +1,5 @@
 package com.team5.projrental.payment.model.proc;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,6 +17,7 @@ public class GetPaymentListResultDto {
     private Integer iproduct;
     private String prodStoredPic;
     private Integer istatus;
+    private Integer ipaymentMethod;
     private LocalDate rentalStartDate;
     private LocalDate rentalEndDate;
     private Integer rentalDuration;
