@@ -46,7 +46,7 @@ public class LocalLoggerAspect {
     public void beforeAll(JoinPoint joinPoint) {
 
 
-        log.info("\n\nCALL\n\t{} \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tㄴ> {} \nARGS \n\t{}\nON\n\t{}\n",
+        log.debug("\n\nCALL\n\t{} \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tㄴ> {} \nARGS \n\t{}\nON\n\t{}\n",
                 joinPoint.getSignature(),
                 joinPoint.getTarget(),
                 joinPoint.getArgs(),
@@ -62,9 +62,9 @@ public class LocalLoggerAspect {
             this.endTime.set(System.currentTimeMillis());
             flag = true;
         }
-        log.info("\nRETURN \n\t{}\nRETURN VAL \n\t{}\n", joinPoint.getSignature(), returnVal);
+        log.debug("\nRETURN \n\t{}\nRETURN VAL \n\t{}\n", joinPoint.getSignature(), returnVal);
         if (flag) {
-            log.info("\nDURATION \n\t{}ms\n\n----------- END -----------", this.endTime.get() - this.startTime.get());
+            log.debug("\nDURATION \n\t{}ms\n\n----------- END -----------", this.endTime.get() - this.startTime.get());
             this.endTime.remove();
             this.startTime.remove();
         }
