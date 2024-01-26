@@ -30,7 +30,7 @@ public abstract class CommonUtils {
     }
 
     public static void ifContainsBadWordThrow(Class<? extends RuntimeException> ex, ErrorCode err, String... words) {
-        if(ifContainsBadWordTrue(words)) thrown(ex, err);
+        if (ifContainsBadWordTrue(words)) thrown(ex, err);
     }
 
     public static String ifContainsBadWordChangeThat(String word) {
@@ -44,6 +44,8 @@ public abstract class CommonUtils {
         return newStartDate.isBefore(refStartDate) && newEndDate.isBefore(refStartDate)
                 || newStartDate.isAfter(refEndDate) && newEndDate.isAfter(refEndDate);
     }
+
+
 
     /**
      * Integer n 이 null 이거나 0 이면 예외 유발
@@ -207,8 +209,8 @@ public abstract class CommonUtils {
     }
 
     public static <T> boolean checkSizeIfUnderLimitNumReturnFalse(Class<? extends RuntimeException> ex, ErrorCode err,
-                                                            Stream<T> collection,
-                                                            int limitNum) {
+                                                                  Stream<T> collection,
+                                                                  int limitNum) {
         return collection.count() >= limitNum;
     }
 

@@ -16,5 +16,5 @@ public class ReviewResultVo {
     private Integer rating;
     private Integer iuser;
     private String nick;
-    private String profPic;
+    private String userProfPic;
 }

@@ -1,7 +1,7 @@
 package com.team5.projrental.product.model;
 
 
-import com.team5.projrental.product.model.innermodel.PicSet;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.team5.projrental.product.model.proc.GetProductResultDto;
 import com.team5.projrental.product.model.review.ReviewResultVo;
 import lombok.Getter;
@@ -26,6 +26,7 @@ public class ProductVo extends ProductListVo{
     private Double y;
 //    private Integer isLiked;
     private List<ReviewResultVo> reviews;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<LocalDate> disabledDates;
 
     public ProductVo(GetProductResultDto dto) {

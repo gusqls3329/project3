@@ -3,7 +3,6 @@ package com.team5.projrental.payment.model;
 import com.team5.projrental.payment.model.proc.GetPaymentListResultDto;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.core.io.Resource;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -41,7 +40,7 @@ public class PaymentVo extends PaymentListVo {
                 dto.getPrice(), dto.getDeposit());
 
         this.phone = dto.getPhone();
-        this.payment = PAYMENT_METHODS.get(dto.getIpayment());
+        this.payment = PAYMENT_METHODS.get(dto.getIpaymentMethod());
         this.code = dto.getCode();
         this.role = dto.getRole();
         this.createdAt = dto.getCreatedAt();
