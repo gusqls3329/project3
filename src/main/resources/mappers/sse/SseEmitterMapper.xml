@@ -34,11 +34,11 @@
         iuser = #{iuser},
         message = #{message},
         code = #{code}
-        <if test="pkNum != null and pkNum > 0">
-        , pk_num = #{pkNum}
+        <if test="num != null and num > 0">
+        , num = #{num}
         </if>
-        <if test="pkCol != null">
-        , pk_col = #{pkCol}
+        <if test="name != null">
+        , name = #{name}
         </if>
     </insert>
 

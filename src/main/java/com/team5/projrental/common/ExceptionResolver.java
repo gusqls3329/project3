@@ -23,6 +23,14 @@ public class ExceptionResolver {
 
     // 400
     @ExceptionHandler
+    public ResponseEntity<ErrorResultVo> resolve(BadAuthorizationException e) {
+        log.warn("error message", e);
+        return ResponseEntity.status(e.getErrorCode().getCode())
+                .body(ErrorResultVo.builder().errorCode(e.getErrorCode().getCode())
+//                        .message(e.getErrorCode().getMessage()).build());
+                        .message(e.getMessage()).build());
+    }
+    @ExceptionHandler
     public ResponseEntity<ErrorResultVo> resolve(NotEnoughInfoException e) {
         log.warn("error message", e);
         return ResponseEntity.status(e.getErrorCode().getCode())
