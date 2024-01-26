@@ -20,7 +20,9 @@ public class GetProductListResultDto {
     private String addr;
     private String title;
     private String prodMainStoredPic;
+    private Integer price;
     private Integer rentalPrice;
+    private Integer deposit;
     private LocalDate rentalStartDate;
     private LocalDate rentalEndDate;
     private Integer prodLike;

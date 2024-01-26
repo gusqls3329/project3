@@ -20,7 +20,7 @@ public class ProductVo extends ProductListVo{
     // 추가필드만 작성
     private String contents;
     private List<String> prodPics;
-    private Integer deposit;
+
     private LocalDate buyDate;
     private Double x;
     private Double y;
@@ -33,7 +33,6 @@ public class ProductVo extends ProductListVo{
         super(dto);
 
         this.contents = dto.getContents();
-        this.deposit = dto.getDeposit();
         this.buyDate = dto.getBuyDate();
         this.x = dto.getX();
         this.y = dto.getY();
