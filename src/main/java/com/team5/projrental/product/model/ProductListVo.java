@@ -5,7 +5,6 @@ import com.team5.projrental.product.model.proc.GetProductListResultDto;
 import com.team5.projrental.product.model.proc.GetProductResultDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Range;
 
 import java.time.LocalDate;
 
@@ -20,7 +19,9 @@ public class ProductListVo {
     private Integer iproduct;
     private String title;
     private String prodMainPic;
+    private Integer price;
     private Integer rentalPrice;
+    private Integer deposit;
     private LocalDate rentalStartDate;
     private LocalDate rentalEndDate;
     private String addr;
@@ -37,6 +38,8 @@ public class ProductListVo {
         this.iauth = dto.getIauth();
         this.iproduct = dto.getIproduct();
         this.title = dto.getTitle();
+        this.price = dto.getPrice();
+        this.deposit = dto.getDeposit();
         this.rentalPrice = dto.getRentalPrice();
         this.rentalStartDate = dto.getRentalStartDate();
         this.rentalEndDate = dto.getRentalEndDate();
@@ -55,6 +58,8 @@ public class ProductListVo {
         this.iauth = dto.getIauth();
         this.iproduct = dto.getIproduct();
         this.title = dto.getTitle();
+        this.price = dto.getPrice();
+        this.deposit = dto.getDeposit();
         this.rentalPrice = dto.getRentalPrice();
         this.rentalStartDate = dto.getRentalStartDate();
         this.rentalEndDate = dto.getRentalEndDate();

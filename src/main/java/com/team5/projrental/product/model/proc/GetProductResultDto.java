@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class GetProductResultDto extends GetProductListResultDto{
     private String contents;
-    private Integer deposit;
+//    private Integer deposit;
     private LocalDate buyDate;
     private Double x;
     private Double y;

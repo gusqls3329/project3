@@ -65,7 +65,7 @@
     <select id="getProductList">
         select U.iuser, U.nick, U.stored_pic as userStoredPic, U.iauth, P.iproduct,
         concat(P.addr, ' ', P.rest_addr) as addr, P.title, P.stored_pic as prodMainStoredPic,
-        P.rental_price as rentalPrice, P.rental_start_date as rentalStartDate,
+        P.price, P.rental_price as rentalPrice, P.deposit, P.rental_start_date as rentalStartDate,
         P.rental_end_date as rentalEndDate, (select count(L.iproduct) from t_like L where L.iproduct = P.iproduct) as prodLike, P.istatus,
         if(L.iuser > 0, 1, 0) as isLiked, P.view, P.inventory
         from t_product P
@@ -105,7 +105,7 @@
     <select id="getProduct">
         select U.iuser, U.nick, U.stored_pic as userStoredPic, U.iauth,
         P.iproduct, concat(P.addr, ' ', P.rest_addr) as addr, P.title, P.stored_pic as
-        prodMainStoredPic,
+        prodMainStoredPic, P.price,
         P.rental_price as rentalPrice, P.rental_start_date as rentalStartDate,
         P.rental_end_date as rentalEndDate, COUNT(L.iproduct) as prodLike, P.istatus,
         P.contents, P.deposit, P.buy_date as buyDate, P.x, P.y,
