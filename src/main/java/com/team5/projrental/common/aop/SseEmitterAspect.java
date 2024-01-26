@@ -33,7 +33,7 @@ public class SseEmitterAspect {
         this.threadPool = myThreadPoolHolder.getThreadPool();
     }
 
-    @Pointcut("execution(* com.team5.projrental.payment.review.PaymentReviewService.*())")
+    @Pointcut("execution(* com.team5.projrental.payment.review.PaymentReviewService.*(..))")
     public void postReview() {
 
     }
@@ -52,7 +52,7 @@ public class SseEmitterAspect {
                     Properties.PAYMENT_IS_FINISHED;
 
             applicationEventPublisher.publishEvent(catchEventPropertiesGenerator(findDiffUserDto.getDiffIuser(),
-                    properties.getMessage().get(), properties.getCode().get(), null, "review"));
+                    properties.getMessage().get(), properties.getCode().get(), findDiffUserDto.getReviewCount(), "review count"));
         });
     }
 

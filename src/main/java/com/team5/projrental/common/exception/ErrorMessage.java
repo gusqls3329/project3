@@ -36,6 +36,7 @@ public interface ErrorMessage {
     String BAD_TYPE_EX_MESSAGE = "잘못된 타입을 입력하였습니다.";
     String BAD_WORD_EX_MESSAGE = "비속어를 포함할 수 없습니다.";
     String BAD_PRODUCT_ISTATUS_EX_MESSAGE = "리뷰를 등록하실 수 없는 결제 상태입니다.";
+    String BAD_AUTHORIZATION_EX_MESSAGE = "잘못된 인증 토큰 입니다.";
     //
     String ALL_INFO_NOT_EXISTS_EX_MESSAGE = "모든 정보가 제공되지 않음";
     //

@@ -39,7 +39,7 @@ public class SseEmitterHolder {
      * @return SseEmitter
      */
     public SseEmitter add(Integer iuser) {
-        SseEmitter sseEmitter = new SseEmitter();
+        SseEmitter sseEmitter = new SseEmitter(60 * 1000L);
         emitterMap.put(iuser, sseEmitter);
 
         // SseEmitter 는 콜백을 필드에 저장함.
