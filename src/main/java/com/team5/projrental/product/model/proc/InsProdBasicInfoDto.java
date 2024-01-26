@@ -1,15 +1,11 @@
 package com.team5.projrental.product.model.proc;
 
-import com.team5.projrental.common.Const;
-import com.team5.projrental.common.exception.IllegalCategoryException;
 import com.team5.projrental.common.utils.CommonUtils;
 import com.team5.projrental.product.model.ProductInsDto;
-import com.team5.projrental.product.model.innermodel.StoredFileInfo;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.Map;
 
 @Data
 @NoArgsConstructor
@@ -35,6 +31,7 @@ public class InsProdBasicInfoDto {
     private Integer icategory;
     private Double x;
     private Double y;
+    private Integer inventory;
 
     public InsProdBasicInfoDto(Integer iuser, String title, String contents, String addr, String restAddr,
                                String storedPic, Integer price, Integer rentalPrice, Integer deposit, LocalDate buyDate,
@@ -56,7 +53,7 @@ public class InsProdBasicInfoDto {
         this.y = y;
     }
 
-    public InsProdBasicInfoDto(ProductInsDto dto, String addr, Double x, Double y) {
+    public InsProdBasicInfoDto(ProductInsDto dto, String addr, Double x, Double y, Integer inventory) {
         this.iuser = dto.getIuser();
         this.title = dto.getTitle();
         this.contents = dto.getContents();
@@ -71,5 +68,6 @@ public class InsProdBasicInfoDto {
         this.icategory = dto.getIcategory();
         this.x = x;
         this.y = y;
+        this.inventory = inventory;
     }
 }

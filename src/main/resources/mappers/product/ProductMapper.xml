@@ -176,7 +176,7 @@
     </delete>
 
     <select id="getProductForUpdate">
-        select price, deposit, buy_date as buyDate, rental_start_date as rentalStartDate,
+        select stored_pic as storedPic, price, deposit, buy_date as buyDate, rental_start_date as rentalStartDate,
         rental_end_date as rentalEndDate
         from t_product
         where iproduct = #{iproduct} and istatus = 0
@@ -288,8 +288,8 @@
     <select id="getPicsAllBy">
         select stored_pic from t_pics where ipics in
         (
-        <foreach collection="ipcis" item="pic" separator=", ">
-            pic
+        <foreach collection="ipics" item="pic" separator=", ">
+            #{pic}
         </foreach>
         )
     </select>
@@ -300,4 +300,10 @@
         from t_product where iproduct = #{iproduct}
     </select>
 
+    <select id="findMainPicPathForDelBy">
+        select stored_pic from t_product where iproduct = #{iproduct}
+    </select>
+    <select id="findSubPicsPathForDelBy">
+        select stored_pic from t_pics where iproduct = #{iproduct}
+    </select>
 </mapper>
