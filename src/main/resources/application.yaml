@@ -30,6 +30,12 @@ server:
   tomcat:
     threads:
       max: 200
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      base-path: "/monitor/actuator-private"
 ---
 spring:
   datasource:
@@ -49,7 +55,6 @@ spring:
       max-request-size: 150MB
 file:
   base-package: /home/download/
-
 
 
 
