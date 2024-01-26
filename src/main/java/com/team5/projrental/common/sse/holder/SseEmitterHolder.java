@@ -30,16 +30,7 @@ public class SseEmitterHolder {
         this.emitterRepository = emitterRepository;
         this.emitterMap = new ConcurrentHashMap<>();
         this.threadPool = myThreadPoolHolder.getThreadPool();
-        threadPool.execute(() ->{
-            while (true) {
-                log.info("emitterMap : {}", emitterMap);
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
+
     }
 
 
