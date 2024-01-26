@@ -11,12 +11,12 @@
         WHERE PA.ibuyer = #{iuser} OR P.iuser = #{iuser} AND PA.istatus = -4
     </select>
 
-    <select id="findDifUserBy">
-        SELECT if(P.iuser = #{iuser}, PA.ibuyer, if(PA.ibuyer = 1, P.iuser, 0)) as difIuser, COUNT(R.ireview) AS reviewCount
+    <select id="findDiffUserBy">
+        SELECT if(P.iuser = #{iuser}, PA.ibuyer, if(PA.ibuyer = 1, P.iuser, 0)) as diffIuser,
+        (select COUNT(ireview) from t_review where ipayment = #{ipayment}) AS reviewCount
         FROM t_product_payment PP
         JOIN t_payment PA ON PP.ipayment = PA.ipayment
         JOIN t_product P ON PP.iproduct = P.iproduct
-        LEFT JOIN t_review R ON PA.ipayment = R.ipayment
         WHERE PA.ipayment = #{ipayment}
     </select>
 
@@ -34,11 +34,11 @@
         iuser = #{iuser},
         message = #{message},
         code = #{code}
-        <if test="pkNum != null and pkNum > 0">
-        , pk_num = #{pkNum}
+        <if test="num != null and num > 0">
+        , num = #{num}
         </if>
-        <if test="pkCol != null">
-        , pk_col = #{pkCol}
+        <if test="name != null">
+        , name = #{name}
         </if>
     </insert>
 

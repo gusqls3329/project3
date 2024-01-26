@@ -3,9 +3,12 @@ package com.team5.projrental.common.security;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team5.projrental.common.SecurityProperties;
+import com.team5.projrental.common.exception.BadAuthorizationException;
+import com.team5.projrental.common.exception.ErrorCode;
 import com.team5.projrental.common.exception.base.WrapRuntimeException;
 import com.team5.projrental.common.security.model.SecurityPrincipal;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.annotation.PostConstruct;
@@ -97,11 +100,15 @@ public class JwtTokenProvider {
     }
 
     private Claims getAllClaims(String token) {
-        return Jwts.parser()
-                .verifyWith(spec)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
+        try {
+            return Jwts.parser()
+                    .verifyWith(spec)
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+        } catch (ExpiredJwtException e) {
+            throw new BadAuthorizationException(ErrorCode.BAD_AUTHORIZATION_EX_MESSAGE);
+        }
     }
 
 }

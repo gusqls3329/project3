@@ -26,7 +26,7 @@ public class SseEmitterRepository {
     }
 
     public int deleteRejectedMessage(int iuser) {
-        return emitterMapper.savePushInfoWhenNotExistsEmitterInMap(iuser);
+        return emitterMapper.deleteRejectedMessage(iuser);
     }
 
     public int savePushInfoWhenNotExistsEmitterInMap(RejectMessageInfo dto) {

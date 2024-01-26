@@ -14,7 +14,7 @@ public interface SseEmitterMapper {
 
     List<RejectMessageInfo> findRejectedMessage(int iuser);
 
-    int savePushInfoWhenNotExistsEmitterInMap(int iuser);
+    int deleteRejectedMessage(int iuser);
 
     int savePushInfoWhenNotExistsEmitterInMap(RejectMessageInfo dto);
 }
