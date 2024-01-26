@@ -36,6 +36,9 @@ management:
       exposure:
         include: "*"
       base-path: "/monitor/actuator-private"
+  endpoint:
+    health:
+      show-details: always
 ---
 spring:
   datasource:
