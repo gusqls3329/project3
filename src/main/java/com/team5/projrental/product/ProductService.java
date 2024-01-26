@@ -17,10 +17,8 @@ import com.team5.projrental.product.model.*;
 import com.team5.projrental.product.model.proc.*;
 import com.team5.projrental.product.model.review.ReviewGetDto;
 import com.team5.projrental.product.model.review.ReviewResultVo;
-import com.vane.badwordfiltering.BadWordFiltering;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.validator.constraints.Range;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -188,7 +186,7 @@ public class ProductService {
         Addrs addrs = axisGenerator.getAxis(dto.getAddr().concat(dto.getRestAddr()));
         // insert 할 객체 준비 완.
         InsProdBasicInfoDto insProdBasicInfoDto = new InsProdBasicInfoDto(dto, addrs.getAddress_name(), Double.parseDouble(addrs.getX()),
-                Double.parseDouble(addrs.getY()));
+                Double.parseDouble(addrs.getY()), dto.getInventory());
         try {
             if (productRepository.saveProduct(insProdBasicInfoDto) == 1) {
                 // 사진은 완전히 따로 저장해야함 (useGeneratedKey)
@@ -197,7 +195,7 @@ public class ProductService {
                 productRepository.updateProduct(ProductUpdDto.builder()
                         .storedMainPic(
                                 myFileUtils.savePic(
-                                        mainPic, CATEGORY_PRODUCT_SUB, String.valueOf(insProdBasicInfoDto.getIproduct()))
+                                        mainPic, CATEGORY_PRODUCT_MAIN, String.valueOf(insProdBasicInfoDto.getIproduct()))
                         )
                         .iproduct(insProdBasicInfoDto.getIproduct())
                         .iuser(dto.getIuser())
@@ -234,15 +232,12 @@ public class ProductService {
         CommonUtils.ifAllNullThrow(BadInformationException.class, ALL_INFO_NOT_EXISTS_EX_MESSAGE,
                 dto.getIcategory(), dto.getAddr(),
                 dto.getRestAddr(), dto.getTitle(),
-                dto.getContents(), dto.getMainPic(),
-                dto.getPics(), dto.getPrice(),
+                dto.getContents(), dto.getPrice(),
                 dto.getRentalPrice(), dto.getDeposit(),
                 dto.getBuyDate(), dto.getRentalStartDate(),
                 dto.getRentalEndDate(), dto.getDelPics(),
                 dto.getInventory(), mainPic, pics);
 
-        if (mainPic != null) dto.setMainPic(mainPic);
-        if (pics != null && !pics.isEmpty()) dto.setPics(pics);
 
         CommonUtils.ifContainsBadWordThrow(BadWordException.class, BAD_WORD_EX_MESSAGE,
                 dto.getTitle() == null ? "" : dto.getTitle(),
@@ -257,7 +252,7 @@ public class ProductService {
             // 실제 사진 삭제를 위해 사진 경로 미리 가져오기
             delPicsPath = productRepository.getPicsAllBy(dto.getDelPics());
             if (delPicsPath.isEmpty()) throw new BadInformationException(BAD_INFO_EX_MESSAGE);
-            // 사진 삭제
+            // 사진 삭제 in db
             if (productRepository.deletePics(dto.getIproduct(), dto.getDelPics()) == 0) {
                 throw new WrapRuntimeException(SERVER_ERR_MESSAGE);
             }
@@ -272,9 +267,14 @@ public class ProductService {
         if (dto.getIcategory() != null && dto.getIcategory() > 0 && dto.getIcategory() < 23) {
             CommonUtils.ifCategoryNotContainsThrow(dto.getIcategory());
         }
+
+        // db에서 기존 데이터들 가져오기
         UpdProdBasicDto fromDb =
                 productRepository.findProductByForUpdate(new GetProductBaseDto(dto.getIproduct(), loginUserPk));
 
+        // 메인사진 수정시
+        boolean mainPicFlag = mainPic != null;
+        String mainPicPath = fromDb.getStoredPic();
 
         // 병합
         Integer price = dto.getPrice() == null ? fromDb.getPrice() : dto.getPrice();
@@ -285,7 +285,7 @@ public class ProductService {
                 dto.getRentalStartDate() == null ? fromDb.getRentalStartDate() : dto.getRentalStartDate(),
                 dto.getRentalEndDate() == null ? fromDb.getRentalEndDate() : dto.getRentalEndDate()
         );
-        int dbPicsCount = productRepository.findPicsCount(dto.getIproduct());
+        int dbPicsCountAfterDelPics = productRepository.findPicsCount(dto.getIproduct());
 
         // 사진 세팅
 //        if (!dto.getPics().isEmpty() && !fromDb.getPics().isEmpty()) {
@@ -299,9 +299,9 @@ public class ProductService {
 
         // 사진 개수 검증
         // fromDb 사진(이미 삭제필요한 사진은 삭제 된 상태) 과 dto.getPics 를 savePic 하고난 결과를 합쳐서 개수 체크.
-        if (dto.getPics() != null && !dto.getPics().isEmpty()) {
+        if (pics != null && !pics.isEmpty()) {
             CommonUtils.checkSizeIfOverLimitNumThrow(IllegalProductPicsException.class, ILLEGAL_PRODUCT_PICS_EX_MESSAGE,
-                    dto.getPics().stream(), 9 - dbPicsCount);
+                    pics.stream(), 9 - dbPicsCountAfterDelPics);
         }
 
 
@@ -333,9 +333,9 @@ public class ProductService {
 
         try {
             // 문제 없으면 추가 사진 insert
-            if (dto.getPics() != null && !dto.getPics().isEmpty()) {
+            if (pics != null && !pics.isEmpty()) {
                 if (productRepository.savePics(new InsProdPicsDto(dto.getIproduct(),
-                        myFileUtils.savePic(dto.getPics(), CATEGORY_PRODUCT_SUB, String.valueOf(dto.getIproduct())))) == 0) {
+                        myFileUtils.savePic(pics, CATEGORY_PRODUCT_SUB, String.valueOf(dto.getIproduct())))) == 0) {
                     throw new WrapRuntimeException(SERVER_ERR_MESSAGE);
                 }
             }
@@ -343,7 +343,7 @@ public class ProductService {
 
             // update 할 객체 세팅
             dto.setIuser(loginUserPk);
-            dto.setStoredMainPic(dto.getMainPic() == null ? null : myFileUtils.savePic(dto.getMainPic(), CATEGORY_PRODUCT_MAIN,
+            dto.setStoredMainPic(mainPic == null ? null : myFileUtils.savePic(mainPic, CATEGORY_PRODUCT_MAIN,
                     String.valueOf(dto.getIproduct())));
             dto.setDeposit(dto.getDepositPer() == null ? null : CommonUtils.getDepositFromPer(price, dto.getDepositPer()));
 //            if (dto.getAddr() != null && dto.getRestAddr() != null && addrs != null) {
@@ -363,10 +363,14 @@ public class ProductService {
         }
 
         // 유예된 사진파일 실제로 삭제
+        if (mainPicFlag) {
+            myFileUtils.delCurPic(mainPicPath);
+        }
         if (flag) { // flag 가 true 라는것은 dto.getDelPics() 에 값이 있다는것.
             // 실제 사진 삭제
             delPicsPath.forEach(myFileUtils::delCurPic);
         }
+
         return new ResVo(SUCCESS);
     }
 
@@ -397,6 +401,17 @@ public class ProductService {
                 productRepository.findIproductCountBy(iproduct));
         if (productRepository.updateProductStatus(new DelProductBaseDto(iproduct, getLoginUserPk(), div * -1)) == 0) {
             throw new BadInformationException(BAD_INFO_EX_MESSAGE);
+        }
+        // 삭제시 성공했으니 불필요한 리소스는 모두 지우기
+        if (div == 1) {
+            List<String> delPicPaths = new ArrayList<>();
+            delPicPaths.add(productRepository.findMainPicPathForDelBy(iproduct));
+            delPicPaths.addAll(productRepository.findSubPicsPathForDelBy(iproduct));
+            delPicPaths.forEach(p -> {
+                String separator = p.contains("/") ? "/" : p.contains("\\") ? "\\" : p.contains("\\\\") ? "\\\\" : null;
+                if (separator == null) return;
+                myFileUtils.delFolderTrigger(p.substring(0, p.lastIndexOf(separator)));
+            });
         }
         return new ResVo(SUCCESS);
     }
