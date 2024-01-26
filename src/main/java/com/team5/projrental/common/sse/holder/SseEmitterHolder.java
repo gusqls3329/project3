@@ -1,5 +1,6 @@
 package com.team5.projrental.common.sse.holder;
 
+import com.team5.projrental.common.Const;
 import com.team5.projrental.common.sse.SseEmitterRepository;
 import com.team5.projrental.common.sse.model.RejectMessageInfo;
 import com.team5.projrental.common.sse.responseproperties.Code;
@@ -29,6 +30,16 @@ public class SseEmitterHolder {
         this.emitterRepository = emitterRepository;
         this.emitterMap = new ConcurrentHashMap<>();
         this.threadPool = myThreadPoolHolder.getThreadPool();
+        threadPool.execute(() ->{
+            while (true) {
+                log.info("emitterMap : {}", emitterMap);
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
     }
 
 
@@ -39,13 +50,19 @@ public class SseEmitterHolder {
      * @return SseEmitter
      */
     public SseEmitter add(Integer iuser) {
-        SseEmitter sseEmitter = new SseEmitter(60 * 1000L);
+        SseEmitter sseEmitter = new SseEmitter(Const.SSE_TIMEOUT_TIME);
         emitterMap.put(iuser, sseEmitter);
 
         // SseEmitter 는 콜백을 필드에 저장함.
         sseEmitter.onCompletion(() -> emitterMap.remove(iuser));
         sseEmitter.onTimeout(() -> emitterMap.remove(iuser));
 
+        try {
+            sseEmitter.send("connect success");
+        } catch (IOException e) {
+            log.info("[SseEmitterHolder.add] Exception", e);
+            throw new RuntimeException(e);
+        }
         if (!send(new RejectMessageInfo(iuser, Message.SEND_EXPIRED_PAYMENT_COUNT.get(), Code.SEND_EXPIRED_PAYMENT_COUNT.get(),
                 emitterRepository.findExpiredPaymentCountBy(iuser), "payment"), "create sse")) {
             return null;
@@ -82,7 +99,8 @@ public class SseEmitterHolder {
         try {
             emitterMap.get(info.getIuser()).send(SseEmitter.event()
                     .name(eventName)
-                    .data(info, MediaType.APPLICATION_JSON));
+                    .data(info, MediaType.APPLICATION_JSON)
+                    );
         } catch (NullPointerException e) {
             int savedPushCount = emitterRepository.savePushInfoWhenNotExistsEmitterInMap(new RejectMessageInfo(
                     info.getIuser(), info.getMessage(), info.getCode(), info.getNum(), info.getName()
@@ -96,6 +114,5 @@ public class SseEmitterHolder {
         }
         return true;
     }
-
 
 }

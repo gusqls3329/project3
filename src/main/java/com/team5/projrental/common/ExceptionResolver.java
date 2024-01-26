@@ -1,6 +1,8 @@
 package com.team5.projrental.common;
 
-import com.team5.projrental.common.exception.*;
+import com.team5.projrental.common.exception.BadAuthorizationException;
+import com.team5.projrental.common.exception.ErrorCode;
+import com.team5.projrental.common.exception.RestApiException;
 import com.team5.projrental.common.exception.base.*;
 import com.team5.projrental.common.model.ErrorResultVo;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +11,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.async.AsyncRequestTimeoutException;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
@@ -145,6 +148,12 @@ public class ExceptionResolver {
         return ResponseEntity.status(500)
                 .body(ErrorResultVo.builder().errorCode(500)
                         .message(ErrorCode.SERVER_ERR_MESSAGE.getMessage()).errorCode(500).build());
+
+    }
+
+    // ignore
+    @ExceptionHandler
+    public void resolve(AsyncRequestTimeoutException e) {
 
     }
 }
