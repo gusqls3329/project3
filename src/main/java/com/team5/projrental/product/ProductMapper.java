@@ -79,4 +79,8 @@ public interface ProductMapper {
     String findMainPicPathForDelBy(int iproduct);
 
     List<String> findSubPicsPathForDelBy(int iproduct);
+
+
+    // cache 세팅용
+    List<Integer> getAllIproductsLimit(int limit);
 }

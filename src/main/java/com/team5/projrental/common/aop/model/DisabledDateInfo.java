@@ -4,12 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
 public class DisabledDateInfo {
     private List<LocalDate> disabledDate;
-    private LocalDateTime lastUsed;
+    private Integer y;
+    private Integer m;
 }
