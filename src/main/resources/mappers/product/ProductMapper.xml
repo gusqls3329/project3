@@ -308,6 +308,6 @@
     </select>
 
     <select id="getAllIproductsLimit">
-        select iproduct from t_product limit 0, #{limit}
+        select iproduct from t_product order by iproduct desc limit 0, #{limit}
     </select>
 </mapper>
