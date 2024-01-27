@@ -127,4 +127,10 @@ public class ProductRepository implements RefProductRepository {
     public List<String> findSubPicsPathForDelBy(int iproduct) {
         return productMapper.findSubPicsPathForDelBy(iproduct);
     }
+
+
+    @Override
+    public List<Integer> getAllIproductsLimit(int limit) {
+        return productMapper.getAllIproductsLimit(limit);
+    }
 }

@@ -63,4 +63,6 @@ public interface RefProductRepository {
     String findMainPicPathForDelBy(int iproduct);
 
     List<String> findSubPicsPathForDelBy(int iproduct);
+
+    List<Integer> getAllIproductsLimit(int limit);
 }

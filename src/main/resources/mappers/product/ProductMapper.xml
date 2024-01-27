@@ -306,4 +306,8 @@
     <select id="findSubPicsPathForDelBy">
         select stored_pic from t_pics where iproduct = #{iproduct}
     </select>
+
+    <select id="getAllIproductsLimit">
+        select iproduct from t_product limit 0, #{limit}
+    </select>
 </mapper>
