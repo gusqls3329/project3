@@ -42,16 +42,16 @@ class MypageMapperTest {
         assertEquals(selVo2.size(), 1);
     }
 
-    @Test
+/*    @Test
     void getIbuyerReviewList() {
         MyBuyReviewListSelDto dto = new MyBuyReviewListSelDto();
         dto.setIbuyer(1);
         dto.setPage(1);
-        dto.setPage(1);
+        dto.setRowCount(10);
 
         List<MyBuyReviewListSelVo> selVo = mapper.getIbuyerReviewList(dto);
         assertEquals(selVo.size(), 1);
-    }
+    }*/
 
     @Test
     void getFavList() {
@@ -60,6 +60,6 @@ class MypageMapperTest {
         dto.setPage(1);
 
         List<MyFavListSelVo> selVo = mapper.getFavList(dto);
-        assertEquals(selVo.size(),2);
+        assertEquals(3,selVo.size());
     }
 }

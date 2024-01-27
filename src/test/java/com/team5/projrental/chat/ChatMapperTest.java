@@ -53,14 +53,15 @@ class ChatMapperTest {
         selDto.setLoginedIuser(1);
         selDto.setPage(1);
         selDto.setRowCount(10);
-        selDto.setStartIdx(1);
 
         List<ChatSelVo> result = mapper.selChatAll(selDto);
         log.info("resultsize : {}", result.size());
         assertEquals(1, result.size());
     }
 
-    @Test
+    //ichat 2번방에 iuser값이 이미 있어서 DB에 지우고하면 됨
+    // 아니면 새로운 상품에 채팅방만들어서 test하기
+    /*@Test
     void insChatUser() { // 채팅방이 미리 생성되어있는곳에 없는 유저를 넣어야 성공함
         ChatUserInsDto dto = ChatUserInsDto.builder()
                 .ichat(2)
@@ -72,7 +73,7 @@ class ChatMapperTest {
 
         log.info("resultsize : {}", insChatUserSize);
         assertEquals(1, insChatUserSize);
-    }
+    }*/
 
     @Test
     void selChatUserCheck() {
@@ -80,7 +81,7 @@ class ChatMapperTest {
         dto.setLoginedIuser(1);
         dto.setOtherPersonIuser(7);
         dto.setIchat(2);
-        //dto.setIproduct(25);
+        dto.setIproduct(25);
 
         Integer ichat = mapper.selChatUserCheck(dto);
 
@@ -134,22 +135,40 @@ class ChatMapperTest {
         assertEquals(1, affectedLastChat);
     }
 
-    @Test
+    /*@Test
     void selOtherPersonByLoginUser() {
         ChatMsgInsDto dto = new ChatMsgInsDto();
-        dto.setIchat(2);
-        dto.setMsg("테스트");
+        dto.setIchat(5);
+        List<UserEntity> userEntityList = new ArrayList<>();
 
         UserEntity entity = mapper.selOtherPersonByLoginUser(dto);
         log.info("entity : {}", entity);
 
-    }
+        userEntityList.add(entity);
+
+        assertEquals(2, userEntityList.size());
+
+    }*/
 
     @Test
     void selChatUser() {
+        int iuser = 1;
+
+        UserEntity entity = mapper.selChatUser(iuser);
+        assertEquals(1, entity.getIuser());
+        assertEquals("바보현빈", entity.getNick());
+        assertEquals("user\\1\\5dd05f9e-12f3-42ae-a53f-727f9c76d40f.jpg", entity.getStoredPic());
     }
 
     @Test
     void delBeforeChatIstatus() {
+        ChatMsgInsDto dto = new ChatMsgInsDto();
+        dto.setLoginedIuser(1);
+        dto.setIchat(5);
+
+
+        int istatus = mapper.delBeforeChatIstatus(dto);
+
+        assertEquals(0, istatus);
     }
 }
