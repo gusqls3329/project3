@@ -16,7 +16,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -30,6 +29,7 @@ public class CommonAspect {
     private final ProductRepository productRepository;
     private final ExecutorService threadPool;
     public Map<Integer, List<LocalDate>> disabledCache;
+
 
     public CommonAspect(ProductRepository productRepository, MyThreadPoolHolder threadPool) {
         this.productRepository = productRepository;
@@ -122,9 +122,17 @@ public class CommonAspect {
     public void addCache(JoinPoint joinPoint, Integer iproduct, List<LocalDate> disabledDates) {
         log.debug("[addCache AOP] {}", joinPoint.getSignature());
         threadPool.execute(() -> {
-            if (disabledCache.size() <= Const.DISABLED_CACHE_MAX_NUM) {
-                disabledCache.put(iproduct, disabledDates);
+            if (disabledCache.size() == Const.DISABLED_CACHE_MAX_NUM) {
+                int count = 0;
+                for (Integer key : disabledCache.keySet()) {
+                    disabledCache.remove(key);
+                    if (++count > 9) {
+                        break;
+                    }
+                }
             }
+            disabledCache.put(iproduct, disabledDates);
+
             disabledCache.keySet().forEach(k -> log.debug("[addCache AOP] total Cache = key: {}, values: {}", k,
                     disabledCache.get(k)));
 
