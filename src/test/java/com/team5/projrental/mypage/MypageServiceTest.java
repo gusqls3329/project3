@@ -71,8 +71,8 @@ class MypageServiceTest {
         list = service.paymentList(dto);
         verify(mapper).getPaymentList(any());
         log.info("ibuyer:{}", vo.getIbuyer());
-        assertEquals(vo.getIbuyer(),1);
-        assertEquals(vo.getIuser(), 7);
+        assertEquals(list.get(0).getIbuyer(),1);
+        assertEquals(list.get(0).getIuser(), 7);
     }
 
     @Test
