@@ -45,7 +45,7 @@ public class ExceptionResolver {
     @ExceptionHandler({MethodArgumentTypeMismatchException.class})
     public ResponseEntity<ErrorResultVo> resolve(MethodArgumentTypeMismatchException eBase) {
         log.warn("error message", eBase);
-        return ResponseEntity.status(4000)
+        return ResponseEntity.status(BAD_TYPE_EX_MESSAGE.getCode())
                 .body(ErrorResultVo.builder().errorCode(BAD_TYPE_EX_MESSAGE.getCode())
 //                        .message(e.getErrorCode().getMessage()).build());
                         .message(BAD_TYPE_EX_MESSAGE.getMessage()).build());
