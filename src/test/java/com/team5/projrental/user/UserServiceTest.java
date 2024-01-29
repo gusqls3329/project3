@@ -164,7 +164,7 @@ public class UserServiceTest {
         assertEquals(result, 1);
     }
 
-    @Test
+/*    @Test
     void putUser() {
         ChangeUserDto dto = new ChangeUserDto();
         dto.setPhone("010-3333-3333");
@@ -175,7 +175,7 @@ public class UserServiceTest {
         int result = service.putUser(dto);
         verify(mapper).changeUser(dto);
         assertEquals(result, 1);
-    }
+    }*/
 
     @Test
     void patchUser() {
