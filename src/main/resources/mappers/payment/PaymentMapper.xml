@@ -16,7 +16,8 @@
 
     <!--    -->
     <select id="getValidationInfoFromProduct">
-        select P.rental_price as rentalPrice, P.deposit, P.price, P.inventory, PA.rental_start_date as rentalStartDate,
+        select P.iuser as iseller, P.rental_price as rentalPrice, P.deposit, P.price, P.inventory, PA.rental_start_date as
+        rentalStartDate,
         PA.rental_end_date as
         rentalEndDate
         from t_product P
