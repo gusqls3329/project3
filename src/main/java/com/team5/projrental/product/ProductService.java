@@ -365,10 +365,19 @@ public class ProductService {
             throw new BadMainPicException(BAD_PIC_EX_MESSAGE);
         }
         // do update
-        if (productRepository.updateProduct(dto) == 0) {
-            throw new BadProductInfoException(BAD_PRODUCT_INFO_EX_MESSAGE);
+        if (CommonUtils.ifAllNullReturnFalse(
+                dto.getIcategory(), dto.getAddr(),
+                dto.getRestAddr(), dto.getTitle(),
+                dto.getContents(), dto.getPrice(),
+                dto.getRentalPrice(), dto.getDeposit(),
+                dto.getBuyDate(), dto.getRentalStartDate(),
+                dto.getRentalEndDate(), dto.getInventory(),
+                dto.getStoredMainPic(),
+                dto.getX(), dto.getY())) {
+            if (productRepository.updateProduct(dto) == 0) {
+                throw new BadProductInfoException(BAD_PRODUCT_INFO_EX_MESSAGE);
+            }
         }
-
         // 유예된 사진파일 실제로 삭제
         if (mainPicFlag) {
             myFileUtils.delCurPic(mainPicPath);

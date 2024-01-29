@@ -190,6 +190,7 @@
         select count(iproduct) from t_pics where iproduct = #{iproduct}
     </select>
 
+
     <update id="updateProduct">
         update t_product
         <set>
