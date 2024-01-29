@@ -46,7 +46,7 @@ class MypageMapperTest {
     @Test
     void getIbuyerReviewList() {
         MyBuyReviewListSelDto dto = new MyBuyReviewListSelDto();
-        dto.setIbuyer(2);
+        dto.setIuser(2);
         dto.setPage(1);
         dto.setRowCount(10);
 
