@@ -61,7 +61,7 @@ class ChatMapperTest {
 
     //ichat 2번방에 iuser값이 이미 있어서 DB에 지우고하면 됨
     // 아니면 새로운 상품에 채팅방만들어서 test하기
-    /*@Test
+    @Test
     void insChatUser() { // 채팅방이 미리 생성되어있는곳에 없는 유저를 넣어야 성공함
         ChatUserInsDto dto = ChatUserInsDto.builder()
                 .ichat(2)
@@ -73,7 +73,7 @@ class ChatMapperTest {
 
         log.info("resultsize : {}", insChatUserSize);
         assertEquals(1, insChatUserSize);
-    }*/
+    }
 
     @Test
     void selChatUserCheck() {
@@ -103,7 +103,7 @@ class ChatMapperTest {
     }
 
     //쿼리문에 order by 및 group by MySQL에는 사용불가능한듯 윈도우로 확인해보기
-/*    @Test
+@Test
     void selChatMsgAll() {
         ChatMsgSelDto dto = new ChatMsgSelDto();
         dto.setLoginedIuser(1);
@@ -115,7 +115,7 @@ class ChatMapperTest {
         List<ChatMsgSelVo> list = mapper.selChatMsgAll(dto);
         assertEquals(7, list.size());
 
-    }*/
+    }
 
     @Test
     void updChatLastMsgAfterDelByLastMsg() {

@@ -32,7 +32,7 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-/*@MockMvcConfig
+@MockMvcConfig
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase
@@ -112,4 +112,4 @@ class MypageControllerTest {
     void getFavList() {
 
     }
-}*/
+}

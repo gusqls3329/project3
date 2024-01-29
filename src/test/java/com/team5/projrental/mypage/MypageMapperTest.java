@@ -13,7 +13,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/*
+
 @Slf4j
 @MybatisTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -63,4 +63,4 @@ class MypageMapperTest {
         List<MyFavListSelVo> selVo = mapper.getFavList(dto);
         assertEquals(2,selVo.size());
     }
-}*/
+}

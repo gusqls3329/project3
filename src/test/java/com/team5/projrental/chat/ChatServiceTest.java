@@ -38,7 +38,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.BDDMockito.given;
 
 
-/*
+
 @Slf4j
 @ExtendWith(SpringExtension.class)
 @Import(ChatServiceTest.class)
@@ -145,6 +145,7 @@ class ChatServiceTest {
 
     @Test
     void getMsgAll() {
+
     }
 
     @Test
@@ -154,4 +155,4 @@ class ChatServiceTest {
     @Test
     void postChat() {
     }
-}*/
+}

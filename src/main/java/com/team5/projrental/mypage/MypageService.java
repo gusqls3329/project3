@@ -22,7 +22,7 @@ public class MypageService {
 
     public List<MyBuyReviewListSelVo> selIbuyerReviewList(MyBuyReviewListSelDto dto){
         int loginUserPk = authenticationFacade.getLoginUserPk();
-        dto.setIbuyer(loginUserPk);
+        dto.setIuser(loginUserPk);
 
         List<MyBuyReviewListSelVo> list = mapper.getIbuyerReviewList(dto);
 
