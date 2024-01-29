@@ -60,7 +60,7 @@ class PaymentReviewMapperTest {
         DelRivewDto dto = new DelRivewDto();
         dto.setIuser(1);
         dto.setIreview(2);
-        dto.setIstatus(1);
+        dto.setIstatus(-4);
 
         int result = mapper.delReview(dto);
         assertEquals(result,1);
@@ -69,7 +69,7 @@ class PaymentReviewMapperTest {
     @Test
     void selReIstatus() {
         int result = mapper.selReIstatus(6);
-        assertEquals(1,result);
+        assertEquals(-4,result);
 
         int result2 = mapper.selReIstatus(7);
         assertEquals(-4,result2);
