@@ -126,14 +126,14 @@ public class ProductService {
         result.setDisabledDates(getDisabledDates(productPK, LocalDate.now()));
 
         // 사진
-        List<String> ectPics = productRepository.findPicsBy(productPK);
+        List<PicsInfoVo> ectPics = productRepository.findPicsBy(productPK);
 
         // 사진 조회 결과가 없으면 곧바로 리턴
         if (ectPics == null || ectPics.isEmpty()) {
             return result;
         }
 
-        result.setProdPics(ectPics);
+        result.setProdSubPics(ectPics);
         return result;
     }
 

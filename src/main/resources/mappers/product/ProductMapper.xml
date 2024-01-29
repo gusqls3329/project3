@@ -132,7 +132,7 @@
     </select>
 
     <select id="getProdEctPics">
-        select stored_pic as prodStoredPic from t_pics
+        select ipics, stored_pic as prodPics from t_pics
         where iproduct = #{iproduct}
     </select>
 
@@ -167,7 +167,7 @@
     <delete id="deletePic">
         delete from t_pics
         <where>
-            iproduct = #{iproduct} and stored_pic in (
+            iproduct = #{iproduct} and ipics in (
             <foreach collection="delPics" item="pic" separator=", ">
                 #{pic}
             </foreach>
@@ -289,7 +289,7 @@
     </select>
 
     <select id="getPicsAllBy">
-        select stored_pic from t_pics where stored_pic in
+        select stored_pic from t_pics where ipics in
         (
         <foreach collection="ipics" item="pic" separator=", ">
             #{pic}
