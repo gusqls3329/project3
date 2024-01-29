@@ -36,6 +36,10 @@ public interface Const {
     //
     int PROD_PER_PAGE = 16;
     int PAY_PER_PAGE = 16;
+    int IN_PRODUCT_REVIEW_PER_PAGE = 4;
+    int TOTAL_REVIEW_PER_PAGE = 10;
+    int MAIN_PROD_PER_PAGE = 8;
+
     int SUCCESS = 1;
     int FAIL = 0;
     int CATEGORY_COUNT = 22;
@@ -43,9 +47,7 @@ public interface Const {
     /* TODO: 1/18/24
         해당 부분 프론트와 대화 협의 필요
         --by Hyunmin */
-    int IN_PRODUCT_REVIEW_PER_PAGE = 4;
-    int TOTAL_REVIEW_PER_PAGE = 10;
-    int MAIN_PROD_PER_PAGE = 8;
+
     int ADD_MONTH_NUM_FOR_DISABLED_DATE = 1; // 2개월치 조회시 1 필요, 3개월치 조회시 2 필요 ...
     int DISABLED_CACHE_MAX_NUM = 50;
 //    long SSE_TIMEOUT_TIME = 300000;
