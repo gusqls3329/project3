@@ -78,7 +78,7 @@ class MypageServiceTest {
     @Test
     void selIbuyerReviewList() {
         MyBuyReviewListSelDto dto = new MyBuyReviewListSelDto();
-        dto.setIbuyer(2);
+        //dto.setIbuyer(2);
         dto.setPage(1);
 
         MyBuyReviewListSelVo vo = new MyBuyReviewListSelVo();
