@@ -31,7 +31,7 @@ public interface RefProductRepository {
 
     GetProductResultDto findProductBy(GetProductBaseDto getProductBaseDto);
 
-    List<String> findPicsBy(Integer productPK);
+    List<PicsInfoVo> findPicsBy(Integer productPK);
 
     int saveProduct(InsProdBasicInfoDto insProdBasicInfoDto);
 

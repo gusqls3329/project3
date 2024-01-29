@@ -126,14 +126,14 @@ public class ProductService {
         result.setDisabledDates(getDisabledDates(productPK, LocalDate.now()));
 
         // 사진
-        List<String> ectPics = productRepository.findPicsBy(productPK);
+        List<PicsInfoVo> ectPics = productRepository.findPicsBy(productPK);
 
         // 사진 조회 결과가 없으면 곧바로 리턴
         if (ectPics == null || ectPics.isEmpty()) {
             return result;
         }
 
-        result.setProdPics(ectPics);
+        result.setProdSubPics(ectPics);
         return result;
     }
 
@@ -185,7 +185,8 @@ public class ProductService {
 
         // logic
         // 주소 검증
-        Addrs addrs = axisGenerator.getAxis(dto.getAddr().concat(dto.getRestAddr()));
+//        Addrs addrs = axisGenerator.getAxis(dto.getAddr().concat(dto.getRestAddr()));
+        Addrs addrs = axisGenerator.getAxis(dto.getAddr());
         // insert 할 객체 준비 완.
         InsProdBasicInfoDto insProdBasicInfoDto = new InsProdBasicInfoDto(dto, addrs.getAddress_name(), Double.parseDouble(addrs.getX()),
                 Double.parseDouble(addrs.getY()), dto.getInventory());
@@ -273,10 +274,14 @@ public class ProductService {
         // db에서 기존 데이터들 가져오기
         UpdProdBasicDto fromDb =
                 productRepository.findProductByForUpdate(new GetProductBaseDto(dto.getIproduct(), loginUserPk));
-
+        CommonUtils.ifAnyNullThrow(BadProductInfoException.class, BAD_PRODUCT_INFO_EX_MESSAGE,
+                fromDb);
         // 메인사진 수정시
         boolean mainPicFlag = mainPic != null;
-        String mainPicPath = fromDb.getStoredPic();
+        String mainPicPath = null;
+        if (mainPicFlag) {
+            mainPicPath = fromDb.getStoredPic();
+        }
 
         // 병합
         Integer price = dto.getPrice() == null ? fromDb.getPrice() : dto.getPrice();

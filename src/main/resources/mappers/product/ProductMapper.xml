@@ -132,7 +132,7 @@
     </select>
 
     <select id="getProdEctPics">
-        select stored_pic as prodStoredPic from t_pics
+        select ipics, stored_pic as prodPics from t_pics
         where iproduct = #{iproduct}
     </select>
 
@@ -180,6 +180,9 @@
         rental_end_date as rentalEndDate
         from t_product
         where iproduct = #{iproduct} and istatus = 0
+        <if test="iuser != null and iuser != 0">
+            and iuser = #{iuser}
+        </if>
 
     </select>
 

@@ -3,6 +3,7 @@ package com.team5.projrental.product.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.team5.projrental.product.model.proc.GetProductResultDto;
+import com.team5.projrental.product.model.proc.PicsInfoVo;
 import com.team5.projrental.product.model.review.ReviewResultVo;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +20,7 @@ public class ProductVo extends ProductListVo{
 
     // 추가필드만 작성
     private String contents;
-    private List<String> prodPics;
+    private List<PicsInfoVo> prodSubPics;
 
     private LocalDate buyDate;
     private Double x;

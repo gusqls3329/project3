@@ -121,26 +121,30 @@ public class ChatService {
 
     // 채팅 입력
     public ChatSelVo postChat(ChatInsDto dto) {
-        Integer isExixtChat = mapper.selChatUserCheck(dto);
 
-        if (isExixtChat != null) {
-            throw new BadInformationException(ErrorCode.ILLEGAL_EX_MESSAGE);
-        }
         int loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setLoginedIuser(loginUserPk);
 
-        mapper.insChat(dto);
+        /*Integer isExixtChat = mapper.selChatUserCheck(dto);
+            if (isExixtChat != null) {
+            throw new BadInformationException(ErrorCode.ILLEGAL_EX_MESSAGE);
+        }*/
 
-        mapper.insChatUser(ChatUserInsDto.builder()
-                .ichat(dto.getIchat())
-                .iuser(loginUserPk)
-                .build());
+        Integer existEnableRoom = mapper.selChatUserCheck2(dto);
+        if (existEnableRoom == null || existEnableRoom == 0) {
+            mapper.insChat(dto);
 
-        mapper.insChatUser(ChatUserInsDto.builder()
-                .ichat(dto.getIchat())
-                .iuser(dto.getOtherPersonIuser())
-                .build());
 
+            mapper.insChatUser(ChatUserInsDto.builder()
+                    .ichat(dto.getIchat())
+                    .iuser(loginUserPk)
+                    .build());
+
+            mapper.insChatUser(ChatUserInsDto.builder()
+                    .ichat(dto.getIchat())
+                    .iuser(dto.getOtherPersonIuser())
+                    .build());
+        }
 
         UserSelDto usDto = new UserSelDto();
         usDto.setIuser(dto.getOtherPersonIuser());

@@ -151,7 +151,7 @@ public class UserControllerTest {
         dto.setNick("testnick");
         dto.setIuser(loginedIuser);
 
-        given(service.putUser(any())).willReturn(Const.SUCCESS);
+        //given(service.putUser(any())).willReturn(Const.SUCCESS);
 
         mvc.perform(MockMvcRequestBuilders
                     .put("/api/user")
