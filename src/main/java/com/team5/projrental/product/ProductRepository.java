@@ -72,7 +72,7 @@ public class ProductRepository implements RefProductRepository {
 //        return productMapper.getIEupmyun(eupmyun);
 //    }
 @Override
-    public Integer deletePics(Integer iproduct, List<Integer> delPic) {
+    public Integer deletePics(Integer iproduct, List<String> delPic) {
         return productMapper.deletePic(iproduct, delPic);
     }
     @Override
@@ -103,7 +103,7 @@ public class ProductRepository implements RefProductRepository {
     }
 
     @Override
-    public List<String> getPicsAllBy(List<Integer> ipics) {
+    public List<String> getPicsAllBy(List<String> ipics) {
         return productMapper.getPicsAllBy(ipics);
     }
 

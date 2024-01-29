@@ -274,10 +274,14 @@ public class ProductService {
         // db에서 기존 데이터들 가져오기
         UpdProdBasicDto fromDb =
                 productRepository.findProductByForUpdate(new GetProductBaseDto(dto.getIproduct(), loginUserPk));
-
+        CommonUtils.ifAnyNullThrow(BadProductInfoException.class, BAD_PRODUCT_INFO_EX_MESSAGE,
+                fromDb);
         // 메인사진 수정시
         boolean mainPicFlag = mainPic != null;
-        String mainPicPath = fromDb.getStoredPic();
+        String mainPicPath = null;
+        if (mainPicFlag) {
+            mainPicPath = fromDb.getStoredPic();
+        }
 
         // 병합
         Integer price = dto.getPrice() == null ? fromDb.getPrice() : dto.getPrice();

@@ -166,7 +166,6 @@ class ProductMapperTest {
 
         assertThat(productMapper.getAllIpics(11).size()).isEqualTo(6);
 
-        productMapper.deletePic(11, productMapper.getAllIpics(11));
         int picsCountForTest = productMapper.getPicsCountForTest(11);
         assertThat(picsCountForTest).isEqualTo(0);
 

@@ -39,7 +39,7 @@ public interface RefProductRepository {
 
 
 
-    Integer deletePics(Integer iproduct, List<Integer> delPic);
+    Integer deletePics(Integer iproduct, List<String> delPic);
 
     UpdProdBasicDto findProductByForUpdate(GetProductBaseDto getProductBaseDto);
 
@@ -54,7 +54,7 @@ public interface RefProductRepository {
 
     List<CanNotRentalDateVo> getLendDatesBy(Integer iproduct);
 
-    List<String> getPicsAllBy(List<Integer> ipics);
+    List<String> getPicsAllBy(List<String> ipics);
 
     List<CanNotRentalDateVo> findDisabledDatesBy(CanNotRentalDateDto dto);
 

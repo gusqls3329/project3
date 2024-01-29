@@ -54,7 +54,7 @@ public interface ProductMapper {
 
 //    List<Integer> getIEupmyun(List<String> eupmyun);
 
-    Integer deletePic(Integer iproduct, List<Integer> delPics);
+    Integer deletePic(Integer iproduct, List<String> delPics);
 
     UpdProdBasicDto getProductForUpdate(GetProductBaseDto getProductBaseDto);
 
@@ -70,7 +70,7 @@ public interface ProductMapper {
 
     List<CanNotRentalDateVo> getLendStartDateAndEndDate(Integer iproduct);
 
-    List<String> getPicsAllBy(List<Integer> ipics);
+    List<String> getPicsAllBy(List<String> ipics);
 
     List<CanNotRentalDateVo> findDisabledDatesBy(CanNotRentalDateDto dto);
 
