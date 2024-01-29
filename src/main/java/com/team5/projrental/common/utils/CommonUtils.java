@@ -140,6 +140,13 @@ public abstract class CommonUtils {
         }
     }
 
+    public static boolean ifAllNullReturnFalse(Object... objs) {
+        for (Object obj : objs) {
+            if(obj != null)
+                return true;
+        }
+        return false;
+    }
 
 //    public static List<String> subEupmyun(String addr) {
 //        List<String> result = new ArrayList<>();
