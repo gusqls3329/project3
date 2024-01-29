@@ -45,7 +45,7 @@ public interface ProductMapper {
     List<GetProductListResultDto> getProductList(GetProductListDto getProductListDto);
     GetProductResultDto getProduct(GetProductBaseDto getProductBaseDto);
 
-    List<String> getProdEctPics(Integer productPK);
+    List<PicsInfoVo> getProdEctPics(Integer productPK);
 
 
     int insProduct(InsProdBasicInfoDto insProdBasicInfoDto);
@@ -54,7 +54,7 @@ public interface ProductMapper {
 
 //    List<Integer> getIEupmyun(List<String> eupmyun);
 
-    Integer deletePic(Integer iproduct, List<String> delPics);
+    Integer deletePic(Integer iproduct, List<Integer> delPics);
 
     UpdProdBasicDto getProductForUpdate(GetProductBaseDto getProductBaseDto);
 
@@ -70,7 +70,7 @@ public interface ProductMapper {
 
     List<CanNotRentalDateVo> getLendStartDateAndEndDate(Integer iproduct);
 
-    List<String> getPicsAllBy(List<String> ipics);
+    List<String> getPicsAllBy(List<Integer> ipics);
 
     List<CanNotRentalDateVo> findDisabledDatesBy(CanNotRentalDateDto dto);
 

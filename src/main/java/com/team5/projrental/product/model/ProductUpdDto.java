@@ -55,7 +55,7 @@ public class ProductUpdDto {
 
     // add
     @Size(max = 9, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
-    List<String> delPics;
+    List<Integer> delPics;
 
 
     @JsonIgnore

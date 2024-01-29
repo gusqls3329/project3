@@ -116,7 +116,8 @@ public class ProductController {
                     "iauth(판매자의><br>" +
                     "title<br> " +
                     "contents<br> " +
-                    "mainPic<br> " +
+                    "prodMainPic<br>" +
+                    "prodSubPics<br> - 배열, pk와 사진이름 으로 구성. (수정에서 사진 삭제시 delPics 에 pk 전송) " +
                     "pics(배열)<br> " +
                     "deposit<br> " +
                     "buyDate<br> " +
@@ -213,7 +214,7 @@ public class ProductController {
                     "inventory: 해당 재품 총 보유량 (전체 재고)<br>" +
                     "rentalStartDate: 수정할 대여 시작 가능 날짜<br>" +
                     "rentalEndDate: 수정할 대여 마감 날짜<br>" +
-                    "delPics: 삭제된 사진들의 이름들 -> 제품 조회시 사진의 이름들이 제공됨. <br>  " +
+                    "delPics: 삭제된 사진들의 pk들 -> 제품 조회시 사진의 pk들이 제공됨. <br>  " +
                     "  ㄴ> 메인사진은 삭제는 불가능하고 변경만 가능함으로 delPics 에 기재하지 " +
                     "않고, 변경된" +
                     " 사진만 넘기면 됨." +
