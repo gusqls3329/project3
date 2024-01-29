@@ -14,6 +14,7 @@ public class PaymentListVo {
 
     private Integer ipayment;
     private Integer iproduct;
+    private String title;
     private String prodMainPic;
     private Integer istatus;
     private LocalDate rentalStartDate;

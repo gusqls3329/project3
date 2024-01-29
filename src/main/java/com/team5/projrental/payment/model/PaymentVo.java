@@ -20,11 +20,12 @@ public class PaymentVo extends PaymentListVo {
     private LocalDateTime createdAt;
 
 
-    public PaymentVo(Integer iuser, String nick, String userPic, Integer ipayment, Integer iproduct, String prodPic,
+    public PaymentVo(Integer iuser, String nick, String userPic, Integer ipayment, Integer iproduct, String title, String prodPic,
                      Integer istatus,
                      LocalDate rentalStartDate, LocalDate rentalEndDate, Integer rentalDuration, Integer price, Integer deposit,
                      String phone, String payment, String code, Integer role,  LocalDateTime createdAt) {
-        super(iuser, nick, userPic, ipayment, iproduct, prodPic, istatus, rentalStartDate, rentalEndDate, rentalDuration, price,
+        super(iuser, nick, userPic, ipayment, iproduct, prodPic, title, istatus, rentalStartDate, rentalEndDate, rentalDuration,
+                price,
                 deposit);
         this.phone = phone;
         this.payment = payment;
@@ -35,7 +36,7 @@ public class PaymentVo extends PaymentListVo {
 
     public PaymentVo(GetPaymentListResultDto dto) {
         super(dto.getIuser(), dto.getNick(), dto.getUserStoredPic(), dto.getIpayment(), dto.getIproduct(),
-                dto.getProdStoredPic(), dto.getIstatus(), dto.getRentalStartDate(), dto.getRentalEndDate(),
+                dto.getTitle(), dto.getProdStoredPic(), dto.getIstatus(), dto.getRentalStartDate(), dto.getRentalEndDate(),
                 dto.getRentalDuration(),
                 dto.getPrice(), dto.getDeposit());
 

@@ -15,6 +15,7 @@ public class GetPaymentListResultDto {
 
     private Integer ipayment;
     private Integer iproduct;
+    private String title;
     private String prodStoredPic;
     private Integer istatus;
     private Integer ipaymentMethod;
