@@ -196,15 +196,20 @@ public class PaymentService {
     public List<PaymentListVo> getAllPayment(Integer role, int page) {
         List<GetPaymentListResultDto> paymentBy = paymentRepository.findPaymentBy(new GetPaymentListDto(getLoginUserPk(), role, page, true));
         CommonUtils.checkNullOrZeroIfCollectionThrow(NoSuchPaymentException.class, NO_SUCH_PAYMENT_EX_MESSAGE, paymentBy);
-        List<PaymentListVo> result = new ArrayList<>();
-        paymentBy.forEach(p -> result.add(new PaymentListVo(
+//        List<PaymentListVo> result = new ArrayList<>();
+//        paymentBy.forEach(p -> result.add(new PaymentListVo(
+//                p.getIuser(), p.getNick(), p.getUserStoredPic(),
+//                p.getIpayment(), p.getIproduct(), p.getTitle(), p.getProdStoredPic(), p.getIstatus(), p.getRentalStartDate(),
+//                p.getRentalEndDate(),
+//                p.getRentalDuration(), p.getPrice(), p.getDeposit())
+//        ));
+//        return result;
+        return paymentBy.stream().map(p -> new PaymentListVo(
                 p.getIuser(), p.getNick(), p.getUserStoredPic(),
-                p.getIpayment(), p.getIproduct(), p.getProdStoredPic(), p.getIstatus(), p.getRentalStartDate(),
+                p.getIpayment(), p.getIproduct(), p.getTitle(), p.getProdStoredPic(), p.getIstatus(), p.getRentalStartDate(),
                 p.getRentalEndDate(),
-                p.getRentalDuration(), p.getPrice(), p.getDeposit())
-        ));
-
-        return result;
+                p.getRentalDuration(), p.getPrice(), p.getDeposit()
+        )).toList();
     }
 
 

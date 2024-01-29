@@ -58,6 +58,7 @@
         U.stored_pic as userStoredPic,
         PA.ipayment,
         P.iproduct,
+        P.title,
         PA.istatus,
         <if test="flag == 1">
             PA.ipayment_method as ipaymentMethod,
