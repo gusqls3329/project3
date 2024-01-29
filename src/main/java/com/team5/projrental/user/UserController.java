@@ -136,7 +136,7 @@ public class UserController {
 
     @Operation(summary = "유저 정보 조회", description = "유저 개인 정보 조회, (iauth:권한)")
     @Parameters(value = {
-            @Parameter(name = "iuser", description = "유저 Pk값")
+            @Parameter(name = "tar", description = "유저 Pk값")
     })
     @Validated
     @GetMapping

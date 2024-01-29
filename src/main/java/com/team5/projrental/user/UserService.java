@@ -245,9 +245,10 @@ public class UserService {
             throw new BadInformationException(BAD_PIC_EX_MESSAGE);
         }
 
-
-        String hashedPw = BCrypt.hashpw(dto.getUpw(), BCrypt.gensalt());
-        dto.setUpw(hashedPw);
+        if (dto.getUpw() != null) {
+            String hashedPw = BCrypt.hashpw(dto.getUpw(), BCrypt.gensalt());
+            dto.setUpw(hashedPw);
+        }
         int result = mapper.changeUser(dto);
         if (result == 1) {
             int auth = authenticationFacade.getLoginUserAuth();
