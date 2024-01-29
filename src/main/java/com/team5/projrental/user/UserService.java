@@ -25,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +73,7 @@ public class UserService {
         int result = mapper.insUser(dto);
         if (result == 1) {
             if (dto.getPic() != null) {
-                myFileUtils.delFolderTrigger(Const.CATEGORY_USER);
+                myFileUtils.delFolderTrigger(Const.CATEGORY_USER + "/" + dto.getIuser());
                 try {
                     String savedPicFileNm = String.valueOf(
                             myFileUtils.savePic(dto.getPic(), Const.CATEGORY_USER,
@@ -204,7 +205,13 @@ public class UserService {
         throw new BadInformationException(NO_SUCH_USER_EX_MESSAGE);
     }
 
-    public int putUser(ChangeUserDto dto) {
+    public int putUser(ChangeUserDto dto, MultipartFile pic) {
+        if (dto == null && pic == null) throw new BadInformationException(CAN_NOT_BLANK_EX_MESSAGE);
+        if (dto == null) dto = new ChangeUserDto();
+
+        if (pic != null) {
+            dto.setPic(pic);
+        }
 
         CommonUtils.ifContainsBadWordThrow(BadWordException.class, BAD_WORD_EX_MESSAGE,
                 dto.getNick() == null ? "" : dto.getNick(),
@@ -216,15 +223,18 @@ public class UserService {
 
         if (checkNickOrId(1, dto.getNick()) == null) throw new BadInformationException(BAD_INFO_EX_MESSAGE);
 
-        Addrs addrs = axisGenerator.getAxis(dto.getAddr());
-        CommonUtils.ifAnyNullThrow(BadAddressInfoException.class, BAD_ADDRESS_INFO_EX_MESSAGE,
-                addrs, addrs.getAddress_name(), addrs.getX(), addrs.getY());
-        dto.setX(Double.parseDouble(addrs.getX()));
-        dto.setY(Double.parseDouble(addrs.getY()));
-        dto.setAddr(addrs.getAddress_name());
 
+        if (dto.getAddr() != null) {
+            Addrs addrs = axisGenerator.getAxis(dto.getAddr());
 
-        String path = Const.CATEGORY_USER + dto.getIuser();
+            CommonUtils.ifAnyNullThrow(BadAddressInfoException.class, BAD_ADDRESS_INFO_EX_MESSAGE,
+                    addrs, addrs.getAddress_name(), addrs.getX(), addrs.getY());
+            dto.setX(Double.parseDouble(addrs.getX()));
+            dto.setY(Double.parseDouble(addrs.getY()));
+            dto.setAddr(addrs.getAddress_name());
+        }
+
+        String path = Const.CATEGORY_USER + "/" + dto.getIuser();
         myFileUtils.delFolderTrigger(path);
         try {
             String savedPicFileNm = String.valueOf(

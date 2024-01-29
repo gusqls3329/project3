@@ -15,6 +15,7 @@ public class ChangeUserDto {
 
     //private MultipartFile pic;
     //private String pushpic;
+    @JsonIgnore
     private MultipartFile pic;
 
     @Length(min = 8, max = 20, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
