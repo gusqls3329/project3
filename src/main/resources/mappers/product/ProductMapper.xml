@@ -167,7 +167,7 @@
     <delete id="deletePic">
         delete from t_pics
         <where>
-            iproduct = #{iproduct} and ipics in (
+            iproduct = #{iproduct} and stored_pic in (
             <foreach collection="delPics" item="pic" separator=", ">
                 #{pic}
             </foreach>
@@ -180,6 +180,9 @@
         rental_end_date as rentalEndDate
         from t_product
         where iproduct = #{iproduct} and istatus = 0
+        <if test="iuser != null and iuser != 0">
+            and iuser = #{iuser}
+        </if>
 
     </select>
 
@@ -286,7 +289,7 @@
     </select>
 
     <select id="getPicsAllBy">
-        select stored_pic from t_pics where ipics in
+        select stored_pic from t_pics where stored_pic in
         (
         <foreach collection="ipics" item="pic" separator=", ">
             #{pic}
