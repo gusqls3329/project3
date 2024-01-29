@@ -17,6 +17,7 @@ public interface ChatMapper {
     List<ChatUserInsDto> insChatUserTest(ChatUserInsDto dto); // TDD 용
 
     Integer selChatUserCheck(ChatInsDto dto);
+    Integer selChatUserCheck2(ChatInsDto dto);
 
     int insChatMsg(ChatMsgInsDto dto);
     List<ChatMsgSelVo> selChatMsgAll(ChatMsgSelDto dto);

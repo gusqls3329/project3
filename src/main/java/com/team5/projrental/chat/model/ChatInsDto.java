@@ -19,4 +19,5 @@ public class ChatInsDto {
 
     @Range(min = 1, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private int otherPersonIuser;
+
 }

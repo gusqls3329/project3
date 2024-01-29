@@ -16,5 +16,8 @@ public class ChatSelVo {
     private String otherPersonPic; // 상대방 유저 사진
 
     @JsonIgnore
+    private int existEnableRoom;
+
+    @JsonIgnore
     private int istatus;
 }
