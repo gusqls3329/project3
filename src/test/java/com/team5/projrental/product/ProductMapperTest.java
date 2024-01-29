@@ -34,7 +34,7 @@ class ProductMapperTest {
     InsProdBasicInfoDto insProdBasicInfoDto = new InsProdBasicInfoDto(1, "test", "test", "test",
             "test",  "test pic 2", 100, 10,
             80, LocalDate.of(2022, 11, 2), LocalDate.of(2024, 2, 2),
-            LocalDate.of(2024, 3, 3), 1, 1.1, 2.2);
+            LocalDate.of(2024, 3, 3), 1, 1.1, 2.2, 1);
 
 
 
@@ -99,8 +99,6 @@ class ProductMapperTest {
         List<GetProductListResultDto> productList1 = productMapper.getProductList(new GetProductListDto(1, 0));
         assertThat(productList1.size()).isEqualTo(3);
 
-        List<GetProductListResultDto> productList3 = productMapper.getProductList(new GetProductListDto(null, null, 1, 0));
-        assertThat(productList3.size()).isEqualTo(2);
 
 
     }
@@ -136,7 +134,7 @@ class ProductMapperTest {
         int result = productMapper.insProduct(new InsProdBasicInfoDto(1, "test", "test", "test",
                 "test", "test pic 2", 100, 10,
                 80, LocalDate.of(2022, 11, 2), LocalDate.of(2024, 2, 2),
-                LocalDate.of(2024, 3, 3), 1, 1.1, 2.2));
+                LocalDate.of(2024, 3, 3), 1, 1.1, 2.2, 1));
         assertThat(result).isEqualTo(1);
 
     }

@@ -123,7 +123,8 @@ class ProductControllerIntegTest {
 
         assertThat(results.size()).isEqualTo(2);
         results.forEach(r -> {
-            assertThat(r.getCategory()).isEqualTo("Galaxy");
+            System.out.println("result: " + r.getIcategory());
+            assertThat(r.getIcategory()).isEqualTo(3);
             assertThat(r.getRentalEndDate()).isEqualTo(LocalDate.of(2024, 3, 18));
         });
 

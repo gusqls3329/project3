@@ -63,7 +63,7 @@ class PaymentReviewServiceTest {
     void patchReview() {
         when(authenticationFacade.getLoginUserPk()).thenReturn(1);
         RiviewVo vo = new RiviewVo();
-        vo.setIbuyer(1);
+        vo.setIuser(1);
         when(reviewMapper.selPatchRev(any())).thenReturn(vo);
         when(reviewMapper.upReview(any())).thenReturn(1);
 
@@ -86,7 +86,7 @@ class PaymentReviewServiceTest {
     void delReview() {
         when(authenticationFacade.getLoginUserPk()).thenReturn(1);
         RiviewVo vo = new RiviewVo();
-        vo.setIbuyer(1);
+        vo.setIuser(1);
         when(reviewMapper.selPatchRev(any())).thenReturn(vo);
         when(reviewMapper.selReIstatus(any())).thenReturn(-2);
         when(reviewMapper.selReview(any(),any())).thenReturn(1);

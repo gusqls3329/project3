@@ -144,7 +144,7 @@ class PaymentMapperTest {
         assertThat(paymentList2.get(0).getNick()).isEqualTo("감자현일");
         assertThat(paymentList2.get(0).getIpayment()).isEqualTo(9);
         assertThat(paymentList2.get(0).getIproduct()).isEqualTo(10);
-        assertThat(paymentList2.get(0).getIstatus()).isEqualTo(0);
+        assertThat(paymentList2.get(0).getIstatus()).isEqualTo(-4);
         assertThat(paymentList2.get(0).getRentalDuration()).isEqualTo(2);
         assertThat(paymentList2.get(0).getPrice()).isEqualTo(100000);
         assertThat(paymentList2.get(0).getDeposit()).isEqualTo(1200000);

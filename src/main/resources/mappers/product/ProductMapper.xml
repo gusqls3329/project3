@@ -67,7 +67,7 @@
         concat(P.addr, ' ', P.rest_addr) as addr, P.title, P.stored_pic as prodMainStoredPic,
         P.price, P.rental_price as rentalPrice, P.deposit, P.rental_start_date as rentalStartDate,
         P.rental_end_date as rentalEndDate, (select count(L.iproduct) from t_like L where L.iproduct = P.iproduct) as prodLike, P.istatus,
-        if(L.iuser > 0, 1, 0) as isLiked, P.view, P.inventory
+        if(L.iuser > 0, 1, 0) as isLiked, P.view, P.inventory, P.icategory
         from t_product P
         join t_user U on P.iuser = U.iuser
         left join t_like L on P.iproduct = L.iproduct and L.iuser = #{loginedIuser}

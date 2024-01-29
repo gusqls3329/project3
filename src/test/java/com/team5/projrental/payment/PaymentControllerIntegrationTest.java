@@ -82,7 +82,7 @@ class PaymentControllerIntegrationTest {
     void postPayment() throws Exception {
 
         PaymentInsDto paymentInsDto = new PaymentInsDto();
-        paymentInsDto.setIproduct(11);
+        paymentInsDto.setIproduct(15);
         paymentInsDto.setIbuyer(8);
         paymentInsDto.setPaymentMethod("credit-card");
         paymentInsDto.setRentalStartDate(LocalDate.of(2025, 5, 5));
@@ -108,12 +108,19 @@ class PaymentControllerIntegrationTest {
 
         assertThat(resVo.getResult()).isEqualTo(2);
 
-        String response2 = mockMvc.perform(MockMvcRequestBuilders.delete("/api/pay/11?div=1")
+        String response2 = mockMvc.perform(MockMvcRequestBuilders.delete("/api/pay/8?div=1")
                         .header("Authorization", this.token))
                 .andReturn().getResponse().getContentAsString();
-        ErrorResultVo errorResultVo = om.readValue(response2, ErrorResultVo.class);
-        assertThat(errorResultVo.getErrorCode()).isEqualTo(464);
+        ResVo errorResultVo = om.readValue(response2, ResVo.class);
+        assertThat(errorResultVo.getResult()).isEqualTo(-1);
 
+        System.out.println("---sep---");
+
+        String response3 = mockMvc.perform(MockMvcRequestBuilders.delete("/api/pay/10?div=1")
+                        .header("Authorization", this.token))
+                .andReturn().getResponse().getContentAsString();
+        ErrorResultVo errorResultVo1 = om.readValue(response3, ErrorResultVo.class);
+        assertThat(errorResultVo1.getErrorCode()).isEqualTo(436);
     }
 
     @Test
