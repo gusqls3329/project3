@@ -33,15 +33,15 @@
     </select>
 
     <select id="getIbuyerReviewList">
-        SELECT B.ibuyer, A.nick, A.stored_pic AS loginedUserPic, D.iproduct, D.title, D.stored_pic AS prodPic, B.ireview, B.rating, B.`contents`
+        SELECT B.iuser, A.nick, A.stored_pic AS loginedUserPic, D.iproduct, D.title, D.stored_pic AS prodPic, B.ireview, B.rating, B.`contents`
         FROM t_user A
         LEFT JOIN t_review B
-        ON A.iuser = B.ibuyer
+        ON A.iuser = B.iuser
         LEFT JOIN t_product_payment C
         ON B.ipayment = C.ipayment
         LEFT JOIN t_product D
         ON C.iproduct = D.iproduct
-        WHERE B.ibuyer = #{ibuyer}
+        WHERE B.iuser = #{iuser};
     </select>
 
     <select id="getFavList">
