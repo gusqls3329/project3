@@ -70,7 +70,7 @@ public class PaymentReviewIntegrationTest {
     void postReview() throws Exception {
         RivewDto dto = new RivewDto();
         dto.setContents("리뷰테스트");
-        dto.setIpayment(15);
+        dto.setIpayment(13);
         dto.setRating(5);
         dto.setIuser(4);
 
@@ -111,7 +111,7 @@ public class PaymentReviewIntegrationTest {
         UpRieDto dto = new UpRieDto();
         dto.setContents("변경함");
         dto.setRating(4);
-        dto.setIreview(14);
+        dto.setIreview(25);
         dto.setIuser(4);
 
         String json = mapper.writeValueAsString(dto);
@@ -134,7 +134,7 @@ public class PaymentReviewIntegrationTest {
     @Test
     void delReview() throws Exception {
         MultiValueMap<String, String> requestParams = new LinkedMultiValueMap();
-        requestParams.add("rev", "20");
+        requestParams.add("rev", "25");
         requestParams.add("iuser","4");
         requestParams.add("istatus","1");
 
