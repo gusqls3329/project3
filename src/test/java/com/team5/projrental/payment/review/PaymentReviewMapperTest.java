@@ -94,15 +94,15 @@ class PaymentReviewMapperTest {
         assertEquals(vo1.getIsExists(),1);
     }
 
-/*    @Test
+    @Test
     void selPatchRev() {
         RiviewVo vo = mapper.selPatchRev(2);
-        assertEquals(vo.getIbuyer(),1);
+        assertEquals(vo.getIuser(),1);
         assertEquals(vo.getIpayment(),6);
 
         RiviewVo vo1 = mapper.selPatchRev(5);
         assertEquals(vo1.getIpayment(),14);
-        assertEquals(vo1.getIbuyer(),2);
+        assertEquals(vo1.getIuser(),2);
 
-    }*/
+    }
 }

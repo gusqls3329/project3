@@ -22,7 +22,7 @@
         from t_product P
         left join t_product_payment PP on P.iproduct = PP.iproduct
         left join t_payment PA on PP.ipayment = PA.ipayment
-        where P.iproduct = #{iproduct} and PA.istatus in (0, 2, 3) and P.istatus = 0
+        where P.iproduct = #{iproduct} and P.istatus = 0
     </select>
     <!--    -->
 

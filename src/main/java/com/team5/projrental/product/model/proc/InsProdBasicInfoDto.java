@@ -35,7 +35,8 @@ public class InsProdBasicInfoDto {
 
     public InsProdBasicInfoDto(Integer iuser, String title, String contents, String addr, String restAddr,
                                String storedPic, Integer price, Integer rentalPrice, Integer deposit, LocalDate buyDate,
-                               LocalDate rentalStartDate, LocalDate rentalEndDate, Integer icategory, Double x, Double y) {
+                               LocalDate rentalStartDate, LocalDate rentalEndDate, Integer icategory, Double x, Double y,
+                               Integer inventory) {
         this.iuser = iuser;
         this.title = title;
         this.contents = contents;
@@ -51,6 +52,7 @@ public class InsProdBasicInfoDto {
         this.icategory = icategory;
         this.x = x;
         this.y = y;
+        this.inventory = inventory;
     }
 
     public InsProdBasicInfoDto(ProductInsDto dto, String addr, Double x, Double y, Integer inventory) {
