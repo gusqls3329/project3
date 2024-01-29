@@ -79,15 +79,17 @@ public class ProductService {
                 products)) return new ArrayList<>();
 
         // 검증 이상 무
-        List<ProductListVo> result = new ArrayList<>();
-        products.forEach(product -> {
-            ProductListVo productListVo = new ProductListVo(product);
+//        List<ProductListVo> result = new ArrayList<>();
+//        products.forEach(product -> {
+//            ProductListVo productListVo = new ProductListVo(product);
+//
+//            result.add(productListVo);
+//        });
 
-            result.add(productListVo);
-        });
-
-        return result;
+//        return result;
+        return products.stream().map(ProductListVo::new).toList();
     }
+
 
     /**
      * 선택한 특정 제품페이지 조회.
@@ -423,13 +425,13 @@ public class ProductService {
                 ));
         CommonUtils.checkNullOrZeroIfCollectionThrow(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE, productListBy);
 
-        List<ProductUserVo> result = new ArrayList<>();
-        productListBy.forEach(product -> {
-            ProductUserVo productListVo = new ProductUserVo(product);
-            result.add(productListVo);
-        });
+//        List<ProductUserVo> result = new ArrayList<>();
+//        productListBy.forEach(product -> {
+//            ProductUserVo productListVo = new ProductUserVo(product);
+//            result.add(productListVo);
+//        });
 
-        return result;
+        return productListBy.stream().map(ProductUserVo::new).toList();
 
     }
 
