@@ -185,7 +185,8 @@ public class ProductService {
 
         // logic
         // 주소 검증
-        Addrs addrs = axisGenerator.getAxis(dto.getAddr().concat(dto.getRestAddr()));
+//        Addrs addrs = axisGenerator.getAxis(dto.getAddr().concat(dto.getRestAddr()));
+        Addrs addrs = axisGenerator.getAxis(dto.getAddr());
         // insert 할 객체 준비 완.
         InsProdBasicInfoDto insProdBasicInfoDto = new InsProdBasicInfoDto(dto, addrs.getAddress_name(), Double.parseDouble(addrs.getX()),
                 Double.parseDouble(addrs.getY()), dto.getInventory());
