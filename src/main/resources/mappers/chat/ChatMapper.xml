@@ -82,14 +82,25 @@
     </delete>-->
 
 
-    <select id="selChatUserCheck">
+    <!--<select id="selChatUserCheck">
         SELECT ichat
         FROM t_chat_user
         WHERE iuser = #{loginedIuser} OR iuser =#{otherPersonIuser}
         GROUP BY ichat
         HAVING COUNT(ichat) = 2
-    </select>
+    </select>-->
 
+    <select id="selChatUserCheck2">
+        SELECT SUM(CASE WHEN A.istatus + B.istatus = 0 THEN 1 ELSE 0 END) AS existEnableRoom
+        FROM t_chat_user A
+        INNER JOIN t_chat_user B
+        ON A.ichat = B.ichat
+        INNER JOIN t_chat C
+        ON B.ichat = C.ichat
+        WHERE A.iuser = #{loginedIuser}
+        AND B.iuser = #{otherPersonIuser}
+        AND C.iproduct = #{iproduct}
+    </select>
 
     <update id="updChatLastMsg">
         UPDATE t_chat
