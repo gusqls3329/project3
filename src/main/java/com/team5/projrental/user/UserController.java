@@ -118,8 +118,9 @@ public class UserController {
             , @Parameter(name = "phone", description = "휴대폰 번호 (형식 : 010-1111-2222)")
     })
     @PutMapping
-    public ResVo putUser(@RequestPart @Validated ChangeUserDto dto) {
-        return new ResVo(service.putUser(dto));
+    public ResVo putUser(@RequestPart(required = false) @Validated ChangeUserDto dto,
+                         @RequestParam(required = false) MultipartFile pic) {
+        return new ResVo(service.putUser(dto, pic));
     }
 
     @Operation(summary = "회원탈퇴", description = "유저 삭제 : 유저정보, 상품, 결제정보 등 삭제")
@@ -135,7 +136,7 @@ public class UserController {
 
     @Operation(summary = "유저 정보 조회", description = "유저 개인 정보 조회, (iauth:권한)")
     @Parameters(value = {
-            @Parameter(name = "iuser", description = "유저 Pk값")
+            @Parameter(name = "tar", description = "유저 Pk값")
     })
     @Validated
     @GetMapping
