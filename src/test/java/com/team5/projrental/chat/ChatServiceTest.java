@@ -1,17 +1,20 @@
 package com.team5.projrental.chat;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.Message;
+import com.google.firebase.messaging.Notification;
 import com.team5.projrental.chat.model.ChatMsgInsDto;
+import com.team5.projrental.chat.model.ChatMsgPushVo;
 import com.team5.projrental.chat.model.ChatSelDto;
 import com.team5.projrental.chat.model.ChatSelVo;
 import com.team5.projrental.common.SecurityProperties;
+import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.security.AuthenticationFacade;
-import com.team5.projrental.common.utils.CommonUtils;
 import com.team5.projrental.common.utils.CookieUtils;
 import com.team5.projrental.common.utils.KakaoAxisGenerator;
 import com.team5.projrental.common.utils.MyFileUtils;
-import com.team5.projrental.chat.ChatMapper;
-import com.team5.projrental.chat.ChatService;
-import com.team5.projrental.user.UserMapper;
+import com.team5.projrental.user.model.UserEntity;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -22,27 +25,27 @@ import org.springframework.context.annotation.Import;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
 
 
 /*
 @Slf4j
 @ExtendWith(SpringExtension.class)
-@Import({ChatService.class})
+@Import(ChatServiceTest.class)
 class ChatServiceTest {
-
 
     @MockBean
     private ChatMapper mapper;
-
-    @MockBean
-    private UserMapper userMapper;
     @MockBean
     private PasswordEncoder passwordEncoder;
     @MockBean
@@ -57,61 +60,87 @@ class ChatServiceTest {
     private MyFileUtils myFileUtils;
     @MockBean
     private HttpServletResponse res;
-
     @Autowired
     private ChatService service;
+    private ObjectMapper objectMapper;
 
     @Test
     void getChatAll() {
         ChatSelDto dto = new ChatSelDto();
         dto.setLoginedIuser(1);
         dto.setPage(1);
-        dto.setRowCount(20);
+        dto.setRowCount(10);
+        dto.setStartIdx(1);
 
         when(mapper.selChatAll(dto)).thenReturn(null);
-
         ChatSelVo vo = new ChatSelVo();
-        vo.setIproduct(25);
         vo.setIchat(2);
-        vo.setIstatus(1);
-        vo.setProdPic("prod\\25\\c5162906-2cb1-4a6c-a738-f675b20a67a4.jpg");
-        vo.setOtherPersonPic("user\\7\\cfbf8730-7ce0-40bb-9a80-4e8987fe8866.jpg");
-        vo.setOtherPersonNm("감자7");
-        vo.setLastMsgAt("네 환영합니다. 내일 오세요");
-        vo.setLastMsgAt("2024-01-19 13:02:03");
+        vo.setIproduct(25);
 
-        ChatSelVo vo2 = new ChatSelVo();
-        vo2.setIproduct(11);
-        vo2.setIchat(5);
-        vo2.setIstatus(-1);
+        List<ChatSelVo> list = new ArrayList<>();
+        list.add(vo);
 
-        List<ChatSelVo> selVo = new ArrayList<>();
-        selVo.add(vo);
-        selVo.add(vo2);
-
-        when(mapper.selChatAll(dto)).thenReturn(selVo);
+        list = service.getChatAll(dto);
         verify(mapper).selChatAll(any());
-        assertEquals(25, selVo.get(0).getIproduct());
+        assertEquals(list.get(0).getIchat(),2);
+        assertEquals(list.get(0).getIproduct(), 25);
     }
 
     @Test
     void postChatMsg() {
         ChatMsgInsDto dto = new ChatMsgInsDto();
         dto.setLoginedIuser(1);
+        dto.setMsg("하이 테스트");
         dto.setIchat(2);
-        dto.setMsg("테스트메세지");
+        dto.setSeq(7);
 
         int istatus = mapper.delBeforeChatIstatus(dto);
 
-        CommonUtils.ifChatUserStatusThrowOrReturn(istatus);
+        assertEquals(0,istatus);
 
         int affectedRows = mapper.insChatMsg(dto);
         if (affectedRows == 1) {
-            mapper.updChatLastMsg(dto);
+            int updRows = mapper.updChatLastMsg(dto);
+
+            assertEquals(1,updRows);
         }
 
-        assertEquals(1, istatus);
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); // 포멧 정의
+        String createdAt = now.format(formatter);
 
+        UserEntity otherPerson = mapper.selOtherPersonByLoginUser(dto);
+
+        assertEquals(7,otherPerson.getIuser());
+
+        try {
+            if (otherPerson.getFirebaseToken() != null) {
+                ChatMsgPushVo pushVo = new ChatMsgPushVo();
+                pushVo.setIchat(dto.getIchat());
+                pushVo.setSeq(dto.getSeq());
+                pushVo.setWriterIuser(dto.getLoginedIuser());
+                pushVo.setMsg(dto.getMsg());
+                pushVo.setCreatedAt(createdAt);
+
+                String body = objectMapper.writeValueAsString(pushVo);
+
+                Notification noti = Notification.builder()
+                        .setTitle("chat")
+                        .setBody(body)
+                        .build();
+
+                Message message = Message.builder()
+                        .putData("type", "chat")
+                        .putData("json", body)
+                        .setToken(otherPerson.getFirebaseToken())
+                        .build();
+
+                FirebaseMessaging.getInstance().sendAsync(message);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        assertEquals(dto.getSeq(),7);
     }
 
     @Test

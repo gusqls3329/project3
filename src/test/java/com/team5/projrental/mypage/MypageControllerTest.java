@@ -19,6 +19,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -31,8 +32,7 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-/*
-@MockMvcConfig
+/*@MockMvcConfig
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase
@@ -69,31 +69,42 @@ class MypageControllerTest {
         this.token = "Bearer " + signinVo.getAccessToken();
     }
 
-    */
-/*@Test
+
+@Test
     void getPaymentList() throws Exception {
 
         MultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
         requestParams.add("page", "1");
         requestParams.add("role", "1");
 
+        PaymentSelDto dto = new PaymentSelDto();
+        dto.setPage(1);
+        dto.setRole(1);
+
+
+        PaymentSelVo vo = new PaymentSelVo();
+        vo.setIproduct(25);
+        vo.setIbuyer(1);
 
         //List<PaymentSelVo> selVoList = controller.getPaymentList(1, 1);
         List<PaymentSelVo> selVoList = new ArrayList<>();
+        selVoList.add(vo);
 
 
         given(service.paymentList(any(PaymentSelDto.class))).willReturn(selVoList);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/api/mypage/prod")
+                        .get("/api/mypage/prod")
                         .params(requestParams))
                 .andExpect(status().isOk())
                 .andDo(print());
-    }*//*
+    }
 
 
     @Test
-    void getReview() {
+    void getReview() throws Exception{
+        String page = "1";
+
 
     }
 
