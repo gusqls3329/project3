@@ -8,6 +8,7 @@ import com.team5.projrental.common.exception.NoSuchProductException;
 import com.team5.projrental.common.exception.NoSuchUserException;
 import com.team5.projrental.common.exception.base.BadDateInfoException;
 import com.team5.projrental.common.exception.base.BadInformationException;
+import com.team5.projrental.common.exception.base.BadProductInfoException;
 import com.team5.projrental.common.exception.base.WrapRuntimeException;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.security.AuthenticationFacade;
@@ -54,7 +55,8 @@ public class PaymentService {
 //        if (totalRentalPrice == null || totalRentalPrice == 0) {
 //            throw new NoSuchProductException(NO_SUCH_PRODUCT_EX_MESSAGE);
 //        }
-        paymentInsDto.setIbuyer(getLoginUserPk());
+        int loginUserPk = getLoginUserPk();
+        paymentInsDto.setIbuyer(loginUserPk);
         CommonUtils.ifFalseThrow(NoSuchUserException.class, NO_SUCH_USER_EX_MESSAGE,
                 productRepository.findIuserCountBy(paymentInsDto.getIbuyer()));
         CommonUtils.ifBeforeThrow(BadDateInfoException.class, RENTAL_END_DATE_MUST_BE_AFTER_THAN_RENTAL_START_DATE_EX_MESSAGE,
@@ -68,9 +70,12 @@ public class PaymentService {
         CommonUtils.checkNullOrZeroIfCollectionThrow(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE,
                 validationInfoFromProduct);
 
+
         // iproduct 는 문제 없음이 검증된 상태.
         // deposit 과 price, rental_price 는 join 할 경우 현재기준으로 조회되며, 모든 리스트에 값이 일정함. 따라서
         GetDepositAndPriceFromProduct depositInfo = validationInfoFromProduct.get(0);
+
+        if(depositInfo.getIseller() == loginUserPk) throw new BadProductInfoException(BAD_PRODUCT_INFO_EX_MESSAGE);
 
         // deposit 과 price 는 join 할 경우 현재기준으로 조회되며, 모든 리스트에 값이 일정함. 따라서
 
