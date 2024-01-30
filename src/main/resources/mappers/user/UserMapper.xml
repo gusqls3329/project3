@@ -4,7 +4,9 @@
     <insert id="insUser" useGeneratedKeys="true" keyProperty="iuser" >
         INSERT INTO t_user
         SET addr = #{addr}
+        <if test="iauth > 0">
         , iauth = #{iauth}
+        </if>
         , rest_addr = #{restAddr}
         , uid = #{uid}
         , upw = #{upw}

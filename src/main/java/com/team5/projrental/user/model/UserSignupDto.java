@@ -21,9 +21,11 @@ public class UserSignupDto {
     private String addr;
 
     @NotBlank(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
+    @Length(max = 30)
     private String restAddr;
 
     @NotBlank(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
+    @Pattern(regexp =  "^\\w{4,15}$", message = ErrorMessage.NO_SUCH_USER_EX_MESSAGE)
     @Length(min = 4, max = 15, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private String uid;
 
@@ -32,6 +34,7 @@ public class UserSignupDto {
     private String upw;
 
     @NotBlank(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
+    @Pattern(regexp = "^\\S{0,20}$", message = ErrorMessage.NO_SUCH_USER_EX_MESSAGE)
     @Length(max = 20, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private String nick;
 
