@@ -2,9 +2,12 @@ package com.team5.projrental.mypage;
 
 import com.team5.projrental.common.security.AuthenticationFacade;
 import com.team5.projrental.mypage.model.*;
+import com.team5.projrental.product.model.review.ReviewResultUserInfoDto;
+import com.team5.projrental.product.model.review.ReviewResultVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -34,6 +37,10 @@ public class MypageService {
         dto.setLoginedIuser(loginUserPk);
 
         return mapper.getFavList(dto);
+    }
+
+    public List<ReviewResultVo> getAllReviewFromMyProduct() {
+        return mapper.getAllReviewFromMyProduct(authenticationFacade.getLoginUserPk());
     }
 
 
