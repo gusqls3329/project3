@@ -160,9 +160,8 @@ public class CommonAspect {
 
     @EventListener(ApplicationReadyEvent.class)
     public void initCacheData() {
-        int limitCount = Const.DISABLED_CACHE_MAX_NUM;
         LocalDate now = LocalDate.now();
-        List<Integer> allIproductsLimit = productRepository.getAllIproductsLimit(limitCount);
+        List<Integer> allIproductsLimit = productRepository.getAllIproductsLimit(Const.DISABLED_CACHE_MAX_NUM);
 
         allIproductsLimit.forEach(i -> {
             List<LocalDate> disabledDate = productService.getDisabledDate(i, now.getYear(), now.getMonthValue());
