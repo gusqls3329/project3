@@ -476,18 +476,17 @@ public class CleanProductService implements RefProductService {
         // 작업 시작
         while (!dateWalker.isAfter(refEndDate)) {
             LocalDate lambdaDateWalker = dateWalker;
-            long count = disabledRefDates.stream().filter(
+            if (disabledRefDates.stream().filter(
                     d -> lambdaDateWalker.isEqual(d.getRentalEndDate()) ||
                             lambdaDateWalker.isEqual(d.getRentalStartDate()) ||
                             lambdaDateWalker.isBefore(d.getRentalEndDate()) && lambdaDateWalker.isAfter(d.getRentalStartDate()
                             )
-            ).count();
-            if (count >= stockCount) {
+            ).count() >= stockCount) {
                 disabledDates.add(LocalDate.of(dateWalker.getYear(),
                         dateWalker.getMonth(),
                         dateWalker.getDayOfMonth()));
             }
-            dateWalker = dateWalker.plusDays(1);
+            dateWalker = dateWalker.plusDays(ADD_A);
         }
 
         return disabledDates;
