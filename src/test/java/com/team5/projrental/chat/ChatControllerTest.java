@@ -31,6 +31,7 @@ import org.springframework.util.MultiValueMap;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -95,26 +96,28 @@ class ChatControllerTest {
         vo.setOtherPersonNm("감자7");
         vo.setOtherPersonPic("user\\7\\cfbf8730-7ce0-40bb-9a80-4e8987fe8866.jpg");
 
+        given(service.postChat(any())).willReturn(vo);
 
 
         String response = mockMvc.perform(MockMvcRequestBuilders
                         .post("/api/chat")
                         .header("Authorization", token)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(dto)))
+                        .content(objectMapper.writeValueAsString(vo)))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
-        System.out.println("response = " + response);
+
 
         ChatSelVo result = objectMapper.readValue(response, ChatSelVo.class);
+        System.out.println("result = " + result);
         Assertions.assertEquals(vo.getIstatus(), result.getIstatus());
         Assertions.assertEquals(vo.getIchat(), result.getIchat());
         Assertions.assertEquals(vo.getIproduct(), result.getIproduct());
         Assertions.assertEquals(vo.getLastMsgAt(), result.getLastMsgAt());
         Assertions.assertEquals(vo.getOtherPersonIuser(), result.getOtherPersonIuser());
 
-
+        verify(service).postChat(any());
     }
 
     @Test
@@ -147,6 +150,8 @@ class ChatControllerTest {
         Assertions.assertEquals(vo.getIproduct(), result.getIproduct());
         Assertions.assertEquals(vo.getLastMsgAt(), result.getLastMsgAt());
         Assertions.assertEquals(vo.getOtherPersonIuser(), result.getOtherPersonIuser());
+        verify(service).postChat(dto);
+
     }
 
     @Test
@@ -154,20 +159,14 @@ class ChatControllerTest {
         ChatMsgInsDto dto = new ChatMsgInsDto();
         dto.setIchat(2);
         dto.setMsg("안녕하세요 테스트중입니다.2");
-        dto.setSeq(8);
-        dto.setLoginedIuser(1);
-
-        String response = mockMvc.perform(MockMvcRequestBuilders
+        given(service.postChatMsg(any())).willReturn(new ResVo(Const.SUCCESS));
+        mockMvc.perform(MockMvcRequestBuilders
                         .post("/api/chat/msg")
-                        .header("Authorization", token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
-        System.out.println("response = " + response);
-
-        ResVo result = objectMapper.readValue(response, ResVo.class);
-        Assertions.assertEquals(new ResVo(1), result.getResult());
+                .andExpect(content().json("{\"result\":1}"));
+        verify(service).postChatMsg(dto);
     }
 
     @Test
@@ -189,7 +188,8 @@ class ChatControllerTest {
                         .delete("/api/chat/msg")
                         .params(requestParams))
                 .andExpect(status().isOk())
-                .andExpect(content().string(objectMapper.writeValueAsString(vo.getResult())))
+                .andExpect(content().json("{\"result\":1}"))
                 .andDo(print());
+        verify(service).chatDelMsg(any());
     }
 }

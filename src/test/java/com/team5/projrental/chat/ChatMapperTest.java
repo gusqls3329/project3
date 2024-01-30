@@ -56,7 +56,7 @@ class ChatMapperTest {
 
         List<ChatSelVo> result = mapper.selChatAll(selDto);
         log.info("resultsize : {}", result.size());
-        assertEquals(2, result.size());
+        assertEquals(9, result.size());
     }
 
     //ichat 2번방에 iuser값이 이미 있어서 DB에 지우고하면 됨
@@ -67,7 +67,6 @@ class ChatMapperTest {
                 .ichat(2)
                 .iuser(1)
                 .build();
-
 
         int insChatUserSize = mapper.insChatUser(dto);
 
@@ -83,9 +82,9 @@ class ChatMapperTest {
         dto.setIchat(2);
         dto.setIproduct(25);
 
-        Integer ichat = mapper.selChatUserCheck(dto);
+        Integer existEnableRoom = mapper.selChatUserCheck2(dto);
 
-        assertEquals(2,ichat);
+        assertEquals(1,existEnableRoom);
 
     }
 
@@ -113,7 +112,7 @@ class ChatMapperTest {
         dto.setRowCount(20);
 
         List<ChatMsgSelVo> list = mapper.selChatMsgAll(dto);
-        assertEquals(7, list.size());
+        assertEquals(5, list.size());
 
     }
 

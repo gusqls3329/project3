@@ -2,6 +2,7 @@ package com.team5.projrental.mypage;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team5.projrental.MockMvcConfig;
+import com.team5.projrental.mypage.model.MyFavListSelDto;
 import com.team5.projrental.mypage.model.PaymentSelDto;
 import com.team5.projrental.mypage.model.PaymentSelVo;
 import com.team5.projrental.product.ProductController;
@@ -104,6 +105,9 @@ class MypageControllerTest {
     @Test
     void getReview() throws Exception{
         String page = "1";
+        MyFavListSelDto dto = new MyFavListSelDto();
+        dto.setPage(1);
+
 
     }
 
