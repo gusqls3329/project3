@@ -13,6 +13,6 @@ public interface MypageMapper {
     List<MyBuyReviewListSelVo> getIbuyerReviewList(MyBuyReviewListSelDto dto);
     List<MyFavListSelVo> getFavList(MyFavListSelDto dto);
 
-    List<ReviewResultVo> getAllReviewFromMyProduct(int iuser);
+    List<AllReviewsForMeResultDto> getAllReviewFromMyProduct(int iuser);
 
 }
