@@ -92,25 +92,20 @@ class ChatServiceTest {
         assertEquals(list.get(0).getIproduct(), 25);
     }
 
-    /*@Test
+    @Test
     void postChatMsg() {
         ChatMsgInsDto dto = new ChatMsgInsDto();
         dto.setLoginedIuser(1);
-        dto.setMsg("하이 테스트");
         dto.setIchat(11);
         dto.setSeq(7);
 
         int istatus = mapper.delBeforeChatIstatus(dto);
 
         assertEquals(0,istatus);
-
         int affectedRows = mapper.insChatMsg(dto);
-
         assertEquals(0, affectedRows);
-
         if (affectedRows == 1) {
             int updRows = mapper.updChatLastMsg(dto);
-
             assertEquals(1,updRows);
         }
 
@@ -118,7 +113,15 @@ class ChatServiceTest {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); // 포멧 정의
         String createdAt = now.format(formatter);
 
-        UserEntity otherPerson = mapper.selOtherPersonByLoginUser(dto);
+        log.info("dto logined: {}", dto.getLoginedIuser());
+        UserEntity otherPerson = new UserEntity();
+        otherPerson.setIuser(7);
+        otherPerson.setNick("감자7");
+        otherPerson.setStoredPic("user\\7\\cfbf8730-7ce0-40bb-9a80-4e8987fe8866.jpg");
+        otherPerson.setUid("qwqwqw77");
+        log.info("otherPerson2: {}", otherPerson);
+
+        when(mapper.selOtherPersonByLoginUser(dto)).thenReturn(otherPerson);
 
         assertEquals(7,otherPerson.getIuser());
 
@@ -150,7 +153,7 @@ class ChatServiceTest {
             e.printStackTrace();
         }
         assertEquals(dto.getSeq(),7);
-    }*/
+    }
 
     @Test
     void getMsgAll() {
