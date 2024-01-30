@@ -105,7 +105,6 @@ class MypageControllerTest {
     void getReview() throws Exception{
         String page = "1";
 
-
     }
 
     @Test

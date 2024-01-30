@@ -170,10 +170,10 @@ class ChatControllerTest {
         Assertions.assertEquals(new ResVo(1), result.getResult());
     }
 
-/*    @Test
+    @Test
     void getChatMsgAll() {
 
-    }*/
+    }
 
     @SneakyThrows
     @Test
@@ -191,6 +191,5 @@ class ChatControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(objectMapper.writeValueAsString(vo.getResult())))
                 .andDo(print());
-
     }
 }
