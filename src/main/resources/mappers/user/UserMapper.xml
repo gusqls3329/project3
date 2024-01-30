@@ -4,6 +4,7 @@
     <insert id="insUser" useGeneratedKeys="true" keyProperty="iuser" >
         INSERT INTO t_user
         SET addr = #{addr}
+        , iauth = #{iauth}
         , rest_addr = #{restAddr}
         , uid = #{uid}
         , upw = #{upw}
@@ -15,16 +16,11 @@
     </insert>
     <insert id="insCom">
         INSERT INTO t_comp_info
-        set iauth = 2
-        , comp_code = #{compCode}
+        set comp_code = #{compCode}
         , comp_nm = #{compNm}
         , iuser = #{iuser}
     </insert>
-    <update id="insauth">
-        update t_user
-        SET iauth = 2
-        where iuser = #{iuser}
-    </update>
+
     <!--    t_auth join 필요 없음 user 데이터만 가져오기.
          -->
     <select id="selSignin">
@@ -152,7 +148,7 @@
     </delete>
     <!--    -->
     <select id="selUser">
-        SELECT y, x, nick, stored_pic as storedPic, phone, email, rating, CONCAT(addr, rest_addr) as addr
+        SELECT y, x, nick, stored_pic as storedPic, phone, email, rating, CONCAT(addr, rest_addr) as addr, iauth
         FROM t_user
         WHERE iuser = #{iuser}
     </select>
@@ -183,4 +179,20 @@
         FROM t_user
         WHERE nick = #{obj}
     </select>
+
+    <select id="getCompInf">
+        SELECT comp_code as compCode, comp_nm as compNm FROM t_comp_info WHERE iuser = #{iuser}
+    </select>
+
+    <update id="changeCompInfo">
+        update t_comp_info
+        <set>
+        <if test="compCode != null and compCode > 0">
+            comp_code = #{compCode}
+        </if>
+        <if test="compNm != null">
+            , comp_nm = #{compNm}
+        </if>
+        </set>
+    </update>
 </mapper>
