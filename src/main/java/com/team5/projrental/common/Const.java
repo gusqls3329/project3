@@ -53,6 +53,7 @@ public interface Const {
 //    long SSE_TIMEOUT_TIME = 300000;
     long SSE_TIMEOUT_TIME = 30000;
     long SSE_RECONNECT_TIME = SSE_TIMEOUT_TIME - 100;
+    int ADD_A = 1;
             //
 
     /*
