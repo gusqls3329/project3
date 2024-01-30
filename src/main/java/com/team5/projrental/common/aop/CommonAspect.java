@@ -110,13 +110,6 @@ public class CommonAspect {
         return changedColumn;
     }
 
-
-    //    @Before("execution(* com.team5.projrental.payment.PaymentService.postPayment(..)) && args(dto)")
-//    public void deleteCache(JoinPoint joinPoint, PaymentInsDto dto) {
-//        log.debug("[deleteCache AOP] {}", joinPoint.getSignature());
-//        disabledCache.remove(dto.getIproduct());
-//    }
-
     @AfterReturning("execution(* com.team5.projrental.payment.PaymentService.postPayment(..)) && args(dto)")
     public void deleteCache(JoinPoint joinPoint, PaymentInsDto dto) {
         log.debug("[deleteCache AOP] {}", joinPoint.getSignature());
@@ -124,16 +117,14 @@ public class CommonAspect {
     }
 
     @Around(value = "execution(* com.team5.projrental.product.ProductController.getDisabledDate(..)) && args(iproduct, y, m)", argNames = "joinPoint,iproduct,y,m")
-    public Object returnCacheIfContains(ProceedingJoinPoint joinPoint, Integer iproduct, Integer y, Integer m) {
+    public Object returnCacheIfContains(ProceedingJoinPoint joinPoint, Integer iproduct, Integer y, Integer m) throws Throwable {
         DisabledDateInfo inCache = disabledCache.get(iproduct);
         log.debug("[returnCacheIfContains] inCache: {}", inCache);
-        try {
-            return inCache != null && inCache.getY().equals(y) && inCache.getM().equals(m) ?
-                    inCache : joinPoint.proceed();
-        } catch (Throwable e) {
-            log.debug("[returnCacheIfContains] error: ", e);
-            throw new RuntimeException(e);
-        }
+
+        return inCache != null && inCache.getY().equals(y) && inCache.getM().equals(m) ?
+                inCache :
+                joinPoint.proceed();
+
 
     }
 
@@ -152,7 +143,6 @@ public class CommonAspect {
                     }
                 }
             }
-//            disabledCache.put(iproduct, disabledDates);
             disabledCache.put(iproduct, new DisabledDateInfo(disabledDates, y, m));
 
             disabledCache.keySet().forEach(k -> log.debug("[addCache AOP] total Cache = key: {}, values: {}", k,
