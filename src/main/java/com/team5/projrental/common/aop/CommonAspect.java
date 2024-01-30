@@ -54,21 +54,12 @@ public class CommonAspect {
      *
      * @param result
      */
-    @AfterReturning(value = "@annotation(com.team5.projrental.common.aop.anno.CountView)",
+    @AfterReturning(value = "@annotation(countView)",
             returning = "result")
-    public void countView(JoinPoint joinPoint, Object result) {
+    public void countView(Object result, CountView countView) {
         log.debug("AOP Start");
-
         try {
-            Method[] declaredMethods = joinPoint.getTarget().getClass().getDeclaredMethods();
-            for (Method declaredMethod : declaredMethods) {
-                if (declaredMethod.getName().contains(joinPoint.getSignature().getName())) {
-                    CountView declaredAnnotation = declaredMethod.getDeclaredAnnotation(CountView.class);
-                    if (declaredAnnotation != null) {
-                        countView(result, declaredAnnotation.value());
-                    }
-                }
-            }
+            countView(result, countView.value());
         } catch (NullPointerException e) {
             log.info("[CommonAspect.countView()]", e);
         }
@@ -76,6 +67,7 @@ public class CommonAspect {
 
     }
 
+    // JPA 사용시 Entity 로 메소드 overloading 해서 사용하자 || 지금은 if 문으로 분기했다.
     private void countView(Object result, CountCategory category) {
         if (category == CountCategory.PRODUCT) {
             ProductVo currResult = (ProductVo) result;
