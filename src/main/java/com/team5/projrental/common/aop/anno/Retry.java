@@ -10,3 +10,4 @@ import java.lang.annotation.Target;
 public @interface Retry {
     int value() default 3;
 }
+

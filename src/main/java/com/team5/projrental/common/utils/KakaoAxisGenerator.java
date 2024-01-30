@@ -71,7 +71,6 @@ public class KakaoAxisGenerator implements AxisGenerator{
             throw new RestApiException(SERVER_ERR_MESSAGE);
         }
 
-
         return addrs;
     }
 
