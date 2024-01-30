@@ -55,6 +55,7 @@ public class UserService {
         dto.setUpw(hashedPw);
         // 대구 달서구 용산1동 -> x: xxx.xxxxx y: xx.xxxxx address_name: 대구 달서구 용산1동
         if (dto.getCompNm() != null && dto.getCompCode() != 0) {
+            dto.setIauth(2);
             if (dto.getCompCode() < 1000000000 || dto.getCompCode() > 9999999999L) {
                 throw new BadInformationException(ILLEGAL_RANGE_EX_MESSAGE);
             }
@@ -87,20 +88,16 @@ public class UserService {
                 }
             }
             if (dto.getCompNm() != null && dto.getCompCode() != 0) {
-                int a = mapper.insauth(dto.getIuser());
-                if (a == 1) {
-                    UserSignUpComDto comDto = new UserSignUpComDto();
-                    comDto.setCompCode(dto.getCompCode());
-                    comDto.setCompNm(dto.getCompNm());
-                    comDto.setIuser(dto.getIuser());
-                    int aa = mapper.insCom(comDto);
-                    if (aa != 1) {
-                        throw new BadInformationException(BAD_INFO_EX_MESSAGE);
-                    }
-                    int auth = authenticationFacade.getLoginUserAuth();
-                    return auth;
+                UserSignUpComDto comDto = new UserSignUpComDto();
+                comDto.setCompCode(dto.getCompCode());
+                comDto.setCompNm(dto.getCompNm());
+                comDto.setIuser(dto.getIuser());
+                int aa = mapper.insCom(comDto);
+                if (aa != 1) {
+                    throw new BadInformationException(BAD_INFO_EX_MESSAGE);
                 }
-                throw new BadInformationException(ILLEGAL_EX_MESSAGE);
+                int auth = authenticationFacade.getLoginUserAuth();
+                return auth;
 
             }
             if (dto.getCompNm() == null && dto.getCompCode() == 0) {
@@ -236,21 +233,32 @@ public class UserService {
 
         String path = Const.CATEGORY_USER + "/" + dto.getIuser();
         myFileUtils.delFolderTrigger(path);
-        try {
-            String savedPicFileNm = String.valueOf(
-                    myFileUtils.savePic(dto.getPic(), Const.CATEGORY_USER,
-                            String.valueOf(dto.getIuser())));
-            dto.setChPic(savedPicFileNm);
-        } catch (FileNotContainsDotException e) {
-            throw new BadInformationException(BAD_PIC_EX_MESSAGE);
+        if (pic != null) {
+            try {
+                String savedPicFileNm = String.valueOf(
+                        myFileUtils.savePic(dto.getPic(), Const.CATEGORY_USER,
+                                String.valueOf(dto.getIuser())));
+                dto.setChPic(savedPicFileNm);
+            } catch (FileNotContainsDotException e) {
+                throw new BadInformationException(BAD_PIC_EX_MESSAGE);
+            }
         }
-
         if (dto.getUpw() != null) {
             String hashedPw = BCrypt.hashpw(dto.getUpw(), BCrypt.gensalt());
             dto.setUpw(hashedPw);
         }
-        int result = mapper.changeUser(dto);
-        if (result == 1) {
+        int result = 1;
+        int compResult = 1;
+        if (CommonUtils.ifAllNullReturnFalse(
+                dto.getNick(), dto.getChPic(), dto.getUpw(),
+                dto.getPhone(), dto.getAddr(),
+                dto.getRestAddr(), dto.getEmail())) {
+            result = mapper.changeUser(dto);
+        }
+        if (dto.getCompCode() > 0 || dto.getCompNm() != null) {
+            compResult = mapper.changeCompInfo(new CompInfoDto(dto.getCompCode(), dto.getCompNm()));
+        }
+        if (result == 1 && compResult == 1) {
             int auth = authenticationFacade.getLoginUserAuth();
             return auth;
         }
@@ -312,17 +320,19 @@ public class UserService {
     }
 
     public SelUserVo getUser(Integer iuser) {
-        if (iuser == null || iuser == 0) { //나일때
-            int loginUserPk = authenticationFacade.getLoginUserPk();
-            SelUserVo vo1 = mapper.selUser(loginUserPk);
-            vo1.setIauth(authenticationFacade.getLoginUserAuth());
-            return vo1;
+        boolean checker = iuser == null || iuser == 0;
+        Integer actionIuser = checker ? authenticationFacade.getLoginUserPk() : iuser;
+
+        SelUserVo vo = mapper.selUser(actionIuser);
+
+        if (vo.getIauth() == 2) {
+            CompInfoDto compInf = mapper.getCompInf(actionIuser);
+            CommonUtils.ifAllNullThrow(BadInformationException.class, BAD_INFO_EX_MESSAGE,
+                    compInf);
+            vo.setCompCode(compInf.getCompCode());
+            vo.setCompNm((compInf.getCompNm()));
         }
-        SelUserVo vo2 = mapper.selUser(iuser);
-        vo2.setEmail(null);
-        vo2.setPhone(null);
-        vo2.setIauth(authenticationFacade.getLoginUserAuth());
-        return vo2;
+        return vo;
     }
 
     public ResVo checkUserInfo(UserCheckInfoDto dto) { // div = 1 || nick = "..."

@@ -25,7 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -33,14 +32,11 @@ import java.util.concurrent.atomic.AtomicReference;
 import static com.team5.projrental.common.Const.SUCCESS;
 import static com.team5.projrental.common.exception.ErrorCode.*;
 
-//@Service
+@Service
 @Slf4j
 @RequiredArgsConstructor
-public class PaymentService implements RefPaymentService{
-    /* TODO 2024-01-23 Tue 18:1
-        코드 리펙토링
-        --by Hyunmin
-    */
+public class CleanPaymentService implements RefPaymentService{
+
     private final PaymentRepository paymentRepository;
     private final ProductRepository productRepository;
     private final AuthenticationFacade authenticationFacade;
@@ -48,13 +44,6 @@ public class PaymentService implements RefPaymentService{
     @Transactional
     public ResVo postPayment(PaymentInsDto paymentInsDto) {
 
-        // 1일당 가격 가져오기
-        // 이거 GetDepositAndPriceFromProduct (63번줄) 에서 함께 할 수 있을듯 하다. (db 연결 한번 줄일 수 있다)
-//        Integer totalRentalPrice = productRepository.findRentalPriceBy(paymentInsDto.getIproduct());
-//        // request 데이터 검증
-//        if (totalRentalPrice == null || totalRentalPrice == 0) {
-//            throw new NoSuchProductException(NO_SUCH_PRODUCT_EX_MESSAGE);
-//        }
         int loginUserPk = getLoginUserPk();
         paymentInsDto.setIbuyer(loginUserPk);
         CommonUtils.ifFalseThrow(NoSuchUserException.class, NO_SUCH_USER_EX_MESSAGE,
@@ -64,7 +53,6 @@ public class PaymentService implements RefPaymentService{
 
 
         // 해당 상품의 현재 등록된 rentalPrice, deposit, price 를 가져온다
-
         List<GetDepositAndPriceFromProduct> validationInfoFromProduct =
                 paymentRepository.getValidationInfoFromProduct(paymentInsDto.getIproduct());
         CommonUtils.checkNullOrZeroIfCollectionThrow(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE,
@@ -77,7 +65,6 @@ public class PaymentService implements RefPaymentService{
 
         if(depositInfo.getIseller() == loginUserPk) throw new BadProductInfoException(BAD_PRODUCT_INFO_EX_MESSAGE);
 
-        // deposit 과 price 는 join 할 경우 현재기준으로 조회되며, 모든 리스트에 값이 일정함. 따라서
 
 
         // 이미 등록된 날짜에는 동일한 상품이 더이상 결제등록 되지 않도록 예외처리
@@ -102,15 +89,6 @@ public class PaymentService implements RefPaymentService{
         paymentInsDto.setCode(createCode());
         paymentInsDto.setDeposit(CommonUtils.getDepositFromPer(paymentInsDto.getPrice(),
                 CommonUtils.getDepositPerFromPrice(depositInfo.getPrice(), depositInfo.getDeposit())));
-
-        // insert (select key 사용)
-//        if (paymentRepository.savePayment(paymentInsDto) != 0 &&
-//                productRepository.updateIpayment(paymentInsDto.getIproduct(), paymentInsDto.getIpayment()) != 0) {
-//            if (paymentRepository.saveProductPayment(paymentInsDto.getIproduct(), paymentInsDto.getIpayment()) != 0) {
-//                return new ResVo(1);
-//            }
-//        }
-
 
         if (paymentRepository.savePayment(paymentInsDto) != 0) {
             if (paymentRepository.saveProductPayment(paymentInsDto.getIproduct(), paymentInsDto.getIpayment()) != 0) {
@@ -159,11 +137,6 @@ public class PaymentService implements RefPaymentService{
     public ResVo delPayment(Integer ipayment, Integer div) {
 
         // 데이터 검증
-//        CommonUtils.ifFalseThrow(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE,
-//                productRepository.findIproductCountBy(iproduct));
-//        CommonUtils.ifFalseThrow(NoSuchUserException.class, NO_SUCH_USER_EX_MESSAGE,
-//                productRepository.findIuserCountBy(iuser));
-
         GetInfoForCheckIproductAndIuserResult checkResult = paymentRepository.checkIuserAndIproduct(ipayment);
         if (checkResult == null) {
             throw new NoSuchProductException(NO_SUCH_PRODUCT_EX_MESSAGE);
@@ -176,7 +149,6 @@ public class PaymentService implements RefPaymentService{
 
         // 취소요청이 아니면 오늘이 반납일보다 이후여야만 함.
         // 오늘이 반납일보다 이후가 아닌데 (대여 중인데) 삭제나 숨김 요청을 한 경우
-
         if (div != 3 && !LocalDate.now().isEqual(checkResult.getRentalEndDate()) && !LocalDate.now().isAfter(checkResult.getRentalEndDate())) {
             throw new BadDateInfoException(BAD_RENTAL_DEL_EX_MESSAGE);
         }
@@ -201,14 +173,6 @@ public class PaymentService implements RefPaymentService{
     public List<PaymentListVo> getAllPayment(Integer role, int page) {
         List<GetPaymentListResultDto> paymentBy = paymentRepository.findPaymentBy(new GetPaymentListDto(getLoginUserPk(), role, page, true));
         CommonUtils.checkNullOrZeroIfCollectionThrow(NoSuchPaymentException.class, NO_SUCH_PAYMENT_EX_MESSAGE, paymentBy);
-//        List<PaymentListVo> result = new ArrayList<>();
-//        paymentBy.forEach(p -> result.add(new PaymentListVo(
-//                p.getIuser(), p.getNick(), p.getUserStoredPic(),
-//                p.getIpayment(), p.getIproduct(), p.getTitle(), p.getProdStoredPic(), p.getIstatus(), p.getRentalStartDate(),
-//                p.getRentalEndDate(),
-//                p.getRentalDuration(), p.getPrice(), p.getDeposit())
-//        ));
-//        return result;
         return paymentBy.stream().map(p -> new PaymentListVo(
                 p.getIuser(), p.getNick(), p.getUserStoredPic(),
                 p.getIpayment(), p.getIproduct(), p.getTitle(), p.getProdStoredPic(), p.getIstatus(), p.getRentalStartDate(),
@@ -219,11 +183,11 @@ public class PaymentService implements RefPaymentService{
 
 
     public PaymentVo getPayment(Integer ipayment) {
-        // iuser 또는 ipayment 가 없으면 결과가 size 0 일 것
 
         // 가져오기
         GetPaymentListResultDto aPayment;
         try {
+            // iuser 또는 ipayment 가 없으면 결과가 size 0 일 것
             aPayment = paymentRepository.findPaymentBy(
                     new GetPaymentListDto(getLoginUserPk(), Flag.ONE.getValue(), ipayment)
             ).get(0);
@@ -266,10 +230,6 @@ public class PaymentService implements RefPaymentService{
         if (role == null) throw new BadInformationException(BAD_INFO_EX_MESSAGE);
         if (istatus == 3 && role == Role.BUYER || istatus == 2 && role == Role.SELLER)
             // 이미 취소한 상태.
-            /* TODO 2024-01-21 일 23:17
-                에러 메시지 디테일하게?
-                --by Hyunmin
-            */
             throw new BadDivInformationException(BAD_DIV_INFO_EX_MESSAGE);
         if (div == 1 || div == 2) {
             if (istatus == -3 || istatus == 1 || (div == 1 && istatus == -2)) {
@@ -295,6 +255,5 @@ public class PaymentService implements RefPaymentService{
     private int getLoginUserPk() {
         return authenticationFacade.getLoginUserPk();
     }
-
 
 }

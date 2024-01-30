@@ -29,7 +29,7 @@ import static com.team5.projrental.common.exception.ErrorMessage.*;
 @RequestMapping("/api/prod")
 public class ProductController {
 
-    private final ProductService productService;
+    private final RefProductService productService;
 
     @Operation(summary = "메인페이지용 카테고리별 상품 (8개씩 조회)",
             description = "<strong>메인페이지용 카테고리별 상품 (8개씩 조회)</strong><br>" +

@@ -22,7 +22,7 @@ import java.util.List;
 @Slf4j
 @RequestMapping("/api/pay")
 public class PaymentController {
-    private final PaymentService paymentService;
+    private final RefPaymentService paymentService;
 
     @Operation(summary = "결제 정보 등록",
             description = "<strong>결제 정보 등록</strong><br>" +

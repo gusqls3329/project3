@@ -9,7 +9,6 @@ import java.util.List;
 public interface UserMapper {
     int insUser(UserSignupDto dto);
     int insCom(UserSignUpComDto dto);
-    int insauth(int iuser);
     UserEntity selSignin(SigninDto dto);
     int updUserFirebaseToken(UserFirebaseTokenPatchDto dto);
 
@@ -35,4 +34,8 @@ public interface UserMapper {
     Integer delUserChat(Integer iuser);
 
     int patchToken(UserFirebaseTokenPatchDto dto);
+
+    CompInfoDto getCompInf(int iuser);
+
+    int changeCompInfo(CompInfoDto dto);
 }

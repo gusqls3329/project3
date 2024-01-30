@@ -42,6 +42,7 @@ public class UserSignupDto {
     @Pattern(regexp = "(0)\\d{2}-\\d{3,4}-\\d{4}", message = ErrorMessage.BAD_INFO_EX_MESSAGE)
     private String phone;
 
+    @Length(max = 30, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     @Pattern(regexp = "\\w+@\\w+\\.\\w+(\\.\\w+)?", message = ErrorMessage.BAD_INFO_EX_MESSAGE)
     @NotBlank(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
     private String email;
