@@ -29,7 +29,7 @@ public class ProductInsDto {
     @Length(min = 2, max = 100)
     private String addr;
     @NotBlank(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
-    @Length(max = 20)
+    @Length(max = 30)
     private String restAddr;
     @JsonIgnore
     private String mainPic;
