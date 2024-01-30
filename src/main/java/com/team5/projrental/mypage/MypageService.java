@@ -39,7 +39,7 @@ public class MypageService {
         return mapper.getFavList(dto);
     }
 
-    public List<ReviewResultVo> getAllReviewFromMyProduct() {
+    public List<AllReviewsForMeResultDto> getAllReviewFromMyProduct() {
         return mapper.getAllReviewFromMyProduct(authenticationFacade.getLoginUserPk());
     }
 

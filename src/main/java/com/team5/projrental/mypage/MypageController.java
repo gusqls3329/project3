@@ -59,7 +59,7 @@ public class MypageController {
 
     @GetMapping("/prod/review")
     @Operation(summary = "로그인한 유저가 받은 모든 제품의 모든 리뷰", description = "로그인한 유저가 받은 모든 제품의 모든 리뷰")
-    public List<ReviewResultVo> getAllReviewFromMyProduct() {
+    public List<AllReviewsForMeResultDto> getAllReviewFromMyProduct() {
         return service.getAllReviewFromMyProduct();
     }
 }
