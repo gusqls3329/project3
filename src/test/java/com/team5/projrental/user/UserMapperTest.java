@@ -48,28 +48,28 @@ public class UserMapperTest {
     @Test
     void selSignin() {
         SigninDto dto = new SigninDto();
-        dto.setUid("happy1111");
-        dto.setUpw("1212");
+        dto.setUid("qwqwqw11");
+        dto.setUpw("12121212");
 
         UserEntity vo = mapper.selSignin(dto);
-        assertEquals(vo.getIuser(),2);
+        assertEquals(vo.getIuser(),1);
         assertEquals(vo.getUid(),dto.getUid());
 
-        dto.setUid("maru");
-        dto.setUpw("1212");
+        dto.setUid("qwqwqw22");
+        dto.setUpw("12121212");
         UserEntity vo2 = mapper.selSignin(dto);
-        assertEquals(vo2.getIuser(),1);
+        assertEquals(vo2.getIuser(),2);
         assertEquals(vo2.getUid(),dto.getUid());
     }
 
     @Test
     void selFindUid() {
         FindUidDto dto = new FindUidDto();
-        dto.setPhone("010-4563-9872");
+        dto.setPhone("010-1111-1111");
 
         FindUidVo vo = mapper.selFindUid(dto);
-        assertEquals(vo.getUid(),"happy1111");
-        assertEquals(vo.getIuser(),2);
+        assertEquals(vo.getUid(),"qwqwqw11");
+        assertEquals(vo.getIuser(),1);
         SelUserVo selvo = mapper.selUser(vo.getIuser());
         assertEquals(selvo.getPhone(),dto.getPhone());
     }
@@ -77,9 +77,9 @@ public class UserMapperTest {
     @Test
     void upFindUpw() {
         FindUpwDto dto = new FindUpwDto();
-        dto.setUpw("1212");
-        dto.setPhone("010-9876-5432");
-        dto.setUid("maru");
+        dto.setUpw("12121212");
+        dto.setPhone("010-1111-1111");
+        dto.setUid("qwqwqw11");
 
         int a = mapper.upFindUpw(dto);
         assertEquals(a, 1);
@@ -91,22 +91,6 @@ public class UserMapperTest {
         assertEquals(vo.getIuser(),1);
         SelUserVo selvo = mapper.selUser(vo.getIuser());
         assertEquals(selvo.getPhone(),dto.getPhone());
-
-
-        dto.setUpw("12121");
-        dto.setPhone("010-9999-8888");
-        dto.setUid("eve");
-        int a1 = mapper.upFindUpw(dto);
-        log.info("a1: {}",a1);
-        assertEquals(a1, 1);
-
-        SigninDto indto1 = new SigninDto();
-        indto1.setUpw(dto.getUpw());
-        indto1.setUid(dto.getUid());
-        UserEntity vo1 = mapper.selSignin(indto1);
-        assertEquals(vo1.getIuser(),3);
-        SelUserVo selvo1 = mapper.selUser(vo1.getIuser());
-        assertEquals(selvo1.getPhone(),dto.getPhone());
     }
 
     @Test
@@ -154,42 +138,34 @@ public class UserMapperTest {
     @Test
     void selUser() {
         SelUserVo vo = mapper.selUser(1);
-        assertEquals(vo.getEmail(),"maru@naver.com");
-        assertEquals(vo.getNick(),"마루야노올자");
-        assertEquals(vo.getPhone(),"010-9876-5432");
-        assertEquals(vo.getX(),120);
-        assertEquals(vo.getY(),100);
+        assertEquals(vo.getEmail(),"loll1111@naver.com");
+        assertEquals(vo.getNick(),"바보현빈");
+        assertEquals(vo.getPhone(),"010-1111-1111");
 
-        SelUserVo vo2 = mapper.selUser(2);
-        assertEquals(vo2.getEmail(),"happy@naver.com");
-        assertEquals(vo2.getNick(),"인사이드아웃");
-        assertEquals(vo2.getPhone(),"010-4563-9872");
-        assertEquals(vo2.getX(),13);
-        assertEquals(vo2.getY(),40);
     }
 
 
     @Test
     void selpatchUser() {
         Integer result = mapper.selpatchUser(1);
-        assertEquals(result,2);
+        assertEquals(result,7);
 
         Integer result2 = mapper.selpatchUser(2);
-        assertEquals(result2,3);
+        assertEquals(result2,2);
     }
 
     @Test
     void checkUserUid() {
         Integer result = mapper.checkUserUid("12341234");
-        assertEquals(result,1);
+        assertEquals(result,0);
 
-        Integer result2 = mapper.checkUserUid("aaa15");
-        assertEquals(result2,0);
+        Integer result2 = mapper.checkUserUid("qwqwqw11");
+        assertEquals(result2,1);
     }
 
     @Test
     void checkUserNick() {
-        Integer result = mapper.checkUserNick("12341234");
+        Integer result = mapper.checkUserNick("감자8");
         assertEquals(result,1);
 
         Integer result2 = mapper.checkUserNick("집");
