@@ -44,7 +44,6 @@ class ChatMapperTest {
         int iChat = mapper.insChat(dto);
         log.info("result : {}", iChat);
         assertEquals(1, iChat);
-
     }
 
     @Test

@@ -2,9 +2,11 @@ package com.team5.projrental.mypage;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team5.projrental.MockMvcConfig;
-import com.team5.projrental.mypage.model.MyFavListSelDto;
-import com.team5.projrental.mypage.model.PaymentSelDto;
-import com.team5.projrental.mypage.model.PaymentSelVo;
+import com.team5.projrental.chat.model.ChatMsgDelDto;
+import com.team5.projrental.common.Const;
+import com.team5.projrental.common.model.ResVo;
+import com.team5.projrental.mypage.model.*;
+import com.team5.projrental.payment.review.PaymentReviewController;
 import com.team5.projrental.product.ProductController;
 import com.team5.projrental.user.model.SigninDto;
 import com.team5.projrental.user.model.SigninVo;
@@ -30,18 +32,21 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@SpringBootTest
 @MockMvcConfig
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureMockMvc
-@AutoConfigureTestDatabase
 @Import(MypageController.class)
-@Transactional
 class MypageControllerTest {
 
     String token;
+
+    @Autowired
+    private ObjectMapper mapper;
 
     @MockBean
     private MypageService service;
@@ -71,7 +76,7 @@ class MypageControllerTest {
     }
 
 
-@Test
+    @Test
     void getPaymentList() throws Exception {
 
         MultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
@@ -82,7 +87,6 @@ class MypageControllerTest {
         dto.setPage(1);
         dto.setRole(1);
 
-
         PaymentSelVo vo = new PaymentSelVo();
         vo.setIproduct(25);
         vo.setIbuyer(1);
@@ -90,7 +94,6 @@ class MypageControllerTest {
         //List<PaymentSelVo> selVoList = controller.getPaymentList(1, 1);
         List<PaymentSelVo> selVoList = new ArrayList<>();
         selVoList.add(vo);
-
 
         given(service.paymentList(any(PaymentSelDto.class))).willReturn(selVoList);
 
@@ -103,16 +106,57 @@ class MypageControllerTest {
 
 
     @Test
-    void getReview() throws Exception{
-        String page = "1";
-        MyFavListSelDto dto = new MyFavListSelDto();
+    void getReview() throws Exception {
+        MultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
+        requestParams.add("page", "1");
+
+        MyBuyReviewListSelDto dto = new MyBuyReviewListSelDto();
+        dto.setIuser(1);
         dto.setPage(1);
 
+        MyBuyReviewListSelVo selVo = new MyBuyReviewListSelVo();
+        selVo.setRaiting(5);
+        selVo.setContents("잘썻습니다");
 
+        List<MyBuyReviewListSelVo> list = new ArrayList<>();
+        list.add(selVo);
+
+        given(service.selIbuyerReviewList(any())).willReturn(list);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                .get("/api/mypage/review")
+                .params(requestParams))
+                .andExpect(status().isOk())
+                .andExpect(content().string(mapper.writeValueAsString(list)))
+                .andDo(print());
+
+        verify(service).selIbuyerReviewList(any());
     }
 
     @Test
-    void getFavList() {
+    void getFavList() throws Exception {
+        MultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
+        requestParams.add("page", "1");
 
+        MyFavListSelDto dto = new MyFavListSelDto();
+        dto.setLoginedIuser(1);
+
+        MyFavListSelVo selVo = new MyFavListSelVo();
+        selVo.setTitle("그램노트 빌리실분");
+        selVo.setNick("천재현민");
+        selVo.setIproduct(12);
+
+        List<MyFavListSelVo> list = new ArrayList<>();
+        list.add(selVo);
+
+        given(service.selMyFavList(any())).willReturn(list);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/api/mypage/fav")
+                        .params(requestParams))
+                .andExpect(status().isOk())
+                .andExpect(content().string(mapper.writeValueAsString(list)))
+                .andDo(print());
+        verify(service).selMyFavList(any());
     }
 }

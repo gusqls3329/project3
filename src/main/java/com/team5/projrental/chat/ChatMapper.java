@@ -16,7 +16,7 @@ public interface ChatMapper {
     int insChatUser(ChatUserInsDto dto); // 빈 채팅방에 유저 참여
     List<ChatUserInsDto> insChatUserTest(ChatUserInsDto dto); // TDD 용
 
-    Integer selChatUserCheck(ChatInsDto dto);
+    //Integer selChatUserCheck(ChatInsDto dto);
     Integer selChatUserCheck2(ChatInsDto dto);
 
     int insChatMsg(ChatMsgInsDto dto);
