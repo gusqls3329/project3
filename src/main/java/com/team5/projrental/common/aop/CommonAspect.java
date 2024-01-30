@@ -7,8 +7,8 @@ import com.team5.projrental.common.aop.category.CountCategory;
 import com.team5.projrental.common.aop.model.DisabledDateInfo;
 import com.team5.projrental.common.threadpool.MyThreadPoolHolder;
 import com.team5.projrental.payment.model.PaymentInsDto;
-import com.team5.projrental.product.ProductService;
 import com.team5.projrental.product.RefProductRepository;
+import com.team5.projrental.product.RefProductService;
 import com.team5.projrental.product.model.ProductVo;
 import com.team5.projrental.product.model.proc.GetProductViewAopDto;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,6 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -33,14 +32,14 @@ import java.util.concurrent.ExecutorService;
 @Component
 public class CommonAspect {
 
-    private final ProductService productService;
+    private final RefProductService productService;
     private final RefProductRepository productRepository;
     private final ExecutorService threadPool;
     //    public Map<Integer, List<LocalDate>> disabledCache;
     public Map<Integer, DisabledDateInfo> disabledCache;
 
 
-    public CommonAspect(ProductService productService, RefProductRepository productRepository, MyThreadPoolHolder threadPool) {
+    public CommonAspect(RefProductService productService, RefProductRepository productRepository, MyThreadPoolHolder threadPool) {
         this.productService = productService;
         this.productRepository = productRepository;
         this.threadPool = threadPool.getThreadPool();
