@@ -58,6 +58,7 @@ public class UserServiceTest {
         fDto.setIauth(1);
 
         when(mapper.selFindUid(any())).thenReturn(fDto);
+        when(authenticationFacade.getLoginUserAuth()).thenReturn(1);
         UserSignupDto dto = new UserSignupDto();
         dto.setUpw("12121212");
         dto.setUid("serTest");
@@ -159,10 +160,12 @@ public class UserServiceTest {
         String hashedPw = BCrypt.hashpw(dto.getUpw(), BCrypt.gensalt());
         dto.setUpw(hashedPw);
         when(mapper.upFindUpw(dto)).thenReturn(1);
-
+        FindUidVo vo = new FindUidVo();
+        vo.setIauth(12);
+        when(mapper.selFindUid(any())).thenReturn(vo);
         int result = service.getFindUpw(dto);
         verify(mapper).upFindUpw(dto);
-        assertEquals(result, 1);
+        assertEquals(result, 12);
     }
 
 /*    @Test
