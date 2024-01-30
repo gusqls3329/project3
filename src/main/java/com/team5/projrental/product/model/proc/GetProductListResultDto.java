@@ -1,5 +1,6 @@
 package com.team5.projrental.product.model.proc;
 
+import com.team5.projrental.product.model.Categories;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,5 +33,20 @@ public class GetProductListResultDto {
     private Integer inventory;
 
     //
-    private Integer icategory;
+    private Categories icategory;
+    private Integer imainCategory;
+    private Integer isubCategory;
+
+    public void setMainCategory(Integer mainCategory) {
+        if (this.icategory == null) {
+            this.icategory = new Categories();
+        }
+        icategory.setMainCategory(mainCategory);
+    }
+    public void setSubCategory(Integer subCategory) {
+        if (this.icategory == null) {
+            this.icategory = new Categories();
+        }
+        icategory.setSubCategory(subCategory);
+    }
 }

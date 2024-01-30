@@ -1,6 +1,7 @@
 package com.team5.projrental.product.model.proc;
 
 import com.team5.projrental.common.Const;
+import com.team5.projrental.product.model.Categories;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -10,13 +11,13 @@ public class GetProductListDto {
 
     private Integer sort;
     private String search;
-    private Integer icategory;
+    private Categories icategory;
     private Integer loginedIuser;
     private Integer targetIuser;
     private Integer prodPerPage;
     private Integer page;
 
-    public GetProductListDto(Integer sort, String search, Integer icategory, Integer page, Integer iuser,
+    public GetProductListDto(Integer sort, String search, Categories icategory, Integer page, Integer iuser,
                              Integer prodPerPage) {
         this.sort = sort;
         this.search = search;

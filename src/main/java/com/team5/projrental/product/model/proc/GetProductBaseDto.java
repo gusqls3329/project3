@@ -1,17 +1,18 @@
 package com.team5.projrental.product.model.proc;
 
+import com.team5.projrental.product.model.Categories;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 public class GetProductBaseDto {
-    private Integer icategory;
+    private Categories icategory;
     private Integer iproduct;
     private Integer iuser;
 
 
 
-    public GetProductBaseDto(Integer icategory, Integer iproduct, Integer iuser) {
+    public GetProductBaseDto(Categories icategory, Integer iproduct, Integer iuser) {
         this.icategory = icategory;
         this.iproduct = iproduct;
         this.iuser = iuser;

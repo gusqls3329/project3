@@ -3,6 +3,7 @@ package com.team5.projrental.common.utils;
 import com.team5.projrental.common.exception.ErrorCode;
 import com.team5.projrental.common.exception.IllegalCategoryException;
 import com.team5.projrental.common.exception.IllegalPaymentMethodException;
+import com.team5.projrental.product.model.Categories;
 import com.vane.badwordfiltering.BadWordFiltering;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -109,11 +110,28 @@ public abstract class CommonUtils {
      *
      * @param icategory
      */
-    public static void ifCategoryNotContainsThrow(Integer icategory) {
+    public static void ifCategoryNotContainsThrow(Categories icategory) {
 //        Map<Integer, String> categories = CATEGORIES;
 //        return categories.keySet().stream().filter(k -> categories.get(k).equals(category))
 //                .findAny().orElseThrow(() -> new IllegalCategoryException(ILLEGAL_CATEGORY_EX_MESSAGE));
-        if (icategory > CATEGORY_COUNT || icategory < 1) thrown(IllegalCategoryException.class, ILLEGAL_CATEGORY_EX_MESSAGE);
+//        if (icategory > CATEGORY_COUNT || icategory < 1) thrown(IllegalCategoryException.class, ILLEGAL_CATEGORY_EX_MESSAGE);
+
+        int mainCategory = icategory.getMainCategory();
+        int subCategory = icategory.getSubCategory();
+        if(subCategory < 0) thrown(IllegalCategoryException.class, ILLEGAL_CATEGORY_EX_MESSAGE);
+        if (mainCategory == 1 || mainCategory == 2 || mainCategory == 4) {
+            if (subCategory < 4) {
+                return;
+            }
+        }
+        if (mainCategory == 3 || mainCategory == 5) {
+            if (subCategory < 5) {
+                return;
+            }
+        }
+        thrown(IllegalCategoryException.class, ILLEGAL_CATEGORY_EX_MESSAGE);
+
+
     }
 
     public static void ifChatUserStatusThrowOrReturn(Integer istatus) {

@@ -63,13 +63,14 @@ public class ProductService implements RefProductService {
      */
     public List<ProductListVo> getProductList(Integer sort,
                                               String search,
-                                              int icategory,
+                                              int imainCategory,
+                                              int isubCategory,
                                               int page,
                                               int prodPerPage) {
         // page 는 페이징에 맞게 변환되어 넘어옴.
 
         // iuser 가져오기 -> isLiked 를 위해서
-
+        Categories icategory = new Categories(imainCategory, isubCategory);
         // 카테고리 검증
         CommonUtils.ifCategoryNotContainsThrow(icategory);
         // search 의 length 가 2 이상으로 validated 되었으므로 문제 없음.
@@ -99,8 +100,8 @@ public class ProductService implements RefProductService {
      * @return ProductVo
      */
     @CountView(CountCategory.PRODUCT)
-    public ProductVo getProduct(Integer icategory, Integer iproduct) {
-
+    public ProductVo getProduct(int imainCategory,  int isubCategory, Integer iproduct) {
+        Categories icategory = new Categories(imainCategory, isubCategory);
         // 카테고리 검증
         CommonUtils.ifCategoryNotContainsThrow(icategory);
 
@@ -268,7 +269,7 @@ public class ProductService implements RefProductService {
 
         int loginUserPk = getLoginUserPk();
         // 카테고리 검증
-        if (dto.getIcategory() != null && dto.getIcategory() > 0 && dto.getIcategory() < 23) {
+        if (dto.getIcategory() != null) {
             CommonUtils.ifCategoryNotContainsThrow(dto.getIcategory());
         }
 

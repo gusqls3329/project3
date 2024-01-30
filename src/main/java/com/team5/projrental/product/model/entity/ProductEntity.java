@@ -1,5 +1,6 @@
 package com.team5.projrental.product.model.entity;
 
+import com.team5.projrental.product.model.Categories;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 public class ProductEntity {
     private Integer iproduct;
     private Integer iuser;
-    private Integer icategory;
+    private Categories icategory;
     private Integer iaddr;
     private String restAddr;
     private String title;
