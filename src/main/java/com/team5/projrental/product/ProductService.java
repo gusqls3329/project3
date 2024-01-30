@@ -1,6 +1,7 @@
 package com.team5.projrental.product;
 
 import com.team5.projrental.common.aop.anno.CountView;
+import com.team5.projrental.common.aop.category.CountCategory;
 import com.team5.projrental.common.exception.BadMainPicException;
 import com.team5.projrental.common.exception.BadWordException;
 import com.team5.projrental.common.exception.IllegalProductPicsException;
@@ -97,7 +98,7 @@ public class ProductService {
      * @param iproduct
      * @return ProductVo
      */
-    @CountView
+    @CountView(CountCategory.PRODUCT)
     public ProductVo getProduct(Integer icategory, Integer iproduct) {
 
         // 카테고리 검증
@@ -412,6 +413,7 @@ public class ProductService {
      * @param div
      * @return ResVo
      */
+    @Transactional
     public ResVo delProduct(Integer iproduct, Integer div) {
         CommonUtils.ifFalseThrow(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE,
                 productRepository.findIproductCountBy(iproduct));

@@ -1,7 +1,9 @@
 package com.team5.projrental.common.aop;
 
 import com.team5.projrental.common.Const;
+import com.team5.projrental.common.aop.anno.CountView;
 import com.team5.projrental.common.aop.anno.Retry;
+import com.team5.projrental.common.aop.category.CountCategory;
 import com.team5.projrental.common.aop.model.DisabledDateInfo;
 import com.team5.projrental.common.threadpool.MyThreadPoolHolder;
 import com.team5.projrental.payment.model.PaymentInsDto;
@@ -19,6 +21,7 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -53,15 +56,35 @@ public class CommonAspect {
      */
     @AfterReturning(value = "@annotation(com.team5.projrental.common.aop.anno.CountView)",
             returning = "result")
-    public void countView(ProductVo result) {
-
+    public void countView(JoinPoint joinPoint, Object result) {
         log.debug("AOP Start");
-        threadPool.execute(() -> {
-            log.debug("thread name = {}", Thread.currentThread().getName());
-            String isSucceed = productRepository.countView(new GetProductViewAopDto(result.getIproduct()));
-            log.debug(isSucceed);
-        });
 
+        try {
+            Method[] declaredMethods = joinPoint.getTarget().getClass().getDeclaredMethods();
+            for (Method declaredMethod : declaredMethods) {
+                if (declaredMethod.getName().contains(joinPoint.getSignature().getName())) {
+                    CountView declaredAnnotation = declaredMethod.getDeclaredAnnotation(CountView.class);
+                    if (declaredAnnotation != null) {
+                        countView(result, declaredAnnotation.value());
+                    }
+                }
+            }
+        } catch (NullPointerException e) {
+            log.info("[CommonAspect.countView()]", e);
+        }
+
+
+    }
+
+    private void countView(Object result, CountCategory category) {
+        if (category == CountCategory.PRODUCT) {
+            ProductVo currResult = (ProductVo) result;
+            threadPool.execute(() -> {
+                log.debug("thread name = {}", Thread.currentThread().getName());
+                String isSucceed = productRepository.countView(new GetProductViewAopDto(currResult.getIproduct()));
+                log.debug("isSucceed {}", isSucceed);
+            });
+        }
     }
 
     /**
