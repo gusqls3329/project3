@@ -53,6 +53,7 @@ public class CommonAspect {
      *
      * @param result
      */
+
     @AfterReturning(value = "@annotation(countView)",
             returning = "result")
     public void countView(Object result, CountView countView) {
@@ -62,11 +63,8 @@ public class CommonAspect {
         } catch (NullPointerException e) {
             log.info("[CommonAspect.countView()]", e);
         }
-
-
     }
 
-    // JPA 사용시 Entity 로 메소드 overloading 해서 사용하자 || 지금은 if 문으로 분기했다.
     private void countView(Object result, CountCategory category) {
         if (category == CountCategory.PRODUCT) {
             ProductVo currResult = (ProductVo) result;
@@ -86,6 +84,7 @@ public class CommonAspect {
      * @return Object
      * @throws Throwable
      */
+
     @Around("@annotation(retry)")
     public Object retry(ProceedingJoinPoint joinPoint, Retry retry) throws Throwable {
 
