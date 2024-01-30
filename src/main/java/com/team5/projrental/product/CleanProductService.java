@@ -31,15 +31,11 @@ import java.util.List;
 import static com.team5.projrental.common.Const.*;
 import static com.team5.projrental.common.exception.ErrorCode.*;
 
-//@Service
+@Service
 @Slf4j
 @RequiredArgsConstructor
-public class ProductService implements RefProductService {
+public class CleanProductService implements RefProductService {
 
-    /* TODO 2024-01-23 Tue 18:1
-        코드 리펙토링
-        --by Hyunmin
-    */
     private final RefProductRepository productRepository;
 
     private final AxisGenerator axisGenerator;
@@ -80,14 +76,6 @@ public class ProductService implements RefProductService {
                 products)) return new ArrayList<>();
 
         // 검증 이상 무
-//        List<ProductListVo> result = new ArrayList<>();
-//        products.forEach(product -> {
-//            ProductListVo productListVo = new ProductListVo(product);
-//
-//            result.add(productListVo);
-//        });
-
-//        return result;
         return products.stream().map(ProductListVo::new).toList();
     }
 
@@ -158,14 +146,8 @@ public class ProductService implements RefProductService {
         CommonUtils.ifAllNullThrow(BadMainPicException.class, BAD_PIC_EX_MESSAGE, mainPic);
 
         // 사진 개수 검증 - 예외 코드, 메시지 를 위해 직접 검증 (!@Validated)
-//        if (pics != null) {
-//            CommonUtils.checkSizeIfOverLimitNumThrow(IllegalProductPicsException.class, ILLEGAL_PRODUCT_PICS_EX_MESSAGE,
-//                    pics.stream(), 9);
-//        }
 
         dto.setIuser(getLoginUserPk());
-        // iuser 있는지 체크
-//        CommonUtils.ifFalseThrow(NoSuchUserException.class, NO_SUCH_USER_EX_MESSAGE, productRepository.findIuserCountBy(dto.getIuser()));
 
         // 카테고리 검증 - 예외 코드, 메시지 를 위해 직접 검증 (!@Validated)
         CommonUtils.ifCategoryNotContainsThrow(dto.getIcategory());
@@ -186,7 +168,6 @@ public class ProductService implements RefProductService {
 
         // logic
         // 주소 검증
-//        Addrs addrs = axisGenerator.getAxis(dto.getAddr().concat(dto.getRestAddr()));
         Addrs addrs = axisGenerator.getAxis(dto.getAddr());
         // insert 할 객체 준비 완.
         InsProdBasicInfoDto insProdBasicInfoDto = new InsProdBasicInfoDto(dto, addrs.getAddress_name(), Double.parseDouble(addrs.getX()),
@@ -249,7 +230,6 @@ public class ProductService implements RefProductService {
                 dto.getRestAddr() == null ? "" : dto.getRestAddr());
 
         // 삭제사진 필요시 삭제
-        // -*
         List<String> delPicsPath = null;
         boolean flag = false;
         if (dto.getDelPics() != null && !dto.getDelPics().isEmpty()) {
@@ -295,16 +275,6 @@ public class ProductService implements RefProductService {
         );
         int dbPicsCountAfterDelPics = productRepository.findPicsCount(dto.getIproduct());
 
-        // 사진 세팅
-//        if (!dto.getPics().isEmpty() && !fromDb.getPics().isEmpty()) {
-//            List<StoredFileInfo> dtoPics = savePic(dto.getPics());
-//            dtoPics.addAll(fromDb.getPics());
-//            mergedData.setPics(dtoPics);
-//        }
-//        if (!dto.getPics().isEmpty() && fromDb.getPics() == null) {
-//            fromDb.setPics(savePic(dto.getPics()));
-//        }
-
         // 사진 개수 검증
         // fromDb 사진(이미 삭제필요한 사진은 삭제 된 상태) 과 dto.getPics 를 savePic 하고난 결과를 합쳐서 개수 체크.
         if (pics != null && !pics.isEmpty()) {
@@ -312,20 +282,12 @@ public class ProductService implements RefProductService {
                     pics.stream(), 9 - dbPicsCountAfterDelPics);
         }
 
-
-        //
-
         // 데이터 검증
         // 날짜 검증 시작  - 예외 코드, 메시지 를 위해 직접 검증 (!@Validated)
         CommonUtils.ifAfterThrow(
                 BadDateInfoException.class, BUY_DATE_MUST_BE_LATER_THAN_TODAY_EX_MESSAGE,
                 LocalDate.now(), mergedData.getBuyDate()
         );
-        // 수정일기준에서는 렌탈 시작일이 오늘보다 이후일 필요가 없음 (오히려 그럴수 없음)
-//        CommonUtils.ifBeforeThrow(
-//                BadDateInfoException.class, RENTAL_DATE_MUST_BE_BEFORE_THAN_TODAY_EX_MESSAGE,
-//                mergedData.getRentalStartDate(), LocalDate.now()
-//        );
         CommonUtils.ifBeforeThrow(BadDateInfoException.class, RENTAL_END_DATE_MUST_BE_AFTER_THAN_RENTAL_START_DATE_EX_MESSAGE
                 , mergedData.getRentalEndDate(), mergedData.getRentalStartDate());
         // 날짜 검증 끝
@@ -354,10 +316,6 @@ public class ProductService implements RefProductService {
             dto.setStoredMainPic(mainPic == null ? null : myFileUtils.savePic(mainPic, CATEGORY_PRODUCT_MAIN,
                     String.valueOf(dto.getIproduct())));
             dto.setDeposit(dto.getDepositPer() == null ? null : CommonUtils.getDepositFromPer(price, dto.getDepositPer()));
-//            if (dto.getAddr() != null && dto.getRestAddr() != null && addrs != null) {
-//                dto.setX(Double.parseDouble(addrs.getX()));
-//                dto.setY(Double.parseDouble(addrs.getY()));
-//            }
             if (addrs != null) {
                 dto.setX(Double.parseDouble(addrs.getX()));
                 dto.setY(Double.parseDouble(addrs.getY()));
@@ -440,12 +398,6 @@ public class ProductService implements RefProductService {
                         iuser == null ? getLoginUserPk() : iuser, page
                 ));
         CommonUtils.checkNullOrZeroIfCollectionThrow(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE, productListBy);
-
-//        List<ProductUserVo> result = new ArrayList<>();
-//        productListBy.forEach(product -> {
-//            ProductUserVo productListVo = new ProductUserVo(product);
-//            result.add(productListVo);
-//        });
 
         return productListBy.stream().map(ProductUserVo::new).toList();
 
