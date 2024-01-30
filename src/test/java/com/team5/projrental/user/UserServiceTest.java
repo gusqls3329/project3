@@ -54,7 +54,10 @@ public class UserServiceTest {
     @Test
     void postSignup() {
         when(mapper.insUser(any())).thenReturn(1);
+        FindUidVo fDto = new FindUidVo();
+        fDto.setIauth(1);
 
+        when(mapper.selFindUid(any())).thenReturn(fDto);
         UserSignupDto dto = new UserSignupDto();
         dto.setUpw("12121212");
         dto.setUid("serTest");
@@ -71,10 +74,8 @@ public class UserServiceTest {
 
         dto.setAddr(addrs.getAddress_name());
 
-
         int result = service.postSignup(dto);
         assertEquals(result, 1);
-
     }
 
     @Test
