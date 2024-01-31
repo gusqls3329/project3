@@ -35,7 +35,7 @@ import static com.team5.projrental.common.exception.ErrorCode.*;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class CleanPaymentService implements RefPaymentService{
+public class CleanPaymentService implements RefPaymentService {
 
     private final PaymentRepository paymentRepository;
     private final ProductRepository productRepository;
@@ -63,8 +63,7 @@ public class CleanPaymentService implements RefPaymentService{
         // deposit 과 price, rental_price 는 join 할 경우 현재기준으로 조회되며, 모든 리스트에 값이 일정함. 따라서
         GetDepositAndPriceFromProduct depositInfo = validationInfoFromProduct.get(0);
 
-        if(depositInfo.getIseller() == loginUserPk) throw new BadProductInfoException(BAD_PRODUCT_INFO_EX_MESSAGE);
-
+        if (depositInfo.getIseller() == loginUserPk) throw new BadProductInfoException(BAD_PRODUCT_INFO_EX_MESSAGE);
 
 
         // 이미 등록된 날짜에는 동일한 상품이 더이상 결제등록 되지 않도록 예외처리
@@ -203,30 +202,29 @@ public class CleanPaymentService implements RefPaymentService{
     private String createCode() {
 
         String systemCurrent = String.valueOf(System.currentTimeMillis());
-        String uuidFront = UUID.randomUUID().toString().substring(0, 4);
         String uuidBackBase = UUID.randomUUID().toString();
-        String uuidBack = uuidBackBase.substring(uuidBackBase.length() - 3);
 
-        return new StringBuilder().append(uuidFront).append(systemCurrent).append(uuidBack).toString();
-
+        return uuidBackBase.substring(0, 4) +
+                systemCurrent +
+                uuidBackBase.substring(uuidBackBase.length() - 3);
     }
 
-
+    /**
+     * 0: 활성화 상태
+     * 1: 거래 완료됨
+     * <p>
+     * -1: 삭제됨
+     * -2: 숨김
+     * -3: 취소됨
+     * -4: 기간지남
+     * <p>
+     * 논리적 삭제 가능 숫자: 1, -2, -3
+     * 숨김 가능 숫자: 1, -3
+     * 취소 요청시:
+     * Role.buyer ->
+     */
     private Integer divResolver(Integer div, Integer istatus, Role role) {
-        /*
-        0: 활성화 상태
-        1: 거래 완료됨
 
-        -1: 삭제됨
-        -2: 숨김
-        -3: 취소됨
-        -4: 기간지남
-
-        논리적 삭제 가능 숫자: 1, -2, -3
-        숨김 가능 숫자: 1, -3
-        취소 요청시:
-            Role.buyer ->
-         */
         if (role == null) throw new BadInformationException(BAD_INFO_EX_MESSAGE);
         if (istatus == 3 && role == Role.BUYER || istatus == 2 && role == Role.SELLER)
             // 이미 취소한 상태.
