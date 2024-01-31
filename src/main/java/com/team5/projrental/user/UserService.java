@@ -105,7 +105,6 @@ public class UserService {
                 return auth;
             }
         }
-
         throw new BadInformationException(BAD_INFO_EX_MESSAGE);
     }
 
