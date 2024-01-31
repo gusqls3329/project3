@@ -8,8 +8,10 @@ import org.hibernate.validator.constraints.Range;
 @Data
 public class ChatMsgSelDto {
 
+    @Range(min = 1)
     private int page;
 
+    @Range(min = 1)
     private int ichat;
 
     @JsonIgnore
