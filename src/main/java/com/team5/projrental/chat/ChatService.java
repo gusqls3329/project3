@@ -31,7 +31,6 @@ public class ChatService {
     private final AuthenticationFacade authenticationFacade;
 
 
-    //채팅 리스트
     public List<ChatSelVo> getChatAll(ChatSelDto dto) {
 
         int loginUserPk = authenticationFacade.getLoginUserPk();
@@ -40,7 +39,7 @@ public class ChatService {
         return list;
     }
 
-    //
+
     public ResVo postChatMsg(ChatMsgInsDto dto) {
         int loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setLoginedIuser(loginUserPk);
