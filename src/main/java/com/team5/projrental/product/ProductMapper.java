@@ -1,6 +1,7 @@
 package com.team5.projrental.product;
 
 import com.team5.projrental.product.model.CanNotRentalDateVo;
+import com.team5.projrental.product.model.Categories;
 import com.team5.projrental.product.model.ProductUpdDto;
 import com.team5.projrental.product.model.proc.*;
 import com.team5.projrental.product.model.review.ReviewGetDto;
@@ -43,6 +44,9 @@ public interface ProductMapper {
     //
 
     List<GetProductListResultDto> getProductList(GetProductListDto getProductListDto);
+
+    List<GetProductListResultDto> findProductListForMain(Categories categories, int page, int prodPerPage);
+
     GetProductResultDto getProduct(GetProductBaseDto getProductBaseDto);
 
     List<PicsInfoVo> getProdEctPics(Integer productPK);

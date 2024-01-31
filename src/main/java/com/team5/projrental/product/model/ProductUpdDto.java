@@ -28,7 +28,7 @@ public class ProductUpdDto {
 //    @Min(1)
     @JsonIgnore
     private Integer iuser;
-    private Integer icategory;
+    private Categories icategory;
     @Length(min = 2, max = 100)
     private String addr;
     @Length(max = 20)

@@ -1,6 +1,7 @@
 package com.team5.projrental.product.model.proc;
 
 import com.team5.projrental.common.utils.CommonUtils;
+import com.team5.projrental.product.model.Categories;
 import com.team5.projrental.product.model.ProductInsDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,14 +29,14 @@ public class InsProdBasicInfoDto {
     private LocalDate buyDate;
     private LocalDate rentalStartDate;
     private LocalDate rentalEndDate;
-    private Integer icategory;
+    private Categories icategory;
     private Double x;
     private Double y;
     private Integer inventory;
 
     public InsProdBasicInfoDto(Integer iuser, String title, String contents, String addr, String restAddr,
                                String storedPic, Integer price, Integer rentalPrice, Integer deposit, LocalDate buyDate,
-                               LocalDate rentalStartDate, LocalDate rentalEndDate, Integer icategory, Double x, Double y,
+                               LocalDate rentalStartDate, LocalDate rentalEndDate, Categories icategory, Double x, Double y,
                                Integer inventory) {
         this.iuser = iuser;
         this.title = title;

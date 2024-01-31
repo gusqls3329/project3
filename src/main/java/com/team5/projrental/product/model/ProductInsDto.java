@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -29,7 +30,7 @@ public class ProductInsDto {
     @Length(min = 2, max = 100)
     private String addr;
     @NotBlank(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
-    @Length(max = 20)
+    @Length(max = 30)
     private String restAddr;
     @JsonIgnore
     private String mainPic;
@@ -54,8 +55,7 @@ public class ProductInsDto {
     @FutureOrPresent(message = ErrorMessage.ILLEGAL_DATE_EX_MESSAGE)
     private LocalDate rentalEndDate;
     @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
-    @Min(value = 1, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
-    private Integer icategory;
+    private Categories icategory;
     @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
     @Min(1)
     private Integer inventory;

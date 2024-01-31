@@ -1,6 +1,7 @@
 package com.team5.projrental.product;
 
 import com.team5.projrental.product.model.CanNotRentalDateVo;
+import com.team5.projrental.product.model.Categories;
 import com.team5.projrental.product.model.ProductUpdDto;
 import com.team5.projrental.product.model.proc.*;
 import com.team5.projrental.product.model.review.ReviewGetDto;
@@ -49,6 +50,11 @@ public class ProductRepository implements RefProductRepository {
     @Override
     public List<GetProductListResultDto> findProductListBy(GetProductListDto getProductListDto) {
         return productMapper.getProductList(getProductListDto);
+    }
+
+    @Override
+    public List<GetProductListResultDto> findProductListForMain(Categories categories, int page, int prodPerPage) {
+        return productMapper.findProductListForMain(categories, page, prodPerPage);
     }
 
     @Override

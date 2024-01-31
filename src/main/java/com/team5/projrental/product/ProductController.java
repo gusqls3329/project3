@@ -1,7 +1,9 @@
 package com.team5.projrental.product;
 
 import com.team5.projrental.common.Const;
+import com.team5.projrental.common.exception.ErrorCode;
 import com.team5.projrental.common.exception.ErrorMessage;
+import com.team5.projrental.common.exception.base.BadInformationException;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.product.model.*;
 import com.team5.projrental.product.model.review.ReviewResultVo;
@@ -29,12 +31,14 @@ import static com.team5.projrental.common.exception.ErrorMessage.*;
 @RequestMapping("/api/prod")
 public class ProductController {
 
-    private final RefProductService productService;
+    //    private final RefProductService productService;
+    private final CleanProductService productService;
 
     @Operation(summary = "메인페이지용 카테고리별 상품 (8개씩 조회)",
             description = "<strong>메인페이지용 카테고리별 상품 (8개씩 조회)</strong><br>" +
                     "[ [v] : 필수값 ]<br>" +
-                    "[v] c: 조회할 카테고리 PK (1 개 이상, 4개 까지 요청 가능)<br>" +
+                    "[v] mc: 조회할 메인 카테고리 PK<br>" +
+                    "[v] sc: 조회할 서브 카테고리 PK<br>" +
                     "    ㄴ> 쿼리 파라미터로 제공 & 구분자 ',' 또는 &로 구분하여 여러개 전송 가능" +
                     "    ㄴ>/api/prod/main?c=1,2,3,4 또는 /api/prod/main?c=1&c=2&c=3&c=4" +
                     "<br><br>" +
@@ -44,12 +48,16 @@ public class ProductController {
                     "message: 에러 발생 사유<br>errorCode: 에러 코드")
     @Validated
     @GetMapping("/main")
-    public List<ProductListVo> getMainPage(@RequestParam("c")
-                                           @Size(min = 1, max = 4)
-                                           List<Integer> icategories) {
-        List<ProductListVo> result = new ArrayList<>();
-        icategories.forEach(num -> result.addAll(productService.getProductList(null, null, num, 0, Const.MAIN_PROD_PER_PAGE)));
-        return result;
+    public List<ProductListVo> getMainPage(@RequestParam("mc")
+                                           @Size(min = 1, max = 5)
+                                           List<Integer> imainCategory,
+                                           @RequestParam("sc")
+                                           @Size(min = 1, max = 5)
+                                           List<Integer> isubCategory) {
+
+        return productService.getProductListForMain(imainCategory, isubCategory);
+
+
     }
 
     @Operation(summary = "특정 카테고리의 제품목록 가져오기",
@@ -84,7 +92,7 @@ public class ProductController {
                     "실패시:<br>" +
                     "message: 에러 발생 사유<br>errorCode: 에러 코드")
     @Validated
-    @GetMapping("{icategory}")
+    @GetMapping("{main-icategory}/{sub-icategory}")
     public List<ProductListVo> getProductList(@RequestParam(required = false)
                                               @Range(min = 1, max = 2, message = BAD_SORT_EX_MESSAGE)
                                               Integer sort,
@@ -94,12 +102,17 @@ public class ProductController {
                                               @RequestParam @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
                                               @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
                                               Integer page,
-                                              @PathVariable
+                                              @PathVariable("main-icategory")
                                               @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
                                               @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
-                                              Integer icategory) {
+                                              int imainCategory,
+                                              @PathVariable("sub-icategory")
+                                              @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
+                                              @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
+                                              int isubCategory) {
 
-        return productService.getProductList(sort, search, icategory, (page - 1) * Const.PROD_PER_PAGE, Const.PROD_PER_PAGE);
+        return productService.getProductList(sort, search, imainCategory, isubCategory, (page - 1) * Const.PROD_PER_PAGE,
+                Const.PROD_PER_PAGE);
     }
 
     //
@@ -136,16 +149,19 @@ public class ProductController {
                     "실패시: <br>" +
                     "message: 에러 발생 사유<br>errorCode: 에러 코드")
     @Validated
-    @GetMapping("/{icategory}/{iproduct}")
-    public ProductVo getProduct(@PathVariable
+    @GetMapping("/{main-icategory}/{sub-icategory}/{iproduct}")
+    public ProductVo getProduct(@PathVariable("main-icategory")
                                 @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
                                 @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
-                                Integer icategory,
-                                @PathVariable
+                                int imainCategory,
+                                @PathVariable("sub-icategory")
+                                @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
+                                @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
+                                int isubCategory,
                                 @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
                                 @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
                                 Integer iproduct) {
-        return productService.getProduct(icategory, iproduct);
+        return productService.getProduct(imainCategory, isubCategory, iproduct);
     }
 
     /*

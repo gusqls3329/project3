@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdProdBasicDto {
-    //    private Integer icategory;
+    //    private Categories icategory;
 //    private String addr;
 //    private String restAddr;
 //    private String title;

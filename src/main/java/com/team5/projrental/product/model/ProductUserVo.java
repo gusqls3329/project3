@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class ProductUserVo extends ProductListVo {
-    private Integer icategory;
+    private Categories icategory;
 
     public ProductUserVo(GetProductListResultDto dto) {
         super(dto);

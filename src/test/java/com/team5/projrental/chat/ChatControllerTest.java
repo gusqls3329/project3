@@ -3,10 +3,7 @@ package com.team5.projrental.chat;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team5.projrental.MockMvcConfig;
-import com.team5.projrental.chat.model.ChatInsDto;
-import com.team5.projrental.chat.model.ChatMsgDelDto;
-import com.team5.projrental.chat.model.ChatMsgInsDto;
-import com.team5.projrental.chat.model.ChatSelVo;
+import com.team5.projrental.chat.model.*;
 import com.team5.projrental.common.Const;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.product.ProductController;
@@ -28,9 +25,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -72,12 +73,36 @@ class ChatControllerTest {
     }
 
     @Test
-    void getChatAll() {
+    void getChatAll() throws Exception {
 
+        ChatSelVo vo = new ChatSelVo();
+        vo.setIchat(11);
+        vo.setIproduct(25);
+        vo.setOtherPersonIuser(7);
+        vo.setOtherPersonNm("감자7");
+
+        List<ChatSelVo> list = new ArrayList<>();
+        list.add(vo);
+
+        given(service.getChatAll(any(ChatSelDto.class))).willReturn(list);
+
+        MultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
+        requestParams.add("page", "1");
+        requestParams.add("loginedIuser", "1");
+
+        mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .get("/api/chat")
+                                .params(requestParams))
+                .andExpect(status().isOk())
+                .andExpect(content().string(objectMapper.writeValueAsString(list)))
+                .andDo(print());
+
+        verify(service).getChatAll(any());
     }
 
     @Test
-    void postChat() throws Exception{
+    void postChat() throws Exception {
         ChatInsDto dto = new ChatInsDto();
         dto.setIchat(6);
         dto.setLoginedIuser(1);
@@ -95,30 +120,31 @@ class ChatControllerTest {
         vo.setOtherPersonNm("감자7");
         vo.setOtherPersonPic("user\\7\\cfbf8730-7ce0-40bb-9a80-4e8987fe8866.jpg");
 
+        given(service.postChat(any())).willReturn(vo);
 
 
         String response = mockMvc.perform(MockMvcRequestBuilders
                         .post("/api/chat")
                         .header("Authorization", token)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(dto)))
+                        .content(objectMapper.writeValueAsString(vo)))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
-        System.out.println("response = " + response);
 
         ChatSelVo result = objectMapper.readValue(response, ChatSelVo.class);
+        System.out.println("result = " + result);
         Assertions.assertEquals(vo.getIstatus(), result.getIstatus());
         Assertions.assertEquals(vo.getIchat(), result.getIchat());
         Assertions.assertEquals(vo.getIproduct(), result.getIproduct());
         Assertions.assertEquals(vo.getLastMsgAt(), result.getLastMsgAt());
         Assertions.assertEquals(vo.getOtherPersonIuser(), result.getOtherPersonIuser());
 
-
+        verify(service).postChat(any());
     }
 
     @Test
-    void postChatControllerTest() throws Exception{
+    void postChatControllerTest() throws Exception {
         ChatInsDto dto = new ChatInsDto();
         dto.setIchat(6);
         dto.setLoginedIuser(1);
@@ -147,6 +173,8 @@ class ChatControllerTest {
         Assertions.assertEquals(vo.getIproduct(), result.getIproduct());
         Assertions.assertEquals(vo.getLastMsgAt(), result.getLastMsgAt());
         Assertions.assertEquals(vo.getOtherPersonIuser(), result.getOtherPersonIuser());
+        verify(service).postChat(dto);
+
     }
 
     @Test
@@ -154,31 +182,24 @@ class ChatControllerTest {
         ChatMsgInsDto dto = new ChatMsgInsDto();
         dto.setIchat(2);
         dto.setMsg("안녕하세요 테스트중입니다.2");
-        dto.setSeq(8);
-        dto.setLoginedIuser(1);
-
-        String response = mockMvc.perform(MockMvcRequestBuilders
+        given(service.postChatMsg(any())).willReturn(new ResVo(Const.SUCCESS));
+        mockMvc.perform(MockMvcRequestBuilders
                         .post("/api/chat/msg")
-                        .header("Authorization", token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
-        System.out.println("response = " + response);
-
-        ResVo result = objectMapper.readValue(response, ResVo.class);
-        Assertions.assertEquals(new ResVo(1), result.getResult());
+                .andExpect(content().json("{\"result\":1}"));
+        verify(service).postChatMsg(dto);
     }
 
-/*    @Test
+    @Test
     void getChatMsgAll() {
 
-    }*/
+    }
 
     @SneakyThrows
     @Test
     void delChatMsg() {
-        ResVo vo = new ResVo(Const.SUCCESS);
         MultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
         requestParams.add("iuser", "1");
         requestParams.add("ichat", "2");
@@ -189,8 +210,8 @@ class ChatControllerTest {
                         .delete("/api/chat/msg")
                         .params(requestParams))
                 .andExpect(status().isOk())
-                .andExpect(content().string(objectMapper.writeValueAsString(vo.getResult())))
+                .andExpect(content().json("{\"result\":1}"))
                 .andDo(print());
-
+        verify(service).chatDelMsg(any());
     }
 }

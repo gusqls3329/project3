@@ -1,11 +1,9 @@
 package com.team5.projrental.product;
 
+import com.team5.projrental.common.Const;
 import com.team5.projrental.common.aop.anno.CountView;
 import com.team5.projrental.common.aop.category.CountCategory;
-import com.team5.projrental.common.exception.BadMainPicException;
-import com.team5.projrental.common.exception.BadWordException;
-import com.team5.projrental.common.exception.IllegalProductPicsException;
-import com.team5.projrental.common.exception.NoSuchProductException;
+import com.team5.projrental.common.exception.*;
 import com.team5.projrental.common.exception.base.*;
 import com.team5.projrental.common.exception.checked.FileNotContainsDotException;
 import com.team5.projrental.common.model.ResVo;
@@ -59,18 +57,27 @@ public class CleanProductService implements RefProductService {
      */
     public List<ProductListVo> getProductList(Integer sort,
                                               String search,
-                                              int icategory,
+                                              int imainCategory,
+                                              int isubCategory,
                                               int page,
                                               int prodPerPage) {
         // page 는 페이징에 맞게 변환되어 넘어옴.
 
         // iuser 가져오기 -> isLiked 를 위해서
-
+        Integer iuser;
+        try {
+            iuser = getLoginUserPk();
+        } catch (ClassCastException ignored) {
+            iuser = null;
+        }
+        Categories icategory = new Categories(imainCategory, isubCategory);
         // 카테고리 검증
         CommonUtils.ifCategoryNotContainsThrow(icategory);
+
+
         // search 의 length 가 2 이상으로 validated 되었으므로 문제 없음.
         List<GetProductListResultDto> products =
-                productRepository.findProductListBy(new GetProductListDto(sort, search, icategory, page, getLoginUserPk(), prodPerPage));
+                productRepository.findProductListBy(new GetProductListDto(sort, search, icategory, page, iuser, prodPerPage));
         // 결과물 없음 여부 체크 (결과물 없으면 빈 객체 리턴)
         if (!CommonUtils.checkNullOrZeroIfCollectionReturnFalse(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE,
                 products)) return new ArrayList<>();
@@ -79,6 +86,21 @@ public class CleanProductService implements RefProductService {
         return products.stream().map(ProductListVo::new).toList();
     }
 
+    public List<ProductListVo> getProductListForMain(
+            List<Integer> imainCategory,
+            List<Integer> isubCategory
+    ) {
+
+        int page = 0;
+        int limit = Const.MAIN_PROD_PER_PAGE;
+        List<ProductListVo> result = new ArrayList<>();
+        for (int i = 0; i < imainCategory.size(); i++) {
+            result.addAll(getProductList(null, null, imainCategory.get(i), isubCategory.get(i), page, limit));
+        }
+
+
+        return result;
+    }
 
     /**
      * 선택한 특정 제품페이지 조회.
@@ -87,7 +109,9 @@ public class CleanProductService implements RefProductService {
      * @return ProductVo
      */
     @CountView(CountCategory.PRODUCT)
-    public ProductVo getProduct(Integer icategory, Integer iproduct) {
+    public ProductVo getProduct(int imainCategory, int isubCategory, Integer iproduct) {
+
+        Categories icategory = new Categories(imainCategory, isubCategory);
 
         // 카테고리 검증
         CommonUtils.ifCategoryNotContainsThrow(icategory);
@@ -248,7 +272,7 @@ public class CleanProductService implements RefProductService {
 
         int loginUserPk = getLoginUserPk();
         // 카테고리 검증
-        if (dto.getIcategory() != null && dto.getIcategory() > 0 && dto.getIcategory() < 23) {
+        if (dto.getIcategory() != null) {
             CommonUtils.ifCategoryNotContainsThrow(dto.getIcategory());
         }
 
@@ -472,22 +496,21 @@ public class CleanProductService implements RefProductService {
 
         // 검사 시작일부터 하루씩 더해질 객체 생성
         LocalDate dateWalker = LocalDate.of(refStartDate.getYear(), refStartDate.getMonth(), refStartDate.getDayOfMonth());
-
         // 작업 시작
+
         while (!dateWalker.isAfter(refEndDate)) {
             LocalDate lambdaDateWalker = dateWalker;
-            long count = disabledRefDates.stream().filter(
+            if (disabledRefDates.stream().filter(
                     d -> lambdaDateWalker.isEqual(d.getRentalEndDate()) ||
                             lambdaDateWalker.isEqual(d.getRentalStartDate()) ||
                             lambdaDateWalker.isBefore(d.getRentalEndDate()) && lambdaDateWalker.isAfter(d.getRentalStartDate()
                             )
-            ).count();
-            if (count >= stockCount) {
+            ).count() >= stockCount) {
                 disabledDates.add(LocalDate.of(dateWalker.getYear(),
                         dateWalker.getMonth(),
                         dateWalker.getDayOfMonth()));
             }
-            dateWalker = dateWalker.plusDays(1);
+            dateWalker = dateWalker.plusDays(ADD_A);
         }
 
         return disabledDates;

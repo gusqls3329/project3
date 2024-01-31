@@ -65,4 +65,13 @@
         LIMIT #{startIdx}, #{rowCount}
     </select>
 
+    <select id="getAllReviewFromMyProduct">
+        select R.ireview, R.contents, R.rating, R.iuser, U.nick, U.stored_pic as userProfPic, P.iproduct
+        from t_product P
+        join t_product_payment PP on P.iproduct = PP.iproduct
+        join t_review R on PP.ipayment = R.ipayment
+        join t_user U on R.iuser = U.iuser
+        where P.iuser = #{iuser} and R.contents != '' and rating > 0
+    </select>
+
 </mapper>

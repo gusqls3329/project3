@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ChangeUserDto {
 
     @Length(max = 20, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
+    @Pattern(regexp = "^\\S{0,20}$", message = ErrorMessage.NO_SUCH_USER_EX_MESSAGE)
     private String nick;
 
     //private MultipartFile pic;
