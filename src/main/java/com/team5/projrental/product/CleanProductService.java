@@ -479,8 +479,8 @@ public class CleanProductService implements RefProductService {
 
         // 검사 시작일부터 하루씩 더해질 객체 생성
         LocalDate dateWalker = LocalDate.of(refStartDate.getYear(), refStartDate.getMonth(), refStartDate.getDayOfMonth());
-
         // 작업 시작
+
         while (!dateWalker.isAfter(refEndDate)) {
             LocalDate lambdaDateWalker = dateWalker;
             if (disabledRefDates.stream().filter(

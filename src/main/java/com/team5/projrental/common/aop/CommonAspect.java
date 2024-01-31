@@ -18,6 +18,7 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
@@ -101,6 +102,7 @@ public class CommonAspect {
         throw ex;
     }
 
+    @Profile({"default", "hyunmin"})
     @Around("execution(* com.team5.projrental.payment.PaymentRepository.updateStatusIfOverRentalEndDate(..)) && args(now)")
     public int doLog(ProceedingJoinPoint joinPoint, LocalDate now) throws Throwable {
 
@@ -110,13 +112,6 @@ public class CommonAspect {
         return changedColumn;
     }
 
-
-    //    @Before("execution(* com.team5.projrental.payment.PaymentService.postPayment(..)) && args(dto)")
-//    public void deleteCache(JoinPoint joinPoint, PaymentInsDto dto) {
-//        log.debug("[deleteCache AOP] {}", joinPoint.getSignature());
-//        disabledCache.remove(dto.getIproduct());
-//    }
-
     @AfterReturning("execution(* com.team5.projrental.payment.PaymentService.postPayment(..)) && args(dto)")
     public void deleteCache(JoinPoint joinPoint, PaymentInsDto dto) {
         log.debug("[deleteCache AOP] {}", joinPoint.getSignature());
@@ -124,16 +119,14 @@ public class CommonAspect {
     }
 
     @Around(value = "execution(* com.team5.projrental.product.ProductController.getDisabledDate(..)) && args(iproduct, y, m)", argNames = "joinPoint,iproduct,y,m")
-    public Object returnCacheIfContains(ProceedingJoinPoint joinPoint, Integer iproduct, Integer y, Integer m) {
+    public Object returnCacheIfContains(ProceedingJoinPoint joinPoint, Integer iproduct, Integer y, Integer m) throws Throwable {
         DisabledDateInfo inCache = disabledCache.get(iproduct);
         log.debug("[returnCacheIfContains] inCache: {}", inCache);
-        try {
-            return inCache != null && inCache.getY().equals(y) && inCache.getM().equals(m) ?
-                    inCache : joinPoint.proceed();
-        } catch (Throwable e) {
-            log.debug("[returnCacheIfContains] error: ", e);
-            throw new RuntimeException(e);
-        }
+
+        return inCache != null && inCache.getY().equals(y) && inCache.getM().equals(m) ?
+                inCache :
+                joinPoint.proceed();
+
 
     }
 
@@ -152,7 +145,6 @@ public class CommonAspect {
                     }
                 }
             }
-//            disabledCache.put(iproduct, disabledDates);
             disabledCache.put(iproduct, new DisabledDateInfo(disabledDates, y, m));
 
             disabledCache.keySet().forEach(k -> log.debug("[addCache AOP] total Cache = key: {}, values: {}", k,
@@ -168,9 +160,8 @@ public class CommonAspect {
 
     @EventListener(ApplicationReadyEvent.class)
     public void initCacheData() {
-        int limitCount = Const.DISABLED_CACHE_MAX_NUM;
         LocalDate now = LocalDate.now();
-        List<Integer> allIproductsLimit = productRepository.getAllIproductsLimit(limitCount);
+        List<Integer> allIproductsLimit = productRepository.getAllIproductsLimit(Const.DISABLED_CACHE_MAX_NUM);
 
         allIproductsLimit.forEach(i -> {
             List<LocalDate> disabledDate = productService.getDisabledDate(i, now.getYear(), now.getMonthValue());

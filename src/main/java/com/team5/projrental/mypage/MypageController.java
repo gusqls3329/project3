@@ -23,7 +23,6 @@ import java.util.List;
 public class MypageController {
     private final MypageService service;
 
-    //테스트 상원
     @Validated
     @GetMapping("/prod")
     @Operation(summary = "대여리스트", description = "대여관련 내역")
