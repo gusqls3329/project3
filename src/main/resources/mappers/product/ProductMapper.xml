@@ -66,11 +66,16 @@
         select U.iuser, U.nick, U.stored_pic as userStoredPic, U.iauth, P.iproduct,
         concat(P.addr, ' ', P.rest_addr) as addr, P.title, P.stored_pic as prodMainStoredPic,
         P.price, P.rental_price as rentalPrice, P.deposit, P.rental_start_date as rentalStartDate,
-        P.rental_end_date as rentalEndDate, (select count(L.iproduct) from t_like L where L.iproduct = P.iproduct) as prodLike, P.istatus,
+        P.rental_end_date as rentalEndDate, (select count(L.iproduct) from t_like L where L.iproduct = P.iproduct) as prodLike,
+        P.istatus,
         if(L.iuser > 0, 1, 0) as isLiked, P.view, P.inventory, P.imain_category as mainCategory, P.isub_category as subCategory
         from t_product P
         join t_user U on P.iuser = U.iuser
-        left join t_like L on P.iproduct = L.iproduct and L.iuser = #{loginedIuser}
+        left join t_like L on P.iproduct = L.iproduct
+        <if test="loginedIuser != null and loginedIuser > 0">
+            and
+            L.iuser = #{loginedIuser}
+        </if>
         <where>
             P.istatus = 0
             <if test="icategory != null">
@@ -93,13 +98,11 @@
         <if test="sort == null">
             order by P.iproduct desc
         </if>
-        <if test="page != null and page != 0 and prodPerPage != null and prodPerPage != 0">
+        <if test="page != null and prodPerPage != null and prodPerPage != 0">
             limit #{page}, #{prodPerPage}
         </if>
 
     </select>
-
-
 
 
     <select id="getProduct">
@@ -122,15 +125,15 @@
         </where>
 
     </select>
-<!--    거래 불가능 날짜 가져오기-->
+    <!--    거래 불가능 날짜 가져오기-->
     <select id="findDisabledDatesBy">
         select PA.rental_start_date as rentalStartDate, PA.rental_end_date as rentalEndDate
         from t_payment PA
         JOIN t_product_payment PP ON PA.ipayment = PP.ipayment
         where PP.iproduct = #{iproduct}
-            and rental_end_date >= #{refStartDate}
-            and rental_start_date <![CDATA[<=]]> #{refEndDate}
-            and istatus in (0, -4, 2, 3)
+        and rental_end_date >= #{refStartDate}
+        and rental_start_date <![CDATA[<=]]> #{refEndDate}
+        and istatus in (0, -4, 2, 3)
     </select>
 
     <select id="getProdEctPics">
@@ -149,7 +152,8 @@
     <insert id="insProduct" useGeneratedKeys="true" keyProperty="iproduct">
         insert into t_product
         (iuser, title, contents, addr, rest_addr,
-        price, rental_price, deposit, buy_date, rental_start_date, rental_end_date, P.imain_category as mainCategory, P.isub_category as subCategory, x, y,
+        price, rental_price, deposit, buy_date, rental_start_date, rental_end_date, P.imain_category as mainCategory,
+        P.isub_category as subCategory, x, y,
         inventory)
         values
         (#{iuser}, #{title}, #{contents}, #{addr}, #{restAddr},
@@ -282,9 +286,9 @@
         JOIN t_review R ON PA.ipayment = R.ipayment
         JOIN t_user U ON U.iuser = R.iuser
         where PP.iproduct = #{iproduct} and PA.istatus != -1 and PA.istatus != -2
-            and R.contents != '' and R.rating > 0
+        and R.contents != '' and R.rating > 0
         <if test="page != null and prodPerPage != null">
-        limit #{page}, #{prodPerPage}
+            limit #{page}, #{prodPerPage}
         </if>
     </select>
 

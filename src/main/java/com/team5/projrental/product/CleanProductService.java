@@ -3,10 +3,7 @@ package com.team5.projrental.product;
 import com.team5.projrental.common.Const;
 import com.team5.projrental.common.aop.anno.CountView;
 import com.team5.projrental.common.aop.category.CountCategory;
-import com.team5.projrental.common.exception.BadMainPicException;
-import com.team5.projrental.common.exception.BadWordException;
-import com.team5.projrental.common.exception.IllegalProductPicsException;
-import com.team5.projrental.common.exception.NoSuchProductException;
+import com.team5.projrental.common.exception.*;
 import com.team5.projrental.common.exception.base.*;
 import com.team5.projrental.common.exception.checked.FileNotContainsDotException;
 import com.team5.projrental.common.model.ResVo;
@@ -67,7 +64,12 @@ public class CleanProductService implements RefProductService {
         // page 는 페이징에 맞게 변환되어 넘어옴.
 
         // iuser 가져오기 -> isLiked 를 위해서
-
+        Integer iuser;
+        try {
+            iuser = getLoginUserPk();
+        } catch (ClassCastException ignored) {
+            iuser = null;
+        }
         Categories icategory = new Categories(imainCategory, isubCategory);
         // 카테고리 검증
         CommonUtils.ifCategoryNotContainsThrow(icategory);
@@ -75,7 +77,7 @@ public class CleanProductService implements RefProductService {
 
         // search 의 length 가 2 이상으로 validated 되었으므로 문제 없음.
         List<GetProductListResultDto> products =
-                productRepository.findProductListBy(new GetProductListDto(sort, search, icategory, page, getLoginUserPk(), prodPerPage));
+                productRepository.findProductListBy(new GetProductListDto(sort, search, icategory, page, iuser, prodPerPage));
         // 결과물 없음 여부 체크 (결과물 없으면 빈 객체 리턴)
         if (!CommonUtils.checkNullOrZeroIfCollectionReturnFalse(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE,
                 products)) return new ArrayList<>();
@@ -84,6 +86,21 @@ public class CleanProductService implements RefProductService {
         return products.stream().map(ProductListVo::new).toList();
     }
 
+    public List<ProductListVo> getProductListForMain(
+            List<Integer> imainCategory,
+            List<Integer> isubCategory
+    ) {
+
+        int page = 0;
+        int limit = Const.MAIN_PROD_PER_PAGE;
+        List<ProductListVo> result = new ArrayList<>();
+        for (int i = 0; i < imainCategory.size(); i++) {
+            result.addAll(getProductList(null, null, imainCategory.get(i), isubCategory.get(i), page, limit));
+        }
+
+
+        return result;
+    }
 
     /**
      * 선택한 특정 제품페이지 조회.
