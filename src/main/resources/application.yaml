@@ -39,6 +39,13 @@ management:
   endpoint:
     health:
       show-details: always
+api:
+  axis:
+    kakao:
+      url: "https://dapi.kakao.com/v2/local/search/address"
+      header-key: "Authorization"
+      header-value: "KakaoAK 7b5a7755251df2d95b48052980a5c025"
+
 ---
 spring:
   datasource:
