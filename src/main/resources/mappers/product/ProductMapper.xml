@@ -203,8 +203,8 @@
         update t_product
         <set>
             <if test="icategory != null">
-                P.imain_category = #{icategory.mainCategory},
-                P.isub_category = #{icategory.subCategory}
+                imain_category = #{icategory.mainCategory},
+                isub_category = #{icategory.subCategory}
             </if>
             <if test="addr != null">
                 , addr = #{addr}
