@@ -34,8 +34,8 @@ public class GetProductListResultDto {
 
     //
     private Categories icategory;
-    private Integer imainCategory;
-    private Integer isubCategory;
+    private int imainCategory;
+    private int isubCategory;
 
     public void setMainCategory(Integer mainCategory) {
         if (this.icategory == null) {
