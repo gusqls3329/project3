@@ -291,7 +291,8 @@ public class ProductController {
                     "  addr (rest_addr 까지 포함)<br>" +
                     "] (배열) <br><br>" +
                     "실패시: <br>" +
-                    "message: 에러 발생 사유<br>errorCode: 에러 코드")
+                    "message: 에러 발생 사유<br>errorCode: 에러 코드<br><br><br>" +
+                    "<strong>로그인 유저의 상품을 조회할때는 iuser 를 제공하지 않아야 함. 그래야 숨김까지 결과에 포함됨.</strong>")
     @Validated
     @GetMapping("/list")
     public List<ProductUserVo> getUserProductList(@RequestParam(required = false)
