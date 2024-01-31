@@ -31,7 +31,8 @@ import static com.team5.projrental.common.exception.ErrorMessage.*;
 @RequestMapping("/api/prod")
 public class ProductController {
 
-    private final RefProductService productService;
+    //    private final RefProductService productService;
+    private final CleanProductService productService;
 
     @Operation(summary = "메인페이지용 카테고리별 상품 (8개씩 조회)",
             description = "<strong>메인페이지용 카테고리별 상품 (8개씩 조회)</strong><br>" +
@@ -48,26 +49,15 @@ public class ProductController {
     @Validated
     @GetMapping("/main")
     public List<ProductListVo> getMainPage(@RequestParam("mc")
-                                           @Size(min = 1, max = 4)
+                                           @Size(min = 1, max = 5)
                                            List<Integer> imainCategory,
                                            @RequestParam("sc")
-                                           @Size(min = 1, max = 4)
+                                           @Size(min = 1, max = 5)
                                            List<Integer> isubCategory) {
-        if (imainCategory.size() != isubCategory.size()) {
-            throw new BadInformationException(ErrorCode.BAD_DIV_INFO_EX_MESSAGE);
-        }
 
-        List<ProductListVo> result = new ArrayList<>();
-        for (int i = 0; i < imainCategory.size(); i++) {
+        return productService.getProductListForMain(imainCategory, isubCategory);
 
-            result.addAll(productService.getProductList(null, null,
-                    imainCategory.get(i),
-                    isubCategory.get(i),
-                    0,
-                    Const.MAIN_PROD_PER_PAGE));
-        }
 
-        return result;
     }
 
     @Operation(summary = "특정 카테고리의 제품목록 가져오기",

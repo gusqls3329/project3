@@ -31,6 +31,7 @@ public class ProductListVo {
     private Integer inventory;
     private Integer isLiked;
     private Integer view;
+    private Categories categories;
 
     public ProductListVo(GetProductListResultDto dto) {
         this.iuser = dto.getIuser();
@@ -50,6 +51,7 @@ public class ProductListVo {
         this.istatus = dto.getIstatus();
         this.view = dto.getView();
         this.isLiked = dto.getIsLiked();
+        this.categories = dto.getIcategory();
     }
 
     public ProductListVo(GetProductResultDto dto) {
@@ -71,6 +73,7 @@ public class ProductListVo {
         this.inventory = dto.getInventory();
         this.view = dto.getView();
         this.isLiked = dto.getIsLiked();
+        this.categories = dto.getIcategory();
     }
 
 }
