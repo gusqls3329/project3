@@ -417,10 +417,16 @@ public class CleanProductService implements RefProductService {
     }
 
     public List<ProductUserVo> getUserProductList(Integer iuser, Integer page) {
+        GetProductListDto getProductListDto;
+        if (iuser != null) {
+            getProductListDto = new GetProductListDto(iuser, page);
+        } else {
+            getProductListDto = new GetProductListDto();
+            getProductListDto.setLoginedIuserForHiddenProduct(getLoginUserPk());
+            getProductListDto.setPage(page);
+        }
         List<GetProductListResultDto> productListBy =
-                productRepository.findProductListBy(new GetProductListDto(
-                        iuser == null ? getLoginUserPk() : iuser, page
-                ));
+                productRepository.findProductListBy(getProductListDto);
         CommonUtils.checkNullOrZeroIfCollectionThrow(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE, productListBy);
 
         return productListBy.stream().map(ProductUserVo::new).toList();

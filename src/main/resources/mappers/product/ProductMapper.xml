@@ -77,7 +77,11 @@
             L.iuser = #{loginedIuser}
         </if>
         <where>
-            P.istatus = 0
+            P.istatus in (0
+            <if test="loginedIuserForHiddenProduct != null and loginedIuserForHiddenProduct > 0">
+                , -2
+            </if>
+            )
             <if test="icategory != null">
                 and P.imain_category = #{icategory.mainCategory} and P.isub_category = #{icategory.subCategory}
             </if>
@@ -88,7 +92,6 @@
                 and P.iuser = #{targetIuser}
             </if>
         </where>
-        group by P.iproduct
         <if test="sort == 2">
             order by P.view desc
         </if>
