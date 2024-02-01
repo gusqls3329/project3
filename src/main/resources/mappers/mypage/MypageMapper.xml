@@ -20,11 +20,13 @@
         ON B.ipayment = C.ipayment
         join t_payment_status PS on C.ipayment = PS.ipayment and PS.istatus != -4 and (A.iuser = #{loginedIuser} or C.ibuyer = #{loginedIuser})
         LEFT JOIN t_user D
-        ON A.iuser = D.iuser
+        ON
         <if test="role != null and role == 1">
+            A.iuser = D.iuser
             WHERE C.ibuyer = #{loginedIuser}
         </if>
         <if test="role != null and role == 2">
+            C.ibuyer = D.iuser
             WHERE A.iuser = #{loginedIuser}
         </if>
         GROUP BY C.ipayment
