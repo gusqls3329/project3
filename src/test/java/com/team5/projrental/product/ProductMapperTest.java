@@ -33,10 +33,10 @@ class ProductMapperTest {
 
     @Autowired
     ProductMapper productMapper;
-//    InsProdBasicInfoDto insProdBasicInfoDto = new InsProdBasicInfoDto(1, "test", "test", "test",
-//            "test",  "test pic 2", 100, 10,
-//            80, LocalDate.of(2022, 11, 2), LocalDate.of(2024, 2, 2),
-//            LocalDate.of(2024, 3, 3), 1, 1.1, 2.2, 1);
+    InsProdBasicInfoDto insProdBasicInfoDto = new InsProdBasicInfoDto(1, "test", "test", "test",
+            "test",  "test pic 2", 100, 10,
+            80, LocalDate.of(2022, 11, 2), LocalDate.of(2024, 2, 2),
+            LocalDate.of(2024, 3, 3), new Categories(3, 1), 1.1, 2.2, 1);
 
 
     MultipartFile multipartFile;
@@ -94,15 +94,15 @@ class ProductMapperTest {
         assertThat(productList.get(0).getIproduct()).isEqualTo(11);
 
 
-//        int result = productMapper.insProduct(this.insProdBasicInfoDto);
-//        assertThat(result).isEqualTo(1);
+        int result = productMapper.insProduct(this.insProdBasicInfoDto);
+        assertThat(result).isEqualTo(1);
         List<GetProductListResultDto> productList1 = productMapper.getProductList(new GetProductListDto(1, 0));
         assertThat(productList1.size()).isEqualTo(3);
 
 
     }
 
-/*    @Test
+    @Test
     void getProduct() {
 
         GetProductResultDto product = productMapper.getProduct(new GetProductBaseDto(1, 1));
@@ -111,30 +111,30 @@ class ProductMapperTest {
         checkProductInfoByIproductIsOne(product);
 
 
-    }*/
+    }
 
 
     @Test
     void getProdEctPics() {
-//
-//        List<String> prodEctPics = productMapper.getProdEctPics(11);
-//        assertThat(prodEctPics.size()).isEqualTo(2);
-//        assertThat(prodEctPics.get(0).getIpics()).isEqualTo(11);
-//        assertThat(prodEctPics.get(1).getIpics()).isEqualTo(12);
-//        prodEctPics.forEach(pic -> {
-//            assertThat((pic.getProdStoredPic())).contains("prod\\11\\");
-//        });
+
+        List<PicsInfoVo> prodEctPics = productMapper.getProdEctPics(11);
+        assertThat(prodEctPics.size()).isEqualTo(2);
+        assertThat(prodEctPics.get(0).getIpics()).isEqualTo(11);
+        assertThat(prodEctPics.get(1).getIpics()).isEqualTo(12);
+        prodEctPics.forEach(pic -> {
+            assertThat((pic.getProdPics())).contains("prod\\11\\");
+        });
 
     }
 
     @Test
     void insProduct() {
 
-//        int result = productMapper.insProduct(new InsProdBasicInfoDto(1, "test", "test", "test",
-//                "test", "test pic 2", 100, 10,
-//                80, LocalDate.of(2022, 11, 2), LocalDate.of(2024, 2, 2),
-//                LocalDate.of(2024, 3, 3), 1, 1.1, 2.2, 1));
-//        assertThat(result).isEqualTo(1);
+        int result = productMapper.insProduct(new InsProdBasicInfoDto(1, "test", "test", "test",
+                "test", "test pic 2", 100, 10,
+                80, LocalDate.of(2022, 11, 2), LocalDate.of(2024, 2, 2),
+                LocalDate.of(2024, 3, 3), new Categories(3, 1), 1.1, 2.2, 1));
+        assertThat(result).isEqualTo(1);
 
     }
 
