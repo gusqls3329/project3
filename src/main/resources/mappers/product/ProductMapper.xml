@@ -115,7 +115,7 @@
         P.rental_price as rentalPrice, P.rental_start_date as rentalStartDate,
         P.rental_end_date as rentalEndDate, COUNT(L.iproduct) as prodLike, P.istatus,
         P.contents, P.deposit, P.buy_date as buyDate, P.x, P.y,
-        if(L.iuser > 0, 1, 0) as isLiked, P.view, P.inventory
+        if(L.iuser > 0, 1, 0) as isLiked, P.view, P.inventory, P.imain_category as mainCategory, P.isub_category as subCategory
         from t_product P
         join t_user U on P.iuser = U.iuser
         left join t_like L on P.iproduct = L.iproduct and L.iuser = #{iuser}
@@ -288,8 +288,9 @@
         from t_product_payment PP
         JOIN t_payment PA ON PP.ipayment = PA.ipayment
         JOIN t_review R ON PA.ipayment = R.ipayment
+        JOIN t_payment_status PS ON PA.ipayment = PS.ipayment
         JOIN t_user U ON U.iuser = R.iuser
-        where PP.iproduct = #{iproduct} and PA.istatus != -1 and PA.istatus != -2
+        where PP.iproduct = #{iproduct} and PS.istatus != -1 and PS.istatus != -2
         and R.contents != '' and R.rating > 0
         <if test="page != null and prodPerPage != null">
             limit #{page}, #{prodPerPage}
