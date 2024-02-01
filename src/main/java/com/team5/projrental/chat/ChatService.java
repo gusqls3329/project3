@@ -21,6 +21,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import static com.team5.projrental.common.exception.ErrorMessage.BAD_SAME_USER_MESSAGE;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -49,7 +51,6 @@ public class ChatService {
 
         //상대유저가 채팅방 나갔을 경우 예외처리
         CommonUtils.ifChatUserStatusThrowOrReturn(istatus);
-
 
         int affectedRows = mapper.insChatMsg(dto);
         if (affectedRows == 1) {
@@ -145,10 +146,15 @@ public class ChatService {
                     .build());
         }
 
-        UserSelDto usDto = new UserSelDto();
-        usDto.setIuser(dto.getOtherPersonIuser());
+        /*UserSelDto usDto = new UserSelDto();
+        usDto.setIuser(dto.getOtherPersonIuser());*/
 
-        UserEntity entity = mapper.selChatUser(usDto.getIuser());
+        // 로그인 유저와 다른 유저정보 입력 오류메세지
+        if (loginUserPk == dto.getOtherPersonIuser()) {
+            throw new BadInformationException(BAD_SAME_USER_MESSAGE);
+        }
+
+        UserEntity entity = mapper.selChatUser(dto.getOtherPersonIuser());
 
         ChatSelVo vo = new ChatSelVo();
         vo.setIproduct(dto.getIproduct());

@@ -21,10 +21,10 @@
         ON B.ipayment = C.ipayment
         LEFT JOIN t_user D
         ON A.iuser = D.iuser
-        <if test="role == 1"> <!--로그인 유저가 물건 빌린 내역 볼 때-->
+        <if test="role != null and role == 1">
             WHERE C.ibuyer = #{loginedIuser}
         </if>
-        <if test="role == 2"> <!--로그인 유저가 물건 빌려준 내역 볼 때-->
+        <if test="role != null and role == 2">
             WHERE A.iuser = #{loginedIuser}
         </if>
         GROUP BY C.ipayment
