@@ -63,6 +63,10 @@ public class CleanProductService implements RefProductService {
                                               int prodPerPage) {
         // page 는 페이징에 맞게 변환되어 넘어옴.
 
+        // 기본적인 파라미터 예외처리 (search 가 null 이면 카테고리가 필수다)
+        if (search == null && (imainCategory < 1 || isubCategory < 1)) {
+            throw new IllegalCategoryException(ILLEGAL_CATEGORY_EX_MESSAGE);
+        }
         // iuser 가져오기 -> isLiked 를 위해서
         Integer iuser;
         try {
@@ -70,10 +74,13 @@ public class CleanProductService implements RefProductService {
         } catch (ClassCastException ignored) {
             iuser = null;
         }
-        Categories icategory = new Categories(imainCategory, isubCategory);
-        // 카테고리 검증
-        CommonUtils.ifCategoryNotContainsThrow(icategory);
+        Categories icategory = null;
+        if (imainCategory > 0 && isubCategory > 0) {
+            icategory = new Categories(imainCategory, isubCategory);
 
+            // 카테고리 검증
+            CommonUtils.ifCategoryNotContainsThrow(icategory);
+        }
 
         // search 의 length 가 2 이상으로 validated 되었으므로 문제 없음.
         List<GetProductListResultDto> products =

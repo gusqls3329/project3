@@ -92,26 +92,30 @@ public class ProductController {
                     "실패시:<br>" +
                     "message: 에러 발생 사유<br>errorCode: 에러 코드")
     @Validated
-    @GetMapping("{main-icategory}/{sub-icategory}")
+    @GetMapping
     public List<ProductListVo> getProductList(@RequestParam(required = false)
                                               @Range(min = 1, max = 2, message = BAD_SORT_EX_MESSAGE)
                                               Integer sort,
                                               @RequestParam(required = false)
                                               @Length(min = 2, message = ILLEGAL_RANGE_EX_MESSAGE)
                                               String search,
-                                              @RequestParam @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
+                                              @RequestParam
+                                              @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
                                               @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
                                               Integer page,
-                                              @PathVariable("main-icategory")
-                                              @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
+                                              @RequestParam(name = "mc", required = false)
                                               @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
-                                              int imainCategory,
-                                              @PathVariable("sub-icategory")
-                                              @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
+                                              Integer imainCategory,
+                                              @RequestParam(name = "sc", required = false)
                                               @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
-                                              int isubCategory) {
+                                              Integer isubCategory) {
 
-        return productService.getProductList(sort, search, imainCategory, isubCategory, (page - 1) * Const.PROD_PER_PAGE,
+        return productService.getProductList(
+                sort,
+                search,
+                imainCategory == null ? 0 : imainCategory,
+                isubCategory == null ? 0 : isubCategory,
+                (page - 1) * Const.PROD_PER_PAGE,
                 Const.PROD_PER_PAGE);
     }
 
