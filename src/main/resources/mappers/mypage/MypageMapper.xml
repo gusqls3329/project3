@@ -18,7 +18,7 @@
         ON A.iproduct = B.iproduct
         LEFT JOIN t_payment C
         ON B.ipayment = C.ipayment
-        join t_payment_status PS on C.ipayment = PS.ipayment and PS.istatus != -4 and (A.iuser = #{loginedIuser} or C.ibuyer = #{loginedIuser})
+        join t_payment_status PS on C.ipayment = PS.ipayment and PS.istatus != -4
         LEFT JOIN t_user D
         ON
         <if test="role != null and role == 1">
@@ -29,6 +29,7 @@
             C.ibuyer = D.iuser
             WHERE A.iuser = #{loginedIuser}
         </if>
+        and PS.iuser = #{loginedIuser}
         GROUP BY C.ipayment
         ORDER BY B.ipayment DESC
         LIMIT 0, 10

@@ -13,8 +13,6 @@ public interface RefPaymentService {
 
     ResVo delPayment(Integer ipayment, Integer div);
 
-    List<PaymentListVo> getAllPayment(Integer role, int page);
-
     PaymentVo getPayment(Integer ipayment);
 
 }
