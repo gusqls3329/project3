@@ -268,8 +268,15 @@ public class CleanProductService implements RefProductService {
             // flag 가 true 면 파일을 삭제할것임.
             flag = true;
         }
-        // 병합하지 않아도 되는 데이터 검증
+        int dbPicsCountAfterDelPics = productRepository.findPicsCount(dto.getIproduct());
+        // 사진 개수 검증
+        // fromDb 사진(이미 삭제필요한 사진은 삭제 된 상태) 과 dto.getPics 를 savePic 하고난 결과를 합쳐서 개수 체크.
+        if (pics != null && !pics.isEmpty()) {
+            CommonUtils.checkSizeIfOverLimitNumThrow(IllegalProductPicsException.class, ILLEGAL_PRODUCT_PICS_EX_MESSAGE,
+                    pics.stream(), 9 - dbPicsCountAfterDelPics);
+        }
 
+        // 병합하지 않아도 되는 데이터 검증
         int loginUserPk = getLoginUserPk();
         // 카테고리 검증
         if (dto.getIcategory() != null) {
@@ -297,14 +304,6 @@ public class CleanProductService implements RefProductService {
                 dto.getRentalStartDate() == null ? fromDb.getRentalStartDate() : dto.getRentalStartDate(),
                 dto.getRentalEndDate() == null ? fromDb.getRentalEndDate() : dto.getRentalEndDate()
         );
-        int dbPicsCountAfterDelPics = productRepository.findPicsCount(dto.getIproduct());
-
-        // 사진 개수 검증
-        // fromDb 사진(이미 삭제필요한 사진은 삭제 된 상태) 과 dto.getPics 를 savePic 하고난 결과를 합쳐서 개수 체크.
-        if (pics != null && !pics.isEmpty()) {
-            CommonUtils.checkSizeIfOverLimitNumThrow(IllegalProductPicsException.class, ILLEGAL_PRODUCT_PICS_EX_MESSAGE,
-                    pics.stream(), 9 - dbPicsCountAfterDelPics);
-        }
 
         // 데이터 검증
         // 날짜 검증 시작  - 예외 코드, 메시지 를 위해 직접 검증 (!@Validated)
@@ -417,10 +416,16 @@ public class CleanProductService implements RefProductService {
     }
 
     public List<ProductUserVo> getUserProductList(Integer iuser, Integer page) {
+        GetProductListDto getProductListDto;
+        if (iuser != null) {
+            getProductListDto = new GetProductListDto(iuser, page);
+        } else {
+            getProductListDto = new GetProductListDto();
+            getProductListDto.setLoginedIuserForHiddenProduct(getLoginUserPk());
+            getProductListDto.setPage(page);
+        }
         List<GetProductListResultDto> productListBy =
-                productRepository.findProductListBy(new GetProductListDto(
-                        iuser == null ? getLoginUserPk() : iuser, page
-                ));
+                productRepository.findProductListBy(getProductListDto);
         CommonUtils.checkNullOrZeroIfCollectionThrow(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE, productListBy);
 
         return productListBy.stream().map(ProductUserVo::new).toList();

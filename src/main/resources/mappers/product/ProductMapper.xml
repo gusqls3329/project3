@@ -77,7 +77,11 @@
             L.iuser = #{loginedIuser}
         </if>
         <where>
-            P.istatus = 0
+            P.istatus in (0
+            <if test="loginedIuserForHiddenProduct != null and loginedIuserForHiddenProduct > 0">
+                , -2
+            </if>
+            )
             <if test="icategory != null">
                 and P.imain_category = #{icategory.mainCategory} and P.isub_category = #{icategory.subCategory}
             </if>
@@ -88,7 +92,6 @@
                 and P.iuser = #{targetIuser}
             </if>
         </where>
-        group by P.iproduct
         <if test="sort == 2">
             order by P.view desc
         </if>
@@ -152,8 +155,8 @@
     <insert id="insProduct" useGeneratedKeys="true" keyProperty="iproduct">
         insert into t_product
         (iuser, title, contents, addr, rest_addr,
-        price, rental_price, deposit, buy_date, rental_start_date, rental_end_date, P.imain_category as mainCategory,
-        P.isub_category as subCategory, x, y,
+        price, rental_price, deposit, buy_date, rental_start_date, rental_end_date, imain_category,
+        isub_category, x, y,
         inventory)
         values
         (#{iuser}, #{title}, #{contents}, #{addr}, #{restAddr},
@@ -203,8 +206,8 @@
         update t_product
         <set>
             <if test="icategory != null">
-                P.imain_category = #{icategory.mainCategory},
-                P.isub_category = #{icategory.subCategory}
+                imain_category = #{icategory.mainCategory},
+                isub_category = #{icategory.subCategory}
             </if>
             <if test="addr != null">
                 , addr = #{addr}

@@ -4,9 +4,11 @@ import com.team5.projrental.common.Const;
 import com.team5.projrental.product.model.Categories;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class GetProductListDto {
 
     private Integer sort;
@@ -16,6 +18,8 @@ public class GetProductListDto {
     private Integer targetIuser;
     private Integer prodPerPage;
     private Integer page;
+
+    private Integer loginedIuserForHiddenProduct;
 
     public GetProductListDto(Integer sort, String search, Categories icategory, Integer page, Integer iuser,
                              Integer prodPerPage) {
@@ -30,6 +34,11 @@ public class GetProductListDto {
 
     public GetProductListDto(Integer iuser, Integer page) {
         this.targetIuser = iuser;
+        this.page = page;
+        this.prodPerPage = Const.PROD_PER_PAGE;
+    }
+
+    public void setPage(Integer page) {
         this.page = page;
         this.prodPerPage = Const.PROD_PER_PAGE;
     }
