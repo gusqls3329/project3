@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class DelPaymentDto {
     private Integer ipayment;
     private Integer istatus;
+    private Integer loginIuser;
 }

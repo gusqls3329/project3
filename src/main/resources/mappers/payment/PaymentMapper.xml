@@ -41,18 +41,27 @@
 
 
     <select id="checkIuserAndIproduct">
+
         select PA.istatus, PA.rental_end_date as rentalEndDate, P.iuser as iSeller, PA.ibuyer as iBuyer
         from t_product_payment PPA
         join t_product P on P.iproduct = PPA.iproduct
         join t_payment PA on PA.ipayment = PPA.ipayment
-        where PA.ipayment = #{ipayment} and PA.istatus != -1
+        join t_payment_status PS on PA.ipayment = PS.ipayment and (P.iuser = #{iuser} or PA.ibuyer = #{iuser})
+        where PA.ipayment = #{ipayment} and PS.istatus != -1
+
     </select>
 
     <update id="delPayment">
-        update t_payment set istatus = #{istatus} where ipayment = #{ipayment}
+<!--        update t_payment set istatus = #{istatus} where ipayment = #{ipayment}-->
+
+        update t_payment_status set istatus = #{istatus} where ipayment = #{ipayment} and iuser = #{loginIuser}
+
     </update>
 
-    <select id="getPaymentList">
+    <select id="getPayment">
+
+<!--        -->
+<!--        -->
         select
         U.iuser,
         U.nick,
@@ -60,10 +69,8 @@
         PA.ipayment,
         P.iproduct,
         P.title,
-        PA.istatus,
-        <if test="flag == 1">
-            PA.ipayment_method as ipaymentMethod,
-        </if>
+        PS.istatus,
+        PA.ipayment_method as ipaymentMethod,
         P.stored_pic as prodStoredPic,
         PA.rental_start_date as rentalStartDate,
         PA.rental_end_date as rentalEndDate,
@@ -71,50 +78,28 @@
         PA.price,
         P.deposit,
         U.phone,
-        PA.code
-        <if test="flag == 1">
-            , U.phone, PA.code, PA.created_at as createdAt,
-            if(PA.ibuyer = #{iuser}, 1, if(P.iuser = #{iuser}, 2, 0)) as role
-        </if>
+        PA.code,
+        U.phone,
+        PA.code,
+        PA.created_at as createdAt,
+        if(PA.ibuyer = #{iuser}, 1, if(P.iuser = 1, 2, 0)) as role
         from t_payment PA
         join t_product_payment PP on PA.ipayment = PP.ipayment
-        <if test="flag == 1 and role == null or role == 0">
-            and PA.ipayment = #{ipayment}
-        </if>
         join t_product P on PP.iproduct = P.iproduct
-        join t_user U on
-        <if test="role != null and role == 1">
-            U.iuser = P.iuser
-        </if>
-        <if test="role != null and role == 2">
-            U.iuser = PA.ibuyer
-        </if>
-        <if test="flag == 1 and role == null or role == 0">
-            if(P.iuser = #{iuser}, PA.ibuyer = U.iuser, P.iuser = U.iuser)
-        </if>
-        <where>
-            PA.istatus in (-4, -3,
-            <if test="flag != 1">
-                -2,
-            </if>
-            0, 1, 2, 3)
-            <if test="role != null and role == 1">
-                and PA.ibuyer = #{iuser}
-            </if>
-            <if test="role != null and role == 2">
-                and P.iuser = #{iuser}
-            </if>
-            <if test="flag == 1">
-                and PA.ibuyer = #{iuser} or P.iuser = #{iuser}
-            </if>
-        </where>
-        <if test="page != null and paymentPerPage != null and paymentPerPage != 0">
-            limit #{page}, #{paymentPerPage}
-        </if>
+        join t_payment_status PS on PA.ipayment = PS.ipayment and (P.iuser = #{iuser} or PA.ibuyer = #{iuser})
+        join t_user U on if(P.iuser = #{iuser}, PA.ibuyer = U.iuser, P.iuser = U.iuser)
+        where PS.istatus not in (-1) and PA.ipayment = #{ipayment}
+
+
+
     </select>
 
     <update id="updateIstatusOverRentalEndDate">
-        update t_payment set istatus = -4
-        where rental_end_date <![CDATA[<=]]> #{now} and istatus in (0, 2, 3)
+        update t_payment_status PS join t_payment PA on PS.ipayment = PA.ipayment set PS.istatus = -4
+        where PA.rental_end_date <![CDATA[<=]]> #{now} and PS.istatus in (0, 2, 3)
     </update>
+
+    <insert id="savePaymentStatus">
+        insert into t_payment_status (ipayment, iuser) values (#{ipayment}, #{iseller})
+    </insert>
 </mapper>

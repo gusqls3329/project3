@@ -32,7 +32,7 @@ class PaymentReviewServiceTest {
     @Test
     void postReview() {
         when(authenticationFacade.getLoginUserPk()).thenReturn(4);
-        when(reviewMapper.selReIstatus(any())).thenReturn(-4);
+        when(reviewMapper.selReIstatus(any(), any())).thenReturn(-4);
         when(reviewMapper.selReview(4,13)).thenReturn(0);
         CheckIsBuyer buyCheck = new CheckIsBuyer();
         buyCheck.setIsExists(1);
@@ -53,7 +53,7 @@ class PaymentReviewServiceTest {
         int result = service.postReview(dto);
 
         verify(authenticationFacade).getLoginUserPk();
-        verify(reviewMapper).selReIstatus(any());
+        verify(reviewMapper).selReIstatus(any(), any());
         verify(reviewMapper).selReview(4,13);
         verify(reviewMapper).selBuyRew(any(),any());
         verify(reviewMapper).insReview(any());
@@ -101,7 +101,7 @@ class PaymentReviewServiceTest {
         RiviewVo vo = new RiviewVo();
         vo.setIuser(1);
         when(reviewMapper.selPatchRev(any())).thenReturn(vo);
-        when(reviewMapper.selReIstatus(any())).thenReturn(1);
+        when(reviewMapper.selReIstatus(any(), any())).thenReturn(1);
         when(reviewMapper.selReview(any(),any())).thenReturn(1);
         when(reviewMapper.delReview(any())).thenReturn(1);
         BeforRatingDto beforRatingDto = new BeforRatingDto();
@@ -124,7 +124,7 @@ class PaymentReviewServiceTest {
 
         verify(authenticationFacade).getLoginUserPk();
         verify(reviewMapper).selPatchRev(2);
-        verify(reviewMapper).selReIstatus(any());
+        verify(reviewMapper).selReIstatus(any(), any());
         verify(reviewMapper).delReview(dto);
         verify(reviewMapper).sleDelBefor(any());
         verify(reviewMapper).selRat(any());

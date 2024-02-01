@@ -33,7 +33,7 @@ public class PaymentReviewService {
         // contents 도 not null
 
         //t_payment 상태가 -4 일때만 리뷰쓸수 있도록
-        Integer istatus = reviewMapper.selReIstatus(dto.getIpayment());
+        Integer istatus = reviewMapper.selReIstatus(dto.getIpayment(), loginUserPk);
         if (istatus == -4) {
             //로그인한 유저가 리뷰를 적었던건지 확인하는것
             int selReview = reviewMapper.selReview(loginUserPk, dto.getIpayment());
@@ -123,7 +123,7 @@ public class PaymentReviewService {
         if (check.getIuser() == loginUserPk) {
 
             // 리뷰를 삭제하기전 t_payment의 istatus를 확인해 삭제가능한 상태가 맞는지 확인
-            Integer istatus = reviewMapper.selReIstatus(check.getIpayment());
+            Integer istatus = reviewMapper.selReIstatus(check.getIpayment(), loginUserPk);
             if (istatus == 1 || istatus == -2 || istatus == -3) {
                 dto.setIstatus(istatus);
                 BeforRatingDto beforRatingDto = reviewMapper.sleDelBefor(dto.getIreview());

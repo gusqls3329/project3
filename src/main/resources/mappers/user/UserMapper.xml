@@ -94,13 +94,15 @@
         and phone = #{phone}
     </delete>
     <select id="seldelUserPay">
-        select P.iproduct, U.iuser, P.istatus as pistatus, PA.istatus
+        select P.iproduct, U.iuser, P.istatus as pistatus, PS.istatus
         from t_product P
         join t_user U on P.iuser = U.iuser and P.istatus IN (-1, -2)
         left join t_product_payment PP on PP.iproduct = P.iproduct
-        left join t_payment PA on PA.ipayment = PP.ipayment AND PA.istatus IN (1, -1, -2, -3)
+        left join t_payment PA on PA.ipayment = PP.ipayment
+        left join t_payment_status PS on PA.ipayment = PS.ipayment and (P.iuser = 1 or PA.ibuyer = 1)
         where P.iuser = #{iuser}
         or PA.ibuyer = #{iuser}
+        and PS.istatus IN (1, -1, -3)
     </select>
     <update id="delUpUserPay">
         update t_payment
@@ -165,9 +167,11 @@
         ON P.iproduct = PP.iproduct
         left JOIN t_payment PA
         ON PP.ipayment = PA.ipayment
-        AND PA.istatus not IN (1, -1, -2, -3)
+        left join t_payment_status PS
+        on PA.ipayment = PS.ipayment
         WHERE P.istatus not IN (-1, -2)
         AND P.iuser = #{iuser} OR PA.ibuyer = #{iuser}
+        and PS.istatus not IN (1, -1, -3)
     </select>
 
     <select id="checkUserUid">

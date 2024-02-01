@@ -91,7 +91,9 @@ public class CleanPaymentService implements RefPaymentService {
 
         if (paymentRepository.savePayment(paymentInsDto) != 0) {
             if (paymentRepository.saveProductPayment(paymentInsDto.getIproduct(), paymentInsDto.getIpayment()) != 0) {
-                return new ResVo(SUCCESS);
+                if(paymentRepository.savePaymentStatus(paymentInsDto.getIpayment(), depositInfo.getIseller()) != 0) {
+                    return new ResVo(SUCCESS);
+                }
             }
         }
 
@@ -136,11 +138,12 @@ public class CleanPaymentService implements RefPaymentService {
     public ResVo delPayment(Integer ipayment, Integer div) {
 
         // 데이터 검증
-        GetInfoForCheckIproductAndIuserResult checkResult = paymentRepository.checkIuserAndIproduct(ipayment);
+        int iuser = getLoginUserPk();
+        GetInfoForCheckIproductAndIuserResult checkResult = paymentRepository.checkIuserAndIproduct(ipayment, iuser);
         if (checkResult == null) {
             throw new NoSuchProductException(NO_SUCH_PRODUCT_EX_MESSAGE);
         }
-        int iuser = getLoginUserPk();
+
 
         if (checkResult.getISeller() != iuser && checkResult.getIBuyer() != iuser) {
             throw new NoSuchUserException(NO_SUCH_USER_EX_MESSAGE);
@@ -161,7 +164,7 @@ public class CleanPaymentService implements RefPaymentService {
         Integer istatusForUpdate = divResolver(div, checkResult.getIstatus(), iuser == checkResult.getIBuyer() ? Role.BUYER :
                 iuser == checkResult.getISeller() ? Role.SELLER : null);
         // 객체 생성
-        DelPaymentDto delPaymentDto = new DelPaymentDto(ipayment, istatusForUpdate);
+        DelPaymentDto delPaymentDto = new DelPaymentDto(ipayment, istatusForUpdate, iuser);
 
         if (paymentRepository.deletePayment(delPaymentDto) == 0) {
             throw new WrapRuntimeException(SERVER_ERR_MESSAGE);

@@ -5,12 +5,11 @@
     <select id="getPaymentList">
         SELECT
         A.iproduct, A.title, A.stored_pic AS productStoredPic, A.deposit, A.iuser,
-        C.ipayment, C.istatus, C.ibuyer, C.price,
+        C.ipayment, PS.istatus, C.ibuyer, C.price,
         C.rental_duration AS rentalDuration,
         C.rental_start_date AS rentalStartDate,
         C.rental_end_date AS rentalEndDate,
         C.created_at AS createdAt,
-        C.istatus AS cancel,
         D.iuser AS targetIuser,
         D.nick AS targetNick,
         D.stored_pic AS userStoredPic
@@ -19,6 +18,7 @@
         ON A.iproduct = B.iproduct
         LEFT JOIN t_payment C
         ON B.ipayment = C.ipayment
+        join t_payment_status PS on C.ipayment = PS.ipayment and PS.istatus != -4 and (A.iuser = #{loginedIuser} or C.ibuyer = #{loginedIuser})
         LEFT JOIN t_user D
         ON A.iuser = D.iuser
         <if test="role != null and role == 1">
@@ -29,7 +29,7 @@
         </if>
         GROUP BY C.ipayment
         ORDER BY B.ipayment DESC
-        LIMIT #{startIdx}, #{rowCount}
+        LIMIT 0, 10
     </select>
 
     <select id="getIbuyerReviewList">
@@ -41,7 +41,7 @@
         ON B.ipayment = C.ipayment
         LEFT JOIN t_product D
         ON C.iproduct = D.iproduct
-        WHERE B.iuser = #{iuser};
+        WHERE B.iuser = #{iuser}
     </select>
 
     <select id="getFavList">
