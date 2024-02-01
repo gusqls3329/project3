@@ -268,6 +268,7 @@ public class UserService {
         int loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setIuser(loginUserPk);
 
+
         SigninDto inDto = new SigninDto();
         inDto.setUid(dto.getUid());
         inDto.setUpw(dto.getUpw());
@@ -300,10 +301,14 @@ public class UserService {
                         iproducts.add(list.getIproduct());
                         iusers.add(list.getIuser());
                     }
-                    mapper.delUserProPic(iproducts);
-                    mapper.delUserPorc2(iproducts);
-                    mapper.delUserPorc(iusers);
-                    mapper.delUpUserPay(iusers);
+                    if(!iproducts.isEmpty()) {
+                        mapper.delUserProPic(iproducts);
+                        mapper.delUserPorc2(iproducts);
+                    }
+                    if(!iusers.isEmpty()) {
+                        mapper.delUserPorc(iusers);
+                        mapper.delUpUserPay(iusers);
+                    }
                 }
 
                 int result = mapper.delUser(dto);
