@@ -48,7 +48,6 @@ class PaymentControllerIntegrationTest {
     @Autowired
     ObjectMapper objectMapper;
 
-    String authValue;
 
     @Autowired
     ObjectMapper om;

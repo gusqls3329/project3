@@ -40,27 +40,6 @@ class ProductServiceTest {
     ProductService productService;
 
 
-/*    @Test
-    void getProductList() {
-
-
-        GetProductListResultDto myMockResult = new GetProductListResultDto();
-        myMockResult.setIuser(1);
-        when(productRepository.findProductListBy(any())).thenReturn(List.of(myMockResult,
-                new GetProductListResultDto()));
-
-        List<ProductListVo> productList = productService.getProductList(null, null, 1, 0);
-        assertThat(productList.get(0).getIuser()).isEqualTo(1);
-        assertThatThrownBy(() -> productService.getProductList(5, null, 1, 1))
-                .isInstanceOf(BadInformationException.class);
-        when(productRepository.findProductListBy(any())).thenReturn(null);
-        assertThatThrownBy(() -> productService.getProductList(null, null, 1, 0))
-                .isInstanceOf(NoSuchProductException.class);
-        when(productRepository.findProductListBy(any())).thenReturn(new ArrayList<>());
-        assertThatThrownBy(() -> productService.getProductList(null, null, 1, 0))
-                .isInstanceOf(NoSuchProductException.class);
-    }*/
-
 
     @Test
     void delProduct() {

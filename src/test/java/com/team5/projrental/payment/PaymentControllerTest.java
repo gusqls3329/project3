@@ -32,19 +32,13 @@ class PaymentControllerTest {
 
     @Test
     void postPayment() {
-
-
         when(paymentService.postPayment(any())).thenReturn(new ResVo(1));
         assertThat(paymentController.postPayment(PaymentInsDto.builder().build()).getResult()).isEqualTo(1);
-
     }
 
     @Test
     void delPayment() {
-
-
         when(paymentService.delPayment(any(), any())).thenReturn(new ResVo(1));
         assertThat(paymentController.delPayment(1, 1).getResult()).isEqualTo(1);
-
     }
 }
