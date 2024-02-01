@@ -204,6 +204,17 @@ public class UserService {
     public int putUser(ChangeUserDto dto, MultipartFile pic) {
         if (dto == null && pic == null) throw new BadInformationException(CAN_NOT_BLANK_EX_MESSAGE);
         if (dto == null) dto = new ChangeUserDto();
+        int loginUserAuth = authenticationFacade.getLoginUserAuth();
+        if (loginUserAuth == 1) {
+            dto.setCompCode(0);
+            dto.setCompNm(null);
+        }
+        if(loginUserAuth == 2){
+            if (dto.getCompCode() < 1000000000 || dto.getCompCode() > 9999999999L) {
+                throw new BadInformationException(ILLEGAL_RANGE_EX_MESSAGE);
+            }
+
+        }
 
         if (pic != null) {
             dto.setPic(pic);
