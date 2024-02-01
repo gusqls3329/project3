@@ -7,7 +7,9 @@ import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.security.AuthenticationFacade;
 import com.team5.projrental.common.utils.MyFileUtils;
 import com.team5.projrental.payment.model.PaymentInsDto;
+import com.team5.projrental.payment.model.PaymentVo;
 import com.team5.projrental.payment.model.proc.GetInfoForCheckIproductAndIuserResult;
+import com.team5.projrental.payment.model.proc.GetPaymentListResultDto;
 import com.team5.projrental.product.ProductRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,7 +39,7 @@ class PaymentServiceTest {
     MyFileUtils myFileUtils;
 
 
-/*    @Autowired
+    @Autowired
     PaymentService paymentService;
 
     @Test
@@ -47,7 +49,7 @@ class PaymentServiceTest {
                 .paymentMethod("kakao-pay")
                 .rentalStartDate(LocalDate.of(2025, 1, 1))
                 .rentalEndDate(LocalDate.of(2025, 3, 3))
-                .depositPer(80).build();
+                .build();
 
         when(productRepository.findRentalPriceBy(any())).thenReturn(1000);
         when(authenticationFacade.getLoginUserPk()).thenReturn(3);
@@ -64,7 +66,7 @@ class PaymentServiceTest {
                 .paymentMethod("kakao-pay")
                 .rentalStartDate(LocalDate.of(2025, 1, 1))
                 .rentalEndDate(LocalDate.of(2024, 3, 3))
-                .depositPer(80).build();
+                .build();
 
         assertThatThrownBy(() -> paymentService.postPayment(mockData2))
                 .isInstanceOf(BadDateInfoException.class);
@@ -75,7 +77,7 @@ class PaymentServiceTest {
         when(productRepository.findRentalPriceBy(any())).thenReturn(0);
         assertThatThrownBy(() -> paymentService.postPayment(mockData2))
                 .isInstanceOf(NoSuchProductException.class);
-    }*/
+    }
 
     @Test
     void delPayment() {
@@ -83,16 +85,19 @@ class PaymentServiceTest {
                 new GetInfoForCheckIproductAndIuserResult(1, LocalDate.of(2025, 1, 1), 1, 2);
 
         when(authenticationFacade.getLoginUserPk()).thenReturn(1);
-        when(paymentRepository.checkIuserAndIproduct(any())).thenReturn(obj1);
+        when(paymentRepository.checkIuserAndIproduct(any(), any())).thenReturn(obj1);
 
 
     }
 
-    @Test
-    void getAllPayment() {
-    }
 
     @Test
     void getPayment() {
+        GetPaymentListResultDto getPaymentListResultDto = new GetPaymentListResultDto();
+        getPaymentListResultDto.setNick("is test succeed?");
+        when(paymentRepository.findPaymentBy(any())).thenReturn(getPaymentListResultDto);
+        PaymentVo payment = paymentService.getPayment(11);
+        assertThat(payment.getNick()).isEqualTo(getPaymentListResultDto.getNick());
+
     }
 }

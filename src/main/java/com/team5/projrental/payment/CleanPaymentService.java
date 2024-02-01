@@ -91,7 +91,7 @@ public class CleanPaymentService implements RefPaymentService {
 
         if (paymentRepository.savePayment(paymentInsDto) != 0) {
             if (paymentRepository.saveProductPayment(paymentInsDto.getIproduct(), paymentInsDto.getIpayment()) != 0) {
-                if(paymentRepository.savePaymentStatus(paymentInsDto.getIpayment(), depositInfo.getIseller()) != 0) {
+                if (paymentRepository.savePaymentStatus(paymentInsDto.getIpayment(), depositInfo.getIseller()) != 0) {
                     return new ResVo(SUCCESS);
                 }
             }
@@ -173,19 +173,13 @@ public class CleanPaymentService implements RefPaymentService {
     }
 
 
-
     public PaymentVo getPayment(Integer ipayment) {
 
         // 가져오기
-        GetPaymentListResultDto aPayment;
-        try {
-            // iuser 또는 ipayment 가 없으면 결과가 size 0 일 것
-            aPayment = paymentRepository.findPaymentBy(
-                    new GetPaymentListDto(getLoginUserPk(), Flag.ONE.getValue(), ipayment)
-            );
-        } catch (IndexOutOfBoundsException e) {
-            throw new NoSuchPaymentException(NO_SUCH_PAYMENT_EX_MESSAGE);
-        }
+        // iuser 또는 ipayment 가 없으면 결과가 size 0 일 것
+        GetPaymentListResultDto aPayment = paymentRepository.findPaymentBy(
+                new GetPaymentListDto(getLoginUserPk(), Flag.ONE.getValue(), ipayment));
+                CommonUtils.ifAllNotNullThrow(NoSuchPaymentException.class, NO_SUCH_PAYMENT_EX_MESSAGE);
         return new PaymentVo(aPayment);
     }
 

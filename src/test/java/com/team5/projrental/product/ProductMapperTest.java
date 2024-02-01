@@ -3,6 +3,8 @@ package com.team5.projrental.product;
 import com.team5.projrental.common.Const;
 import com.team5.projrental.common.exception.checked.FileNotContainsDotException;
 import com.team5.projrental.common.utils.MyFileUtils;
+import com.team5.projrental.product.model.Categories;
+import com.team5.projrental.product.model.ProductUpdDto;
 import com.team5.projrental.product.model.proc.*;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
@@ -37,8 +39,6 @@ class ProductMapperTest {
 //            LocalDate.of(2024, 3, 3), 1, 1.1, 2.2, 1);
 
 
-
-
     MultipartFile multipartFile;
 
 
@@ -50,6 +50,7 @@ class ProductMapperTest {
         this.multipartFile = new MockMultipartFile("pic", fileName, "png", fileInputStream);
 
     }
+
     @Test
     void getRentalPricePerDay() {
 
@@ -93,12 +94,10 @@ class ProductMapperTest {
         assertThat(productList.get(0).getIproduct()).isEqualTo(11);
 
 
-
 //        int result = productMapper.insProduct(this.insProdBasicInfoDto);
 //        assertThat(result).isEqualTo(1);
         List<GetProductListResultDto> productList1 = productMapper.getProductList(new GetProductListDto(1, 0));
         assertThat(productList1.size()).isEqualTo(3);
-
 
 
     }
@@ -172,7 +171,7 @@ class ProductMapperTest {
 
     }
 
-/*    @Test
+    @Test
     void getProductForUpdate() {
 
         UpdProdBasicDto productForUpdate = productMapper.getProductForUpdate(new GetProductBaseDto(1, 1));
@@ -183,12 +182,13 @@ class ProductMapperTest {
         assertThat(productForUpdate.getRentalEndDate()).isEqualTo(LocalDate.of(2023, 12, 11));
 
 
-    }*/
+    }
 
-/*    @Test
+    @Test
     void updateProduct() {
 
-        int result = productMapper.updateProduct(ProductUpdDto.builder().iproduct(3).iuser(3).icategory(3).build());
+        int result =
+                productMapper.updateProduct(ProductUpdDto.builder().iproduct(3).iuser(3).icategory(new Categories(1, 4)).build());
         assertThat(result).isEqualTo(1);
 
         GetProductResultDto product = productMapper.getProduct(new GetProductBaseDto(3, 3));
@@ -198,7 +198,7 @@ class ProductMapperTest {
         product = productMapper.getProduct(new GetProductBaseDto(3, 3));
         assertThat(product.getRentalEndDate()).isEqualTo(LocalDate.of(2222, 2, 2));
 
-    }*/
+    }
 
     @Test
     void getPicCount() {
@@ -243,23 +243,23 @@ class ProductMapperTest {
 
 
     private static void checkProductInfoByIproductIsOne(GetProductListResultDto product) {
-//        if (product instanceof GetProductResultDto) {
-//            GetProductResultDto dto = (GetProductResultDto) product;
-//
-//            assertThat(dto.getIuser()).isEqualTo(1);
-//            assertThat(dto.getDeposit()).isEqualTo(700000);
-//            assertThat(dto.getX()).isEqualTo(2.2);
-//            assertThat(dto.getContents()).isEqualTo("test contents1");
-//            assertThat(dto.getBuyDate()).isEqualTo(LocalDate.of(2022, 11, 30));
-//            assertThat(dto.getY()).isEqualTo(1.1);
-//        }
-//        assertThat(product.getNick()).isEqualTo("마루야노올자");
-//        assertThat(product.getAddr()).isEqualTo("대구 달서구 본리동 test addres1");
-//        assertThat(product.getRentalPrice()).isEqualTo(10000);
-//        assertThat(product.getTitle()).isEqualTo("test prod1");
-//        assertThat(product.getUserStoredPic()).isNull();
-//        assertThat(product.getProdMainStoredPic()).isEqualTo("test pic2");
-//        assertThat(product.getRentalStartDate()).isEqualTo(LocalDate.of(2023, 10, 22));
-//        assertThat(product.getRentalEndDate()).isEqualTo(LocalDate.of(2023, 12, 11));
+        if (product instanceof GetProductResultDto) {
+            GetProductResultDto dto = (GetProductResultDto) product;
+
+            assertThat(dto.getIuser()).isEqualTo(1);
+            assertThat(dto.getDeposit()).isEqualTo(700000);
+            assertThat(dto.getX()).isEqualTo(2.2);
+            assertThat(dto.getContents()).isEqualTo("test contents1");
+            assertThat(dto.getBuyDate()).isEqualTo(LocalDate.of(2022, 11, 30));
+            assertThat(dto.getY()).isEqualTo(1.1);
+        }
+        assertThat(product.getNick()).isEqualTo("마루야노올자");
+        assertThat(product.getAddr()).isEqualTo("대구 달서구 본리동 test addres1");
+        assertThat(product.getRentalPrice()).isEqualTo(10000);
+        assertThat(product.getTitle()).isEqualTo("test prod1");
+        assertThat(product.getUserStoredPic()).isNull();
+        assertThat(product.getProdMainStoredPic()).isEqualTo("test pic2");
+        assertThat(product.getRentalStartDate()).isEqualTo(LocalDate.of(2023, 10, 22));
+        assertThat(product.getRentalEndDate()).isEqualTo(LocalDate.of(2023, 12, 11));
     }
 }
