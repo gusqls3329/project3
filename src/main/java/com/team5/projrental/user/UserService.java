@@ -303,11 +303,10 @@ public class UserService {
                     }
                     if(!iproducts.isEmpty()) {
                         mapper.delUserProPic(iproducts);
-                        mapper.delUserPorc2(iproducts);
                     }
                     if(!iusers.isEmpty()) {
-                        mapper.delUserPorc(iusers);
-                        mapper.delUpUserPay(iusers);
+                        mapper.delLike(iusers);
+                        mapper.delRev(iusers);
                     }
                 }
 
