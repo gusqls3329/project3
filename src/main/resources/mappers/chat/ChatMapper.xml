@@ -5,15 +5,19 @@
     <insert id="insChat" useGeneratedKeys="true" keyProperty="ichat"> <!--빈 채팅방 생성-->
         INSERT INTO t_chat
         SET last_msg = NULL,<!-- 마지막 보낸 메세지가 없음 -->
-            iproduct = #{iproduct}
+        iproduct = #{iproduct}
     </insert>
-
 
 
     <insert id="insChatUser">
         INSERT INTO t_chat_user
-        SET ichat = #{ichat},
+        SET
+        <if test="ichat != null and ichat != '' ">
+            ichat = #{ichat},
+        </if>
+        <if test="iuser != null and iuser != '' ">
             iuser = #{iuser}
+        </if>
     </insert>
 
 
@@ -27,7 +31,9 @@
         SET ichat = #{ichat}, <!--채팅방 PK-->
         seq = #{seq}, <!--메세지 PK-->
         iuser = #{loginedIuser}, <!--메세지 보내는 사람-->
-        msg = #{msg} <!-- 메세지 내용-->
+        <if test="msg != null and msg != '' ">
+            msg = #{msg} <!-- 메세지 내용-->
+        </if>
     </insert>
 
 
@@ -104,7 +110,10 @@
 
     <update id="updChatLastMsg">
         UPDATE t_chat
-        SET last_msg = #{msg}
+        SET
+        <if test="msg != null">
+            last_msg = #{msg}
+        </if>
         WHERE ichat = #{ichat}
     </update>
 
@@ -157,7 +166,7 @@
         FROM t_user
         WHERE iuser = #{iuser}
     </select>
-    
+
     <select id="delBeforeChatIstatus">
         SELECT istatus
         FROM t_chat_user

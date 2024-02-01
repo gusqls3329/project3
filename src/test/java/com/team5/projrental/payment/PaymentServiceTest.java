@@ -83,7 +83,7 @@ class PaymentServiceTest {
                 new GetInfoForCheckIproductAndIuserResult(1, LocalDate.of(2025, 1, 1), 1, 2);
 
         when(authenticationFacade.getLoginUserPk()).thenReturn(1);
-        when(paymentRepository.checkIuserAndIproduct(any())).thenReturn(obj1);
+        when(paymentRepository.checkIuserAndIproduct(any(), any())).thenReturn(obj1);
 
 
     }

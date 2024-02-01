@@ -28,9 +28,9 @@
         <!--        set pa.istatus = 1-->
         <!--        WHERE pa.ipayment = #{ipayment}-->
 
-        update t_payment
+        update t_payment_status
         set istatus = 1
-        WHERE ipayment = #{ipayment}
+        where ipayment = #{ipayment}
     </update>
 
     <update id="upReview">
@@ -49,7 +49,7 @@
 
     <update id="delReview">
         update t_review r
-        JOIN t_payment p
+        JOIN t_payment_status p
         ON r.ipayment = p.ipayment
         SET r.contents = ''
         , r.rating = 0
@@ -59,8 +59,8 @@
 
     <select id="selReIstatus">
         SELECT istatus
-        FROM t_payment
-        WHERE ipayment = #{ipayment}
+        FROM t_payment_status
+        WHERE ipayment = #{ipayment} and iuser = #{iuser}
     </select>
 
     <select id="selReview">

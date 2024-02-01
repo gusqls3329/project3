@@ -8,7 +8,8 @@
         FROM t_payment PA
         JOIN t_product_payment PP ON PA.ipayment = PP.ipayment
         JOIN t_product P ON PP.iproduct = P.iproduct
-        WHERE PA.ibuyer = #{iuser} OR P.iuser = #{iuser} AND PA.istatus = -4
+        join t_payment_status PS on PA.ipayment = PS.ipayment
+        WHERE (PA.ibuyer = #{iuser} OR P.iuser = #{iuser}) AND PS.istatus = -4
     </select>
 
     <select id="findDiffUserBy">

@@ -27,6 +27,20 @@ public abstract class CommonUtils {
 
     //
 
+    /**
+     * 리턴을 위한 status 변환기
+     *
+     * 문제 istatus : -34(delete_seller_from_canceled), -35(delete_seller_from_canceled,
+     *                  14(delete_seller_from_canceled), 15(delete_seller_from_canceled)
+     *
+     * @param beforeStatus
+     * @return status for return
+     */
+    public static int paymentStatusResolver(int beforeStatus) {
+
+        return beforeStatus / 10 == 0 ? beforeStatus : beforeStatus / 10;
+    }
+
     public static boolean ifContainsBadWordTrue(String... words) {
         return Arrays.stream(words).anyMatch(badWordFiltering::blankCheck);
     }

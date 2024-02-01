@@ -22,12 +22,14 @@ public interface PaymentMapper {
 
     int insProductPayment(Integer iproduct, Integer ipayment);
 
-    GetInfoForCheckIproductAndIuserResult checkIuserAndIproduct(Integer ipayment);
+    GetInfoForCheckIproductAndIuserResult checkIuserAndIproduct(Integer ipayment, Integer iuser);
 
     int delPayment(DelPaymentDto delPaymentDto);
 
-    List<GetPaymentListResultDto> getPaymentList(GetPaymentListDto getPaymentListDto);
+    List<GetPaymentListResultDto> getPayment(GetPaymentListDto getPaymentListDto);
 
     // scheduler
     int updateIstatusOverRentalEndDate(LocalDate now);
+
+    int savePaymentStatus(Integer ipayment, Integer iseller);
 }

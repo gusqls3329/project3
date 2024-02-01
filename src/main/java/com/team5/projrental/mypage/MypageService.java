@@ -27,6 +27,10 @@ public class MypageService {
         int loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setIuser(loginUserPk);
 
+        if (dto.getIuser()==0) {
+
+        }
+
         List<MyBuyReviewListSelVo> list = mapper.getIbuyerReviewList(dto);
 
         return list;
