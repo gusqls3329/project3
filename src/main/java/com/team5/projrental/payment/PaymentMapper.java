@@ -26,7 +26,7 @@ public interface PaymentMapper {
 
     int delPayment(DelPaymentDto delPaymentDto);
 
-    List<GetPaymentListResultDto> getPayment(GetPaymentListDto getPaymentListDto);
+    GetPaymentListResultDto getPayment(GetPaymentListDto getPaymentListDto);
 
     // scheduler
     int updateIstatusOverRentalEndDate(LocalDate now);
