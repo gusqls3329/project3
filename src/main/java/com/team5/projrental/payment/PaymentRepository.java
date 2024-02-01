@@ -28,8 +28,8 @@ public class PaymentRepository {
         return paymentMapper.insProductPayment(iproduct, ipayment);
     }
 
-    public GetInfoForCheckIproductAndIuserResult checkIuserAndIproduct(Integer ipayment) {
-        return paymentMapper.checkIuserAndIproduct(ipayment);
+    public GetInfoForCheckIproductAndIuserResult checkIuserAndIproduct(Integer ipayment, Integer iuser) {
+        return paymentMapper.checkIuserAndIproduct(ipayment, iuser);
 
     }
 
@@ -39,11 +39,14 @@ public class PaymentRepository {
     }
 
     public List<GetPaymentListResultDto> findPaymentBy(GetPaymentListDto getPaymentListDto) {
-        return paymentMapper.getPaymentList(getPaymentListDto);
+        return paymentMapper.getPayment(getPaymentListDto);
     }
 
    public int updateStatusIfOverRentalEndDate(LocalDate now) {
         return paymentMapper.updateIstatusOverRentalEndDate(now);
     }
 
+    public int savePaymentStatus(Integer ipayment, Integer iseller) {
+        return paymentMapper.savePaymentStatus(ipayment, iseller);
+    }
 }

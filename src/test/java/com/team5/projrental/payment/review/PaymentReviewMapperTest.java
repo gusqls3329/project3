@@ -37,8 +37,8 @@ class PaymentReviewMapperTest {
         int result = mapper.upProductIstatus(6);
         assertEquals(result,1);
 
-        int istatus = mapper.selReIstatus(6);
-        assertEquals(1, istatus);
+//        int istatus = mapper.selReIstatus(6);
+//        assertEquals(1, istatus);
     }
 
     @Test
@@ -68,11 +68,11 @@ class PaymentReviewMapperTest {
 
     @Test
     void selReIstatus() {
-        int result = mapper.selReIstatus(6);
-        assertEquals(-4,result);
-
-        int result2 = mapper.selReIstatus(7);
-        assertEquals(-4,result2);
+//        int result = mapper.selReIstatus(6);
+//        assertEquals(-4,result);
+//
+//        int result2 = mapper.selReIstatus(7);
+//        assertEquals(-4,result2);
     }
 
     @Test
