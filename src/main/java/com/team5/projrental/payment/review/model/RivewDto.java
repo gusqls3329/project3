@@ -22,7 +22,7 @@ public class RivewDto {
     @Length(max = 2000)
     private String contents;
 
-
+    // 0점은 불가능
     @Range(min = 1, max = 5, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private Integer rating;
 

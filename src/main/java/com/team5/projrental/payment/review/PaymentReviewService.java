@@ -11,6 +11,7 @@ import com.team5.projrental.user.model.CheckIsBuyer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.team5.projrental.common.exception.ErrorCode.*;
 import static com.team5.projrental.common.exception.ErrorMessage.NO_SUCH_REVIEW_EX_MESSAGE;
@@ -22,7 +23,7 @@ import static com.team5.projrental.common.exception.ErrorMessage.REVIEW_ALREADY_
 public class PaymentReviewService {
     private final PaymentReviewMapper reviewMapper;
     private final AuthenticationFacade authenticationFacade;
-
+    @Transactional
     public int postReview(RivewDto dto) {
         int loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setIuser(loginUserPk);
@@ -56,7 +57,10 @@ public class PaymentReviewService {
                     UpRating uprating = new UpRating();
                     uprating.setIuser(chIuser);
                     uprating.setRating(averageRat);
-                    reviewMapper.upRating(uprating);
+                    int r = reviewMapper.upRating(uprating);
+                    if (r !=1){
+                        throw new RuntimeException();
+                    }
                 }
                 int countIstatus = reviewMapper.selUpProIs(dto.getIpayment());
 
@@ -82,7 +86,8 @@ public class PaymentReviewService {
         int loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setIuser(loginUserPk);
         RiviewVo check = reviewMapper.selPatchRev(dto.getIreview());
-        //수정하려는 유저가 구매자가 맞는지 판마자면 수정할 수 없음
+        //수정하려는 유저가 구매자가 맞는지
+
         CheckIsBuyer buyCheck = reviewMapper.selBuyRew(loginUserPk, check.getIpayment());
         if (buyCheck.getIsBuyer() == 1) {
             //수정전 리뷰를 작성한 사람이 iuser가 맞는지 확인
