@@ -133,6 +133,7 @@
         select PA.rental_start_date as rentalStartDate, PA.rental_end_date as rentalEndDate
         from t_payment PA
         JOIN t_product_payment PP ON PA.ipayment = PP.ipayment
+        join t_payment_status PS on PA.ipayment = PS.ipayment
         where PP.iproduct = #{iproduct}
         and rental_end_date >= #{refStartDate}
         and rental_start_date <![CDATA[<=]]> #{refEndDate}
