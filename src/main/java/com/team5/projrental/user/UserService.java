@@ -210,7 +210,7 @@ public class UserService {
             dto.setCompNm(null);
         }
         if(loginUserAuth == 2){
-            if (dto.getCompCode() < 1000000000 || dto.getCompCode() > 9999999999L) {
+            if (dto.getCompCode() !=0&& dto.getCompCode() < 1000000000 || dto.getCompCode() > 9999999999L) {
                 throw new BadInformationException(ILLEGAL_RANGE_EX_MESSAGE);
             }
 
