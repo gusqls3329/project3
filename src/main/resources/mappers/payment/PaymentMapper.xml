@@ -46,8 +46,8 @@
         from t_product_payment PPA
         join t_product P on P.iproduct = PPA.iproduct
         join t_payment PA on PA.ipayment = PPA.ipayment
-        join t_payment_status PS on PA.ipayment = PS.ipayment and (P.iuser = #{iuser} or PA.ibuyer = #{iuser})
-        where PA.ipayment = #{ipayment} and PS.istatus != -1
+        join t_payment_status PS on PA.ipayment = PS.ipayment
+        where PA.ipayment = #{ipayment} and PS.istatus != -1 and PS.iuser = #{iuser}
 
     </select>
 
@@ -86,9 +86,9 @@
         from t_payment PA
         join t_product_payment PP on PA.ipayment = PP.ipayment
         join t_product P on PP.iproduct = P.iproduct
-        join t_payment_status PS on PA.ipayment = PS.ipayment and (P.iuser = #{iuser} or PA.ibuyer = #{iuser})
+        join t_payment_status PS on PA.ipayment = PS.ipayment
         join t_user U on if(P.iuser = #{iuser}, PA.ibuyer = U.iuser, P.iuser = U.iuser)
-        where PS.istatus not in (-1) and PA.ipayment = #{ipayment}
+        where PS.istatus not in (-1) and PA.ipayment = #{ipayment} and PS.iuser = #{iuser}
 
 
 
