@@ -172,16 +172,6 @@ public class CleanPaymentService implements RefPaymentService {
         return new ResVo(istatusForUpdate);
     }
 
-    public List<PaymentListVo> getAllPayment(Integer role, int page) {
-        List<GetPaymentListResultDto> paymentBy = paymentRepository.findPaymentBy(new GetPaymentListDto(getLoginUserPk(), role, page, true));
-        CommonUtils.checkNullOrZeroIfCollectionThrow(NoSuchPaymentException.class, NO_SUCH_PAYMENT_EX_MESSAGE, paymentBy);
-        return paymentBy.stream().map(p -> new PaymentListVo(
-                p.getIuser(), p.getNick(), p.getUserStoredPic(),
-                p.getIpayment(), p.getIproduct(), p.getTitle(), p.getProdStoredPic(), p.getIstatus(), p.getRentalStartDate(),
-                p.getRentalEndDate(),
-                p.getRentalDuration(), p.getPrice(), p.getDeposit()
-        )).toList();
-    }
 
 
     public PaymentVo getPayment(Integer ipayment) {
@@ -192,7 +182,7 @@ public class CleanPaymentService implements RefPaymentService {
             // iuser 또는 ipayment 가 없으면 결과가 size 0 일 것
             aPayment = paymentRepository.findPaymentBy(
                     new GetPaymentListDto(getLoginUserPk(), Flag.ONE.getValue(), ipayment)
-            ).get(0);
+            );
         } catch (IndexOutOfBoundsException e) {
             throw new NoSuchPaymentException(NO_SUCH_PAYMENT_EX_MESSAGE);
         }

@@ -38,7 +38,7 @@ public class PaymentRepository {
         return paymentMapper.delPayment(delPaymentDto);
     }
 
-    public List<GetPaymentListResultDto> findPaymentBy(GetPaymentListDto getPaymentListDto) {
+    public GetPaymentListResultDto findPaymentBy(GetPaymentListDto getPaymentListDto) {
         return paymentMapper.getPayment(getPaymentListDto);
     }
 

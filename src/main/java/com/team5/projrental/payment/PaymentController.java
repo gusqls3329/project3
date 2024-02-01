@@ -67,42 +67,6 @@ public class PaymentController {
         return paymentService.delPayment(ipayment, div);
     }
 
-    @Operation(summary = "로그인한 유저가 구매중이거나 판매중인 결제 목록 조회",
-            description = "<strong>로그인한 유저가 구매중이거나 판매중인 결제 목록 전체 조회</strong><br>" +
-                    "[ [v] : 필수값 ]<br>" +
-                    "[v] role: <br>" +
-                    " ㄴ> 1: 로그인한 유저가 구매한 상품기준, 2: 로그인한 유저가 판매중인 상품기준<br>" +
-                    "[v] page: 페이징<br>" +
-                    "<br>" +
-                    "성공시: <br>" +
-                    "ipayment: 결제정보 PK<br>" +
-                    "iproduct: 상품 PK (해당 상품 페이지로 이동하는 용도)<br>" +
-                    "title: 상품의 제목<br>" +
-                    "pic: 상품의 대표 사진<br>" +
-                    "price: 전체 대여 기간동안 필요한 가격<br>" +
-                    "rentalStartDate: 제품 대여 시작일<br>" +
-                    "rentalEndDate: 제품 반납일<br>" +
-                    "deposit: 보증금" +
-                    "istatus: 제품 상태<br>" +
-                    " ㄴ> 0: 활성화 상태 , 1: 거래 완료됨, -2: 숨김 , -3: 취소됨 , -4: 기간지남 , 2: 제품 등록자가 취소 요청 , 3: 구매자가 취소 요청 <br>" +
-                    "iuser: 거래 상대 유저의 PK<br>" +
-                    "nick: 거래 상대 유저의 닉네임<br>" +
-                    "pic: 거래 상대 유저의 프로필 사진<br>" +
-                    "<br>" +
-                    "실패시: <br>" +
-                    "message: 에러 발생 사유<br>errorCode: 에러 코드")
-    @Validated
-    @GetMapping
-    public List<PaymentListVo> getAllPayment(@RequestParam
-                                             @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
-                                             @Range(min = 1, max = 2, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
-                                             Integer role,
-                                             @RequestParam
-                                             @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
-                                             @Min(value = 1, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
-                                             Integer page) {
-        return paymentService.getAllPayment(role, (page - 1) * Const.PROD_PER_PAGE);
-    }
 
     @Operation(summary = "특정 결제정보 조회",
             description = "<strong>특정 결제정보 조회</strong><br>" +
