@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team5.projrental.user.UserMapper">
-    <insert id="insUser" useGeneratedKeys="true" keyProperty="iuser" >
+    <insert id="insUser" useGeneratedKeys="true" keyProperty="iuser">
         INSERT INTO t_user
         SET addr = #{addr}
         <if test="iauth > 0">
-        , iauth = #{iauth}
+            , iauth = #{iauth}
         </if>
         , rest_addr = #{restAddr}
         , uid = #{uid}
@@ -82,7 +82,6 @@
             <if test="email != null and email != '' ">
                 ,email = #{email}
             </if>
-
         </set>
         where iuser = #{iuser}
     </update>
@@ -104,15 +103,7 @@
         or PA.ibuyer = #{iuser}
         and PS.istatus IN (1, -1, -3)
     </select>
-    <update id="delUpUserPay">
-        update t_payment
-        set ibuyer = null
-        where ibuyer in (
-        <foreach collection="iusers" item="iuser" separator=",">
-            iuser
-        </foreach>
-        )
-    </update>
+
 
     <delete id="delUserProPic">
         DELETE FROM t_pics
@@ -122,22 +113,13 @@
         </foreach>
         )
     </delete>
-
-    <delete id="delUserPorc2">
-        DELETE FROM t_product_payment
-        where iproduct  in (
-        <foreach collection="iproducts" item="iproduct" separator=",">
-            iproduct
-        </foreach>
-        )
+    <delete id="delLike">
+        delete from t_like
+        where iuser = #{iuser}
     </delete>
-    <delete id="delUserPorc">
-        DELETE FROM t_product
-        where iuser in (
-        <foreach collection="iusers" item="iuser" separator=",">
-            iuser
-        </foreach>
-        )
+    <delete id="delRev">
+        delete from t_review
+        where iuser = #{iuser}
     </delete>
 
     <!--    채팅 개수 가져오기 -> 채팅 개수가 1이상일 경우만 수행,
@@ -193,12 +175,12 @@
     <update id="changeCompInfo">
         update t_comp_info
         <set>
-        <if test="compCode != null and compCode > 0">
-            comp_code = #{compCode}
-        </if>
-        <if test="compNm != null">
-            , comp_nm = #{compNm}
-        </if>
+            <if test="compCode != null and compCode > 0">
+                comp_code = #{compCode}
+            </if>
+            <if test="compNm != null">
+                , comp_nm = #{compNm}
+            </if>
         </set>
     </update>
 </mapper>
