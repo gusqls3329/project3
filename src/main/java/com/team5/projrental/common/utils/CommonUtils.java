@@ -125,12 +125,12 @@ public abstract class CommonUtils {
         int subCategory = icategory.getSubCategory();
         if(subCategory < 0) thrown(IllegalCategoryException.class, ILLEGAL_CATEGORY_EX_MESSAGE);
         if (mainCategory == 1 || mainCategory == 2 || mainCategory == 4) {
-            if (subCategory < 4) {
+            if (subCategory <= 4) {
                 return;
             }
         }
         if (mainCategory == 3 || mainCategory == 5) {
-            if (subCategory < 5) {
+            if (subCategory <= 5) {
                 return;
             }
         }
