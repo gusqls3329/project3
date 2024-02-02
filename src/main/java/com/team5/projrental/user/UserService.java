@@ -283,6 +283,7 @@ public class UserService {
         throw new BadDateInfoException(AUTHENTICATION_FAIL_EX_MESSAGE);
     }
 
+    @Transactional
     public int patchUser(DelUserDto dto) {
         int loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setIuser(loginUserPk);
