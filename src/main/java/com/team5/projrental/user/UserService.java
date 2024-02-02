@@ -316,13 +316,14 @@ public class UserService {
                         iproducts.add(list.getIproduct());
                         iusers.add(list.getIuser());
                     }
+                    iusers.add(loginUserPk);
+
                     if(!iproducts.isEmpty()) {
                         mapper.delUserProPic(iproducts);
                     }
-                    if(!iusers.isEmpty()) {
                         mapper.delLike(iusers);
                         mapper.delRev(iusers);
-                    }
+
                 }
 
                 int result = mapper.delUser(dto);
