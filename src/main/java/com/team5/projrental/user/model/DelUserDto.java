@@ -13,7 +13,7 @@ public class DelUserDto {
     private int iuser;
 
     @NotBlank(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
-    @Length(min = 8, max = 15, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
+    @Length(min = 4, max = 15, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private String uid;
 
     @NotBlank(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
