@@ -273,10 +273,15 @@ public abstract class CommonUtils {
      * @param ex
      * @param err
      */
-    private static void thrown(Class<? extends RuntimeException> ex, ErrorCode err) {
+    private static void thrown(Class<? extends RuntimeException> ex,
+                               ErrorCode err) {
         try {
-            throw ex.getDeclaredConstructor(ErrorCode.class).newInstance(err);
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            throw ex.getDeclaredConstructor(ErrorCode.class)
+                    .newInstance(err);
+        } catch (InstantiationException
+                 | IllegalAccessException
+                 | InvocationTargetException
+                 | NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
     }
