@@ -27,9 +27,13 @@ public class ChangeUserDto {
 
     private String addr;
 
+    @Length(max = 30)
     private String restAddr;
 
+    @Length(max = 10, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private long compCode;
+
+    @Length(max = 20, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private String compNm;
 
     @Pattern(regexp = "\\w+@\\w+\\.\\w+(\\.\\w+)?", message = ErrorMessage.BAD_INFO_EX_MESSAGE)
