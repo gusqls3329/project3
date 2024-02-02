@@ -202,7 +202,7 @@ public class ProductController {
                     "실패시:<br>" +
                     "message: 에러 발생 사유<br>errorCode: 에러 코드")
     @Validated
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResVo postProduct(@RequestPart
                              @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
                              MultipartFile mainPic,
