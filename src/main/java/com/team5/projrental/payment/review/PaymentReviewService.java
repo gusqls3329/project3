@@ -50,6 +50,9 @@ public class PaymentReviewService {
                 }
 
                 if (buyCheck.getIsBuyer() == 1) {
+                    if(dto.getRating() ==null && (dto.getContents() == null || dto.getContents().equals(""))){
+                        throw new BadInformationException(ILLEGAL_EX_MESSAGE);
+                    }
                     int chIuser = reviewMapper.selUser(dto.getIpayment());
                     SelRatVo vo = reviewMapper.selRat(chIuser);
                     double average = (vo.getCountIre() - 1) * vo.getRating();
@@ -87,14 +90,11 @@ public class PaymentReviewService {
         dto.setIuser(loginUserPk);
         RiviewVo check = reviewMapper.selPatchRev(dto.getIreview());
         //수정하려는 유저가 구매자가 맞는지
-
         CheckIsBuyer buyCheck = reviewMapper.selBuyRew(loginUserPk, check.getIpayment());
         if (buyCheck.getIsBuyer() == 1) {
             //수정전 리뷰를 작성한 사람이 iuser가 맞는지 확인
-
             if (check.getIuser() == loginUserPk) {
                reviewMapper.upReview(dto);
-
                 if (buyCheck.getIsBuyer() == 1 && dto.getRating() != null) {
                     int chIuser = reviewMapper.selUser(check.getIpayment());
                     SelRatVo vo = reviewMapper.selRat(chIuser);
