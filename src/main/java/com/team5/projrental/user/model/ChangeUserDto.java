@@ -5,6 +5,7 @@ import com.team5.projrental.common.exception.ErrorMessage;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.web.multipart.MultipartFile;
 
 @Data
@@ -30,7 +31,7 @@ public class ChangeUserDto {
     @Length(max = 30)
     private String restAddr;
 
-    @Length(max = 10, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
+//  @Range(max = 10, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private long compCode;
 
     @Length(max = 20, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
