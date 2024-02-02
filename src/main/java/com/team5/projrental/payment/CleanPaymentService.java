@@ -223,14 +223,14 @@ public class CleanPaymentService implements RefPaymentService {
         }
         if (div == 3) {
             if (istatus == 0) {
-                if (role == Role.BUYER) {
-                    return 3;
-                }
-                if (role == Role.SELLER) {
-                    return 2;
-                }
-            }
-            if (istatus == 2 && role == Role.BUYER || istatus == 3 && role == Role.SELLER) {
+//                if (role == Role.BUYER) {
+//                    return 3;
+//                }
+//                if (role == Role.SELLER) {
+//                    return 2;
+//                }
+//            }
+//            if (istatus == 2 && role == Role.BUYER || istatus == 3 && role == Role.SELLER) {
                 return div * -1;
             }
         }

@@ -5,6 +5,7 @@ import com.team5.projrental.common.exception.ErrorMessage;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.web.multipart.MultipartFile;
 
 @Data
@@ -27,9 +28,13 @@ public class ChangeUserDto {
 
     private String addr;
 
+    @Length(max = 30)
     private String restAddr;
 
+//  @Range(max = 10, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private long compCode;
+
+    @Length(max = 20, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private String compNm;
 
     @Pattern(regexp = "\\w+@\\w+\\.\\w+(\\.\\w+)?", message = ErrorMessage.BAD_INFO_EX_MESSAGE)

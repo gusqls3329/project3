@@ -3,7 +3,9 @@ package com.team5.projrental.user;
 import com.team5.projrental.common.Const;
 import com.team5.projrental.common.SecurityProperties;
 import com.team5.projrental.common.exception.BadAddressInfoException;
+import com.team5.projrental.common.exception.BadDivInformationException;
 import com.team5.projrental.common.exception.BadWordException;
+import com.team5.projrental.common.exception.ErrorMessage;
 import com.team5.projrental.common.exception.base.*;
 import com.team5.projrental.common.exception.checked.FileNotContainsDotException;
 import com.team5.projrental.common.model.ResVo;
@@ -25,6 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -46,6 +49,7 @@ public class UserService {
     private final AxisGenerator axisGenerator;
     private final MyFileUtils myFileUtils;
 
+    @Transactional
     public int postSignup(UserSignupDto dto) {
 
         CommonUtils.ifContainsBadWordThrow(BadWordException.class, BAD_WORD_EX_MESSAGE,
@@ -96,13 +100,11 @@ public class UserService {
                 if (aa != 1) {
                     throw new BadInformationException(BAD_INFO_EX_MESSAGE);
                 }
-                int auth = authenticationFacade.getLoginUserAuth();
-                return auth;
+                return 2;
 
             }
             if (dto.getCompNm() == null && dto.getCompCode() == 0) {
-                int auth = authenticationFacade.getLoginUserAuth();
-                return auth;
+                return 1;
             }
         }
         throw new BadInformationException(BAD_INFO_EX_MESSAGE);
@@ -143,8 +145,12 @@ public class UserService {
     }
 
     public int getSignOut(HttpServletResponse res) {
-        cookieUtils.deleteCookie(res, "rt");
-        throw new BadInformationException(AUTHENTICATION_FAIL_EX_MESSAGE);
+        try {
+            cookieUtils.deleteCookie(res, "rt");
+        } catch (NullPointerException e) {
+            throw new BadInformationException(AUTHENTICATION_FAIL_EX_MESSAGE);
+        }
+        return 1;
     }
 
     public SigninVo getRefrechToken(HttpServletRequest req) {
@@ -181,6 +187,8 @@ public class UserService {
         if (vo == null) {
             throw new BadInformationException(NO_SUCH_USER_EX_MESSAGE);
         }
+
+        vo.setUid(vo.getUid().substring(0, 4) + "*".repeat(vo.getUid().substring(4).length()));
         return vo;
     }
 
@@ -275,6 +283,7 @@ public class UserService {
         throw new BadDateInfoException(AUTHENTICATION_FAIL_EX_MESSAGE);
     }
 
+    @Transactional
     public int patchUser(DelUserDto dto) {
         int loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setIuser(loginUserPk);
@@ -312,13 +321,14 @@ public class UserService {
                         iproducts.add(list.getIproduct());
                         iusers.add(list.getIuser());
                     }
+                    iusers.add(loginUserPk);
+
                     if(!iproducts.isEmpty()) {
                         mapper.delUserProPic(iproducts);
                     }
-                    if(!iusers.isEmpty()) {
                         mapper.delLike(iusers);
                         mapper.delRev(iusers);
-                    }
+
                 }
 
                 int result = mapper.delUser(dto);
@@ -335,7 +345,7 @@ public class UserService {
 
     public SelUserVo getUser(Integer iuser) {
         boolean checker = iuser == null || iuser == 0;
-        Integer actionIuser = checker ? authenticationFacade.getLoginUserPk() : iuser;
+        Integer actionIuser = checker ?  authenticationFacade.getLoginUserPk(): iuser;
 
         SelUserVo vo = mapper.selUser(actionIuser);
 
@@ -350,7 +360,6 @@ public class UserService {
     }
 
     public ResVo checkUserInfo(UserCheckInfoDto dto) { // div = 1 || nick = "..."
-
         return new ResVo(checkNickOrId(dto.getDiv(), dto.getDiv() == 1 ? dto.getNick() : dto.getUid()));
     }
 

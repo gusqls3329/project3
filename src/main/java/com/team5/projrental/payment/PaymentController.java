@@ -38,8 +38,8 @@ public class PaymentController {
                     "실패시: <br>" +
                     "message: 에러 발생 사유<br>errorCode: 에러 코드")
     @PostMapping
-    public ResVo postPayment(@Validated @RequestBody PaymentInsDto paymentInsDto) {
-        return paymentService.postPayment(paymentInsDto);
+    public ResVo postPayment(@Validated @RequestBody PaymentInsDto dto) {
+        return paymentService.postPayment(dto);
     }
 
     @Operation(summary = "결제 삭제 or 숨김 or 취소 요청",
@@ -47,11 +47,11 @@ public class PaymentController {
                     "[ [v] : 필수값 ]<br>" +
                     "[v] ipayment: 요청할 결제의 PK<br>" +
                     "[v] div: 삭제, 숨김, 취소 요청 식별값<br>" +
-                    "     ㄴ> 1: 삭제 요청, 2: 숨김 요청, 3: 취소 요청<br>" +
+                    "     ㄴ> 1: 삭제 요청, 3: 취소 요청<br>" +
                     "<br>" +
                     "성공시: <br>" +
                     "result: <br>" +
-                    " ㄴ> -1: 삭제됨, -2: 숨김, -3: 취소됨, 2: 제품 등록자가 취소 요청, 3: 구매자가 취소 요청<br>" +
+                    " ㄴ> -1: 삭제됨, -3: 취소됨<br>" +
                     "<br>" +
                     "실패시: <br>" +
                     "message: 에러 발생 사유<br>errorCode: 에러 코드")
@@ -62,6 +62,7 @@ public class PaymentController {
                             @Min(value = 1, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
                             Integer ipayment,
                             @RequestParam
+                            @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
                             @Range(min = 1, max = 3, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
                             Integer div) {
         return paymentService.delPayment(ipayment, div);

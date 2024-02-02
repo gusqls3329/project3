@@ -50,6 +50,9 @@ public class PaymentReviewService {
                 }
 
                 if (buyCheck.getIsBuyer() == 1) {
+                    if(dto.getRating() ==null && (dto.getContents() == null || dto.getContents().equals(""))){
+                        throw new BadInformationException(ILLEGAL_EX_MESSAGE);
+                    }
                     int chIuser = reviewMapper.selUser(dto.getIpayment());
                     SelRatVo vo = reviewMapper.selRat(chIuser);
                     double average = (vo.getCountIre() - 1) * vo.getRating();
@@ -88,13 +91,15 @@ public class PaymentReviewService {
         RiviewVo check = reviewMapper.selPatchRev(dto.getIreview());
         //수정하려는 유저가 구매자가 맞는지
 
+        if (check == null) {
+            throw new BadInformationException(BAD_INFO_EX_MESSAGE);
+        }
+
         CheckIsBuyer buyCheck = reviewMapper.selBuyRew(loginUserPk, check.getIpayment());
         if (buyCheck.getIsBuyer() == 1) {
             //수정전 리뷰를 작성한 사람이 iuser가 맞는지 확인
-
             if (check.getIuser() == loginUserPk) {
                reviewMapper.upReview(dto);
-
                 if (buyCheck.getIsBuyer() == 1 && dto.getRating() != null) {
                     int chIuser = reviewMapper.selUser(check.getIpayment());
                     SelRatVo vo = reviewMapper.selRat(chIuser);
@@ -120,7 +125,16 @@ public class PaymentReviewService {
         dto.setIuser(loginUserPk);
         //삭제전 리뷰를 작성한 사람이 iuser가 맞는지 확인
         RiviewVo check = reviewMapper.selPatchRev(dto.getIreview());
+        if (check == null) {
+            throw new BadInformationException(BAD_INFO_EX_MESSAGE);
+        }
         if (check.getIuser() == loginUserPk) {
+            //리뷰를 등록한 사람이 판매자일 경우 삭제불가능 처리
+            CheckIsBuyer buyCheck = reviewMapper.selBuyRew(loginUserPk, check.getIpayment());
+            CommonUtils.ifAnyNullThrow(BadInformationException.class, BAD_INFO_EX_MESSAGE, buyCheck);
+            if (buyCheck.getIsBuyer() == 0) {
+                throw new BadInformationException(ILLEGAL_EX_MESSAGE);
+            }
 
             // 리뷰를 삭제하기전 t_payment의 istatus를 확인해 삭제가능한 상태가 맞는지 확인
             Integer istatus = reviewMapper.selReIstatus(check.getIpayment(), loginUserPk);
