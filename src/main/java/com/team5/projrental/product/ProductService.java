@@ -2,10 +2,7 @@ package com.team5.projrental.product;
 
 import com.team5.projrental.common.aop.anno.CountView;
 import com.team5.projrental.common.aop.category.CountCategory;
-import com.team5.projrental.common.exception.BadMainPicException;
-import com.team5.projrental.common.exception.BadWordException;
-import com.team5.projrental.common.exception.IllegalProductPicsException;
-import com.team5.projrental.common.exception.NoSuchProductException;
+import com.team5.projrental.common.exception.*;
 import com.team5.projrental.common.exception.base.*;
 import com.team5.projrental.common.exception.checked.FileNotContainsDotException;
 import com.team5.projrental.common.model.ResVo;
@@ -284,6 +281,18 @@ public class ProductService implements RefProductService {
         if (mainPicFlag) {
             mainPicPath = fromDb.getStoredPic();
         }
+        // 날짜 검증
+        if (dto.getBuyDate() != null) {
+            CommonUtils.ifAfterThrow(BadDateInfoException.class, ILLEGAL_DATE_EX_MESSAGE,
+                    fromDb.getBuyDate(), dto.getBuyDate());
+        }
+        if (dto.getRentalEndDate() != null) {
+            CommonUtils.ifBeforeThrow(BadDateInfoException.class, ILLEGAL_DATE_EX_MESSAGE,
+                    dto.getRentalEndDate(), LocalDate.now());
+        }
+        CommonUtils.ifBeforeThrow(BadDateInfoException.class, RENTAL_END_DATE_MUST_BE_AFTER_THAN_RENTAL_START_DATE_EX_MESSAGE
+                , dto.getRentalEndDate() == null ? fromDb.getRentalEndDate() : dto.getRentalEndDate(),
+                dto.getRentalStartDate() == null ? fromDb.getRentalStartDate() : dto.getRentalStartDate());
 
         // 병합
         Integer price = dto.getPrice() == null ? fromDb.getPrice() : dto.getPrice();

@@ -31,7 +31,7 @@ public class ProductUpdDto {
     private Categories icategory;
     @Length(min = 2, max = 100)
     private String addr;
-    @Length(max = 20)
+    @Length(max = 30)
     private String restAddr;
     @Length(min = 2, max = 50)
     private String title;
@@ -45,7 +45,7 @@ public class ProductUpdDto {
     private Integer price;
     @Range(min = 100, max = Integer.MAX_VALUE, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private Integer rentalPrice;
-    @Range(min = 70, max = 100, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
+    @Range(min = 50, max = 100, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private Integer depositPer;
     @Min(1)
     private Integer inventory;

@@ -157,7 +157,9 @@ public class PaymentService implements RefPaymentService{
      */
     @Transactional
     public ResVo delPayment(Integer ipayment, Integer div) {
-
+        if (div == 2) {
+            throw new BadDivInformationException(BAD_DIV_INFO_EX_MESSAGE);
+        }
         // 데이터 검증
 //        CommonUtils.ifFalseThrow(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE,
 //                productRepository.findIproductCountBy(iproduct));

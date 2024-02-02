@@ -162,6 +162,7 @@ public class ProductController {
                                 @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
                                 @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
                                 int isubCategory,
+                                @PathVariable
                                 @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
                                 @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
                                 Integer iproduct) {
@@ -345,12 +346,15 @@ public class ProductController {
     @Validated
     @GetMapping("/disabled-date/{iproduct}")
     public List<LocalDate> getDisabledDate(@PathVariable
+                                           @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
                                            @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
                                            Integer iproduct,
                                            @RequestParam
+                                           @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
                                            @Range(min = 2000, max = 9999, message = ILLEGAL_RANGE_EX_MESSAGE)
                                            Integer y,
                                            @RequestParam
+                                           @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
                                            @Range(min = 1, max = 12, message = ILLEGAL_RANGE_EX_MESSAGE)
                                            Integer m) {
         return productService.getDisabledDate(iproduct, y, m);
