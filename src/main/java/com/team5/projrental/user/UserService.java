@@ -3,7 +3,9 @@ package com.team5.projrental.user;
 import com.team5.projrental.common.Const;
 import com.team5.projrental.common.SecurityProperties;
 import com.team5.projrental.common.exception.BadAddressInfoException;
+import com.team5.projrental.common.exception.BadDivInformationException;
 import com.team5.projrental.common.exception.BadWordException;
+import com.team5.projrental.common.exception.ErrorMessage;
 import com.team5.projrental.common.exception.base.*;
 import com.team5.projrental.common.exception.checked.FileNotContainsDotException;
 import com.team5.projrental.common.model.ResVo;
@@ -355,7 +357,6 @@ public class UserService {
     }
 
     public ResVo checkUserInfo(UserCheckInfoDto dto) { // div = 1 || nick = "..."
-
         return new ResVo(checkNickOrId(dto.getDiv(), dto.getDiv() == 1 ? dto.getNick() : dto.getUid()));
     }
 
