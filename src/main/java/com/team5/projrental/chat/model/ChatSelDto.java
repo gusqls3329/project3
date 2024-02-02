@@ -1,6 +1,7 @@
 package com.team5.projrental.chat.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
 import org.hibernate.validator.constraints.Range;
@@ -13,6 +14,7 @@ public class ChatSelDto {
     //@NotEmpty // null아니면서 빈문자("") 까지 안됨
 
     @Range(min = 1)
+    @Schema(defaultValue = "1")
     private int page;
 
     @JsonIgnore

@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -162,6 +163,7 @@ public class ProductController {
                                 @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
                                 @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
                                 int isubCategory,
+                                @PathVariable
                                 @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
                                 @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
                                 Integer iproduct) {
@@ -243,7 +245,7 @@ public class ProductController {
                     "result: 1<br><br>" +
                     "실패시: <br>" +
                     "message: 에러 발생 사유<br>errorCode: 에러 코드")
-    @PutMapping
+    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResVo putProduct(@RequestPart(required = false) MultipartFile mainPic,
                             @RequestPart(required = false) List<MultipartFile> pics,
                             @Validated @RequestPart ProductUpdDto dto) {
@@ -345,12 +347,15 @@ public class ProductController {
     @Validated
     @GetMapping("/disabled-date/{iproduct}")
     public List<LocalDate> getDisabledDate(@PathVariable
+                                           @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
                                            @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
                                            Integer iproduct,
                                            @RequestParam
+                                           @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
                                            @Range(min = 2000, max = 9999, message = ILLEGAL_RANGE_EX_MESSAGE)
                                            Integer y,
                                            @RequestParam
+                                           @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
                                            @Range(min = 1, max = 12, message = ILLEGAL_RANGE_EX_MESSAGE)
                                            Integer m) {
         return productService.getDisabledDate(iproduct, y, m);
