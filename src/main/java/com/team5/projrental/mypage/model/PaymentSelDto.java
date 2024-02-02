@@ -21,7 +21,7 @@ public class PaymentSelDto {
     private int startIdx;// 시작 인덱스 넘버
 
     @JsonIgnore
-    private int rowCount = 10;//페이지 당 일지 수
+    private int rowCount = 6;//페이지 당 일지 수
 
 
 
