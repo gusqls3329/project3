@@ -24,7 +24,7 @@ public class ChatSelDto {
     private int startIdx;
 
     @JsonIgnore
-    private int rowCount = 20;
+    private int rowCount = 10;
 
 
     public void setPage(int page) {
