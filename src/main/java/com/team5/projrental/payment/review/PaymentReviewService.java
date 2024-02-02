@@ -87,7 +87,9 @@ public class PaymentReviewService {
         dto.setIuser(loginUserPk);
         RiviewVo check = reviewMapper.selPatchRev(dto.getIreview());
         //수정하려는 유저가 구매자가 맞는지
-
+        if (check == null) {
+            throw new BadInformationException(BAD_INFO_EX_MESSAGE);
+        }
         CheckIsBuyer buyCheck = reviewMapper.selBuyRew(loginUserPk, check.getIpayment());
         if (buyCheck.getIsBuyer() == 1) {
             //수정전 리뷰를 작성한 사람이 iuser가 맞는지 확인
@@ -120,6 +122,9 @@ public class PaymentReviewService {
         dto.setIuser(loginUserPk);
         //삭제전 리뷰를 작성한 사람이 iuser가 맞는지 확인
         RiviewVo check = reviewMapper.selPatchRev(dto.getIreview());
+        if (check == null) {
+            throw new BadInformationException(BAD_INFO_EX_MESSAGE);
+        }
         if (check.getIuser() == loginUserPk) {
 
             // 리뷰를 삭제하기전 t_payment의 istatus를 확인해 삭제가능한 상태가 맞는지 확인
