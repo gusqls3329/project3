@@ -113,13 +113,23 @@
         </foreach>
         )
     </delete>
+
     <delete id="delLike">
         delete from t_like
-        where iuser = #{iuser}
+        where iuser in (
+        <foreach collection="iusers" item="iuser" separator=",">
+            iuser
+        </foreach>
+        )
     </delete>
+
     <delete id="delRev">
         delete from t_review
-        where iuser = #{iuser}
+        where iuser in (
+        <foreach collection="iusers" item="iuser" separator=",">
+            iuser
+        </foreach>
+        )
     </delete>
 
     <!--    채팅 개수 가져오기 -> 채팅 개수가 1이상일 경우만 수행,

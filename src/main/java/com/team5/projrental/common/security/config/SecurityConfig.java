@@ -6,6 +6,7 @@ import com.team5.projrental.common.security.filter.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -26,28 +27,31 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
+
                 .authorizeHttpRequests(auth -> auth.requestMatchers(
-                                        // 우선 임시로 전체 허용
-                                        "/**",
-                                        "/api/user/signup",
-                                        "/api/user/signin",
-                                        "/css/**",
-                                        "/static/**",
-                                        "/fimg/**",
-                                        "/api/user/id",
-                                        "/api/user/pw",
-                                        "/error",
-                                        "/err",
-                                        "index.html",
-                                        "/static/**",
-                                        "/",
-                                        "/swagger.html",
-                                        "/swagger-ui/**",
-                                        "/v3/api-docs/**",
-                                        "/api/user/refresh-token"
-                                ).permitAll()
-                                .anyRequest().authenticated()
-                )
+                        "/api/mypage/**",
+                        "/api/chat/**",
+                        "/api/pay/review",
+                        "/api/user/signout",
+                        "/api/user/fcm",
+                        "/api/user/refrech-token",
+                        "/api/user/firebase-token"
+                ).authenticated())
+                .authorizeHttpRequests(auth -> auth.requestMatchers(
+                        HttpMethod.PATCH, "/api/user").denyAll())
+                .authorizeHttpRequests(auth -> auth.requestMatchers(
+                        HttpMethod.GET, "/api/user"
+                ).authenticated())
+                .authorizeHttpRequests(auth -> auth.requestMatchers(
+                        HttpMethod.PUT, "/api/user"
+                ).authenticated())
+                .authorizeHttpRequests(auth -> auth.requestMatchers(
+                        "/api/pay/**"
+                ).authenticated())
+                .authorizeHttpRequests(auth -> auth.requestMatchers(
+                                "/api/prod"
+                        ).authenticated()
+                        .anyRequest().permitAll())
                 .exceptionHandling(ex -> {
                     ex.authenticationEntryPoint(new JwtAuthenticationEntryPoint());
                     ex.accessDeniedHandler(new JwtAccessDeniedHandler());

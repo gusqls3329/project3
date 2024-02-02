@@ -126,6 +126,12 @@ public class PaymentReviewService {
             throw new BadInformationException(BAD_INFO_EX_MESSAGE);
         }
         if (check.getIuser() == loginUserPk) {
+            //리뷰를 등록한 사람이 판매자일 경우 삭제불가능 처리
+            CheckIsBuyer buyCheck = reviewMapper.selBuyRew(loginUserPk, check.getIpayment());
+            CommonUtils.ifAnyNullThrow(BadInformationException.class, BAD_INFO_EX_MESSAGE, buyCheck);
+            if (buyCheck.getIsBuyer() == 0) {
+                throw new BadInformationException(ILLEGAL_EX_MESSAGE);
+            }
 
             // 리뷰를 삭제하기전 t_payment의 istatus를 확인해 삭제가능한 상태가 맞는지 확인
             Integer istatus = reviewMapper.selReIstatus(check.getIpayment(), loginUserPk);
