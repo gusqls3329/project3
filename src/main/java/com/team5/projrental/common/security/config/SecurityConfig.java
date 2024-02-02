@@ -27,8 +27,11 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth.requestMatchers(
+                                "/api/**", "/pic/**"
+                        ).denyAll()
+                )
+                .authorizeHttpRequests(auth -> auth.requestMatchers(
                                         // 우선 임시로 전체 허용
-                                        "/**",
                                         "/api/user/signup",
                                         "/api/user/signin",
                                         "/css/**",

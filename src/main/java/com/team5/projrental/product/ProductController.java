@@ -93,13 +93,13 @@ public class ProductController {
                     "message: 에러 발생 사유<br>errorCode: 에러 코드")
     @Validated
     @GetMapping
-    public List<ProductListVo> getProductList(@RequestParam(required = false)
+    public List<ProductListVo> getProductList(@RequestParam(name = "sort", required = false)
                                               @Range(min = 1, max = 2, message = BAD_SORT_EX_MESSAGE)
                                               Integer sort,
-                                              @RequestParam(required = false)
+                                              @RequestParam(name = "search", required = false)
                                               @Length(min = 2, message = ILLEGAL_RANGE_EX_MESSAGE)
                                               String search,
-                                              @RequestParam
+                                              @RequestParam("page")
                                               @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
                                               @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
                                               Integer page,
