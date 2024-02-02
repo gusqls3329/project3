@@ -27,6 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -48,6 +49,7 @@ public class UserService {
     private final AxisGenerator axisGenerator;
     private final MyFileUtils myFileUtils;
 
+    @Transactional
     public int postSignup(UserSignupDto dto) {
 
         CommonUtils.ifContainsBadWordThrow(BadWordException.class, BAD_WORD_EX_MESSAGE,
@@ -98,13 +100,11 @@ public class UserService {
                 if (aa != 1) {
                     throw new BadInformationException(BAD_INFO_EX_MESSAGE);
                 }
-                int auth = authenticationFacade.getLoginUserAuth();
-                return auth;
+                return 2;
 
             }
             if (dto.getCompNm() == null && dto.getCompCode() == 0) {
-                int auth = authenticationFacade.getLoginUserAuth();
-                return auth;
+                return 1;
             }
         }
         throw new BadInformationException(BAD_INFO_EX_MESSAGE);
