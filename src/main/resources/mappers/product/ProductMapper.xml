@@ -93,14 +93,15 @@
             </if>
         </where>
         <if test="sort == 2">
-            order by P.view desc
+            order by P.view desc,
         </if>
         <if test="sort == 1">
-            order by prodLike desc
+            order by prodLike desc,
         </if>
         <if test="sort == null">
-            order by P.iproduct desc
+            order by
         </if>
+        P.iproduct desc
         <if test="page != null and prodPerPage != null and prodPerPage != 0">
             limit #{page}, #{prodPerPage}
         </if>
