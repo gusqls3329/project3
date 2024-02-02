@@ -38,7 +38,8 @@ public class SecurityConfig {
                         "/api/user/firebase-token"
                 ).authenticated())
                 .authorizeHttpRequests(auth -> auth.requestMatchers(
-                        HttpMethod.PATCH, "/api/user").denyAll())
+                        HttpMethod.PATCH, "/api/user"
+                ).authenticated())
                 .authorizeHttpRequests(auth -> auth.requestMatchers(
                         HttpMethod.GET, "/api/user"
                 ).authenticated())
@@ -49,7 +50,19 @@ public class SecurityConfig {
                         "/api/pay/**"
                 ).authenticated())
                 .authorizeHttpRequests(auth -> auth.requestMatchers(
-                                "/api/prod"
+                                HttpMethod.DELETE, "/api/prod"
+                        ).authenticated()
+                )
+                .authorizeHttpRequests(auth -> auth.requestMatchers(
+                                HttpMethod.POST, "/api/prod"
+                        ).authenticated()
+                )
+                .authorizeHttpRequests(auth -> auth.requestMatchers(
+                                HttpMethod.PUT, "/api/prod"
+                        ).authenticated()
+                )
+                .authorizeHttpRequests(auth -> auth.requestMatchers(
+                                HttpMethod.PATCH, "/api/prod"
                         ).authenticated()
                         .anyRequest().permitAll())
                 .exceptionHandling(ex -> {
