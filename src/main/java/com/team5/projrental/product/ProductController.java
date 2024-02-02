@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -244,7 +245,7 @@ public class ProductController {
                     "result: 1<br><br>" +
                     "실패시: <br>" +
                     "message: 에러 발생 사유<br>errorCode: 에러 코드")
-    @PutMapping
+    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResVo putProduct(@RequestPart(required = false) MultipartFile mainPic,
                             @RequestPart(required = false) List<MultipartFile> pics,
                             @Validated @RequestPart ProductUpdDto dto) {
