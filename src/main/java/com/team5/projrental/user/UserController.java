@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,7 +33,7 @@ public class UserController {
         return service.checkUserInfo(dto);
     }
 
-    @PostMapping("/signup")
+    @PostMapping(value = "/signup", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "회원가입", description = "유저 회원가입, 권한이 리턴됨")
     @Parameters(value = {
             @Parameter(name="addr", description = "동/면/읍까지의 주소")
@@ -117,7 +118,7 @@ public class UserController {
             , @Parameter(name = "pic", description = "사진")
             , @Parameter(name = "phone", description = "휴대폰 번호 (형식 : 010-1111-2222)")
     })
-    @PutMapping
+    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResVo putUser(@RequestPart(required = false) @Validated ChangeUserDto dto,
                          @RequestParam(required = false) MultipartFile pic) {
         return new ResVo(service.putUser(dto, pic));
