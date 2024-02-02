@@ -143,8 +143,12 @@ public class UserService {
     }
 
     public int getSignOut(HttpServletResponse res) {
-        cookieUtils.deleteCookie(res, "rt");
-        throw new BadInformationException(AUTHENTICATION_FAIL_EX_MESSAGE);
+        try {
+            cookieUtils.deleteCookie(res, "rt");
+        } catch (NullPointerException e) {
+            throw new BadInformationException(AUTHENTICATION_FAIL_EX_MESSAGE);
+        }
+        return 1;
     }
 
     public SigninVo getRefrechToken(HttpServletRequest req) {
@@ -335,7 +339,7 @@ public class UserService {
 
     public SelUserVo getUser(Integer iuser) {
         boolean checker = iuser == null || iuser == 0;
-        Integer actionIuser = checker ? authenticationFacade.getLoginUserPk() : iuser;
+        Integer actionIuser = checker ?  authenticationFacade.getLoginUserPk(): iuser;
 
         SelUserVo vo = mapper.selUser(actionIuser);
 
