@@ -187,6 +187,8 @@ public class UserService {
         if (vo == null) {
             throw new BadInformationException(NO_SUCH_USER_EX_MESSAGE);
         }
+
+        vo.setUid(vo.getUid().substring(0, 4) + "*".repeat(vo.getUid().substring(4).length()));
         return vo;
     }
 
