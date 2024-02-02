@@ -51,7 +51,7 @@ public class PaymentController {
                     "<br>" +
                     "성공시: <br>" +
                     "result: <br>" +
-                    " ㄴ> -1: 삭제됨, -2: 숨김, -3: 취소됨, 2: 제품 등록자가 취소 요청, 3: 구매자가 취소 요청<br>" +
+                    " ㄴ> -1: 삭제됨, -2: 숨김, -3: 취소됨<br>" +
                     "<br>" +
                     "실패시: <br>" +
                     "message: 에러 발생 사유<br>errorCode: 에러 코드")
