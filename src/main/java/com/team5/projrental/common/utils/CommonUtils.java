@@ -21,7 +21,7 @@ import static com.team5.projrental.common.exception.ErrorCode.*;
 public abstract class CommonUtils {
 
     private static final BadWordFiltering badWordFiltering = new BadWordFiltering();
-    public static final List<String> filterWord = new ArrayList<>();
+    public static List<String> filterWord;
 
 
     //
@@ -41,17 +41,15 @@ public abstract class CommonUtils {
     }
 
     public static boolean ifContainsBadWordTrue(String... words) {
-        List<String> checkList = new ArrayList<>();
-        for (String word : words) {
+        for (int i = 0; i < words.length; i++) {
             for (String filter : filterWord) {
-                if (word.contains(filter)) {
-                    checkList.add(word.replace(filter, ""));
-                    break;
+                if (words[i].contains(filter)) {
+                    words[i] = words[i].replace(filter, "");
                 }
             }
-            checkList.add(word);
         }
-        return checkList.stream().anyMatch(badWordFiltering::check);
+        log.debug("[CommonUtils.ifContainsBadWordTrue()] words = {}", Arrays.toString(words));
+        return Arrays.stream(words).anyMatch(badWordFiltering::blankCheck);
     }
 
     public static void ifContainsBadWordThrow(Class<? extends RuntimeException> ex, ErrorCode err, String... words) {
