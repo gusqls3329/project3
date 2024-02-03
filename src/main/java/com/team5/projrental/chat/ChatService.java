@@ -82,13 +82,13 @@ public class ChatService {
                         .build();
 
                 Message message = Message.builder()
-                        .putData("type", "chat")
-                        .putData("json", body)
                         .setToken(otherPerson.getFirebaseToken())
-                        //.setNotification(noti) 이거 넣으면 채팅 입력시 메세지가 중복해서 2개씩 표현됨
+                        .setNotification(noti)
                         .build();
 
                 FirebaseMessaging.getInstance().sendAsync(message);
+
+
                 // Async 비동기 - 내가 움직이는것과 상관없이 상대방도 움직일 수 있음
                 // 동기 - 턴게임(장기, 체스) 내가 움직이면 상대방이 못움직임
                 // 스레드 - 동작단위 (게임 예 : 총게임에 캐릭터 한명한명)
