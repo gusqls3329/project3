@@ -10,10 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static com.team5.projrental.common.Const.*;
@@ -24,14 +21,16 @@ import static com.team5.projrental.common.exception.ErrorCode.*;
 public abstract class CommonUtils {
 
     private static final BadWordFiltering badWordFiltering = new BadWordFiltering();
+    public static final List<String> filterWord = new ArrayList<>();
+
 
     //
 
     /**
      * 리턴을 위한 status 변환기
-     *
+     * <p>
      * 문제 istatus : -34(delete_seller_from_canceled), -35(delete_seller_from_canceled,
-     *                  14(delete_seller_from_canceled), 15(delete_seller_from_canceled)
+     * 14(delete_seller_from_canceled), 15(delete_seller_from_canceled)
      *
      * @param beforeStatus
      * @return status for return
@@ -42,7 +41,17 @@ public abstract class CommonUtils {
     }
 
     public static boolean ifContainsBadWordTrue(String... words) {
-        return Arrays.stream(words).anyMatch(badWordFiltering::blankCheck);
+        List<String> checkList = new ArrayList<>();
+        for (String word : words) {
+            for (String filter : filterWord) {
+                if (word.contains(filter)) {
+                    checkList.add(word.replace(filter, ""));
+                    break;
+                }
+            }
+            checkList.add(word);
+        }
+        return checkList.stream().anyMatch(badWordFiltering::check);
     }
 
     public static void ifContainsBadWordThrow(Class<? extends RuntimeException> ex, ErrorCode err, String... words) {
@@ -60,7 +69,6 @@ public abstract class CommonUtils {
         return newStartDate.isBefore(refStartDate) && newEndDate.isBefore(refStartDate)
                 || newStartDate.isAfter(refEndDate) && newEndDate.isAfter(refEndDate);
     }
-
 
 
     /**
@@ -137,7 +145,7 @@ public abstract class CommonUtils {
 
         int mainCategory = icategory.getMainCategory();
         int subCategory = icategory.getSubCategory();
-        if(subCategory < 0) thrown(IllegalCategoryException.class, ILLEGAL_CATEGORY_EX_MESSAGE);
+        if (subCategory < 0) thrown(IllegalCategoryException.class, ILLEGAL_CATEGORY_EX_MESSAGE);
         if (mainCategory == 1 || mainCategory == 2 || mainCategory == 4) {
             if (subCategory <= 4) {
                 return;
@@ -179,7 +187,7 @@ public abstract class CommonUtils {
 
     public static boolean ifAllNullReturnFalse(Object... objs) {
         for (Object obj : objs) {
-            if(obj != null)
+            if (obj != null)
                 return true;
         }
         return false;
