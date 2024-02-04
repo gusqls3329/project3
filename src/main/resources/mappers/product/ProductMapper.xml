@@ -131,14 +131,14 @@
     </select>
     <!--    거래 불가능 날짜 가져오기-->
     <select id="findDisabledDatesBy">
-        select PA.rental_start_date as rentalStartDate, PA.rental_end_date as rentalEndDate
+        select distinct PA.rental_start_date as rentalStartDate, PA.rental_end_date as rentalEndDate
         from t_payment PA
         JOIN t_product_payment PP ON PA.ipayment = PP.ipayment
         join t_payment_status PS on PA.ipayment = PS.ipayment
         where PP.iproduct = #{iproduct}
         and rental_end_date >= #{refStartDate}
         and rental_start_date <![CDATA[<=]]> #{refEndDate}
-        and istatus in (0, -4, 2, 3)
+        and PS.istatus in (0, -4, 2, 3)
     </select>
 
     <select id="getProdEctPics">
