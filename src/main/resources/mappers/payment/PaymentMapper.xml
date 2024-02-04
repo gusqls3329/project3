@@ -96,7 +96,7 @@
 
     <update id="updateIstatusOverRentalEndDate">
         update t_payment_status PS join t_payment PA on PS.ipayment = PA.ipayment set PS.istatus = -4
-        where PA.rental_end_date <![CDATA[<=]]> #{now} and PS.istatus in (0, 2, 3)
+        where PA.rental_end_date <![CDATA[<=]]> #{now} and PS.istatus = 0
     </update>
 
     <insert id="savePaymentStatus">
