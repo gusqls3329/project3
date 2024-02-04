@@ -14,18 +14,15 @@ import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.security.AuthenticationFacade;
 import com.team5.projrental.common.utils.CommonUtils;
 import com.team5.projrental.payment.model.PaymentInsDto;
-import com.team5.projrental.payment.model.PaymentListVo;
 import com.team5.projrental.payment.model.PaymentVo;
 import com.team5.projrental.payment.model.proc.*;
 import com.team5.projrental.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -83,9 +80,9 @@ public class PaymentService implements RefPaymentService{
         // 이미 등록된 날짜에는 동일한 상품이 더이상 결제등록 되지 않도록 예외처리
         AtomicReference<Integer> inventoryCounter = new AtomicReference<>(depositInfo.getInventory());
         validationInfoFromProduct.forEach(o -> {
-            if (o.getRentalStartDate() == null || o.getRentalEndDate() == null) return;
+            if (o.getPaymentRentalStartDate() == null || o.getPaymentRentalEndDate() == null) return;
 
-            if (!CommonUtils.notBetweenChecker(o.getRentalStartDate(), o.getRentalEndDate(),
+            if (!CommonUtils.notBetweenChecker(o.getPaymentRentalStartDate(), o.getPaymentRentalEndDate(),
                     paymentInsDto.getRentalStartDate(), paymentInsDto.getRentalEndDate())) {
                 inventoryCounter.getAndSet(inventoryCounter.get() - 1);
             }

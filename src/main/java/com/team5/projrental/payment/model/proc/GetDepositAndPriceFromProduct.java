@@ -15,6 +15,8 @@ public class GetDepositAndPriceFromProduct {
     private Integer deposit;
     private Integer price;
     private Integer inventory;
-    private LocalDate rentalStartDate;
-    private LocalDate rentalEndDate;
+    private LocalDate paymentRentalStartDate;
+    private LocalDate paymentRentalEndDate;
+    private LocalDate productRentalStartDate;
+    private LocalDate productRentalEndDate;
 }
