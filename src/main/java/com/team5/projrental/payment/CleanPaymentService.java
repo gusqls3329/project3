@@ -86,8 +86,9 @@ public class CleanPaymentService implements RefPaymentService {
                 paymentInsDto.getRentalEndDate())) + 1);
         paymentInsDto.setPrice(depositInfo.getRentalPrice() * paymentInsDto.getRentalDuration());
         paymentInsDto.setCode(createCode());
-        paymentInsDto.setDeposit(CommonUtils.getDepositFromPer(paymentInsDto.getPrice(),
-                CommonUtils.getDepositPerFromPrice(depositInfo.getPrice(), depositInfo.getDeposit())));
+//        paymentInsDto.setDeposit(CommonUtils.getDepositFromPer(paymentInsDto.getPrice(),
+//                CommonUtils.getDepositPerFromPrice(depositInfo.getPrice(), depositInfo.getDeposit())));
+        paymentInsDto.setDeposit(depositInfo.getDeposit());
 
         if (paymentRepository.savePayment(paymentInsDto) != 0) {
             if (paymentRepository.saveProductPayment(paymentInsDto.getIproduct(), paymentInsDto.getIpayment()) != 0) {
