@@ -112,7 +112,7 @@ public class CommonAspect {
         return changedColumn;
     }
 
-    @AfterReturning("execution(* com.team5.projrental.payment.PaymentService.postPayment(..)) && args(dto)")
+    @AfterReturning("execution(* com.team5.projrental.payment.*Service.postPayment(..)) && args(dto)")
     public void deleteCache(JoinPoint joinPoint, PaymentInsDto dto) {
         log.debug("[deleteCache AOP] {}", joinPoint.getSignature());
         disabledCache.remove(dto.getIproduct());
@@ -124,7 +124,7 @@ public class CommonAspect {
         log.debug("[returnCacheIfContains] inCache: {}", inCache);
 
         return inCache != null && inCache.getY().equals(y) && inCache.getM().equals(m) ?
-                inCache :
+                inCache.getDisabledDate() :
                 joinPoint.proceed();
 
 
