@@ -61,13 +61,19 @@ public class CleanPaymentService implements RefPaymentService {
 
         // iproduct 는 문제 없음이 검증된 상태.
         // deposit 과 price, rental_price 는 join 할 경우 현재기준으로 조회되며, 모든 리스트에 값이 일정함. 따라서
-        GetDepositAndPriceFromProduct depositInfo = validationInfoFromProduct.get(0);
+        GetDepositAndPriceFromProduct productValidation = validationInfoFromProduct.get(0);
 
-        if (depositInfo.getIseller() == loginUserPk) throw new BadProductInfoException(BAD_PRODUCT_INFO_EX_MESSAGE);
+        if (productValidation.getIseller() == loginUserPk) throw new BadProductInfoException(BAD_PRODUCT_INFO_EX_MESSAGE);
 
+
+        // 거래 시작일이 제품의 거래시작일짜보다 이전이거나, 거래 종료일이 제품의 거래종료일짜보다 이후면 예외 발생
+        CommonUtils.ifBeforeThrow(BadDateInfoException.class, ILLEGAL_DATE_EX_MESSAGE,
+                paymentInsDto.getRentalStartDate(), productValidation.getRentalStartDate());
+        CommonUtils.ifAfterThrow(BadDateInfoException.class, ILLEGAL_DATE_EX_MESSAGE,
+                productValidation.getRentalEndDate(), paymentInsDto.getRentalEndDate());
 
         // 이미 등록된 날짜에는 동일한 상품이 더이상 결제등록 되지 않도록 예외처리
-        AtomicReference<Integer> inventoryCounter = new AtomicReference<>(depositInfo.getInventory());
+        AtomicReference<Integer> inventoryCounter = new AtomicReference<>(productValidation.getInventory());
         validationInfoFromProduct.forEach(o -> {
             if (o.getRentalStartDate() == null || o.getRentalEndDate() == null) return;
 
@@ -84,15 +90,15 @@ public class CleanPaymentService implements RefPaymentService {
         paymentInsDto.setIpaymentMethod(CommonUtils.ifPaymentMethodNotContainsThrowOrReturn(paymentInsDto.getPaymentMethod()));
         paymentInsDto.setRentalDuration(((int) ChronoUnit.DAYS.between(paymentInsDto.getRentalStartDate(),
                 paymentInsDto.getRentalEndDate())) + 1);
-        paymentInsDto.setPrice(depositInfo.getRentalPrice() * paymentInsDto.getRentalDuration());
+        paymentInsDto.setPrice(productValidation.getRentalPrice() * paymentInsDto.getRentalDuration());
         paymentInsDto.setCode(createCode());
 //        paymentInsDto.setDeposit(CommonUtils.getDepositFromPer(paymentInsDto.getPrice(),
-//                CommonUtils.getDepositPerFromPrice(depositInfo.getPrice(), depositInfo.getDeposit())));
-        paymentInsDto.setDeposit(depositInfo.getDeposit());
+//                CommonUtils.getDepositPerFromPrice(productValidation.getPrice(), productValidation.getDeposit())));
+        paymentInsDto.setDeposit(productValidation.getDeposit());
 
         if (paymentRepository.savePayment(paymentInsDto) != 0) {
             if (paymentRepository.saveProductPayment(paymentInsDto.getIproduct(), paymentInsDto.getIpayment()) != 0) {
-                if (paymentRepository.savePaymentStatus(paymentInsDto.getIpayment(), depositInfo.getIseller()) != 0) {
+                if (paymentRepository.savePaymentStatus(paymentInsDto.getIpayment(), productValidation.getIseller()) != 0) {
                     return new ResVo(paymentInsDto.getIpayment());
                 }
             }
@@ -180,7 +186,7 @@ public class CleanPaymentService implements RefPaymentService {
         // iuser 또는 ipayment 가 없으면 결과가 size 0 일 것
         GetPaymentListResultDto aPayment = paymentRepository.findPaymentBy(
                 new GetPaymentListDto(getLoginUserPk(), Flag.ONE.getValue(), ipayment));
-                CommonUtils.ifAllNotNullThrow(NoSuchPaymentException.class, NO_SUCH_PAYMENT_EX_MESSAGE);
+        CommonUtils.ifAllNotNullThrow(NoSuchPaymentException.class, NO_SUCH_PAYMENT_EX_MESSAGE);
         return new PaymentVo(aPayment);
     }
 
