@@ -14,7 +14,6 @@ import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.security.AuthenticationFacade;
 import com.team5.projrental.common.utils.CommonUtils;
 import com.team5.projrental.payment.model.PaymentInsDto;
-import com.team5.projrental.payment.model.PaymentListVo;
 import com.team5.projrental.payment.model.PaymentVo;
 import com.team5.projrental.payment.model.proc.*;
 import com.team5.projrental.product.ProductRepository;
@@ -29,7 +28,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static com.team5.projrental.common.Const.SUCCESS;
 import static com.team5.projrental.common.exception.ErrorCode.*;
 
 @Service
@@ -68,16 +66,16 @@ public class CleanPaymentService implements RefPaymentService {
 
         // 거래 시작일이 제품의 거래시작일짜보다 이전이거나, 거래 종료일이 제품의 거래종료일짜보다 이후면 예외 발생
         CommonUtils.ifBeforeThrow(BadDateInfoException.class, ILLEGAL_DATE_EX_MESSAGE,
-                paymentInsDto.getRentalStartDate(), productValidation.getRentalStartDate());
+                paymentInsDto.getRentalStartDate(), productValidation.getProductRentalStartDate());
         CommonUtils.ifAfterThrow(BadDateInfoException.class, ILLEGAL_DATE_EX_MESSAGE,
-                productValidation.getRentalEndDate(), paymentInsDto.getRentalEndDate());
+                productValidation.getProductRentalEndDate(), paymentInsDto.getRentalEndDate());
 
         // 이미 등록된 날짜에는 동일한 상품이 더이상 결제등록 되지 않도록 예외처리
         AtomicReference<Integer> inventoryCounter = new AtomicReference<>(productValidation.getInventory());
         validationInfoFromProduct.forEach(o -> {
-            if (o.getRentalStartDate() == null || o.getRentalEndDate() == null) return;
+            if (o.getPaymentRentalStartDate() == null || o.getPaymentRentalEndDate() == null) return;
 
-            if (!CommonUtils.notBetweenChecker(o.getRentalStartDate(), o.getRentalEndDate(),
+            if (!CommonUtils.notBetweenChecker(o.getPaymentRentalStartDate(), o.getPaymentRentalEndDate(),
                     paymentInsDto.getRentalStartDate(), paymentInsDto.getRentalEndDate())) {
                 inventoryCounter.getAndSet(inventoryCounter.get() - 1);
             }

@@ -16,10 +16,11 @@
 
     <!--    -->
     <select id="getValidationInfoFromProduct">
-        select P.iuser as iseller, P.rental_price as rentalPrice, P.deposit, P.price, P.inventory, PA.rental_start_date as
-        rentalStartDate,
-        PA.rental_end_date as
-        rentalEndDate
+        select P.iuser as iseller, P.rental_price as rentalPrice, P.deposit, P.price, P.inventory,
+        PA.rental_start_date as paymentRentalStartDate,
+        PA.rental_end_date as paymentRentalEndDate,
+        P.rental_start_date as productRentalStartDate,
+        P.rental_end_date as productRentalEndDate
         from t_product P
         left join t_product_payment PP on P.iproduct = PP.iproduct
         left join t_payment PA on PP.ipayment = PA.ipayment
@@ -52,7 +53,7 @@
     </select>
 
     <update id="delPayment">
-<!--        update t_payment set istatus = #{istatus} where ipayment = #{ipayment}-->
+        <!--        update t_payment set istatus = #{istatus} where ipayment = #{ipayment}-->
 
         update t_payment_status set istatus = #{istatus} where ipayment = #{ipayment} and iuser = #{loginIuser}
 
@@ -60,8 +61,8 @@
 
     <select id="getPayment">
 
-<!--        -->
-<!--        -->
+        <!--        -->
+        <!--        -->
         select
         U.iuser,
         U.nick,
@@ -89,7 +90,6 @@
         join t_payment_status PS on PA.ipayment = PS.ipayment
         join t_user U on if(P.iuser = #{iuser}, PA.ibuyer = U.iuser, P.iuser = U.iuser)
         where PS.istatus not in (-1) and PA.ipayment = #{ipayment} and PS.iuser = #{iuser}
-
 
 
     </select>
