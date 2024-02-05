@@ -96,7 +96,8 @@ public class CleanPaymentService implements RefPaymentService {
 
         if (paymentRepository.savePayment(paymentInsDto) != 0) {
             if (paymentRepository.saveProductPayment(paymentInsDto.getIproduct(), paymentInsDto.getIpayment()) != 0) {
-                if (paymentRepository.savePaymentStatus(paymentInsDto.getIpayment(), productValidation.getIseller()) != 0) {
+                if (paymentRepository.savePaymentStatus(paymentInsDto.getIpayment(), productValidation.getIseller()) != 0 &&
+                        paymentRepository.savePaymentStatus(paymentInsDto.getIpayment(), loginUserPk) != 0) {
                     return new ResVo(paymentInsDto.getIpayment());
                 }
             }
