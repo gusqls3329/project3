@@ -25,15 +25,13 @@
         ON
         <if test="role != null and role == 1">
             A.iuser = D.iuser
-            WHERE C.ibuyer = #{loginedIuser}
         </if>
         <if test="role != null and role == 2">
             C.ibuyer = D.iuser
-            WHERE A.iuser = #{loginedIuser}
         </if>
         and PS.iuser = #{loginedIuser}
         GROUP BY C.ipayment
-        ORDER BY B.ipayment DESC
+        ORDER BY C.ipayment DESC
         LIMIT 0, 10
     </select>
 
