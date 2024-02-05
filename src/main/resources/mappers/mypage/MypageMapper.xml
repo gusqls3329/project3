@@ -5,6 +5,8 @@
     <select id="getPaymentList">
         SELECT
         A.iproduct, A.title, A.stored_pic AS productStoredPic, A.deposit, A.iuser,
+        A.imain_category AS imainCategory,
+        A.isub_category AS isubCategory,
         C.ipayment, PS.istatus, C.ibuyer, C.price,
         C.rental_duration AS rentalDuration,
         C.rental_start_date AS rentalStartDate,
@@ -18,7 +20,7 @@
         ON A.iproduct = B.iproduct
         LEFT JOIN t_payment C
         ON B.ipayment = C.ipayment
-        join t_payment_status PS on C.ipayment = PS.ipayment and PS.istatus != -4
+        JOIN t_payment_status PS ON C.ipayment = PS.ipayment and PS.istatus != -1
         LEFT JOIN t_user D
         ON
         <if test="role != null and role == 1">
@@ -36,7 +38,10 @@
     </select>
 
     <select id="getIbuyerReviewList">
-        SELECT B.iuser, A.nick, A.stored_pic AS loginedUserPic, D.iproduct, D.title, D.stored_pic AS prodPic, B.ireview, B.rating, B.`contents`
+        SELECT B.iuser, A.nick, A.stored_pic AS loginedUserPic,
+        D.imain_category AS imainCategory,
+        D.isub_category AS isubCategory,
+        D.iproduct, D.title, D.stored_pic AS prodPic, B.ireview, B.rating, B.`contents`
         FROM t_user A
         LEFT JOIN t_review B
         ON A.iuser = B.iuser
@@ -56,7 +61,8 @@
         A.title,
         A.stored_pic AS prodPic,
         A.iproduct,
-        A.iproduct,
+        A.imain_category AS imainCategory,
+        A.isub_category AS isubCategory,
         B.iuser AS loginedIuser,
         B.nick,
         B.stored_pic AS pic
@@ -69,11 +75,13 @@
     </select>
 
     <select id="getAllReviewFromMyProduct">
-        select R.ireview, R.contents, R.rating, R.iuser, U.nick, U.stored_pic as userProfPic, P.iproduct
-        from t_product P
-        join t_product_payment PP on P.iproduct = PP.iproduct
-        join t_review R on PP.ipayment = R.ipayment
-        join t_user U on R.iuser = U.iuser
+        SELECT R.ireview, R.contents, R.rating, R.iuser, U.nick, U.stored_pic as userProfPic, P.iproduct,
+        P.imain_category AS imainCategory,
+        P.isub_category AS isubCategory
+        FROM t_product P
+        JOIN t_product_payment PP on P.iproduct = PP.iproduct
+        JOIN t_review R on PP.ipayment = R.ipayment
+        JOIN t_user U on R.iuser = U.iuser
         where P.iuser = #{iuser} and R.contents != '' and R.rating > 0
     </select>
 

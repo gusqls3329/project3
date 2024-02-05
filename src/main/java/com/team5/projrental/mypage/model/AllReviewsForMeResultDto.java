@@ -8,4 +8,5 @@ import lombok.Setter;
 @Setter
 public class AllReviewsForMeResultDto extends ReviewResultVo {
     private Integer iproduct;
+
 }

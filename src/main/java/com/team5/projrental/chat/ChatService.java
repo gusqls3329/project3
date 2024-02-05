@@ -48,8 +48,6 @@ public class ChatService {
         dto.setMsg(CommonUtils.ifContainsBadWordChangeThat(dto.getMsg()));
         int istatus = mapper.delBeforeChatIstatus(dto);
 
-
-        //상대유저가 채팅방 나갔을 경우 예외처리
         CommonUtils.ifChatUserStatusThrowOrReturn(istatus);
 
         int affectedRows = mapper.insChatMsg(dto);
@@ -57,11 +55,10 @@ public class ChatService {
             mapper.updChatLastMsg(dto);
         }
 
-        LocalDateTime now = LocalDateTime.now(); // 현재 날짜 구하기
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); // 포멧 정의
-        String createdAt = now.format(formatter); // 포멧 적용
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String createdAt = now.format(formatter);
 
-        //상대방의 firebaseToken값 필요. 나의 pic, iuser값 필요
         UserEntity otherPerson = mapper.selOtherPersonByLoginUser(dto);
 
 
@@ -77,8 +74,8 @@ public class ChatService {
                 String body = objectMapper.writeValueAsString(pushVo);
 
                 Notification noti = Notification.builder()
-                        .setTitle("chat") // 제목각성, 프론트에서 쓰는 분기용
-                        .setBody(body) // 내용
+                        .setTitle("chat")
+                        .setBody(body)
                         .build();
 
                 Message message = Message.builder()

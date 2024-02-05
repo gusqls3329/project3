@@ -14,4 +14,6 @@ public class MyBuyReviewListSelVo {
     @Schema(title = "상품 대표사진")
     private String prodPic; // 상품 대표사진
     private int iproduct; // 제품 PK
+    private int imainCategory;
+    private int isubCategory;
 }
