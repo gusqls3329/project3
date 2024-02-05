@@ -25,11 +25,11 @@
         ON
         <if test="role != null and role == 1">
             A.iuser = D.iuser
-            where C.ibuyer = #{loginedIuser}
+            where C.ibuyer = #{loginedIuser} AND A.iuser != #{loginedIuser}
         </if>
         <if test="role != null and role == 2">
             C.ibuyer = D.iuser
-            WHERE A.iuser = #{loginedIuser}
+            WHERE A.iuser = #{loginedIuser} and C.ibuyer != #{loginedIuser}
         </if>
         GROUP BY C.ipayment
         ORDER BY C.ipayment DESC
