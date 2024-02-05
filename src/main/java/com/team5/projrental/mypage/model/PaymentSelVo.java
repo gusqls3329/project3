@@ -1,5 +1,6 @@
 package com.team5.projrental.mypage.model;
 
+import com.team5.projrental.product.model.Categories;
 import lombok.Data;
 
 @Data
@@ -23,6 +24,22 @@ public class PaymentSelVo {
     private String targetNick; // 상대 닉네임
     private String userStoredPic; // 상대 프로필사진
 
-    private int imainCategory;
-    private int isubCategory;
+    //    private int imainCategory;
+    //    private int isubCategory;
+
+    private Categories icategory;
+
+    public void setImainCategory(int imainCategory) {
+        if (this.icategory == null) {
+            this.icategory = new Categories();
+        }
+        this.icategory.setMainCategory(imainCategory);
+    }
+
+    public void setIsubCategory(int isubCategory) {
+        if (this.icategory == null) {
+            this.icategory = new Categories();
+        }
+        this.icategory.setSubCategory(isubCategory);
+    }
 }

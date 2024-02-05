@@ -1,5 +1,6 @@
 package com.team5.projrental.mypage.model;
 
+import com.team5.projrental.product.model.Categories;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -14,6 +15,21 @@ public class MyBuyReviewListSelVo {
     @Schema(title = "상품 대표사진")
     private String prodPic; // 상품 대표사진
     private int iproduct; // 제품 PK
-    private int imainCategory;
-    private int isubCategory;
+//    private int imainCategory;
+//    private int isubCategory;
+    private Categories icategory;
+
+    public void setImainCategory(int imainCategory) {
+        if (this.icategory == null) {
+            this.icategory = new Categories();
+        }
+        this.icategory.setMainCategory(imainCategory);
+    }
+
+    public void setIsubCategory(int isubCategory) {
+        if (this.icategory == null) {
+            this.icategory = new Categories();
+        }
+        this.icategory.setSubCategory(isubCategory);
+    }
 }
