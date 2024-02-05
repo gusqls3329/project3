@@ -11,4 +11,6 @@ public class MyFavListSelVo {
     private int deposit; // 보증금
     private String nick; // 물건등록한 상대유저 닉네임
     private String pic; // 물건등록한 상대유저 프로필사진
+    private int imainCategory;
+    private int isubCategory;
 }

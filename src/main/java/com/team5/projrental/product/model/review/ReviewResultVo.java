@@ -17,4 +17,6 @@ public class ReviewResultVo {
     private Integer iuser;
     private String nick;
     private String userProfPic;
+    private int imainCategory;
+    private int isubCategory;
 }
