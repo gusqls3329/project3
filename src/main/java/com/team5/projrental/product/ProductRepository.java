@@ -1,5 +1,6 @@
 package com.team5.projrental.product;
 
+import com.team5.projrental.common.aop.model.DelCacheWhenCancel;
 import com.team5.projrental.product.model.CanNotRentalDateVo;
 import com.team5.projrental.product.model.Categories;
 import com.team5.projrental.product.model.ProductUpdDto;
@@ -138,5 +139,10 @@ public class ProductRepository implements RefProductRepository {
     @Override
     public List<Integer> getAllIproductsLimit(int limit) {
         return productMapper.getAllIproductsLimit(limit);
+    }
+
+    @Override
+    public List<DelCacheWhenCancel> checkStatusBothAndGetIproduct(int ipayment) {
+        return productMapper.checkStatusBothAndGetIproduct(ipayment);
     }
 }

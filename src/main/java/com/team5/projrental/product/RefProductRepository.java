@@ -1,6 +1,7 @@
 package com.team5.projrental.product;
 
 
+import com.team5.projrental.common.aop.model.DelCacheWhenCancel;
 import com.team5.projrental.product.model.CanNotRentalDateVo;
 import com.team5.projrental.product.model.Categories;
 import com.team5.projrental.product.model.ProductUpdDto;
@@ -68,4 +69,6 @@ public interface RefProductRepository {
     List<String> findSubPicsPathForDelBy(int iproduct);
 
     List<Integer> getAllIproductsLimit(int limit);
+
+    List<DelCacheWhenCancel> checkStatusBothAndGetIproduct(int ipayment);
 }

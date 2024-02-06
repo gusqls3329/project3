@@ -1,5 +1,6 @@
 package com.team5.projrental.product;
 
+import com.team5.projrental.common.aop.model.DelCacheWhenCancel;
 import com.team5.projrental.product.model.CanNotRentalDateVo;
 import com.team5.projrental.product.model.Categories;
 import com.team5.projrental.product.model.ProductUpdDto;
@@ -87,4 +88,6 @@ public interface ProductMapper {
 
     // cache 세팅용
     List<Integer> getAllIproductsLimit(int limit);
+
+    List<DelCacheWhenCancel> checkStatusBothAndGetIproduct(int ipayment);
 }

@@ -4,9 +4,11 @@ import com.team5.projrental.common.Const;
 import com.team5.projrental.common.aop.anno.CountView;
 import com.team5.projrental.common.aop.anno.Retry;
 import com.team5.projrental.common.aop.category.CountCategory;
+import com.team5.projrental.common.aop.model.DelCacheWhenCancel;
 import com.team5.projrental.common.aop.model.DisabledDateInfo;
 import com.team5.projrental.common.threadpool.MyThreadPoolHolder;
 import com.team5.projrental.payment.model.PaymentInsDto;
+import com.team5.projrental.payment.review.model.RivewDto;
 import com.team5.projrental.product.RefProductRepository;
 import com.team5.projrental.product.RefProductService;
 import com.team5.projrental.product.model.ProductVo;
@@ -116,6 +118,33 @@ public class CommonAspect {
     public void deleteCache(JoinPoint joinPoint, PaymentInsDto dto) {
         log.debug("[deleteCache AOP] {}", joinPoint.getSignature());
         disabledCache.remove(dto.getIproduct());
+    }
+
+    @AfterReturning(value = "execution(* com.team5.projrental.payment.*Service.delPayment(..)) && args(ipayment, div)",
+            argNames = "joinPoint,ipayment,div")
+    public void deleteCache(JoinPoint joinPoint, Integer ipayment, Integer div) {
+        if (div != 3) return;
+        log.debug("[deleteCache AOP] {}", joinPoint.getSignature());
+        internalDeleteCache(ipayment, -3);
+    }
+
+    @AfterReturning(value = "execution(* com.team5.projrental.payment.review.*Service.postReview(..)) && args(dto)")
+    public void deleteCache(JoinPoint joinPoint, RivewDto dto) {
+        log.debug("[deleteCache AOP] {}", joinPoint.getSignature());
+        internalDeleteCache(dto.getIpayment(), 1);
+    }
+
+    private void internalDeleteCache(Integer ipayment, Integer status) {
+        if (ipayment == null || status == null) {
+            return;
+        }
+        List<DelCacheWhenCancel> delCacheWhenCancel = productRepository.checkStatusBothAndGetIproduct(ipayment);
+        if (delCacheWhenCancel.size() == 2) {
+            if (delCacheWhenCancel.get(0).getStatus().equals(delCacheWhenCancel.get(1).getStatus()) &&
+                    delCacheWhenCancel.get(0).getStatus().equals(status)) {
+                disabledCache.remove(delCacheWhenCancel.get(0).getIproduct());
+            }
+        }
     }
 
     @Around(value = "execution(* com.team5.projrental.product.ProductController.getDisabledDate(..)) && args(iproduct, y, m)", argNames = "joinPoint,iproduct,y,m")

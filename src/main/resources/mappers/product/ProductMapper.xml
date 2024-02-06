@@ -330,4 +330,14 @@
     <select id="getAllIproductsLimit">
         select iproduct from t_product order by iproduct desc limit 0, #{limit}
     </select>
+
+    <select id="checkStatusBothAndGetIproduct">
+        select P.iproduct, PS.istatus
+        from t_payment_status PS
+        join t_payment PA on PS.ipayment = PA.ipayment
+        join t_product_payment PP on PA.ipayment = PP.ipayment
+        join t_product P on P.iproduct = PP.iproduct
+        where PS.ipayment = #{ipayment}
+
+    </select>
 </mapper>
