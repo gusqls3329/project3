@@ -294,6 +294,7 @@
         JOIN t_user U ON U.iuser = R.iuser
         where PP.iproduct = #{iproduct} and PS.istatus != -1 and PS.istatus != -2
         and R.contents != '' and R.rating > 0
+        GROUP BY R.ireview
         <if test="page != null and prodPerPage != null">
             limit #{page}, #{prodPerPage}
         </if>
