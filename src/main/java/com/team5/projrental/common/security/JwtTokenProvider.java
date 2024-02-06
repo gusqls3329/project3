@@ -46,7 +46,15 @@ public class JwtTokenProvider {
     public String generateRefreshToken(SecurityPrincipal principal) {
         return generateToken(principal, properties.getJwt().getRefreshTokenExpiry());
     }
+    private String generateToken(SecurityPrincipal principal, Long tokenValidMs) {
+        return Jwts.builder()
+                .claims(createClaims(principal))
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis() + tokenValidMs))
+                .signWith(spec)
+                .compact();
 
+    }
 
 
     public String getTokenFromHeader(HttpServletRequest request) {
@@ -59,10 +67,7 @@ public class JwtTokenProvider {
         return !getAllClaims(token).getExpiration().before(new Date());
     }
 
-    public Authentication getAuthentication(String token) {
-        UserDetails userDetails = getUserDetailsFromToken(token);
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
-    }
+
 
     public UserDetails getUserDetailsFromToken(String token) {
         Claims claims = getAllClaims(token);
@@ -75,16 +80,11 @@ public class JwtTokenProvider {
         }
         return new SecurityUserDetails(principal);
     }
-
-    private String generateToken(SecurityPrincipal principal, Long tokenValidMs) {
-        return Jwts.builder()
-                .claims(createClaims(principal))
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + tokenValidMs))
-                .signWith(spec)
-                .compact();
-
+    public Authentication getAuthentication(String token) {
+        UserDetails userDetails = getUserDetailsFromToken(token);
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
+
 
     private Claims createClaims(SecurityPrincipal principal) {
         String json;
