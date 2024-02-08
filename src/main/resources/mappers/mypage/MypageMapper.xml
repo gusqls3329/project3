@@ -59,7 +59,6 @@
         A.deposit,
         A.title,
         A.stored_pic AS prodPic,
-        A.iproduct,
         A.imain_category AS imainCategory,
         A.isub_category AS isubCategory,
         B.iuser AS loginedIuser,
@@ -68,7 +67,9 @@
         FROM t_product A
         LEFT JOIN t_user B
         ON A.iuser = B.iuser
-        WHERE A.iuser = #{loginedIuser}
+        JOIN t_like C
+        ON A.iproduct = C.iproduct
+        WHERE C.iuser = #{loginedIuser}
         ORDER BY A.updated_at DESC
         LIMIT #{startIdx}, #{rowCount}
     </select>
