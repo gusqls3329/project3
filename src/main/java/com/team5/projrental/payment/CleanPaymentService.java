@@ -2,6 +2,7 @@ package com.team5.projrental.payment;
 
 import com.team5.projrental.common.Flag;
 import com.team5.projrental.common.Role;
+import com.team5.projrental.common.aop.anno.NamedLock;
 import com.team5.projrental.common.exception.BadDivInformationException;
 import com.team5.projrental.common.exception.NoSuchPaymentException;
 import com.team5.projrental.common.exception.NoSuchProductException;
@@ -39,7 +40,8 @@ public class CleanPaymentService implements RefPaymentService {
     private final ProductRepository productRepository;
     private final AuthenticationFacade authenticationFacade;
 
-    @Transactional
+//    @Transactional
+    @NamedLock("postPayment")
     public ResVo postPayment(PaymentInsDto paymentInsDto) {
 
         int loginUserPk = getLoginUserPk();
