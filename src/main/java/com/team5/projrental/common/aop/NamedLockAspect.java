@@ -1,4 +1,4 @@
-package com.team5.projrental.common;
+package com.team5.projrental.common.aop;
 
 import com.team5.projrental.common.aop.anno.NamedLock;
 import com.team5.projrental.common.exception.ErrorCode;
