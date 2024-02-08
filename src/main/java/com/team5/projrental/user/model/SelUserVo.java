@@ -8,6 +8,7 @@ public class SelUserVo {
     private int y;
     private int x;
     private String addr;
+    private String restAddr;
     private String nick;
     private String storedPic;
     private String phone;

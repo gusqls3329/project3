@@ -144,7 +144,7 @@
     </delete>
     <!--    -->
     <select id="selUser">
-        SELECT y, x, nick, stored_pic as storedPic, phone, email, rating, CONCAT(addr, rest_addr) as addr, iauth
+        SELECT y, x, nick, stored_pic as storedPic, phone, email, rating, addr, rest_addr AS restAddr, iauth
         FROM t_user
         WHERE iuser = #{iuser}
     </select>
