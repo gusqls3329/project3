@@ -19,6 +19,7 @@ public class GetProductListResultDto {
 
     private Integer iproduct;
     private String addr;
+    private String restAddr;
     private String title;
     private String prodMainStoredPic;
     private Integer price;
