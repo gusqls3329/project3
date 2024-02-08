@@ -1,8 +1,6 @@
 package com.team5.projrental.common;
 
 import com.team5.projrental.common.aop.anno.NamedLock;
-import com.team5.projrental.common.exception.ErrorCode;
-import com.team5.projrental.common.exception.base.WrapRuntimeException;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -40,7 +38,7 @@ public class NamedLockAspect {
             String userLockName = namedLock.value();
             int timeoutSeconds = namedLock.timeout();
             try {
-                log.debug("DatabaseNamedLockWhenUserCallbackPattern.executeWithLock()");
+                log.debug("NamedLockAspect.executeWithLock()");
                 getLock(conn, userLockName, timeoutSeconds);
                 conn.setAutoCommit(false);
                 Object result = joinPoint.proceed();
