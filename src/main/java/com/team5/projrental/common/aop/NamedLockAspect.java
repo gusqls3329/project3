@@ -43,6 +43,7 @@ public class NamedLockAspect {
                 getLock(conn, userLockName, timeoutSeconds);
                 conn.setAutoCommit(false);
                 Object result = joinPoint.proceed();
+                log.debug("NamedLockAspect.withLock() result: {}", result);
                 conn.commit();
                 return result;
             } catch (Throwable e) {
@@ -62,6 +63,7 @@ public class NamedLockAspect {
             ps.setString(1, userLockName);
             ps.setInt(2, timeoutSeconds);
             checkResultSet(userLockName, ps, "GetLock_");
+            log.debug("NamedLockAspect.getLock() ps: {}", ps);
         }
     }
 
@@ -80,12 +82,12 @@ public class NamedLockAspect {
                 log.debug("NamedLockAspect.{}{}", type, userLockName);
                 throw new WrapRuntimeException(ErrorCode.SERVER_ERR_MESSAGE);
             }
-            if (rs.getInt(1) != 1) {
+            int result = rs.getInt(1);
+            log.debug("NamedLockAspect.checkResultSet() result: {}", result);
+            if (result != 1) {
                 log.debug("NamedLockAspect.{}{}", type, userLockName);
                 throw new WrapRuntimeException(ErrorCode.SERVER_ERR_MESSAGE);
             }
-
         }
-
     }
 }
