@@ -20,6 +20,10 @@ import java.sql.SQLException;
 @Slf4j
 public class NamedLockAspect {
 
+    /* TODO 2024-02-8 목 21:45
+        JPA 적용시 JPA 로 변경 (@Query)
+        --by Hyunmin
+    */
     private static final String GET_LOCK = "SELECT GET_LOCK(?, ?)";
     private static final String RELEASE_LOCK = "SELECT RELEASE_LOCK(?)";
     private static final String EX_MESSAGE = "LOCK FAIL";
