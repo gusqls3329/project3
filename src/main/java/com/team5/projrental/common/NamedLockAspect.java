@@ -1,6 +1,8 @@
 package com.team5.projrental.common;
 
 import com.team5.projrental.common.aop.anno.NamedLock;
+import com.team5.projrental.common.exception.ErrorCode;
+import com.team5.projrental.common.exception.base.WrapRuntimeException;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -24,7 +26,6 @@ public class NamedLockAspect {
     */
     private static final String GET_LOCK = "SELECT GET_LOCK(?, ?)";
     private static final String RELEASE_LOCK = "SELECT RELEASE_LOCK(?)";
-    private static final String EX_MESSAGE = "LOCK FAIL";
     private final DataSource dataSource;
 
     public NamedLockAspect(DataSource dataSource) {
@@ -76,10 +77,12 @@ public class NamedLockAspect {
                                 String type) throws SQLException {
         try (ResultSet rs = ps.executeQuery()) {
             if (!rs.next()) {
-                throw new RuntimeException(userLockName + ": " + type + EX_MESSAGE);
+                log.debug("NamedLockAspect.{}{}", type, userLockName);
+                throw new WrapRuntimeException(ErrorCode.SERVER_ERR_MESSAGE);
             }
             if (rs.getInt(1) != 1) {
-                throw new RuntimeException(userLockName + ": " + type + EX_MESSAGE);
+                log.debug("NamedLockAspect.{}{}", type, userLockName);
+                throw new WrapRuntimeException(ErrorCode.SERVER_ERR_MESSAGE);
             }
 
         }
