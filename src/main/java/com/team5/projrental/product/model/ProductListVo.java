@@ -25,6 +25,7 @@ public class ProductListVo {
     private LocalDate rentalStartDate;
     private LocalDate rentalEndDate;
     private String addr;
+    private String restAddr;
     private Integer prodLike;
     private Integer istatus;
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -45,6 +46,7 @@ public class ProductListVo {
         this.rentalStartDate = dto.getRentalStartDate();
         this.rentalEndDate = dto.getRentalEndDate();
         this.addr = dto.getAddr();
+        this.restAddr = dto.getRestAddr();
         this.prodLike = dto.getProdLike();
         this.userPic = dto.getUserStoredPic();
         this.prodMainPic = dto.getProdMainStoredPic();
@@ -66,6 +68,7 @@ public class ProductListVo {
         this.rentalStartDate = dto.getRentalStartDate();
         this.rentalEndDate = dto.getRentalEndDate();
         this.addr = dto.getAddr();
+        this.restAddr = dto.getRestAddr();
         this.prodLike = dto.getProdLike();
         this.userPic = dto.getUserStoredPic();
         this.prodMainPic = dto.getProdMainStoredPic();
