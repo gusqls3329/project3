@@ -6,7 +6,7 @@ app: #속성을 바꿀 수 있는 부분 들은 상수 처럼 쓰기 편하도�
     secret: akjw4egoiaj409gj2a094jg02984jgasegsegase9024jg09ftglk #JWT를 만들 때 쓰는 키, 길이가 짧으면 에러터짐
     header-scheme-name: authorization
     token-type: Bearer
-    access token-expiry: 7200000 #단위 : 밀리세컨드 7200000은 7200초(2시간) 엑세스 토큰
+    access-token-expiry: 7200000 #단위 : 밀리세컨드 7200000은 7200초(2시간) 엑세스 토큰
     refresh-token-expiry: 1296000000 # 15일 리프레시 토큰
 mybatis:
   mapper-locations: mappers/**/*.xml
@@ -16,9 +16,16 @@ springdoc:
 spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:3306/projrental2
+    url: jdbc:mariadb://localhost:3306/projrental3
     username: root
     password: green502
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
 
 logging:
   level:
@@ -46,6 +53,7 @@ api:
       header-key: "Authorization"
       header-value: "KakaoAK 7b5a7755251df2d95b48052980a5c025"
 
+
 ---
 spring:
   datasource:
@@ -63,8 +71,16 @@ spring:
     multipart:
       max-file-size: 50MB
       max-request-size: 150MB
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
 file:
   base-package: /home/download/
+
 
 
 
