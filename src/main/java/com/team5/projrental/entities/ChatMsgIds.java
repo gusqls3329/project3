@@ -2,18 +2,20 @@ package com.team5.projrental.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 
-@Data
+@Getter
+@Setter
 @Embeddable
 @EqualsAndHashCode
-public class ChatUserIds implements Serializable {
-
-    private Long ichat;
+public class ChatMsgIds implements Serializable {
+    private Long idm;
 
     @Column(columnDefinition = "BIGINT UNSIGNED")
-    private Long iuser;
+    private Long seq;
+
 }

@@ -1,14 +1,28 @@
 package com.team5.projrental.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import lombok.Data;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "t_chat_user")
 public class ChatUser {
-    private Long ichat;
-    private Long iuser;
+
+    @EmbeddedId
+    private ChatUserIds chatUserIds;
+
+    @ManyToOne
+    @MapsId("iuser")
+    @JoinColumn(columnDefinition = "BIGINT UNSIGNED", name = "iuser")
+    private User user;
+
+    @ManyToOne
+    @MapsId("ichat")
+    @JoinColumn(columnDefinition = "BIGINT UNSIGNED", name = "ichat")
+    private Chat chat;
+
+    @Column(columnDefinition = "BIGINT")
     private Long istatus;
 }
