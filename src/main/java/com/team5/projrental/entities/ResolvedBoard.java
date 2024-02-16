@@ -1,6 +1,5 @@
 package com.team5.projrental.entities;
 
-import com.team5.projrental.entities.inheritance.Users;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,17 +7,16 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class ResolvedProduct{
+public class ResolvedBoard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long iresolvedProduct;
+    private Long iresolvedBoard;
 
     @ManyToOne
-    @JoinColumn(name = "iadmin")
+    @JoinColumn(name = "iuser")
     private Admin admin;
 
     @OneToOne
-    @JoinColumn(name = "iproduct")
-    private Product product;
-
+    @JoinColumn(name = "iboard")
+    private Board board;
 }
