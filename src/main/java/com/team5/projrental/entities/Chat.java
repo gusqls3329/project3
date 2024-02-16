@@ -7,7 +7,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 @Data
 @Entity
-@Table(name = "t_chat")
 public class Chat extends CreatedAt {
 
     @Id
@@ -16,7 +15,6 @@ public class Chat extends CreatedAt {
     private Long ichat;
 
     @ManyToOne
-    @MapsId("iproduct")
     @JoinColumn(columnDefinition = "BIGINT UNSIGNED")
     private Product product;
 

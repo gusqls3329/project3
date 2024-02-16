@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Embeddable
 @EqualsAndHashCode
 public class ChatMsgIds implements Serializable {
-    private Long idm;
+    private Long ichat;
 
     @Column(columnDefinition = "BIGINT UNSIGNED")
     private Long seq;

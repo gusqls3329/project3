@@ -7,22 +7,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "t_chat_user")
 public class ChatUser {
 
     @EmbeddedId
     private ChatUserIds chatUserIds;
 
-    @ManyToOne
-    @MapsId("iuser")
-    @JoinColumn(columnDefinition = "BIGINT UNSIGNED", name = "iuser")
-    private User user;
-
-    @ManyToOne
-    @MapsId("ichat")
-    @JoinColumn(columnDefinition = "BIGINT UNSIGNED", name = "ichat")
-    private Chat chat;
-
-    @Column(columnDefinition = "BIGINT")
+    @Column(columnDefinition = "BIGINT", nullable = false)
     private Long istatus;
 }
