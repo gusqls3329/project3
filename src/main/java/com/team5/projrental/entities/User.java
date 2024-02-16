@@ -11,8 +11,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(uniqueConstraints = { @UniqueConstraint(columnNames = {"uid", "provider_type"})})
-
 public class User extends Users {
 
     @Embedded
