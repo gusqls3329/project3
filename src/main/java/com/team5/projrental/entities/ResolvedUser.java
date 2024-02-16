@@ -10,12 +10,15 @@ import lombok.Setter;
 @Entity
 public class ResolvedUser{
     @Id
-    @Column(columnDefinition = "BIGINT UNSIGNED")
     @GeneratedValue(strategy = GenerationType.IDENTITY) //MySql에서 mariaDb에서 사용
-    private Long iuser;
-    //iresolved_user
+    private Long iresolvedUser;
+
     @ManyToOne
     @JoinColumn(name = "iadmin")
     private Admin admin;
+
+    @ManyToOne
+    @JoinColumn(name = "iuser")
+    private User user;
 
 }
