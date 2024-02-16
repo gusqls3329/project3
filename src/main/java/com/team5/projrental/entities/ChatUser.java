@@ -1,14 +1,17 @@
 package com.team5.projrental.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import lombok.Data;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
-@Table(name = "t_chat_user")
 public class ChatUser {
-    private Long ichat;
-    private Long iuser;
+
+    @EmbeddedId
+    private ChatUserIds chatUserIds;
+
+    @Column(columnDefinition = "BIGINT", nullable = false)
     private Long istatus;
 }

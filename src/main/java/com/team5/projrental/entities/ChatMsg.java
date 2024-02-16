@@ -1,18 +1,17 @@
 package com.team5.projrental.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.team5.projrental.entities.mappedsuper.CreatedAt;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "t_chat_msg")
-public class ChatMsg {
+public class ChatMsg extends CreatedAt {
 
-    private Long ichat;
-    private Long iuser;
-    private Long seq;
+    @EmbeddedId
+    private ChatMsgIds chatMsgIds;
+
+    @Column(length = 2000, nullable = false)
     private String msg;
     //createdAt
 }

@@ -25,5 +25,4 @@ public class Users extends BaseAt {
     private String upw;
     private String phone;
     private String email;
-    private UsersStatus status;
 }
