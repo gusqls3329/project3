@@ -14,7 +14,7 @@ import lombok.Setter;
 public class Board extends BaseAt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(columnDefinition = "BIGINT UNSIGNED")
+    @Column(nullable = false, columnDefinition = "BIGINT UNSIGNED")
     private Long iboard;
 
     @ManyToOne

@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-/*@Getter
+@Getter
 @Setter
 @Entity
 public class BoardLike extends CreatedAt {
@@ -17,11 +17,11 @@ public class BoardLike extends CreatedAt {
 
     @ManyToOne
     @MapsId("iuser")
-    @JoinColumn(name = "iuser", nullable = false, columnDefinition = "BIGINT UNSIGNED")
+    @JoinColumn(name = "iuser", nullable = false)
     private Users users;
 
     @ManyToOne
     @MapsId("iboard")
-    @JoinColumn(name = "iboard", nullable = false, columnDefinition = "BIGINT UNSIGNED")
+    @JoinColumn(nullable = false, columnDefinition = "BIGINT UNSIGNED")
     private Board board;
-}*/
+}

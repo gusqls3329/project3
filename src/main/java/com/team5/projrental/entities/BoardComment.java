@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-/*@Getter
+@Getter
 @Setter
 @Entity
 public class BoardComment extends BaseAt {
@@ -21,10 +21,10 @@ public class BoardComment extends BaseAt {
     private Board board;
 
     @ManyToOne
-    @JoinColumn(name = "iuser", nullable = false, columnDefinition = "BIGINT UNSIGNED")
+    @JoinColumn(name = "iuser", nullable = false)
     private Users users;
 
     @Column(nullable = false)
     private String comment;
 
-}*/
+}
