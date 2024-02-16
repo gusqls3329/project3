@@ -20,9 +20,6 @@ public class Comp  extends Users {
     @JoinColumn(name = "iadmin")
     private Admin admin;
 
-    @Enumerated(EnumType.STRING)
-    private ProvideType provideType;
-
     private Long compCode;
     private String compNm;
     private Long cash;
