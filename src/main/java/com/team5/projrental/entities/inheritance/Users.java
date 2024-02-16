@@ -12,7 +12,6 @@ import lombok.Setter;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity
 @DiscriminatorColumn
-@Table( uniqueConstraints = { @UniqueConstraint(columnNames = {"uid"})})
 public class Users extends BaseAt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +20,7 @@ public class Users extends BaseAt {
     @Enumerated(EnumType.STRING)
     private Auth auth;
 
+    @Column(unique = true)
     private String uid;
     private String upw;
     private String phone;
