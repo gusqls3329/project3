@@ -16,7 +16,7 @@ public class BaseUser  {
     private Address address;
     private String nick;
     private String storedPic;
-    private boolean rating;
+    private Boolean rating;
     private String verification;
     private Long compCode;
     private String compNm;
