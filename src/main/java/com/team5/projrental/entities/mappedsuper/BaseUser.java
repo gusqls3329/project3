@@ -1,5 +1,6 @@
 package com.team5.projrental.entities.mappedsuper;
 
+import com.team5.projrental.entities.VerificationInfo;
 import com.team5.projrental.entities.embeddable.Address;
 import com.team5.projrental.entities.enums.UsersStatus;
 import jakarta.persistence.*;
@@ -18,4 +19,8 @@ public class BaseUser  {
     private String verification;
     @Enumerated(EnumType.STRING)
     private UsersStatus status;
+
+    @OneToOne
+    @JoinColumn(name = "iverification_info")
+    private VerificationInfo verificationInfo;
 }

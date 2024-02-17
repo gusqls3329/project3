@@ -50,6 +50,8 @@ public interface Const {
 
     int ADD_MONTH_NUM_FOR_DISABLED_DATE = 1; // 2개월치 조회시 1 필요, 3개월치 조회시 2 필요 ...
     int DISABLED_CACHE_MAX_NUM = 50;
+    int ACTIVATED_CACHE_MAX_NUM = 50;
+    int SEARCH_ACTIVATED_MONTH_DURATION = 2;
 //    long SSE_TIMEOUT_TIME = 300000;
     long SSE_TIMEOUT_TIME = 30000;
     long SSE_RECONNECT_TIME = SSE_TIMEOUT_TIME - 100;
@@ -116,6 +118,7 @@ public interface Const {
     String CATEGORY_USER = "user";
     String CATEGORY_PRODUCT_SUB = "prod";
     String CATEGORY_PRODUCT_MAIN = "prod/main";
+
 
 
 }
