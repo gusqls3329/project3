@@ -1,5 +1,6 @@
 package com.team5.projrental.entities;
 
+import com.team5.projrental.entities.mappedsuper.CreatedAt;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,7 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class VerificationInfo {
+public class VerificationInfo extends CreatedAt {
 
     @Id
     @Column(unique = true)
