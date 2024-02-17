@@ -10,11 +10,11 @@ import lombok.Setter;
 @Setter
 @Entity
 public class BoardPic extends CreatedAt {
-    @EmbeddedId
-    private BoardPicIds boardPicIds;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long ipics;
 
     @ManyToOne
-    @MapsId("iboard")
     @JoinColumn(name = "iboard", columnDefinition = "BIGINT UNSIGNED")
     private Board board;
 

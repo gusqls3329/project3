@@ -1,4 +1,4 @@
-package com.team5.projrental.entities;
+package com.team5.projrental.entities.ids;
 
 
 import com.team5.projrental.entities.inheritance.Users;

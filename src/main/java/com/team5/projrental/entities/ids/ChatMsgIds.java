@@ -1,4 +1,4 @@
-package com.team5.projrental.entities;
+package com.team5.projrental.entities.ids;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -13,7 +13,8 @@ import java.io.Serializable;
 @Embeddable
 @EqualsAndHashCode
 public class ChatMsgIds implements Serializable {
-    private Long ichat;
+
+    private Long ichatUser;
 
     @Column(columnDefinition = "BIGINT UNSIGNED")
     private Long seq;

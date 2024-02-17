@@ -15,7 +15,7 @@ public class Notification extends BaseAt {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long inoti;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "iadmin")
     private Admin admin;
 

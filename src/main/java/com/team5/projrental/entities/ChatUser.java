@@ -1,5 +1,7 @@
 package com.team5.projrental.entities;
 
+import com.team5.projrental.entities.enums.ChatUserStatus;
+import com.team5.projrental.entities.inheritance.Users;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,9 +11,18 @@ import lombok.Setter;
 @Entity
 public class ChatUser {
 
-    @EmbeddedId
-    private ChatUserIds chatUserIds;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long ichatUser;
 
-    @Column(columnDefinition = "BIGINT", nullable = false)
-    private Long istatus;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "ichat")
+    private Chat chat;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "iusers")
+    private Users users;
+
+    @Enumerated(EnumType.STRING)
+    private ChatUserStatus status;
 }

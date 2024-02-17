@@ -18,9 +18,10 @@ public class Recharge extends CreatedAt {
     private Long irecharge;
 
     @ManyToOne
-    @JoinColumn(name = "iuser")
+    @JoinColumn(name = "icomp")
     private Comp comp;
 
+    @Enumerated(EnumType.STRING)
     private PaymentMethod method;
 
     private Integer cash;

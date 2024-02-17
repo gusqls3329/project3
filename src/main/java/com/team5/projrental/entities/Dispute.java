@@ -23,16 +23,20 @@ public class Dispute {
     private Admin admin;
 
     @ManyToOne
-    @JoinColumn(name = "iuser")
-    private User user;
+    @JoinColumn(name = "ireported_user")
+    private Users reportedUsers;
 
     @ManyToOne
     @JoinColumn(name = "ireporter")
     private Users users;
 
+    @Enumerated(EnumType.STRING)
     private DisputeCategory category;
+
     private String details;
     private byte penalty;
+
+    @Enumerated(EnumType.STRING)
     private DisputeStatus status;
 
 }

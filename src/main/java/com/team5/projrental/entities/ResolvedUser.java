@@ -18,7 +18,7 @@ public class ResolvedUser{
     private Admin admin;
 
     @OneToOne
-    @JoinColumn(name = "iuser")
-    private User user;
+    @JoinColumn(name = "iusers")
+    private Users users;
 
 }
