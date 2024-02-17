@@ -38,7 +38,7 @@ public class Scheduler {
         QPaymentInfo paymentInfo = QPaymentInfo.paymentInfo;
         List<PaymentInfo> findPaymentInfo = query.select(paymentInfo)
                 .from(paymentInfo)
-                .where(paymentInfo.payment.createdAt.loe(LocalDateTime.now()), paymentInfo.status.eq(PaymentInfoStatus.ACTIVATED))
+                .where(paymentInfo.payment.createdAt.loe(LocalDateTime.now()).and(paymentInfo.status.eq(PaymentInfoStatus.ACTIVATED)))
                 .fetch();
 
         findPaymentInfo.forEach(i -> i.setStatus(PaymentInfoStatus.EXPIRED));

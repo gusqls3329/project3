@@ -12,9 +12,11 @@ import com.team5.projrental.entities.Product;
 import com.team5.projrental.entities.QProduct;
 import com.team5.projrental.payment.model.PaymentInsDto;
 import com.team5.projrental.payment.review.model.RivewDto;
+import com.team5.projrental.product.JpaProductRepository;
 import com.team5.projrental.product.RefProductRepository;
 import com.team5.projrental.product.RefProductService;
 import com.team5.projrental.product.model.ProductVo;
+import com.team5.projrental.product.model.jpa.ActivatedStock;
 import com.team5.projrental.product.model.proc.GetProductViewAopDto;
 import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
@@ -45,18 +47,19 @@ public class CommonAspect {
     //    public Map<Integer, List<LocalDate>> disabledCache;
     public Map<Integer, DisabledDateInfo> disabledCache;
 
-    private final EntityManager em;
-    private final JPAQueryFactory query;
+    // <iproduct, 해당 제품의 2달간 활성화 재고들>
+    public Map<Long, List<ActivatedStock>> activatedStockCache;
 
+    private final JpaProductRepository jpaProductRepository;
 
     public CommonAspect(RefProductService productService, RefProductRepository productRepository, MyThreadPoolHolder threadPool
-    , EntityManager em, JPAQueryFactory query) {
+    , EntityManager em, JPAQueryFactory query, JpaProductRepository jpaProductRepository) {
         this.productService = productService;
         this.productRepository = productRepository;
         this.threadPool = threadPool.getThreadPool();
         disabledCache = new ConcurrentHashMap<>();
-        this.em = em;
-        this.query = query;
+        activatedStockCache = new ConcurrentHashMap<>();
+        this.jpaProductRepository = jpaProductRepository;
     }
 
 
@@ -197,27 +200,11 @@ public class CommonAspect {
         });
     }
 
-//    @EventListener(ApplicationReadyEvent.class)
+    // FIXME -> FIXED
+    @EventListener(ApplicationReadyEvent.class)
     public void initCacheData() {
         LocalDate now = LocalDate.now();
-        //        select iproduct from t_product order by iproduct desc limit 0, #{limit}
-        QProduct product = QProduct.product;
-        List<Product> findProduct = query.select(product)
-                .from(product)
-                .orderBy(product.iproduct.desc())
-                .offset(0)
-                .limit(Const.DISABLED_CACHE_MAX_NUM)
-                .fetch();
-
-
-        List<Integer> allIproductsLimit = productRepository.getAllIproductsLimit(Const.DISABLED_CACHE_MAX_NUM);
-
-        allIproductsLimit.forEach(i -> {
-            List<LocalDate> disabledDate = productService.getDisabledDate(i, now.getYear(), now.getMonthValue());
-            if (disabledDate != null && !disabledDate.isEmpty()) {
-                this.disabledCache.put(i, new DisabledDateInfo(disabledDate, now.getYear(), now.getMonthValue()));
-            }
-        });
+        this.activatedStockCache.putAll(jpaProductRepository.getActivatedStock(now));
 
         log.debug("Cache init -> disabledCache {}", this.disabledCache);
     }
