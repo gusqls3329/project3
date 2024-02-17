@@ -19,7 +19,7 @@ public class Ad extends BaseAt {
     private Long iad;
 
     @ManyToOne
-    @JoinColumn(name = "iuser")
+    @JoinColumn(name = "icomp")
     private Comp comp;
 
     @ManyToOne

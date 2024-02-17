@@ -3,9 +3,12 @@ package com.team5.projrental.entities;
 import com.team5.projrental.entities.mappedsuper.CreatedAt;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.UpdateTimestamp;
 
-@Data
+@Getter
+@Setter
 @Entity
 public class Chat extends CreatedAt {
 
@@ -15,12 +18,11 @@ public class Chat extends CreatedAt {
     private Long ichat;
 
     @ManyToOne
-    @JoinColumn(columnDefinition = "BIGINT UNSIGNED")
+    @JoinColumn(name = "iproduct")
     private Product product;
 
     @Column(length = 2000, name = "last_msg")
     private String lastMsg;
 
-    @UpdateTimestamp
     private String lastMsgAt;
 }

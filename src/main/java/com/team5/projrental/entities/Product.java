@@ -4,6 +4,7 @@ import com.team5.projrental.entities.embeddable.Address;
 import com.team5.projrental.entities.embeddable.RentalDates;
 import com.team5.projrental.entities.enums.ProductCategory;
 import com.team5.projrental.entities.enums.ProductStatus;
+import com.team5.projrental.entities.inheritance.Users;
 import com.team5.projrental.entities.mappedsuper.BaseAt;
 import jakarta.persistence.*;
 import lombok.*;
@@ -20,15 +21,21 @@ public class Product extends BaseAt {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long iproduct;
 
-    @Embedded
-    private Address address;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "iusers")
+    private Users users;
 
     @Enumerated(EnumType.STRING)
     private ProductCategory category;
+
+    @Embedded
+    private Address address;
+
+
     private String title;
     private String contents;
     private String storedPic;
-    private String rental_price;
+    private String rentalPrice;
 
     @Embedded
     private RentalDates rentalDates;

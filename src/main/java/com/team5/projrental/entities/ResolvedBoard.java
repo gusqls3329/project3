@@ -13,7 +13,7 @@ public class ResolvedBoard {
     private Long iresolvedBoard;
 
     @ManyToOne
-    @JoinColumn(name = "iuser")
+    @JoinColumn(name = "iadmin")
     private Admin admin;
 
     @OneToOne

@@ -21,7 +21,7 @@ public class BoardComment extends BaseAt {
     private Board board;
 
     @ManyToOne
-    @JoinColumn(name = "iuser", nullable = false)
+    @JoinColumn(name = "iusers", nullable = false)
     private Users users;
 
     @Column(nullable = false)

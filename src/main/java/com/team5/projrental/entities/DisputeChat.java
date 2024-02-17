@@ -12,13 +12,15 @@ public class DisputeChat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "BIGINT UNSIGNED")
-    private Long idispute_chat;
+    private Long idisputeChat;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(columnDefinition = "BIGINT UNSIGNED",name = "idispute")
+    @JoinColumn(name = "ichat_user")
+    private ChatUser chatUser;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "idispute")
     private Dispute dispute;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(columnDefinition = "BIGINT UNSIGNED", name = "ichat")
-    private Chat chat;
+
 }

@@ -2,6 +2,7 @@ package com.team5.projrental.entities;
 
 import com.team5.projrental.entities.embeddable.RentalDates;
 import com.team5.projrental.entities.enums.PaymentMethod;
+import com.team5.projrental.entities.inheritance.Users;
 import com.team5.projrental.entities.mappedsuper.CreatedAt;
 import jakarta.persistence.*;
 import lombok.*;
@@ -18,7 +19,7 @@ public class Payment extends CreatedAt {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ipayment;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "istock")
     private Stock stock;
 
@@ -27,8 +28,8 @@ public class Payment extends CreatedAt {
     private Product product;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "iuser")
-    private User user;
+    @JoinColumn(name = "iusers")
+    private Users users;
 
     @Enumerated(EnumType.STRING)
     private PaymentMethod method;

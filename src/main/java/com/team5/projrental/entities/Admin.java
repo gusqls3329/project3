@@ -1,6 +1,6 @@
 package com.team5.projrental.entities;
 
-import com.team5.projrental.entities.enums.UsersStatus;
+import com.team5.projrental.entities.enums.AdminStatus;
 import com.team5.projrental.entities.inheritance.Users;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -13,7 +13,9 @@ public class Admin extends Users {
 
     private String nick;
 
+    private String storedAdminPic;
+
     @Enumerated(EnumType.STRING)
-    private UsersStatus usersStatus;
+    private AdminStatus status;
 
 }

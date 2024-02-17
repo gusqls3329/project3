@@ -1,5 +1,6 @@
 package com.team5.projrental.common.aop;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.team5.projrental.common.Const;
 import com.team5.projrental.common.aop.anno.CountView;
 import com.team5.projrental.common.aop.anno.Retry;
@@ -7,12 +8,15 @@ import com.team5.projrental.common.aop.category.CountCategory;
 import com.team5.projrental.common.aop.model.DelCacheWhenCancel;
 import com.team5.projrental.common.aop.model.DisabledDateInfo;
 import com.team5.projrental.common.threadpool.MyThreadPoolHolder;
+import com.team5.projrental.entities.Product;
+import com.team5.projrental.entities.QProduct;
 import com.team5.projrental.payment.model.PaymentInsDto;
 import com.team5.projrental.payment.review.model.RivewDto;
 import com.team5.projrental.product.RefProductRepository;
 import com.team5.projrental.product.RefProductService;
 import com.team5.projrental.product.model.ProductVo;
 import com.team5.projrental.product.model.proc.GetProductViewAopDto;
+import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -41,12 +45,18 @@ public class CommonAspect {
     //    public Map<Integer, List<LocalDate>> disabledCache;
     public Map<Integer, DisabledDateInfo> disabledCache;
 
+    private final EntityManager em;
+    private final JPAQueryFactory query;
 
-    public CommonAspect(RefProductService productService, RefProductRepository productRepository, MyThreadPoolHolder threadPool) {
+
+    public CommonAspect(RefProductService productService, RefProductRepository productRepository, MyThreadPoolHolder threadPool
+    , EntityManager em, JPAQueryFactory query) {
         this.productService = productService;
         this.productRepository = productRepository;
         this.threadPool = threadPool.getThreadPool();
         disabledCache = new ConcurrentHashMap<>();
+        this.em = em;
+        this.query = query;
     }
 
 
@@ -187,9 +197,19 @@ public class CommonAspect {
         });
     }
 
-    @EventListener(ApplicationReadyEvent.class)
+//    @EventListener(ApplicationReadyEvent.class)
     public void initCacheData() {
         LocalDate now = LocalDate.now();
+        //        select iproduct from t_product order by iproduct desc limit 0, #{limit}
+        QProduct product = QProduct.product;
+        List<Product> findProduct = query.select(product)
+                .from(product)
+                .orderBy(product.iproduct.desc())
+                .offset(0)
+                .limit(Const.DISABLED_CACHE_MAX_NUM)
+                .fetch();
+
+
         List<Integer> allIproductsLimit = productRepository.getAllIproductsLimit(Const.DISABLED_CACHE_MAX_NUM);
 
         allIproductsLimit.forEach(i -> {

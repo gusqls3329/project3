@@ -13,7 +13,7 @@ import lombok.Setter;
 @Entity
 @Table(uniqueConstraints = {
         @UniqueConstraint(
-                columnNames ={"ipayment", "iuser"}
+                columnNames ={"ipayment", "iusers"}
         )
 })
 public class Review extends UpdatedAt {
@@ -27,13 +27,12 @@ public class Review extends UpdatedAt {
     private Payment payment;
 
     @ManyToOne
-    @JoinColumn(name = "iuser")
+    @JoinColumn(name = "iusers")
     private Users users;
 
 
     @Column(length = 2000)
     private String contents;
 
-    @Column
-    private Long raiting;
+    private Long rating;
 }

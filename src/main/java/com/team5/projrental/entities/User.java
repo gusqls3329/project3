@@ -16,6 +16,8 @@ public class User extends Users {
     @Embedded
     private BaseUser baseUser;
 
+    private String nick;
+
     @Enumerated(EnumType.STRING)
     private ProvideType provideType;
 

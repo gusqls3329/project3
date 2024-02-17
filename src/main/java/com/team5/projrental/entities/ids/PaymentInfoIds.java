@@ -10,7 +10,7 @@ import java.io.Serializable;
 public class PaymentInfoIds implements Serializable {
 
     private Long ipayment;
-    private Long iuser;
+    private Long iusers;
 
 
 

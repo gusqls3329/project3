@@ -1,6 +1,7 @@
 package com.team5.projrental.entities;
 
 import com.team5.projrental.entities.enums.PushCategory;
+import com.team5.projrental.entities.inheritance.Users;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,9 +18,10 @@ public class Push {
     private Long ipush;
 
     @ManyToOne
-    @JoinColumn(name = "iuser")
-    private User user;
+    @JoinColumn(name = "iusers")
+    private Users users;
 
+    @Enumerated(EnumType.STRING)
     private PushCategory category;
     private String description;
 

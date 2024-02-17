@@ -1,7 +1,6 @@
 package com.team5.projrental.entities.inheritance;
 
 import com.team5.projrental.entities.enums.Auth;
-import com.team5.projrental.entities.enums.UsersStatus;
 import com.team5.projrental.entities.mappedsuper.BaseAt;
 import jakarta.persistence.*;
 import lombok.Getter;
