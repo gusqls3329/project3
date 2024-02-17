@@ -31,8 +31,9 @@ public class Payment extends CreatedAt {
     @JoinColumn(name = "iusers")
     private Users users;
 
-    @Enumerated(EnumType.STRING)
-    private PaymentMethod method;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "ipayment_record")
+    private PaymentRecord paymentRecord;
 
     @Embedded
     private RentalDates rentalDates;
