@@ -19,7 +19,8 @@ public class Product extends BaseAt {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long iproduct;
+    @Column(name = "iproduct")
+    private Long id;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "iusers")

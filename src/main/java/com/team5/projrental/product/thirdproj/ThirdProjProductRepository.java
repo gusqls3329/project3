@@ -35,9 +35,9 @@ public class ThirdProjProductRepository {
         LocalDate to = LocalDate.of(toBuilder.getYear(), toBuilder.getMonth(), toBuilder.lengthOfMonth());
 
         QProduct product = QProduct.product;
-        List<Long> iproducts = query.select(product.iproduct)
+        List<Long> iproducts = query.select(product.id)
                 .from(product)
-                .orderBy(product.iproduct.desc())
+                .orderBy(product.id.desc())
                 .offset(0)
                 .limit(Const.ACTIVATED_CACHE_MAX_NUM)
                 .fetch();

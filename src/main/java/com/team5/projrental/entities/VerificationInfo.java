@@ -13,8 +13,8 @@ import lombok.*;
 public class VerificationInfo extends CreatedAt {
 
     @Id
-    @Column(unique = true)
-    private String uuid;
+    @Column(name = "uuid", unique = true)
+    private String id;
 
     @Column(length = 1000)
     private String txId;

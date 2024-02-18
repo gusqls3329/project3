@@ -11,8 +11,8 @@ public class DisputeChat {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(columnDefinition = "BIGINT UNSIGNED")
-    private Long idisputeChat;
+    @Column(name = "idispute_chat", columnDefinition = "BIGINT UNSIGNED")
+    private Long id;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "ichat_user")

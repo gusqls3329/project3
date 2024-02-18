@@ -12,7 +12,8 @@ import lombok.Setter;
 public class BoardPic extends CreatedAt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ipics;
+    @Column(name = "ipics")
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "iboard", columnDefinition = "BIGINT UNSIGNED")

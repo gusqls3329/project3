@@ -13,7 +13,8 @@ public class DisputePayment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idisputePayment;
+    @Column(name = "idispute_payment")
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "idispute")
