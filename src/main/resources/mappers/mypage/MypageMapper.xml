@@ -15,13 +15,13 @@
         D.iuser AS targetIuser,
         D.nick AS targetNick,
         D.stored_pic AS userStoredPic
-        FROM t_product A
-        JOIN t_product_payment B
+        FROM product A
+        JOIN product_payment B
         ON A.iproduct = B.iproduct
-        LEFT JOIN t_payment C
+        LEFT JOIN payment C
         ON B.ipayment = C.ipayment
-        JOIN t_payment_status PS ON C.ipayment = PS.ipayment and PS.istatus != -1
-        LEFT JOIN t_user D
+        JOIN payment_status PS ON C.ipayment = PS.ipayment and PS.istatus != -1
+        LEFT JOIN user D
         ON
         <if test="role != null and role == 1">
             A.iuser = D.iuser
@@ -41,12 +41,12 @@
         D.imain_category AS imainCategory,
         D.isub_category AS isubCategory,
         D.iproduct, D.title, D.stored_pic AS prodPic, B.ireview, B.rating, B.`contents`
-        FROM t_user A
-        LEFT JOIN t_review B
+        FROM user A
+        LEFT JOIN review B
         ON A.iuser = B.iuser
-        LEFT JOIN t_product_payment C
+        LEFT JOIN product_payment C
         ON B.ipayment = C.ipayment
-        LEFT JOIN t_product D
+        LEFT JOIN product D
         ON C.iproduct = D.iproduct
         WHERE B.iuser = #{iuser}
     </select>
@@ -64,10 +64,10 @@
         B.iuser AS loginedIuser,
         B.nick,
         B.stored_pic AS pic
-        FROM t_product A
-        LEFT JOIN t_user B
+        FROM product A
+        LEFT JOIN user B
         ON A.iuser = B.iuser
-        JOIN t_like C
+        JOIN like C
         ON A.iproduct = C.iproduct
         WHERE C.iuser = #{loginedIuser}
         ORDER BY A.updated_at DESC
@@ -78,10 +78,10 @@
         SELECT R.ireview, R.contents, R.rating, R.iuser, U.nick, U.stored_pic as userProfPic, P.iproduct,
         P.imain_category AS imainCategory,
         P.isub_category AS isubCategory
-        FROM t_product P
-        JOIN t_product_payment PP on P.iproduct = PP.iproduct
-        JOIN t_review R on PP.ipayment = R.ipayment
-        JOIN t_user U on R.iuser = U.iuser
+        FROM product P
+        JOIN product_payment PP on P.iproduct = PP.iproduct
+        JOIN review R on PP.ipayment = R.ipayment
+        JOIN user U on R.iuser = U.iuser
         where P.iuser = #{iuser} and R.contents != '' and R.rating > 0
     </select>
 

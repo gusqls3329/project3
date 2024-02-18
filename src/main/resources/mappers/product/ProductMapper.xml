@@ -8,7 +8,7 @@
     <!--    -->
     <!--    for test-->
     <select id="getIStatus">
-        select istatus from t_product where iproduct = #{iproduct}
+        select istatus from product where iproduct = #{iproduct}
     </select>
     <!--    -->
     <!--    -->
@@ -16,19 +16,19 @@
     <!--    -->
     <!--    for test-->
     <select id="getViewForTest">
-        select view from t_product where iproduct = #{iproduct}
+        select view from product where iproduct = #{iproduct}
     </select>
     <!--    -->
     <!--    for test-->
     <select id="getPicsCountForTest">
-        select count(*) from t_pics where iproduct = #{iproduct}
+        select count(*) from pics where iproduct = #{iproduct}
     </select>
     <!--    -->
     <!--    -->
     <!--    -->
     <!--    for test-->
     <select id="getAllIpics">
-        select ipics from t_pics where iproduct = #{iproduct}
+        select ipics from pics where iproduct = #{iproduct}
     </select>
     <!--    -->
     <!--    -->
@@ -36,18 +36,18 @@
 
     <!--    -->
     <select id="getRentalPricePerDay">
-        select rental_price from t_product where iproduct = #{iproduct}
+        select rental_price from product where iproduct = #{iproduct}
     </select>
     <!--    -->
 
 
     <!--    -->
     <select id="checkIuser">
-        select count(iuser) from t_user where iuser = #{iuser}
+        select count(iuser) from user where iuser = #{iuser}
     </select>
 
     <select id="checkIproduct">
-        select count(iproduct) from t_product where iproduct = #{iproduct}
+        select count(iproduct) from product where iproduct = #{iproduct}
     </select>
 
     <!--    -->
@@ -55,9 +55,9 @@
     <!--    -->
     <update id="countView">
         <selectKey keyProperty="beforeView" resultType="java.lang.Integer" order="BEFORE">
-            select view from t_product where iproduct = #{iproduct}
+            select view from product where iproduct = #{iproduct}
         </selectKey>
-        update t_product set view = 1 + #{beforeView} where iproduct = #{iproduct}
+        update product set view = 1 + #{beforeView} where iproduct = #{iproduct}
     </update>
     <!--    -->
 
@@ -66,12 +66,12 @@
         select U.iuser, U.nick, U.stored_pic as userStoredPic, U.iauth, P.iproduct,
         P.addr, P.rest_addr as restAddr, P.title, P.stored_pic as prodMainStoredPic,
         P.price, P.rental_price as rentalPrice, P.deposit, P.rental_start_date as rentalStartDate,
-        P.rental_end_date as rentalEndDate, (select count(L.iproduct) from t_like L where L.iproduct = P.iproduct) as prodLike,
+        P.rental_end_date as rentalEndDate, (select count(L.iproduct) from like L where L.iproduct = P.iproduct) as prodLike,
         P.istatus,
         if(L.iuser > 0, 1, 0) as isLiked, P.view, P.inventory, P.imain_category as mainCategory, P.isub_category as subCategory
-        from t_product P
-        join t_user U on P.iuser = U.iuser
-        left join t_like L on P.iproduct = L.iproduct
+        from product P
+        join user U on P.iuser = U.iuser
+        left join like L on P.iproduct = L.iproduct
         <if test="loginedIuser != null and loginedIuser > 0">
             and
             L.iuser = #{loginedIuser}
@@ -117,9 +117,9 @@
         P.rental_end_date as rentalEndDate, COUNT(L.iproduct) as prodLike, P.istatus,
         P.contents, P.deposit, P.buy_date as buyDate, P.x, P.y,
         if(L.iuser > 0, 1, 0) as isLiked, P.view, P.inventory, P.imain_category as mainCategory, P.isub_category as subCategory
-        from t_product P
-        join t_user U on P.iuser = U.iuser
-        left join t_like L on P.iproduct = L.iproduct and L.iuser = #{iuser}
+        from product P
+        join user U on P.iuser = U.iuser
+        left join like L on P.iproduct = L.iproduct and L.iuser = #{iuser}
         <where>
             P.iproduct = #{iproduct} and
             P.istatus = 0 and
@@ -132,9 +132,9 @@
     <!--    거래 불가능 날짜 가져오기-->
     <select id="findDisabledDatesBy">
         select PA.rental_start_date as rentalStartDate, PA.rental_end_date as rentalEndDate
-        from t_payment PA
-        JOIN t_product_payment PP ON PA.ipayment = PP.ipayment
-        join t_payment_status PS on PA.ipayment = PS.ipayment
+        from payment PA
+        JOIN product_payment PP ON PA.ipayment = PP.ipayment
+        join payment_status PS on PA.ipayment = PS.ipayment
         where PP.iproduct = #{iproduct}
         and rental_end_date >= #{refStartDate}
         and rental_start_date <![CDATA[<=]]> #{refEndDate}
@@ -143,12 +143,12 @@
     </select>
 
     <select id="getProdEctPics">
-        select ipics, stored_pic as prodPics from t_pics
+        select ipics, stored_pic as prodPics from pics
         where iproduct = #{iproduct}
     </select>
 
     <!--    <select id="getIEupmyun">-->
-    <!--        select ieupmyun from t_eupmyun where eupmyun in (-->
+    <!--        select ieupmyun from eupmyun where eupmyun in (-->
     <!--        <foreach collection="eupmyun" item="eup" separator=", ">-->
     <!--            #{eup}-->
     <!--        </foreach>-->
@@ -156,7 +156,7 @@
     <!--    </select>-->
 
     <insert id="insProduct" useGeneratedKeys="true" keyProperty="iproduct">
-        insert into t_product
+        insert into product
         (iuser, title, contents, addr, rest_addr,
         price, rental_price, deposit, buy_date, rental_start_date, rental_end_date, imain_category,
         isub_category, x, y,
@@ -170,7 +170,7 @@
     </insert>
 
     <insert id="insPics">
-        insert into t_pics (iproduct, stored_pic)
+        insert into pics (iproduct, stored_pic)
         values
         <foreach collection="pics" item="pic" separator=", ">
             (#{iproduct}, #{pic})
@@ -179,7 +179,7 @@
     </insert>
 
     <delete id="deletePic">
-        delete from t_pics
+        delete from pics
         <where>
             iproduct = #{iproduct} and ipics in (
             <foreach collection="delPics" item="pic" separator=", ">
@@ -192,7 +192,7 @@
     <select id="getProductForUpdate">
         select stored_pic as storedPic, price, deposit, buy_date as buyDate, rental_start_date as rentalStartDate,
         rental_end_date as rentalEndDate
-        from t_product
+        from product
         where iproduct = #{iproduct} and istatus = 0
         <if test="iuser != null and iuser != 0">
             and iuser = #{iuser}
@@ -201,12 +201,12 @@
     </select>
 
     <select id="getPicCount">
-        select count(iproduct) from t_pics where iproduct = #{iproduct}
+        select count(iproduct) from pics where iproduct = #{iproduct}
     </select>
 
 
     <update id="updateProduct">
-        update t_product
+        update product
         <set>
             <if test="icategory != null">
                 imain_category = #{icategory.mainCategory},
@@ -270,7 +270,7 @@
         결과가 0 이면 -> 잘못된 정보 기입됨. ex 발생.
     -->
     <update id="changeProdStatus">
-        update t_product
+        update product
         set istatus = #{div}
         where iproduct = #{iproduct} and iuser = #{iuser} and istatus
         <if test="div == -1">
@@ -282,16 +282,16 @@
     </update>
 
     <update id="updateIpayment">
-        update t_product set ipayment = #{ipayment} where iproduct = #{iproduct}
+        update product set ipayment = #{ipayment} where iproduct = #{iproduct}
     </update>
 
     <select id="getReview">
         select R.ireview, R.contents, R.rating, U.iuser, U.nick, U.stored_pic as userProfPic
-        from t_product_payment PP
-        JOIN t_payment PA ON PP.ipayment = PA.ipayment
-        JOIN t_review R ON PA.ipayment = R.ipayment
-        JOIN t_payment_status PS ON PA.ipayment = PS.ipayment
-        JOIN t_user U ON U.iuser = R.iuser
+        from product_payment PP
+        JOIN payment PA ON PP.ipayment = PA.ipayment
+        JOIN review R ON PA.ipayment = R.ipayment
+        JOIN payment_status PS ON PA.ipayment = PS.ipayment
+        JOIN user U ON U.iuser = R.iuser
         where PP.iproduct = #{iproduct} and PS.istatus != -1 and PS.istatus != -2
         and R.contents != '' and R.rating > 0
         GROUP BY R.ireview
@@ -301,13 +301,13 @@
     </select>
 
     <select id="getLendStartDateAndEndDate">
-        SELECT PA.rental_start_date as rentalStartDate, PA.rental_end_date as rentalEndDate FROM t_product_payment PP
-        JOIN t_payment PA ON PP.ipayment = PA.ipayment
+        SELECT PA.rental_start_date as rentalStartDate, PA.rental_end_date as rentalEndDate FROM product_payment PP
+        JOIN payment PA ON PP.ipayment = PA.ipayment
         WHERE PP.iproduct = #{iproduct}
     </select>
 
     <select id="getPicsAllBy">
-        select stored_pic from t_pics where ipics in
+        select stored_pic from pics where ipics in
         (
         <foreach collection="ipics" item="pic" separator=", ">
             #{pic}
@@ -318,26 +318,26 @@
 
     <select id="findStockCountBy">
         select inventory
-        from t_product where iproduct = #{iproduct}
+        from product where iproduct = #{iproduct}
     </select>
 
     <select id="findMainPicPathForDelBy">
-        select stored_pic from t_product where iproduct = #{iproduct}
+        select stored_pic from product where iproduct = #{iproduct}
     </select>
     <select id="findSubPicsPathForDelBy">
-        select stored_pic from t_pics where iproduct = #{iproduct}
+        select stored_pic from pics where iproduct = #{iproduct}
     </select>
 
     <select id="getAllIproductsLimit">
-        select iproduct from t_product order by iproduct desc limit 0, #{limit}
+        select iproduct from product order by iproduct desc limit 0, #{limit}
     </select>
 
     <select id="checkStatusBothAndGetIproduct">
         select P.iproduct, PS.istatus
-        from t_payment_status PS
-        join t_payment PA on PS.ipayment = PA.ipayment
-        join t_product_payment PP on PA.ipayment = PP.ipayment
-        join t_product P on P.iproduct = PP.iproduct
+        from payment_status PS
+        join payment PA on PS.ipayment = PA.ipayment
+        join product_payment PP on PA.ipayment = PP.ipayment
+        join product P on P.iproduct = PP.iproduct
         where PS.ipayment = #{ipayment}
 
     </select>

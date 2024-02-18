@@ -5,32 +5,32 @@
 <mapper namespace="com.team5.projrental.common.sse.SseEmitterMapper">
     <select id="findExpiredPaymentCountBy">
         SELECT COUNT(PA.ipayment)
-        FROM t_payment PA
-        JOIN t_product_payment PP ON PA.ipayment = PP.ipayment
-        JOIN t_product P ON PP.iproduct = P.iproduct
-        join t_payment_status PS on PA.ipayment = PS.ipayment
+        FROM payment PA
+        JOIN product_payment PP ON PA.ipayment = PP.ipayment
+        JOIN product P ON PP.iproduct = P.iproduct
+        join payment_status PS on PA.ipayment = PS.ipayment
         WHERE (PA.ibuyer = #{iuser} OR P.iuser = #{iuser}) AND PS.istatus = -4
     </select>
 
     <select id="findDiffUserBy">
         SELECT if(P.iuser = #{iuser}, PA.ibuyer, if(PA.ibuyer = 1, P.iuser, 0)) as diffIuser,
-        (select COUNT(ireview) from t_review where ipayment = #{ipayment}) AS reviewCount
-        FROM t_product_payment PP
-        JOIN t_payment PA ON PP.ipayment = PA.ipayment
-        JOIN t_product P ON PP.iproduct = P.iproduct
+        (select COUNT(ireview) from review where ipayment = #{ipayment}) AS reviewCount
+        FROM product_payment PP
+        JOIN payment PA ON PP.ipayment = PA.ipayment
+        JOIN product P ON PP.iproduct = P.iproduct
         WHERE PA.ipayment = #{ipayment}
     </select>
 
     <select id="findRejectedMessage">
-        select iuser, message, code, num, name from t_push_message where iuser = #{iuser}
+        select iuser, message, code, num, name from push_message where iuser = #{iuser}
     </select>
 
     <delete id="deleteRejectedMessage">
-        delete from t_push_message where iuser = #{iuser}
+        delete from push_message where iuser = #{iuser}
     </delete>
 
     <insert id="savePushInfoWhenNotExistsEmitterInMap">
-        insert into t_push_message
+        insert into push_message
         set
         iuser = #{iuser},
         message = #{message},

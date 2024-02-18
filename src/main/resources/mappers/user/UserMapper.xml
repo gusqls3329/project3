@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team5.projrental.user.UserMapper">
     <insert id="insUser" useGeneratedKeys="true" keyProperty="iuser">
-        INSERT INTO t_user
+        INSERT INTO user
         SET addr = #{addr}
         <if test="iauth > 0">
             , iauth = #{iauth}
@@ -17,47 +17,47 @@
         , x = #{x}
     </insert>
     <insert id="insCom">
-        INSERT INTO t_comp_info
+        INSERT INTO comp_info
         set comp_code = #{compCode}
         , comp_nm = #{compNm}
         , iuser = #{iuser}
     </insert>
 
-    <!--    t_auth join 필요 없음 user 데이터만 가져오기.
+    <!--    auth join 필요 없음 user 데이터만 가져오기.
          -->
     <select id="selSignin">
         SELECT u.iuser,u.iauth, a.auth, u.upw, u.uid, firebase_token AS firebaseToken
-        FROM t_user u
-        JOIN t_auth a
+        FROM user u
+        JOIN auth a
         ON a.iauth = u.iauth
         WHERE u.uid = #{uid}
     </select>
 
     <update id="patchToken">
-        update t_user set firebase_token = #{firebaseToken} where iuser = #{iuser}
+        update user set firebase_token = #{firebaseToken} where iuser = #{iuser}
     </update>
 
     <update id="updUserFirebaseToken">
-        UPDATE t_user
+        UPDATE user
         SET firebase_token = #{firebaseToken}
         WHERE iuser = #{iuser}
     </update>
 
     <select id="selFindUid">
         SELECT uid, iuser, iauth
-        FROM t_user
+        FROM user
         WHERE phone = #{phone}
     </select>
 
     <update id="upFindUpw">
-        UPDATE t_user
+        UPDATE user
         SET upw = #{upw}
         WHERE phone = #{phone}
         and uid = #{uid}
     </update>
 
     <update id="changeUser">
-        UPDATE t_user
+        UPDATE user
         <set>
             <if test="nick != null and nick != '' ">
                 nick =#{nick}
@@ -87,18 +87,18 @@
     </update>
 
     <delete id="delUser">
-        DELETE FROM t_user
+        DELETE FROM user
         WHERE iuser = #{iuser}
         and uid = #{uid}
         and phone = #{phone}
     </delete>
     <select id="seldelUserPay">
         select P.iproduct, U.iuser, P.istatus as pistatus, PS.istatus
-        from t_product P
-        join t_user U on P.iuser = U.iuser and P.istatus IN (-1, -2)
-        left join t_product_payment PP on PP.iproduct = P.iproduct
-        left join t_payment PA on PA.ipayment = PP.ipayment
-        left join t_payment_status PS on PA.ipayment = PS.ipayment and (P.iuser = 1 or PA.ibuyer = 1)
+        from product P
+        join user U on P.iuser = U.iuser and P.istatus IN (-1, -2)
+        left join product_payment PP on PP.iproduct = P.iproduct
+        left join payment PA on PA.ipayment = PP.ipayment
+        left join payment_status PS on PA.ipayment = PS.ipayment and (P.iuser = 1 or PA.ibuyer = 1)
         where P.iuser = #{iuser}
         or PA.ibuyer = #{iuser}
         and PS.istatus IN (1, -1, -3)
@@ -106,7 +106,7 @@
 
 
     <delete id="delUserProPic">
-        DELETE FROM t_pics
+        DELETE FROM pics
         where iproduct in (
         <foreach collection="iproducts" item="iproduct" separator=",">
             iproduct
@@ -115,7 +115,7 @@
     </delete>
 
     <delete id="delLike">
-        delete from t_like
+        delete from like
         where iuser in (
         <foreach collection="iusers" item="iuser" separator=",">
             iuser
@@ -124,7 +124,7 @@
     </delete>
 
     <delete id="delRev">
-        delete from t_review
+        delete from review
         where iuser in (
         <foreach collection="iusers" item="iuser" separator=",">
             iuser
@@ -135,17 +135,17 @@
     <!--    채팅 개수 가져오기 -> 채팅 개수가 1이상일 경우만 수행,
                                 채팅 삭제 개수가 채팅 개수와 동일하지 않으면 예외 발생-->
     <select id="getUserChatCount">
-        select count(ichat) from t_chat_user where iuser = #{iuser}
+        select count(ichat) from chat_user where iuser = #{iuser}
     </select>
     <!--    -->
     <!--    채팅 삭제 (-1 인 곳만)-->
     <delete id="delUserChat">
-        delete from t_chat_user where iuser = #{iuser} and istatus = -1
+        delete from chat_user where iuser = #{iuser} and istatus = -1
     </delete>
     <!--    -->
     <select id="selUser">
         SELECT y, x, nick, stored_pic as storedPic, phone, email, rating, addr, rest_addr AS restAddr, iauth
-        FROM t_user
+        FROM user
         WHERE iuser = #{iuser}
     </select>
 
@@ -154,12 +154,12 @@
 
     <select id="selpatchUser">
         SELECT count(P.iproduct)
-        FROM t_product P
-        left JOIN t_product_payment PP
+        FROM product P
+        left JOIN product_payment PP
         ON P.iproduct = PP.iproduct
-        left JOIN t_payment PA
+        left JOIN payment PA
         ON PP.ipayment = PA.ipayment
-        left join t_payment_status PS
+        left join payment_status PS
         on PA.ipayment = PS.ipayment
         WHERE P.istatus not IN (-1, -2)
         AND P.iuser = #{iuser} OR PA.ibuyer = #{iuser}
@@ -168,22 +168,22 @@
 
     <select id="checkUserUid">
         SELECT count(iuser)
-        FROM t_user
+        FROM user
         WHERE uid = #{obj}
     </select>
 
     <select id="checkUserNick">
         SELECT count(iuser)
-        FROM t_user
+        FROM user
         WHERE nick = #{obj}
     </select>
 
     <select id="getCompInf">
-        SELECT comp_code as compCode, comp_nm as compNm FROM t_comp_info WHERE iuser = #{iuser}
+        SELECT comp_code as compCode, comp_nm as compNm FROM comp_info WHERE iuser = #{iuser}
     </select>
 
     <update id="changeCompInfo">
-        update t_comp_info
+        update comp_info
         <set>
             <if test="compCode != null and compCode > 0">
                 comp_code = #{compCode}
