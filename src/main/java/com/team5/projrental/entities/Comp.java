@@ -17,7 +17,7 @@ public class Comp  extends Users {
     @Embedded
     private BaseUser baseUser;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "iadmin")
     private Admin admin;
     @Column(unique = true)

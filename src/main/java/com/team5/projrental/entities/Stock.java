@@ -17,7 +17,7 @@ public class Stock {
     @Column(name = "istock")
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "iproduct")
     private Product product;
 

@@ -15,7 +15,7 @@ public class ChatMsg extends CreatedAt {
     private ChatMsgIds chatMsgIds;
 
     @MapsId("ichatUser")
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "ichat_user")
     private ChatUser chatUser;
 

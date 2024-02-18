@@ -16,11 +16,11 @@ public class DisputeProduct {
     @Column(name = "idispute_product")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "idispute")
     private Dispute dispute;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "iproduct")
     private Product product;
 

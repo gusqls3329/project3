@@ -18,7 +18,7 @@ public class Recharge extends CreatedAt {
     @Column(name = "irecharge")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "icomp")
     private Comp comp;
 
