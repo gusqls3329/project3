@@ -1,10 +1,7 @@
 package com.team5.projrental.entities;
 
 import com.team5.projrental.entities.mappedsuper.CreatedAt;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -19,7 +16,8 @@ public class ProfitPerMonth extends CreatedAt {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long iprofitPerMonth;
+    @Column(name = "iprofit_per_month")
+    private Long id;
 
     private Integer profit;
     private LocalDateTime calculatedRef;

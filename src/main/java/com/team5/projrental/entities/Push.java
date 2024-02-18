@@ -15,7 +15,8 @@ public class Push {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ipush;
+    @Column(name = "ipush")
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "iusers")

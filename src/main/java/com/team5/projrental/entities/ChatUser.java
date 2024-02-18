@@ -13,7 +13,8 @@ public class ChatUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ichatUser;
+    @Column(name = "ichat_user")
+    private Long id;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "ichat")

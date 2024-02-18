@@ -11,7 +11,8 @@ import lombok.Setter;
 public class ResolvedProduct{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long iresolvedProduct;
+    @Column(name = "iresolved_product")
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "iadmin")

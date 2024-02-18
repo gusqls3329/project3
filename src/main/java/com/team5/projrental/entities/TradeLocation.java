@@ -15,7 +15,8 @@ public class TradeLocation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long itradeLocation;
+    @Column(name = "itrade_location")
+    private Long id;
 
     @OneToOne
     @JoinColumn(name = "iusers")

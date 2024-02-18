@@ -11,10 +11,11 @@ import lombok.Setter;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity
 @DiscriminatorColumn
-public class Users extends BaseAt {
+public abstract class Users extends BaseAt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long iuser;
+    @Column(name = "iuser")
+    private Long id;
 
     @Enumerated(EnumType.STRING)
     private Auth auth;

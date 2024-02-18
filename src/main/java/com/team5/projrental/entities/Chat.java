@@ -14,8 +14,8 @@ public class Chat extends CreatedAt {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(columnDefinition = "BIGINT UNSIGNED")
-    private Long ichat;
+    @Column(name = "ichat", columnDefinition = "BIGINT UNSIGNED")
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "iproduct")

@@ -19,7 +19,8 @@ import lombok.Setter;
 public class Review extends UpdatedAt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ireview;
+    @Column(name = "ireview")
+    private Long id;
 
 
     @OneToOne

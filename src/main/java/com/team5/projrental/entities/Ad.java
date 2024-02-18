@@ -16,7 +16,8 @@ public class Ad extends BaseAt {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long iad;
+    @Column(name = "iad")
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "icomp")

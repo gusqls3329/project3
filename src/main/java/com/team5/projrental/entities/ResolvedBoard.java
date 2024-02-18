@@ -10,7 +10,8 @@ import lombok.Setter;
 public class ResolvedBoard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long iresolvedBoard;
+    @Column(name = "iresolved_board")
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "iadmin")

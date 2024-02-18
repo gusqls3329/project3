@@ -13,7 +13,8 @@ public class DisputeBoard {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ipaymentBoard;
+    @Column(name = "idispute_board")
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "idispute")

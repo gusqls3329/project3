@@ -15,7 +15,8 @@ public class Recharge extends CreatedAt {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long irecharge;
+    @Column(name = "irecharge")
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "icomp")

@@ -16,7 +16,8 @@ public class Dispute {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idispute;
+    @Column(name = "idispute")
+    private Long id;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "iadmin")

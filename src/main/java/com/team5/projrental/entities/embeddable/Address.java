@@ -4,10 +4,7 @@ import jakarta.persistence.Embeddable;
 import lombok.*;
 
 @Getter
-@Setter
 @AllArgsConstructor
-@NoArgsConstructor
-@Builder
 @Embeddable
 public class Address {
 
@@ -15,5 +12,11 @@ public class Address {
     private String restAddr;
     private Double x;
     private Double y;
+
+    protected Address () {
+
+    }
+
+
 
 }

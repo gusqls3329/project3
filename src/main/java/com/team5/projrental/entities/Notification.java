@@ -11,9 +11,9 @@ import lombok.Setter;
 @Entity
 public class Notification extends BaseAt {
     @Id
-    @Column(columnDefinition = "BIGINT UNSIGNED")
+    @Column(name = "inoti", columnDefinition = "BIGINT UNSIGNED")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long inoti;
+    private Long id;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "iadmin")
