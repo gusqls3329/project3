@@ -8,11 +8,9 @@ import com.team5.projrental.common.aop.category.CountCategory;
 import com.team5.projrental.common.aop.model.DelCacheWhenCancel;
 import com.team5.projrental.common.aop.model.DisabledDateInfo;
 import com.team5.projrental.common.threadpool.MyThreadPoolHolder;
-import com.team5.projrental.entities.Product;
-import com.team5.projrental.entities.QProduct;
 import com.team5.projrental.payment.model.PaymentInsDto;
 import com.team5.projrental.payment.review.model.RivewDto;
-import com.team5.projrental.product.JpaProductRepository;
+import com.team5.projrental.product.thirdproj.ThirdProjProductRepository;
 import com.team5.projrental.product.RefProductRepository;
 import com.team5.projrental.product.RefProductService;
 import com.team5.projrental.product.model.ProductVo;
@@ -50,16 +48,16 @@ public class CommonAspect {
     // <iproduct, 해당 제품의 2달간 활성화 재고들>
     public Map<Long, List<ActivatedStock>> activatedStockCache;
 
-    private final JpaProductRepository jpaProductRepository;
+    private final ThirdProjProductRepository thirdProjProductRepository;
 
     public CommonAspect(RefProductService productService, RefProductRepository productRepository, MyThreadPoolHolder threadPool
-    , EntityManager em, JPAQueryFactory query, JpaProductRepository jpaProductRepository) {
+    , EntityManager em, JPAQueryFactory query, ThirdProjProductRepository thirdProjProductRepository) {
         this.productService = productService;
         this.productRepository = productRepository;
         this.threadPool = threadPool.getThreadPool();
         disabledCache = new ConcurrentHashMap<>();
         activatedStockCache = new ConcurrentHashMap<>();
-        this.jpaProductRepository = jpaProductRepository;
+        this.thirdProjProductRepository = thirdProjProductRepository;
     }
 
 
@@ -204,7 +202,7 @@ public class CommonAspect {
     @EventListener(ApplicationReadyEvent.class)
     public void initCacheData() {
         LocalDate now = LocalDate.now();
-        this.activatedStockCache.putAll(jpaProductRepository.getActivatedStock(now));
+        this.activatedStockCache.putAll(thirdProjProductRepository.getActivatedStock(now));
 
         log.debug("Cache init -> disabledCache {}", this.disabledCache);
     }

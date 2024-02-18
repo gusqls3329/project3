@@ -1,20 +1,14 @@
-package com.team5.projrental.product;
+package com.team5.projrental.product.thirdproj;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.team5.projrental.common.Const;
-import com.team5.projrental.common.aop.model.DelCacheWhenCancel;
 import com.team5.projrental.entities.QPayment;
 import com.team5.projrental.entities.QProduct;
 import com.team5.projrental.entities.QStock;
 import com.team5.projrental.entities.Stock;
 import com.team5.projrental.entities.enums.ProductStatus;
-import com.team5.projrental.product.model.CanNotRentalDateVo;
-import com.team5.projrental.product.model.Categories;
-import com.team5.projrental.product.model.ProductUpdDto;
 import com.team5.projrental.product.model.jpa.ActivatedStock;
-import com.team5.projrental.product.model.proc.*;
-import com.team5.projrental.product.model.review.ReviewGetDto;
-import com.team5.projrental.product.model.review.ReviewResultVo;
+import com.team5.projrental.product.thirdproj.japrepositories.ProductJpaRepository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -27,10 +21,12 @@ import java.util.Map;
 
 @Repository
 @RequiredArgsConstructor
-public class JpaProductRepository {
+public class ThirdProjProductRepository {
 
     private final EntityManager em;
     private final JPAQueryFactory query;
+    private final ProductJpaRepository jpaRepository;
+
 
     public Map<Long, List<ActivatedStock>> getActivatedStock(LocalDate refDate) {
 
