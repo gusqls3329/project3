@@ -1,6 +1,7 @@
-package com.team5.projrental.chat;
+package com.team5.projrental.websocket;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
@@ -10,8 +11,9 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 @Configuration
 @EnableWebSocket
 @RequiredArgsConstructor
-public class WebSocketConfig implements WebSocketConfigurer {
+public class WebSocketConfiguration implements WebSocketConfigurer {
 
+    @Qualifier("subProtocolWebSocketHandler") // 이거 StompConfig클래스 생성시 빨간줄 떠서 인서트한건데 왜넣는건지 확인해야함
     private final WebSocketHandler webSocketHandler;
 
     @Override

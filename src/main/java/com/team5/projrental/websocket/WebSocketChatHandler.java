@@ -1,4 +1,4 @@
-package com.team5.projrental.chat;
+package com.team5.projrental.websocket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 //import com.sunkyuj.douner.chat.model.ChatMessageDto;
@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
+import org.springframework.web.socket.adapter.standard.StandardWebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
@@ -47,9 +48,17 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
 
     // 소켓 통신 시 메세지의 전송을 다루는 부분
     @Override
-    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        String payload = message.getPayload();
+    protected void handleTextMessage(WebSocketSession session, TextMessage textMessage) throws Exception {
+        String payload = textMessage.getPayload();
         log.info("payload {}", payload);
+
+        //Message message = Utils.getObject(textMessage.getPayload());
+
+        for (WebSocketSession sess : sessions ) {
+            sess.sendMessage(new TextMessage(payload));
+
+        }
+
 
         // 페이로드 -> chatMessageDto로 변환
         //ChatMessageDto chatMessageDto = mapper.readValue(payload, ChatMessageDto.class);
