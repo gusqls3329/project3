@@ -16,13 +16,14 @@ public class Ad extends BaseAt {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long iad;
+    @Column(name = "iad")
+    private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "icomp")
     private Comp comp;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "iproduct")
     private Product product;
 

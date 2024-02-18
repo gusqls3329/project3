@@ -14,10 +14,10 @@ import lombok.Setter;
 public class Board extends BaseAt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false, columnDefinition = "BIGINT UNSIGNED")
-    private Long iboard;
+    @Column(name = "iboard", nullable = false, columnDefinition = "BIGINT UNSIGNED")
+    private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "iusers", nullable = false)
     private Users users;
 

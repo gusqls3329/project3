@@ -15,9 +15,10 @@ public class Push {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ipush;
+    @Column(name = "ipush")
+    private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "iusers")
     private Users users;
 

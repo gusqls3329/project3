@@ -19,14 +19,15 @@ import lombok.Setter;
 public class Review extends UpdatedAt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ireview;
+    @Column(name = "ireview")
+    private Long id;
 
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ipayment")
     private Payment payment;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "iusers")
     private Users users;
 

@@ -12,9 +12,10 @@ import lombok.Setter;
 public class BoardPic extends CreatedAt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ipics;
+    @Column(name = "ipics")
+    private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "iboard", columnDefinition = "BIGINT UNSIGNED")
     private Board board;
 

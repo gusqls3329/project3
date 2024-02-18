@@ -17,7 +17,7 @@ public class HashTag {
 
 
     @MapsId("iproduct")
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "iproduct")
     private Product product;
 

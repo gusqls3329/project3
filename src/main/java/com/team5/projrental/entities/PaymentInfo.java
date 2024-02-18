@@ -21,12 +21,12 @@ public class PaymentInfo extends UpdatedAt {
     //
 
     @MapsId("ipayment")
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "ipayment")
     private Payment payment;
 
     @MapsId("iusers")
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "iusers")
     private Users users;
 

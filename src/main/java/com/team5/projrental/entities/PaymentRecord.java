@@ -14,7 +14,8 @@ public class PaymentRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ipaymentRecord;
+    @Column(name = "ipayment_record")
+    private Long id;
 
     private String tid;
 

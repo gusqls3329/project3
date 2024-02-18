@@ -16,17 +16,18 @@ public class Dispute {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idispute;
+    @Column(name = "idispute")
+    private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "iadmin")
     private Admin admin;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "ireported_user")
     private Users reportedUsers;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "ireporter")
     private Users users;
 

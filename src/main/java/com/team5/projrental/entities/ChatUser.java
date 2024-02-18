@@ -13,13 +13,14 @@ public class ChatUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ichatUser;
+    @Column(name = "ichat_user")
+    private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "ichat")
     private Chat chat;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "iusers")
     private Users users;
 

@@ -13,14 +13,14 @@ import lombok.Setter;
 public class BoardComment extends BaseAt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false, columnDefinition = "BIGINT UNSIGNED")
-    private Long iboardComment;
+    @Column(name = "iboard_comment",nullable = false, columnDefinition = "BIGINT UNSIGNED")
+    private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "iboard", nullable = false, columnDefinition = "BIGINT UNSIGNED")
     private Board board;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "iusers", nullable = false)
     private Users users;
 

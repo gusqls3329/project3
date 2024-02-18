@@ -10,13 +10,14 @@ import lombok.Setter;
 public class ResolvedBoard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long iresolvedBoard;
+    @Column(name = "iresolved_board")
+    private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "iadmin")
     private Admin admin;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "iboard")
     private Board board;
 }
