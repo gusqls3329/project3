@@ -15,12 +15,12 @@ public class BoardLike extends CreatedAt {
     @EmbeddedId
     private BoardLikeIds boardLikeIds;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @MapsId("iuser")
     @JoinColumn(name = "iusers", nullable = false)
     private Users users;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @MapsId("iboard")
     @JoinColumn(nullable = false, columnDefinition = "BIGINT UNSIGNED")
     private Board board;

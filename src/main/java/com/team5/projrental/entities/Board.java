@@ -17,7 +17,7 @@ public class Board extends BaseAt {
     @Column(name = "iboard", nullable = false, columnDefinition = "BIGINT UNSIGNED")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "iusers", nullable = false)
     private Users users;
 

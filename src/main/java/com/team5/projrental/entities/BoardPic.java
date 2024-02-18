@@ -15,7 +15,7 @@ public class BoardPic extends CreatedAt {
     @Column(name = "ipics")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "iboard", columnDefinition = "BIGINT UNSIGNED")
     private Board board;
 

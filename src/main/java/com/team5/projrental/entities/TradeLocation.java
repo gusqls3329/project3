@@ -18,7 +18,7 @@ public class TradeLocation {
     @Column(name = "itrade_location")
     private Long id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "iusers")
     private Users users;
 
