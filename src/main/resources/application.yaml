@@ -30,6 +30,8 @@ spring:
 logging:
   level:
     -com.team5.projrental: DEBUG
+    org.hibernate.sql: trace
+    org.hibernate.orm.jdbc.bind: trace # 바인딩된 파라미터 정보 제공
 
 file:
   base-package: D:/projrental/download/pics/
