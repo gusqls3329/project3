@@ -20,14 +20,13 @@ public class PaymentDetail extends CreatedAt {
 
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "iusers")
-    @MapsId
+    @MapsId("id")
     private Users users;
 
     private String tid;
 
     @Enumerated(EnumType.STRING)
     private PaymentDetailCategory category;
-
 
 
 }
