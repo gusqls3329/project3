@@ -19,8 +19,4 @@ public class BaseUser  {
     private String verification;
     @Enumerated(EnumType.STRING)
     private UsersStatus status;
-
-    @OneToOne
-    @JoinColumn(name = "iverification_info")
-    private VerificationInfo verificationInfo;
 }
