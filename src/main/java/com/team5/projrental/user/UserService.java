@@ -56,6 +56,7 @@ public class UserService {
     private final UserMapper mapper;
     private final UserRepository userRepository;
     private final CompRepository compRepository;
+    private final AdminRepository adminRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final SecurityProperties securityProperties;
@@ -91,6 +92,22 @@ public class UserService {
                 .build();
         baseUser.setAddress(address);
         String hashedPw = passwordEncoder.encode(dto.getUpw());
+        dto.setUpw(hashedPw);
+
+        if (dto.getPic() != null) {
+            myFileUtils.delFolderTrigger(Const.CATEGORY_USER + "/" + dto.getIuser());
+            try {
+                String savedPicFileNm = String.valueOf(
+                        myFileUtils.savePic(dto.getPic(), Const.CATEGORY_USER,
+                                String.valueOf(dto.getIuser())));
+                Admin admin = new Admin();
+                admin.setStoredAdminPic(savedPicFileNm);
+                adminRepository.save(admin);
+                baseUser.setStoredPic(savedPicFileNm);
+            } catch (FileNotContainsDotException e) {
+                throw new ClientException(BAD_PIC_EX_MESSAGE);
+            }
+        }
 
         if (dto.getSignUpType() == 2) {
             CommonUtils.ifAnyNullThrow(ClientException.class, BAD_INFO_EX_MESSAGE, "회사정보 4개가 다 필수임",
@@ -98,18 +115,19 @@ public class UserService {
             if (dto.getCompCode() < 1000000000 || dto.getCompCode() > 9999999999L) {
                 throw new BadInformationException(ILLEGAL_RANGE_EX_MESSAGE);
             }
+
             Comp comp = new Comp();
             comp.setBaseUser(baseUser);
             comp.setNick(dto.getNick());
             comp.setCompNm(dto.getCompNm());
             comp.setCompCode(dto.getCompCode());
             comp.setCompCeo(dto.getCompCeo());
-            //comp.setAdmin(null);
             comp.setStaredAt(dto.getStartedAt());
             comp.setCash((long) -1);
             comp.setJoinStatus(JoinStatus.WAIT);
-
             compRepository.save(comp);
+
+
             return new ResVo(2).getResult();
         }
 
@@ -119,6 +137,7 @@ public class UserService {
             user.setNick(dto.getNick());
             user.setProvideType(ProvideType.LOCAL);
             userRepository.save(user);
+
             return new ResVo(1).getResult();
         }
         throw new ClientException(BAD_INFO_EX_MESSAGE);
