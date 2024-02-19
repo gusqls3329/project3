@@ -27,7 +27,7 @@ public class UserController {
 
     @PostMapping("/verification")
     @Operation(summary = "본인인증 요청", description = "본인 요청하기")
-    public VerificationReadyVo readyVerification(VerificationUserInfo userInfo){
+    public VerificationReadyVo readyVerification(@RequestBody VerificationUserInfo userInfo){
         return service.readyVerification(userInfo);
     }
 
