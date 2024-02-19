@@ -213,6 +213,13 @@ public abstract class CommonUtils {
             }
         });
     }
+    public static void ifAnyNullThrow(Class<? extends RuntimeException> ex, ErrorCode err, String reason, Object... objs) {
+        Arrays.stream(objs).forEach(o -> {
+            if (o == null) {
+                thrown(ex, err);
+            }
+        });
+    }
 
     public static void ifAnyNotNullThrow(Class<? extends RuntimeException> ex, ErrorCode err, Object... objs) {
         Arrays.stream(objs).forEach(o -> {
@@ -284,6 +291,19 @@ public abstract class CommonUtils {
         try {
             throw ex.getDeclaredConstructor(ErrorCode.class)
                     .newInstance(err);
+        } catch (InstantiationException
+                 | IllegalAccessException
+                 | InvocationTargetException
+                 | NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static void thrown(Class<? extends RuntimeException> ex,
+                               ErrorCode err, String reason) {
+        try {
+            throw ex.getDeclaredConstructor(ErrorCode.class, String.class)
+                    .newInstance(err, reason);
         } catch (InstantiationException
                  | IllegalAccessException
                  | InvocationTargetException

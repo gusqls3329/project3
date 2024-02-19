@@ -62,7 +62,12 @@ api:
       check-request-url: "https://cert.toss.im/api/v2/sign/user/auth/id/result"
       #      trigger-type: "APP_SCHEME"
       trigger-type: "PUSH"
-
+  pay:
+    kakao:
+      cid: "TC0ONETIME"
+      secret-key: "DEV0ACCFBF114EDA9C83BAD136AEF11311D7DC4D"
+      header-key: "Authorization"
+      header-value: "SECRET_KEY DEV0ACCFBF114EDA9C83BAD136AEF11311D7DC4D"
   axis:
     kakao:
       url: "https://dapi.kakao.com/v2/local/search/address"
