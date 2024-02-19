@@ -1,4 +1,4 @@
-package com.team5.projrental.board.model;
+package com.team5.projrental.board;
 
 
 import com.team5.projrental.entities.Board;
