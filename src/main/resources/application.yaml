@@ -51,9 +51,18 @@ management:
 api:
   verification:
     toss:
-      "access_token": "eyJraWQiOiJjZXJ0IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJ0ZXN0X2E4ZTIzMzM2ZDY3M2NhNzA5MjJiNDg1ZmU4MDZlYjJkIiwiYXVkIjoidGVzdF9hOGUyMzMzNmQ2NzNjYTcwOTIyYjQ4NWZlODA2ZWIyZCIsIm5iZiI6MTcwODE0NzY5NSwic2NvcGUiOlsiY2EiXSwiaXNzIjoiaHR0cHM6Ly9jZXJ0LnRvc3MuaW0iLCJleHAiOjE3Mzk2ODM2OTUsImlhdCI6MTcwODE0NzY5NSwianRpIjoiMjE1M2RhNzAtYTVlZS00NzVmLWJkMjYtMzM3NDk2OTUyMTkxIn0.bvCu3XMorb-EvZAIXVw0hWR0mZFtdq6NaOrR4wuPNtax-ne7xsrvGHepfHrnCyjk74_jNCDyWrL956CX4g21YXXzNX64u4kZ1BCLEWJk7Lc7lcET8_kI8E0of6fqCtqUImHuFM9uxC2jFMd9am30tkx23_QRYnocUjumNuI5o7Fmdjvs7B0nQV8myaVMuDaN8EQSajoXkC-utYOZaoxHsvadzzdYHfi2bfWVzEN4AKDR_YnxjvIQD-3PiZmlC11tIIB6qBxWXVxwySssEH2y_0X7R9fwwug5AbIcQ1bdWUzOJyU6pRk6eU7cGe1ux9OkwYbc43Au8hkwPQ4D7f7Jow"
-      "scope": "ca"
-      "token-type": "Bearer"
+      access-token: "eyJraWQiOiJjZXJ0IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJ0ZXN0X2E4ZTIzMzM2ZDY3M2NhNzA5MjJiNDg1ZmU4MDZlYjJkIiwiYXVkIjoidGVzdF9hOGUyMzMzNmQ2NzNjYTcwOTIyYjQ4NWZlODA2ZWIyZCIsIm5iZiI6MTcwODE0NzY5NSwic2NvcGUiOlsiY2EiXSwiaXNzIjoiaHR0cHM6Ly9jZXJ0LnRvc3MuaW0iLCJleHAiOjE3Mzk2ODM2OTUsImlhdCI6MTcwODE0NzY5NSwianRpIjoiMjE1M2RhNzAtYTVlZS00NzVmLWJkMjYtMzM3NDk2OTUyMTkxIn0.bvCu3XMorb-EvZAIXVw0hWR0mZFtdq6NaOrR4wuPNtax-ne7xsrvGHepfHrnCyjk74_jNCDyWrL956CX4g21YXXzNX64u4kZ1BCLEWJk7Lc7lcET8_kI8E0of6fqCtqUImHuFM9uxC2jFMd9am30tkx23_QRYnocUjumNuI5o7Fmdjvs7B0nQV8myaVMuDaN8EQSajoXkC-utYOZaoxHsvadzzdYHfi2bfWVzEN4AKDR_YnxjvIQD-3PiZmlC11tIIB6qBxWXVxwySssEH2y_0X7R9fwwug5AbIcQ1bdWUzOJyU6pRk6eU7cGe1ux9OkwYbc43Au8hkwPQ4D7f7Jow"
+      scope: "ca"
+      token-key: "Authorization"
+      token-type: "Bearer "
+      request-type: "USER_PERSONAL" # ??? ??, ????, ???? ??? ???? ?? ??
+      success-callback-url: "/api/verification/toss/success"
+      fail-callback-url: "/api/verification/toss/fail"
+      ready-request-url: "https://cert.toss.im/api/v2/sign/user/auth/id/request"
+      check-request-url: "https://cert.toss.im/api/v2/sign/user/auth/id/result"
+      #      trigger-type: "APP_SCHEME"
+      trigger-type: "PUSH"
+
   axis:
     kakao:
       url: "https://dapi.kakao.com/v2/local/search/address"
