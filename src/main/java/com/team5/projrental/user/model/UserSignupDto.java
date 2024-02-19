@@ -2,6 +2,7 @@ package com.team5.projrental.user.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.team5.projrental.common.exception.ErrorMessage;
+import com.team5.projrental.entities.enums.JoinStatus;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,6 +15,8 @@ import static com.team5.projrental.common.exception.ErrorCode.CAN_NOT_BLANK_EX_M
 @Getter
 @Setter
 public class UserSignupDto {
+
+
     @JsonIgnore
     private int iuser;
 
@@ -60,6 +63,12 @@ public class UserSignupDto {
     @Length(max = 20, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private String compNm;
 
+    @Length(max = 20, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
+    private String compCeo;
+
+    @Length(max = 20, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
+    private String startedAt;
+
     @JsonIgnore
     private double x;
     @JsonIgnore
@@ -68,4 +77,8 @@ public class UserSignupDto {
     private String chPic;
     @JsonIgnore
     private int iauth;
+    @JsonIgnore
+    private int cash;
+    @JsonIgnore
+    private JoinStatus joinStatus;
 }

@@ -18,13 +18,20 @@ import com.team5.projrental.common.security.JwtTokenProvider;
 import com.team5.projrental.common.security.SecurityUserDetails;
 import com.team5.projrental.common.security.model.SecurityPrincipal;
 import com.team5.projrental.common.utils.MyFileUtils;
+import com.team5.projrental.entities.User;
+import com.team5.projrental.entities.inheritance.Users;
 import com.team5.projrental.user.model.*;
+import com.team5.projrental.user.verification.TossVerificationRequester;
+import com.team5.projrental.user.verification.model.VerificationUserInfo;
+import com.team5.projrental.user.verification.model.check.CheckResponseVo;
+import com.team5.projrental.user.verification.model.ready.VerificationReadyVo;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,6 +48,7 @@ import static com.team5.projrental.common.exception.ErrorMessage.BAD_NICK_EX_MES
 @RequiredArgsConstructor
 public class UserService {
     private final UserMapper mapper;
+    private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final SecurityProperties securityProperties;
@@ -48,6 +56,14 @@ public class UserService {
     private final AuthenticationFacade authenticationFacade;
     private final AxisGenerator axisGenerator;
     private final MyFileUtils myFileUtils;
+    private final TossVerificationRequester tossVerificationRequester;
+
+    public VerificationReadyVo readyVerification(VerificationUserInfo userInfo){
+        return tossVerificationRequester.verificationRequest(userInfo);
+    }
+    public CheckResponseVo checkVerification(String uuid){
+        return tossVerificationRequester.check(uuid);
+    }
 
     @Transactional
     public int postSignup(UserSignupDto dto) {
@@ -56,14 +72,11 @@ public class UserService {
                 dto.getNick(), dto.getRestAddr(), dto.getCompNm() == null ? "" : dto.getCompNm());
 
         String hashedPw = passwordEncoder.encode(dto.getUpw());
-        dto.setUpw(hashedPw);
-        // 대구 달서구 용산1동 -> x: xxx.xxxxx y: xx.xxxxx address_name: 대구 달서구 용산1동
-        if (dto.getCompNm() != null && dto.getCompCode() != 0) {
-            dto.setIauth(2);
+        if (dto.getCompNm() != null && dto.getCompCode() != 0 ) {
+
             if (dto.getCompCode() < 1000000000 || dto.getCompCode() > 9999999999L) {
                 throw new BadInformationException(ILLEGAL_RANGE_EX_MESSAGE);
             }
-
         }
         if ((dto.getCompCode() == 0L && dto.getCompNm() != null) || (dto.getCompCode() != 0L && dto.getCompNm() == null)) {
             throw new BadInformationException(BAD_INFO_EX_MESSAGE);
