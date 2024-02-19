@@ -17,5 +17,6 @@ public class ApiPayProperty {
     private String cancelRedirectUrl;
     private String failRedirectUrl;
     private String requestUrl;
+    private String approveUrl;
 
 }

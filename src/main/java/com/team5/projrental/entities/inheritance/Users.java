@@ -10,7 +10,7 @@ import lombok.*;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity
 @DiscriminatorColumn
-public abstract class Users extends BaseAt {
+public class Users extends BaseAt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "iuser")
