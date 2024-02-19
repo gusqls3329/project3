@@ -11,6 +11,7 @@ import lombok.Setter;
 @Entity
 public class Admin extends Users {
 
+
     private String nick;
 
     private String storedAdminPic;
