@@ -2,12 +2,10 @@ package com.team5.projrental.user;
 
 import com.team5.projrental.common.Const;
 import com.team5.projrental.common.SecurityProperties;
-import com.team5.projrental.common.exception.BadAddressInfoException;
-import com.team5.projrental.common.exception.BadDivInformationException;
-import com.team5.projrental.common.exception.BadWordException;
-import com.team5.projrental.common.exception.ErrorMessage;
+import com.team5.projrental.common.exception.*;
 import com.team5.projrental.common.exception.base.*;
 import com.team5.projrental.common.exception.checked.FileNotContainsDotException;
+import com.team5.projrental.common.exception.thrid.ClientException;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.model.restapi.Addrs;
 import com.team5.projrental.common.utils.AxisGenerator;
@@ -18,8 +16,16 @@ import com.team5.projrental.common.security.JwtTokenProvider;
 import com.team5.projrental.common.security.SecurityUserDetails;
 import com.team5.projrental.common.security.model.SecurityPrincipal;
 import com.team5.projrental.common.utils.MyFileUtils;
+import com.team5.projrental.entities.Ad;
+import com.team5.projrental.entities.Admin;
+import com.team5.projrental.entities.Comp;
 import com.team5.projrental.entities.User;
+import com.team5.projrental.entities.embeddable.Address;
+import com.team5.projrental.entities.enums.AdminStatus;
+import com.team5.projrental.entities.enums.JoinStatus;
+import com.team5.projrental.entities.enums.ProvideType;
 import com.team5.projrental.entities.inheritance.Users;
+import com.team5.projrental.entities.mappedsuper.BaseUser;
 import com.team5.projrental.user.model.*;
 import com.team5.projrental.user.verification.TossVerificationRequester;
 import com.team5.projrental.user.verification.model.VerificationUserInfo;
@@ -48,7 +54,8 @@ import static com.team5.projrental.common.exception.ErrorMessage.BAD_NICK_EX_MES
 @RequiredArgsConstructor
 public class UserService {
     private final UserMapper mapper;
-    private final UserRepository repository;
+    private final UserRepository userRepository;
+    private final CompRepository compRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final SecurityProperties securityProperties;
@@ -58,10 +65,11 @@ public class UserService {
     private final MyFileUtils myFileUtils;
     private final TossVerificationRequester tossVerificationRequester;
 
-    public VerificationReadyVo readyVerification(VerificationUserInfo userInfo){
+    public VerificationReadyVo readyVerification(VerificationUserInfo userInfo) {
         return tossVerificationRequester.verificationRequest(userInfo);
     }
-    public CheckResponseVo checkVerification(String uuid){
+
+    public CheckResponseVo checkVerification(String uuid) {
         return tossVerificationRequester.check(uuid);
     }
 
@@ -71,57 +79,52 @@ public class UserService {
         CommonUtils.ifContainsBadWordThrow(BadWordException.class, BAD_WORD_EX_MESSAGE,
                 dto.getNick(), dto.getRestAddr(), dto.getCompNm() == null ? "" : dto.getCompNm());
 
-        String hashedPw = passwordEncoder.encode(dto.getUpw());
-        if (dto.getCompNm() != null && dto.getCompCode() != 0 ) {
-
-            if (dto.getCompCode() < 1000000000 || dto.getCompCode() > 9999999999L) {
-                throw new BadInformationException(ILLEGAL_RANGE_EX_MESSAGE);
-            }
-        }
-        if ((dto.getCompCode() == 0L && dto.getCompNm() != null) || (dto.getCompCode() != 0L && dto.getCompNm() == null)) {
-            throw new BadInformationException(BAD_INFO_EX_MESSAGE);
-        }
         Addrs addrs = axisGenerator.getAxis(dto.getAddr());
         CommonUtils.ifAnyNullThrow(BadAddressInfoException.class, BAD_ADDRESS_INFO_EX_MESSAGE,
                 addrs, addrs.getAddress_name(), addrs.getX(), addrs.getY());
-        dto.setX(Double.parseDouble(addrs.getX()));
-        dto.setY(Double.parseDouble(addrs.getY()));
-        dto.setAddr(addrs.getAddress_name());
+        BaseUser baseUser = new BaseUser();
+        Address address = Address.builder()
+                .addr(dto.getAddr())
+                .restAddr(addrs.getAddress_name())
+                .x(Double.parseDouble(addrs.getX()))
+                .y(Double.parseDouble(addrs.getY()))
+                .build();
+        baseUser.setAddress(address);
+        String hashedPw = passwordEncoder.encode(dto.getUpw());
 
-        int result = mapper.insUser(dto);
-        if (result == 1) {
-            if (dto.getPic() != null) {
-                myFileUtils.delFolderTrigger(Const.CATEGORY_USER + "/" + dto.getIuser());
-                try {
-                    String savedPicFileNm = String.valueOf(
-                            myFileUtils.savePic(dto.getPic(), Const.CATEGORY_USER,
-                                    String.valueOf(dto.getIuser())));
-                    ChangeUserDto picdto = new ChangeUserDto();
-                    picdto.setIuser(dto.getIuser());
-                    picdto.setChPic(savedPicFileNm);
-                    mapper.changeUser(picdto);
-                } catch (FileNotContainsDotException e) {
-                    throw new BadInformationException(BAD_PIC_EX_MESSAGE);
-                }
+        if (dto.getSignUpType() == 2) {
+            CommonUtils.ifAnyNullThrow(ClientException.class, BAD_INFO_EX_MESSAGE, "회사정보 4개가 다 필수임",
+                    dto.getCompCeo(), dto.getCompNm(), dto.getCompCode(), dto.getStartedAt());
+            if (dto.getCompCode() < 1000000000 || dto.getCompCode() > 9999999999L) {
+                throw new BadInformationException(ILLEGAL_RANGE_EX_MESSAGE);
             }
-            if (dto.getCompNm() != null && dto.getCompCode() != 0) {
-                UserSignUpComDto comDto = new UserSignUpComDto();
-                comDto.setCompCode(dto.getCompCode());
-                comDto.setCompNm(dto.getCompNm());
-                comDto.setIuser(dto.getIuser());
-                int aa = mapper.insCom(comDto);
-                if (aa != 1) {
-                    throw new BadInformationException(BAD_INFO_EX_MESSAGE);
-                }
-                return 2;
+            Comp comp = new Comp();
+            comp.setBaseUser(baseUser);
+            comp.setNick(dto.getNick());
+            comp.setCompNm(dto.getCompNm());
+            comp.setCompCode(dto.getCompCode());
+            comp.setCompCeo(dto.getCompCeo());
+            //comp.setAdmin(null);
+            comp.setStaredAt(dto.getStartedAt());
+            comp.setCash((long) -1);
+            comp.setJoinStatus(JoinStatus.WAIT);
 
-            }
-            if (dto.getCompNm() == null && dto.getCompCode() == 0) {
-                return 1;
-            }
+            compRepository.save(comp);
+            return new ResVo(2).getResult();
         }
-        throw new BadInformationException(BAD_INFO_EX_MESSAGE);
+
+        if (dto.getSignUpType() == 1) {
+            User user = new User();
+            user.setBaseUser(baseUser);
+            user.setNick(dto.getNick());
+            user.setProvideType(ProvideType.LOCAL);
+            userRepository.save(user);
+            return new ResVo(1).getResult();
+        }
+        throw new ClientException(BAD_INFO_EX_MESSAGE);
     }
+
+
 
 
     public SigninVo postSignin(HttpServletResponse res, SigninDto dto) {
@@ -230,8 +233,8 @@ public class UserService {
             dto.setCompCode(0);
             dto.setCompNm(null);
         }
-        if(loginUserAuth == 2){
-            if (dto.getCompCode() !=0&& dto.getCompCode() < 1000000000 || dto.getCompCode() > 9999999999L) {
+        if (loginUserAuth == 2) {
+            if (dto.getCompCode() != 0 && dto.getCompCode() < 1000000000 || dto.getCompCode() > 9999999999L) {
                 throw new BadInformationException(ILLEGAL_RANGE_EX_MESSAGE);
             }
 
@@ -336,11 +339,11 @@ public class UserService {
                     }
                     iusers.add(loginUserPk);
 
-                    if(!iproducts.isEmpty()) {
+                    if (!iproducts.isEmpty()) {
                         mapper.delUserProPic(iproducts);
                     }
-                        mapper.delLike(iusers);
-                        mapper.delRev(iusers);
+                    mapper.delLike(iusers);
+                    mapper.delRev(iusers);
 
                 }
 
@@ -358,7 +361,7 @@ public class UserService {
 
     public SelUserVo getUser(Integer iuser) {
         boolean checker = iuser == null || iuser == 0;
-        Integer actionIuser = checker ?  authenticationFacade.getLoginUserPk(): iuser;
+        Integer actionIuser = checker ? authenticationFacade.getLoginUserPk() : iuser;
 
         SelUserVo vo = mapper.selUser(actionIuser);
 
