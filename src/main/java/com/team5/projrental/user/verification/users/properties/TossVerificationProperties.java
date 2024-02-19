@@ -1,4 +1,4 @@
-package com.team5.projrental.user.verification.properties;
+package com.team5.projrental.user.verification.users.properties;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -79,8 +79,14 @@ api:
       url: "https://dapi.kakao.com/v2/local/search/address"
       header-key: "Authorization"
       header-value: "KakaoAK 7b5a7755251df2d95b48052980a5c025"
-
-
+  comp:
+    code:
+      base-url: "https://api.odcloud.kr/api/nts-businessman/v1/validate"
+      service-code-key: "serviceKey"
+      service-code-value: "VUXEsrgmuyDberLO0pvh4iEQON2Apg6dFFxNMvxc5hAYZjC4XBmmNyxuWvgxfaQpZVNnP%2BVqKNgS1W1isULaQA%3D%3D"
+config:
+  activate:
+    on-profile: default
 ---
 spring:
   datasource:
@@ -108,6 +114,9 @@ spring:
 file:
   base-package: /home/download/
 
+config:
+  activate:
+    on-profile: prod
 
 
 
