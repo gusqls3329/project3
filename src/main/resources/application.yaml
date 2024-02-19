@@ -73,6 +73,7 @@ api:
       cancel-redirect-url: "http://localhost:8080/payment/cancel"
       fail-redirect-url: "http://localhost:8080/payment/fail"
       request-url: "https://open-api.kakaopay.com/online/v1/payment/ready"
+      approve-url: "https://open-api.kakaopay.com/online/v1/payment/approve"
   axis:
     kakao:
       url: "https://dapi.kakao.com/v2/local/search/address"

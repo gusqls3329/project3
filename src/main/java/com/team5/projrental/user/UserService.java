@@ -1,5 +1,6 @@
 package com.team5.projrental.user;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.team5.projrental.common.Const;
 import com.team5.projrental.common.SecurityProperties;
 import com.team5.projrental.common.exception.*;
@@ -16,10 +17,7 @@ import com.team5.projrental.common.security.JwtTokenProvider;
 import com.team5.projrental.common.security.SecurityUserDetails;
 import com.team5.projrental.common.security.model.SecurityPrincipal;
 import com.team5.projrental.common.utils.MyFileUtils;
-import com.team5.projrental.entities.Ad;
-import com.team5.projrental.entities.Admin;
-import com.team5.projrental.entities.Comp;
-import com.team5.projrental.entities.User;
+import com.team5.projrental.entities.*;
 import com.team5.projrental.entities.embeddable.Address;
 import com.team5.projrental.entities.enums.AdminStatus;
 import com.team5.projrental.entities.enums.JoinStatus;
@@ -31,6 +29,7 @@ import com.team5.projrental.user.verification.TossVerificationRequester;
 import com.team5.projrental.user.verification.model.VerificationUserInfo;
 import com.team5.projrental.user.verification.model.check.CheckResponseVo;
 import com.team5.projrental.user.verification.model.ready.VerificationReadyVo;
+import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -65,6 +64,8 @@ public class UserService {
     private final AxisGenerator axisGenerator;
     private final MyFileUtils myFileUtils;
     private final TossVerificationRequester tossVerificationRequester;
+
+    private final JPAQueryFactory queryFactory;
 
     public VerificationReadyVo readyVerification(VerificationUserInfo userInfo) {
         return tossVerificationRequester.verificationRequest(userInfo);
@@ -147,7 +148,15 @@ public class UserService {
 
 
     public SigninVo postSignin(HttpServletResponse res, SigninDto dto) {
-        UserEntity entity = mapper.selSignin(dto);
+//        UserEntity entity = mapper.selSignin(dto);
+
+        QUser user = QUser.user;
+        User entity = queryFactory.select(user)
+                .from(user)
+                .where(user.uid.eq(dto.getUid()))
+                .fetchOne();
+
+
         if (entity == null) {
             throw new NoSuchDataException(NO_SUCH_ID_EX_MESSAGE);
         } else if (!passwordEncoder.matches(dto.getUpw(), entity.getUpw())) {
@@ -155,8 +164,8 @@ public class UserService {
         }
 
         SecurityPrincipal principal = SecurityPrincipal.builder()
-                .iuser(entity.getIuser())
-                .iauth(entity.getIauth()).build();
+                .iuser(entity.getId().intValue())
+                .iauth(1).build();
         String at = jwtTokenProvider.generateAccessToken(principal);
         String rt = jwtTokenProvider.generateRefreshToken(principal);
         if (res != null) {
@@ -166,10 +175,11 @@ public class UserService {
         }
         return SigninVo.builder()
                 .result(String.valueOf(Const.SUCCESS))
-                .iauth(entity.getIauth())
-                .iuser(entity.getIuser())
-                .auth(entity.getAuth())
-                .firebaseToken(entity.getFirebaseToken())
+//                .iauth(entity.getIauth())
+                .iauth(1)
+                .iuser(entity.getId().intValue())
+//                .auth(entity.getAuth())
+//                .firebaseToken(entity.getFirebaseToken())
                 .accessToken(at)
                 .build();
     }

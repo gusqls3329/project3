@@ -29,13 +29,13 @@ public class KakaoPayRequester {
         // 파라미터 세팅
         PayReadyBodyInfo payReadyBodyInfo = PayReadyBodyInfo.builder()
                 .cid(payProperty.getCid())
-                .partner_user_id(payInfoDto.getUserNm())
-                .partner_order_id(String.valueOf(id))
+                .partner_user_id(String.valueOf(id))
+                .partner_order_id(id + String.valueOf(id))
                 .item_name(payInfoDto.getItemName())
                 .quantity(String.valueOf(quantity))
-                .total_amount(String.valueOf(payInfoDto.getTotalPrice() * quantity))
+                .total_amount(String.valueOf((payInfoDto.getTotalPrice() * quantity) + payInfoDto.getDeposit()))
                 .tax_free_amount(String.valueOf(0))
-                .approval_url(payProperty.getSuccessRedirectUrl())
+                .approval_url(payProperty.getSuccessRedirectUrl() + "/" + id)
                 .fail_url(payProperty.getFailRedirectUrl())
                 .cancel_url(payProperty.getCancelRedirectUrl())
                 .build();
@@ -47,18 +47,18 @@ public class KakaoPayRequester {
                 .build();
     }
                                                                                         // 이 파라미터는 내가 서비스에서 찾아서 넘겨줄것임.
-    public PayApproveDto getApproveRequest(String tidParam, Long id, String pgToken, String paymentCode) {
+    public PayApproveDto getApproveRequest(String tidParam, Long id, String pgToken) {
 
         PayApproveBodyInfo payApproveBodyInfo = PayApproveBodyInfo.builder()
                 .cid(payProperty.getCid())
                 .tid(tidParam)
-                .partner_order_id(paymentCode)
+                .partner_order_id(id + String.valueOf(id))
                 .partner_user_id(String.valueOf(id))
                 .pg_token(pgToken)
                 .build();
 
         return PayApproveDto.builder()
-                .requestUrl(payProperty.getRequestUrl())
+                .requestUrl(payProperty.getApproveUrl())
                 .payApproveBodyInfo(payApproveBodyInfo)
                 .build();
 
