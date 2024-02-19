@@ -20,6 +20,7 @@ public class Comp  extends Users {
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "iadmin")
     private Admin admin;
+
     @Column(unique = true)
     private String nick;
     private Long compCode;
