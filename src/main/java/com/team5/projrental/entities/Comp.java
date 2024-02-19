@@ -21,6 +21,10 @@ public class Comp  extends Users {
     @JoinColumn(name = "iadmin")
     private Admin admin;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "iverification_info")
+    private VerificationInfo verificationInfo;
+
     @Column(unique = true)
     private String nick;
     private Long compCode;

@@ -15,6 +15,11 @@ public class User extends Users {
     @Embedded
     private BaseUser baseUser;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "iverification_info")
+    private VerificationInfo verificationInfo;
+
+
     private String nick;
 
     @Enumerated(EnumType.STRING)
