@@ -1,4 +1,4 @@
-package com.team5.projrental.user.verification.model.ready;
+package com.team5.projrental.user.verification.users.model.ready;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -2,9 +2,10 @@ package com.team5.projrental.user;
 
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.user.model.*;
-import com.team5.projrental.user.verification.model.VerificationUserInfo;
-import com.team5.projrental.user.verification.model.check.CheckResponseVo;
-import com.team5.projrental.user.verification.model.ready.VerificationReadyVo;
+import com.team5.projrental.user.verification.SignUpVo;
+import com.team5.projrental.user.verification.users.model.VerificationUserInfo;
+import com.team5.projrental.user.verification.users.model.check.CheckResponseVo;
+import com.team5.projrental.user.verification.users.model.ready.VerificationReadyVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -62,10 +63,10 @@ public class UserController {
             , @Parameter(name="compCode", description ="사업자번호")
             , @Parameter(name="compNm", description = "업체명")
     })
-    public ResVo postSignup(@RequestPart(required = false) MultipartFile pic, @RequestPart @Validated UserSignupDto dto) {
+    public SignUpVo postSignup(@RequestPart(required = false) MultipartFile pic, @RequestPart @Validated UserSignupDto dto) {
         dto.setPic(pic);
         log.info("dto : {}", dto);
-        return new ResVo(service.postSignup(dto));
+        return service.postSignup(dto);
     }
 
     @PostMapping

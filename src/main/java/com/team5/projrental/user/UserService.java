@@ -1,5 +1,7 @@
 package com.team5.projrental.user;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.team5.projrental.common.Const;
 import com.team5.projrental.common.SecurityProperties;
@@ -7,6 +9,7 @@ import com.team5.projrental.common.exception.*;
 import com.team5.projrental.common.exception.base.*;
 import com.team5.projrental.common.exception.checked.FileNotContainsDotException;
 import com.team5.projrental.common.exception.thrid.ClientException;
+import com.team5.projrental.common.exception.thrid.ServerException;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.model.restapi.Addrs;
 import com.team5.projrental.common.utils.AxisGenerator;
@@ -19,24 +22,25 @@ import com.team5.projrental.common.security.model.SecurityPrincipal;
 import com.team5.projrental.common.utils.MyFileUtils;
 import com.team5.projrental.entities.*;
 import com.team5.projrental.entities.embeddable.Address;
-import com.team5.projrental.entities.enums.AdminStatus;
 import com.team5.projrental.entities.enums.JoinStatus;
 import com.team5.projrental.entities.enums.ProvideType;
-import com.team5.projrental.entities.inheritance.Users;
 import com.team5.projrental.entities.mappedsuper.BaseUser;
 import com.team5.projrental.user.model.*;
-import com.team5.projrental.user.verification.TossVerificationRequester;
-import com.team5.projrental.user.verification.model.VerificationUserInfo;
-import com.team5.projrental.user.verification.model.check.CheckResponseVo;
-import com.team5.projrental.user.verification.model.ready.VerificationReadyVo;
-import jakarta.persistence.EntityManager;
+import com.team5.projrental.user.verification.SignUpVo;
+import com.team5.projrental.user.verification.comp.CompCodeValidator;
+import com.team5.projrental.user.verification.comp.model.CompCodeDto;
+import com.team5.projrental.user.verification.comp.model.CompCodeVo;
+import com.team5.projrental.user.verification.users.TossVerificationRequester;
+import com.team5.projrental.user.verification.users.model.VerificationUserInfo;
+import com.team5.projrental.user.verification.users.model.check.CheckResponseVo;
+import com.team5.projrental.user.verification.users.model.ready.VerificationReadyVo;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mindrot.jbcrypt.BCrypt;
-import org.springframework.security.core.parameters.P;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,6 +71,12 @@ public class UserService {
 
     private final JPAQueryFactory queryFactory;
 
+    private final CompCodeValidator validator;
+
+
+
+
+
     public VerificationReadyVo readyVerification(VerificationUserInfo userInfo) {
         return tossVerificationRequester.verificationRequest(userInfo);
     }
@@ -76,7 +86,7 @@ public class UserService {
     }
 
     @Transactional
-    public int postSignup(UserSignupDto dto) {
+    public SignUpVo postSignup(UserSignupDto dto) {
 
         CommonUtils.ifContainsBadWordThrow(BadWordException.class, BAD_WORD_EX_MESSAGE,
                 dto.getNick(), dto.getRestAddr(), dto.getCompNm() == null ? "" : dto.getCompNm());
@@ -116,6 +126,22 @@ public class UserService {
             if (dto.getCompCode() < 1000000000 || dto.getCompCode() > 9999999999L) {
                 throw new BadInformationException(ILLEGAL_RANGE_EX_MESSAGE);
             }
+            CompCodeVo validated = validator.validate(CompCodeDto.builder()
+                    .compCode(String.valueOf(dto.getCompCode()))
+                    .compNm(dto.getCompNm())
+                    .compCEO(dto.getCompCeo())
+                    .startAt(dto.getStartedAt())
+                    .build());
+
+
+            // 사업자 인증
+            if (validated.getStatusCode().equalsIgnoreCase("FAIL")) {
+                return SignUpVo.builder()
+                        .result(-1)
+                        .compCodeVo(validated)
+                        .build();
+            }
+
 
             Comp comp = new Comp();
             comp.setBaseUser(baseUser);
@@ -128,9 +154,12 @@ public class UserService {
             comp.setJoinStatus(JoinStatus.WAIT);
             compRepository.save(comp);
 
-
-            return new ResVo(2).getResult();
+            return SignUpVo.builder()
+                    .result(2)
+                    .compCodeVo(validated)
+                    .build();
         }
+
 
         if (dto.getSignUpType() == 1) {
             User user = new User();
@@ -139,12 +168,12 @@ public class UserService {
             user.setProvideType(ProvideType.LOCAL);
             userRepository.save(user);
 
-            return new ResVo(1).getResult();
+            return SignUpVo.builder()
+                    .result(1)
+                    .build();
         }
         throw new ClientException(BAD_INFO_EX_MESSAGE);
     }
-
-
 
 
     public SigninVo postSignin(HttpServletResponse res, SigninDto dto) {
