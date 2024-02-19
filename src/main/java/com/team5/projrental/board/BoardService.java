@@ -21,22 +21,20 @@ import static com.team5.projrental.common.exception.ErrorCode.BAD_WORD_EX_MESSAG
 @Service
 @RequiredArgsConstructor
 public class BoardService {
-    private final BoardRepository boardRepository;
+    /*private final BoardRepository boardRepository;
     private final AuthenticationFacade authenticationFacade;
-    public ResVo postBoard(List<MultipartFile> storedPic, BoardInsDto dto) {
-        dto.setStoredPic(storedPic);
+    public ResVo postBoard(BoardInsDto dto) {
         CommonUtils.ifContainsBadWordThrow(BadWordException.class, BAD_WORD_EX_MESSAGE,
                 dto.getTitle(), dto.getContents());
 
         Board board = boardRepository.getReferenceById((long)authenticationFacade.getLoginUserPk());
         board.setTitle(dto.getTitle());
         board.setContents(dto.getContents());
-        if(storedPic != null && !storedPic.isEmpty()) {
+        *//*if(storedPic != null && !storedPic.isEmpty()) {
             BoardPicInsDto boardPicInsDto = new BoardPicInsDto();
             //사진
-        }
+        }*//*
         boardRepository.save(board);
-
-        return new ResVo();
-    }
+        return new ResVo(1);
+    }*/
 }

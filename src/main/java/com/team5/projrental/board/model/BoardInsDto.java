@@ -13,17 +13,10 @@ import java.util.List;
 @Getter
 @Setter
 public class BoardInsDto {
-    @JsonIgnore
-    private Integer iboard;
-    @JsonIgnore
-    private Integer iusers;
-
     @NotBlank(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
     @Length(min = 2, max = 50)
     private String title;
     @NotBlank(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
     @Length(min = 2, max = 2000)
     private String contents;
-
-    private List<MultipartFile> storedPic;
 }
