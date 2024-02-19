@@ -10,6 +10,8 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
+
 import static com.team5.projrental.common.exception.ErrorCode.CAN_NOT_BLANK_EX_MESSAGE;
 
 @Getter
@@ -57,17 +59,12 @@ public class UserSignupDto {
     @Range(min = 2, max = 2, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private Integer isValid;
 
-//    @Length(max = 10, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private long compCode;
-
-    @Length(max = 20, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private String compNm;
-
-    @Length(max = 20, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private String compCeo;
-
-    @Length(max = 20, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
-    private String startedAt;
+    private LocalDate startedAt;
+    private String uuid;
+    private int signUpType;
 
     @JsonIgnore
     private double x;

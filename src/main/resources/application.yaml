@@ -62,7 +62,17 @@ api:
       check-request-url: "https://cert.toss.im/api/v2/sign/user/auth/id/result"
       #      trigger-type: "APP_SCHEME"
       trigger-type: "PUSH"
+  pay:
+    kakao:
+      cid: "TC0ONETIME"
+      secret-key: "DEV0ACCFBF114EDA9C83BAD136AEF11311D7DC4D"
+      header-key: "Authorization"
+      header-value: "SECRET_KEY DEV0ACCFBF114EDA9C83BAD136AEF11311D7DC4D"
 
+      success-redirect-url: "http://localhost:8080/payment/success"
+      cancel-redirect-url: "http://localhost:8080/payment/cancel"
+      fail-redirect-url: "http://localhost:8080/payment/fail"
+      request-url: "https://open-api.kakaopay.com/online/v1/payment/ready"
   axis:
     kakao:
       url: "https://dapi.kakao.com/v2/local/search/address"

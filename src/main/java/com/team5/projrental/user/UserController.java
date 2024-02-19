@@ -25,13 +25,13 @@ import org.springframework.web.multipart.MultipartFile;
 public class UserController {
     private final UserService service;
 
-    @PostMapping("verification")
+    @PostMapping("/verification")
     @Operation(summary = "본인인증 요청", description = "본인 요청하기")
-    public VerificationReadyVo readyVerification(VerificationUserInfo userInfo){
+    public VerificationReadyVo readyVerification(@RequestBody VerificationUserInfo userInfo){
         return service.readyVerification(userInfo);
     }
 
-    @GetMapping
+    @GetMapping("/verification")
     @Operation(summary = "본인인증 결과 확인", description = "본인인증 수행 햇는지 확인")
     public CheckResponseVo checkVerification(String uuid){
         return service.checkVerification(uuid);
