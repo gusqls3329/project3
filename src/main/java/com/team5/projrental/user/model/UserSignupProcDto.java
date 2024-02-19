@@ -4,15 +4,12 @@ import com.team5.projrental.entities.enums.Auth;
 import lombok.Data;
 
 @Data
-public class UserEntity {
+public class UserSignupProcDto {
     private int iuser;
-    private int iauth;
     private String uid;
     private String upw;
-    private String nick;
-    private String storedPic;
-    private String firebaseToken;
+    private String nm;
+    private String pic;
+    private String providerType;
     private Auth auth;
-    private String createdAt;
-    private String updatedAt;
 }
