@@ -2,6 +2,9 @@ package com.team5.projrental.user;
 
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.user.model.*;
+import com.team5.projrental.user.verification.model.VerificationUserInfo;
+import com.team5.projrental.user.verification.model.check.CheckResponseVo;
+import com.team5.projrental.user.verification.model.ready.VerificationReadyVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -21,6 +24,18 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api/user")
 public class UserController {
     private final UserService service;
+
+    @PostMapping("verification")
+    @Operation(summary = "본인인증 요청", description = "본인 요청하기")
+    public VerificationReadyVo readyVerification(VerificationUserInfo userInfo){
+        return service.readyVerification(userInfo);
+    }
+
+    @GetMapping
+    @Operation(summary = "본인인증 결과 확인", description = "본인인증 수행 햇는지 확인")
+    public CheckResponseVo checkVerification(String uuid){
+        return service.checkVerification(uuid);
+    }
 
     @PostMapping("/check")
     @Operation(summary = "중복확인", description = "uid, nick 중복확인")
