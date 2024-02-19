@@ -35,7 +35,9 @@ public class SecurityConfig {
                         "/api/user/signout",
                         "/api/user/fcm",
                         "/api/user/refrech-token",
-                        "/api/user/firebase-token"
+                        "/api/user/firebase-token",
+                        // third
+                        "/api/user/verification"
                 ).authenticated())
                 .authorizeHttpRequests(auth -> auth.requestMatchers(
                         HttpMethod.PATCH, "/api/user"
