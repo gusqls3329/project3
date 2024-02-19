@@ -8,5 +8,6 @@ import lombok.Getter;
 @Builder
 public class PayReadyVo {
     private String nextRequestUrl;
+    private String uuid;
 
 }

@@ -15,12 +15,11 @@ import lombok.*;
 public class PaymentDetail extends CreatedAt {
 
     @Id
-    @Column(name = "iusers")
-    private Long id;
+    @Column(name = "ipayment_detail")
+    private String id;
 
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "iusers")
-    @MapsId("id")
     private Users users;
 
     private String tid;

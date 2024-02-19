@@ -11,9 +11,9 @@ import java.time.LocalDate;
 public class PayInfoDto {
     @JsonIgnore
     private Integer totalPrice;
+
     private Integer deposit;
     private String itemName;
-    private String userNm;
 
     private Integer pricePerDay;
     private LocalDate rentalStartDate;
