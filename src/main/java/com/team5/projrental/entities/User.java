@@ -25,4 +25,5 @@ public class User extends Users {
     @Enumerated(EnumType.STRING)
     private ProvideType provideType;
 
+
 }

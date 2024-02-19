@@ -45,6 +45,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.team5.projrental.common.exception.ErrorCode.*;
 import static com.team5.projrental.common.exception.ErrorMessage.BAD_NICK_EX_MESSAGE;
@@ -94,19 +95,32 @@ public class UserService {
         String hashedPw = passwordEncoder.encode(dto.getUpw());
         dto.setUpw(hashedPw);
 
-        if (dto.getPic() != null) {
-            myFileUtils.delFolderTrigger(Const.CATEGORY_USER + "/" + dto.getIuser());
-            try {
-                String savedPicFileNm = String.valueOf(
-                        myFileUtils.savePic(dto.getPic(), Const.CATEGORY_USER,
-                                String.valueOf(dto.getIuser())));
-                Admin admin = new Admin();
-                admin.setStoredAdminPic(savedPicFileNm);
-                adminRepository.save(admin);
-                baseUser.setStoredPic(savedPicFileNm);
-            } catch (FileNotContainsDotException e) {
-                throw new ClientException(BAD_PIC_EX_MESSAGE);
+        if (dto.getSignUpType() == 1) {
+            User user = new User();
+            user.setBaseUser(baseUser);
+            user.setNick(dto.getNick());
+            user.setUid(dto.getUid());
+            user.setUpw(dto.getUpw());
+            user.setPhone(dto.getPhone());
+            user.setEmail(dto.getEmail());
+            user.setProvideType(ProvideType.LOCAL);
+            userRepository.save(user);
+
+            if (dto.getPic() != null) {
+                myFileUtils.delFolderTrigger(Const.CATEGORY_USER + "/" + dto.getIuser());
+                try {
+                    String savedPicFileNm = String.valueOf(
+                            myFileUtils.savePic(dto.getPic(), Const.CATEGORY_USER,
+                                    String.valueOf(dto.getIuser())));
+                    Admin admin = new Admin();
+                    admin.setStoredAdminPic(savedPicFileNm);
+                    adminRepository.save(admin);
+                    baseUser.setStoredPic(savedPicFileNm);
+                } catch (FileNotContainsDotException e) {
+                    throw new ClientException(BAD_PIC_EX_MESSAGE);
+                }
             }
+            return new ResVo(1).getResult();
         }
 
         if (dto.getSignUpType() == 2) {
@@ -119,6 +133,10 @@ public class UserService {
             Comp comp = new Comp();
             comp.setBaseUser(baseUser);
             comp.setNick(dto.getNick());
+            comp.setUid(dto.getUid());
+            comp.setUpw(dto.getUpw());
+            comp.setPhone(dto.getPhone());
+            comp.setEmail(dto.getEmail());
             comp.setCompNm(dto.getCompNm());
             comp.setCompCode(dto.getCompCode());
             comp.setCompCeo(dto.getCompCeo());
@@ -127,18 +145,24 @@ public class UserService {
             comp.setJoinStatus(JoinStatus.WAIT);
             compRepository.save(comp);
 
+            if (dto.getPic() != null) {
+                myFileUtils.delFolderTrigger(Const.CATEGORY_USER + "/" + dto.getIuser());
+                try {
+                    String savedPicFileNm = String.valueOf(
+                            myFileUtils.savePic(dto.getPic(), Const.CATEGORY_USER,
+                                    String.valueOf(dto.getIuser())));
+                    Admin admin = new Admin();
+                    admin.setNick(dto.getNick());
+                    admin.setStoredAdminPic(savedPicFileNm);
+                    adminRepository.save(admin);
 
+                    comp.setAdmin(admin);
+                    baseUser.setStoredPic(savedPicFileNm);
+                } catch (FileNotContainsDotException e) {
+                    throw new ClientException(BAD_PIC_EX_MESSAGE);
+                }
+            }
             return new ResVo(2).getResult();
-        }
-
-        if (dto.getSignUpType() == 1) {
-            User user = new User();
-            user.setBaseUser(baseUser);
-            user.setNick(dto.getNick());
-            user.setProvideType(ProvideType.LOCAL);
-            userRepository.save(user);
-
-            return new ResVo(1).getResult();
         }
         throw new ClientException(BAD_INFO_EX_MESSAGE);
     }
@@ -147,29 +171,32 @@ public class UserService {
 
 
     public SigninVo postSignin(HttpServletResponse res, SigninDto dto) {
-        UserEntity entity = mapper.selSignin(dto);
-        if (entity == null) {
-            throw new NoSuchDataException(NO_SUCH_ID_EX_MESSAGE);
-        } else if (!passwordEncoder.matches(dto.getUpw(), entity.getUpw())) {
-            throw new NoSuchDataException(NO_SUCH_PASSWORD_EX_MESSAGE);
-        }
+        Optional<User> optEntity = userRepository.findByProvideTypeAndUid(ProvideType.LOCAL, dto.getUid());
 
-        SecurityPrincipal principal = SecurityPrincipal.builder()
-                .iuser(entity.getIuser())
-                .iauth(entity.getIauth()).build();
-        String at = jwtTokenProvider.generateAccessToken(principal);
-        String rt = jwtTokenProvider.generateRefreshToken(principal);
+        User entity = optEntity.orElseThrow(() -> new ClientException(BAD_ID_EX_MESSAGE));
+        if (!passwordEncoder.matches(dto.getUpw(), entity.getUpw())) {
+            throw new ClientException(NO_SUCH_PASSWORD_EX_MESSAGE);
+        }
+        int iuser = entity.getId().intValue();
+
+        SecurityPrincipal securityPrincipal = SecurityPrincipal.builder()
+                .iuser(iuser)
+                .build();
+        securityPrincipal.setAuth(entity.getAuth());
+
+        String at = jwtTokenProvider.generateAccessToken(securityPrincipal);
+        String rt = jwtTokenProvider.generateRefreshToken(securityPrincipal);
+
         if (res != null) {
             int rtCookieMaxAge = (int) (securityProperties.getJwt().getRefreshTokenExpiry() / 1000);
             cookieUtils.deleteCookie(res, "rt");
             cookieUtils.setCookie(res, "rt", rt, rtCookieMaxAge);
         }
+
         return SigninVo.builder()
                 .result(String.valueOf(Const.SUCCESS))
-                .iauth(entity.getIauth())
-                .iuser(entity.getIuser())
                 .auth(entity.getAuth())
-                .firebaseToken(entity.getFirebaseToken())
+                .iuser(Math.toIntExact(entity.getId()))
                 .accessToken(at)
                 .build();
     }

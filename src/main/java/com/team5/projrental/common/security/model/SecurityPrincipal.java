@@ -1,5 +1,6 @@
 package com.team5.projrental.common.security.model;
 
+import com.team5.projrental.entities.enums.Auth;
 import lombok.*;
 
 @NoArgsConstructor
@@ -9,5 +10,5 @@ import lombok.*;
 @Builder
 public class SecurityPrincipal {
     private int iuser;
-    private int iauth;
+    private Auth auth;
 }
