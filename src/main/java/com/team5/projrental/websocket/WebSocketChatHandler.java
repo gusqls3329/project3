@@ -1,4 +1,4 @@
-package com.team5.projrental.chat;
+package com.team5.projrental.websocket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 //import com.sunkyuj.douner.chat.model.ChatMessageDto;
@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
 
 
 /*
@@ -47,9 +48,13 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
 
     // 소켓 통신 시 메세지의 전송을 다루는 부분
     @Override
-    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        String payload = message.getPayload();
+    protected void handleTextMessage(WebSocketSession session, TextMessage textMessage) throws Exception {
+        String payload = textMessage.getPayload();
         log.info("payload {}", payload);
+
+        for (WebSocketSession sess : sessions) {
+            sess.sendMessage(new TextMessage(payload));
+        }
 
         // 페이로드 -> chatMessageDto로 변환
         //ChatMessageDto chatMessageDto = mapper.readValue(payload, ChatMessageDto.class);
