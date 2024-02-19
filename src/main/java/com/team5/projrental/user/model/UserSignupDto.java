@@ -63,8 +63,9 @@ public class UserSignupDto {
     private String compNm;
     private String compCeo;
     private LocalDate startedAt;
-
+    private String uuid;
     private int signUpType;
+
     @JsonIgnore
     private double x;
     @JsonIgnore

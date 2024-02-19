@@ -84,12 +84,14 @@ public class UserService {
                 addrs, addrs.getAddress_name(), addrs.getX(), addrs.getY());
         BaseUser baseUser = new BaseUser();
         Address address = Address.builder()
+                .addr(dto.getAddr())
                 .restAddr(addrs.getAddress_name())
                 .x(Double.parseDouble(addrs.getX()))
                 .y(Double.parseDouble(addrs.getY()))
                 .build();
         baseUser.setAddress(address);
         String hashedPw = passwordEncoder.encode(dto.getUpw());
+
         if (dto.getSignUpType() == 2) {
             CommonUtils.ifAnyNullThrow(ClientException.class, BAD_INFO_EX_MESSAGE, "회사정보 4개가 다 필수임",
                     dto.getCompCeo(), dto.getCompNm(), dto.getCompCode(), dto.getStartedAt());
@@ -106,6 +108,7 @@ public class UserService {
             comp.setStaredAt(dto.getStartedAt());
             comp.setCash((long) -1);
             comp.setJoinStatus(JoinStatus.WAIT);
+
             compRepository.save(comp);
             return new ResVo(2).getResult();
         }
