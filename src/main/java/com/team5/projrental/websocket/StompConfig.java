@@ -14,18 +14,17 @@ public class StompConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/stomp/chat")
-                .setAllowedOriginPatterns("http://localhost:8080")
                 .withSockJS();
     }
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
 
-        //registry.setPathMatcher(new AntPathMatcher("."));
+        registry.setPathMatcher(new AntPathMatcher("."));
         registry.setApplicationDestinationPrefixes("/pub");
 
-        //registry.enableStompBrokerRelay("/queue", "/topic", "/exchange", "/amq/queue");
         registry.enableSimpleBroker("/sub");
+        //registry.enableStompBrokerRelay("/queue", "/topic", "/exchange", "/amq/queue");
     }
 
 }
