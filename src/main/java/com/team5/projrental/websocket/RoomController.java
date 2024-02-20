@@ -1,3 +1,4 @@
+/*
 package com.team5.projrental.websocket;
 
 import lombok.RequiredArgsConstructor;
@@ -46,4 +47,4 @@ public class RoomController {
 
         model.addAttribute("room", repository.findRoomById(roomId));
     }
-}
+}*/
