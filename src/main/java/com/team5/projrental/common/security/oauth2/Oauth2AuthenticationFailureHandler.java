@@ -1,6 +1,5 @@
 package com.team5.projrental.common.security.oauth2;
 
-import com.green.greengram4.common.CookieUtils;
 import com.team5.projrental.common.utils.CookieUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -15,7 +14,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 
-import static com.green.greengram4.security.oauth2.OAuth2AuthenticationRequestBasedOnCookieRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
+import static com.team5.projrental.common.security.oauth2.OAuth2AuthenticationRequestBasedOnCookieRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
 
 @Slf4j
 @Component
@@ -27,7 +26,7 @@ public class Oauth2AuthenticationFailureHandler extends SimpleUrlAuthenticationF
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         log.info("Oauth2AuthenticationFailureHandler - onAuthenticationFailure");
-        String targetUrl = cookieUtils.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NA).map(Cookie::getValue).orElse("/");
+        String targetUrl = cookieUtils.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME).map(Cookie::getValue).orElse("/");
         exception.printStackTrace();
         targetUrl = UriComponentsBuilder.fromOriginHeader(targetUrl)
                 .queryParam("error", exception.getLocalizedMessage())

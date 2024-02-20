@@ -1,14 +1,11 @@
 package com.team5.projrental.common.security.oauth2;
 
-import com.green.greengram4.common.AppProperties;
-import com.green.greengram4.common.CookieUtils;
-import com.green.greengram4.security.JwtTokenProvider;
-import com.green.greengram4.security.MyPrincipal;
-import com.green.greengram4.security.MyUserDetails;
-import com.green.greengram4.user.model.UserModel;
+
 import com.team5.projrental.common.SecurityProperties;
 import com.team5.projrental.common.security.JwtTokenProvider;
+import com.team5.projrental.common.security.model.SecurityPrincipal;
 import com.team5.projrental.common.utils.CookieUtils;
+import com.team5.projrental.user.model.UserModel;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,7 +22,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Optional;
 
-import static com.green.greengram4.security.oauth2.OAuth2AuthenticationRequestBasedOnCookieRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
+import static com.team5.projrental.common.security.oauth2.OAuth2AuthenticationRequestBasedOnCookieRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
 
 @Slf4j
 @Component
@@ -60,7 +57,7 @@ public class OAth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSu
         String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
 
         MyUserDetails myUserDetails = (MyUserDetails) authentication.getPrincipal();
-        MyPrincipal myPrincipal = myUserDetails.getMyPrincipal();
+        SecurityPrincipal myPrincipal = myUserDetails.getMyPrincipal();
 
         String at = jwtTokenProvider.generateAccessToken(myPrincipal);
         String rt = jwtTokenProvider.generateRefreshToken(myPrincipal);

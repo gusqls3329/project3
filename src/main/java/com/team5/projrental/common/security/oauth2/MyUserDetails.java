@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -27,8 +28,7 @@ public class MyUserDetails implements UserDetails, OAuth2User {
         if(myPrincipal == null){
             return null;
         }
-        //map : 사이즈가 똑같음 : roles안에 2개가 들어있다면 2개짜리 다른것을 만드는것
-        return this.myPrincipal.getAuth().stream().map(role -> new SimpleGrantedAuthority("ROLE_"+role)).collect(Collectors.toList());
+        return List.of(new SimpleGrantedAuthority("ROLE_" + this.myPrincipal.getAuth()));
     }
 
     @Override //1. 루틴(여기에 값이 리턴하도록_아이디가 리턴되도록..) 2. 커스터마이징(직접응답, 리턴까지 직접구현)
