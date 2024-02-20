@@ -8,7 +8,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.web.config.PageableHandlerMethodArgumentResolverCustomizer;
 import org.springframework.scheduling.annotation.EnableScheduling;
+
+import java.awt.print.Pageable;
 
 @EnableScheduling
 @SpringBootApplication
@@ -18,6 +21,11 @@ public class ProjrentalApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ProjrentalApplication.class, args);
+	}
+
+	@Bean
+	public PageableHandlerMethodArgumentResolverCustomizer customizer(){
+		return p -> p.setOneIndexedParameters(true);
 	}
 
 	@Bean
