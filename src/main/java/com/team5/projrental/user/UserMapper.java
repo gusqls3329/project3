@@ -7,7 +7,7 @@ import java.util.List;
 
 @Mapper
 public interface UserMapper {
-    int insUser(UserSignupDto dto);
+    int insUser(UserSignupProcDto dto);
     int insCom(UserSignUpComDto dto);
     UserEntity selSignin(SigninDto dto);
     int updUserFirebaseToken(UserFirebaseTokenPatchDto dto);
@@ -21,6 +21,7 @@ public interface UserMapper {
     int delLike(List<Integer> iusers);
     int delRev(List<Integer> iusers);
     SelUserVo selUser(int iuser);
+    UserModel selUserSocial(UserSelDto dto);
     Integer selpatchUser(int iuser);
 
     Integer checkUserUid(String dto);

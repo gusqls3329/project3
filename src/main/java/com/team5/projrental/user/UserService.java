@@ -68,9 +68,7 @@ public class UserService {
     private final AxisGenerator axisGenerator;
     private final MyFileUtils myFileUtils;
     private final TossVerificationRequester tossVerificationRequester;
-
     private final JPAQueryFactory queryFactory;
-
     private final CompCodeValidator validator;
 
 
@@ -194,7 +192,7 @@ public class UserService {
 
         SecurityPrincipal principal = SecurityPrincipal.builder()
                 .iuser(entity.getId().intValue())
-                .iauth(1).build();
+                .build();
         String at = jwtTokenProvider.generateAccessToken(principal);
         String rt = jwtTokenProvider.generateRefreshToken(principal);
         if (res != null) {
@@ -205,7 +203,6 @@ public class UserService {
         return SigninVo.builder()
                 .result(String.valueOf(Const.SUCCESS))
 //                .iauth(entity.getIauth())
-                .iauth(1)
                 .iuser(entity.getId().intValue())
 //                .auth(entity.getAuth())
 //                .firebaseToken(entity.getFirebaseToken())

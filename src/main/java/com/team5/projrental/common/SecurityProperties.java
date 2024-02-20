@@ -1,13 +1,19 @@
 package com.team5.projrental.common;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
+@Builder
 @ConfigurationProperties(prefix = "app")
 public class SecurityProperties {
     private final Jwt jwt = new Jwt();
+    private final Oauth2 oauth2 = new Oauth2();
 
     @Getter
     @Setter
@@ -25,4 +31,10 @@ public class SecurityProperties {
         }
 
     }
+
+    @Getter
+    public static final class Oauth2 {
+        private List<String> authorizedRedirectUris = new ArrayList<>();
+    }
 }
+

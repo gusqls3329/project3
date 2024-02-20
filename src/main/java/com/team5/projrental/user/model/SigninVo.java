@@ -1,6 +1,7 @@
 package com.team5.projrental.user.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.team5.projrental.entities.enums.Auth;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,8 +16,7 @@ public class SigninVo {
     private String upw;
     @JsonIgnore
     private String uid;
-    private String auth;
-    private int iauth;
+    private Auth auth;
     private int iuser;
     private String result;
     private String firebaseToken;
