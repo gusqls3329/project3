@@ -1,5 +1,6 @@
 package com.team5.projrental.common.security;
 
+import com.team5.projrental.entities.enums.Auth;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
@@ -16,11 +17,11 @@ public class AuthenticationFacade {
         return getLoginUser().getSecurityPrincipal().getIuser();
     }
 
-    public int getLoginUserAuth(){
-        return getLoginUser().getSecurityPrincipal().getIauth();
+    public Auth getLoginUserAuth(){
+        return Auth.getAuth(getLoginUser().getSecurityPrincipal().getAuth());
     }
 
-    public Map<String, Integer> getLoginUserPKAndAuth(){
-        return Map.of("iuser", getLoginUserPk(), "auth", getLoginUserAuth());
+    public Map<Integer, Auth> getLoginUserPKAndAuth(){
+        return Map.of(getLoginUserPk(), getLoginUserAuth());
     }
 }

@@ -54,7 +54,7 @@ public class CustomeOAuth2UserService extends DefaultOAuth2UserService {
 
         SecurityPrincipal myPrincipal = SecurityPrincipal.builder()
                 .iuser(savedUser.getIuser()).build();
-        myPrincipal.setAuth(savedUser.getAuth());
+        myPrincipal.setAuth(String.valueOf(savedUser.getAuth()));
 
 
 
@@ -68,17 +68,19 @@ public class CustomeOAuth2UserService extends DefaultOAuth2UserService {
     private UserModel signupUser(Oauth2UserInfo oauth2UserInfo, SocialProviderType socialProviderType){
         UserSignupProcDto dto = new UserSignupProcDto();
         dto.setProviderType(socialProviderType.name());
-        dto.setUid(oauth2UserInfo.getId());
+        dto.setUid(oauth2UserInfo.getId()); //소셜로그인에서 관리하는 pk값(유일값)이 넘어옴
         dto.setUpw("social");
         dto.setNm(oauth2UserInfo.getName());
         dto.setPic(oauth2UserInfo.getImageUrl());
         dto.setAuth(Auth.USER);
-
         int result = mapper.insUser(dto);
-        UserEntity entity = new UserEntity();
+
+        UserModel entity = new UserModel();
+        entity.setUid(dto.getUid());
         entity.setIuser(dto.getIuser());
         entity.setAuth(dto.getAuth());
-
+        entity.setNm(dto.getNm());
+        entity.setPic(dto.getPic());
         return entity;
     }
 }

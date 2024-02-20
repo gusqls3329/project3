@@ -10,5 +10,5 @@ import lombok.*;
 @Builder
 public class SecurityPrincipal {
     private int iuser;
-    private Auth auth;
+    private String auth;
 }

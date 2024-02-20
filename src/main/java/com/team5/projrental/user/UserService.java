@@ -22,6 +22,7 @@ import com.team5.projrental.common.security.model.SecurityPrincipal;
 import com.team5.projrental.common.utils.MyFileUtils;
 import com.team5.projrental.entities.*;
 import com.team5.projrental.entities.embeddable.Address;
+import com.team5.projrental.entities.enums.Auth;
 import com.team5.projrental.entities.enums.JoinStatus;
 import com.team5.projrental.entities.enums.ProvideType;
 import com.team5.projrental.entities.mappedsuper.BaseUser;
@@ -48,6 +49,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.team5.projrental.common.exception.ErrorCode.*;
 import static com.team5.projrental.common.exception.ErrorMessage.BAD_NICK_EX_MESSAGE;
@@ -225,8 +227,15 @@ public class UserService {
     }
 
     public SigninVo getRefrechToken(HttpServletRequest req) {
-        Cookie cookie = cookieUtils.getCookie(req, "rt");
-        String token = cookie.getValue();
+        Optional<String> optRt = cookieUtils.getCookie(req, "rt").map(Cookie::getValue);
+        if(optRt.isEmpty()) {
+            return SigninVo.builder()
+                    .result(String.valueOf(Const.FAIL))
+                    .accessToken(null)
+                    .build();
+        }
+        String token = optRt.get();
+
         if (!jwtTokenProvider.isValidatedToken(token)) {
             return SigninVo.builder()
                     .result(String.valueOf(Const.FAIL))
@@ -273,9 +282,7 @@ public class UserService {
         FindUidVo fVo = mapper.selFindUid(fDto);
 
         if (result == 1) {
-            //int auth = authenticationFacade.getLoginUserAuth();
-            int auth = fVo.getIauth();
-            return auth;
+            return Const.SUCCESS;
         }
         throw new BadInformationException(NO_SUCH_USER_EX_MESSAGE);
     }
@@ -283,12 +290,12 @@ public class UserService {
     public int putUser(ChangeUserDto dto, MultipartFile pic) {
         if (dto == null && pic == null) throw new BadInformationException(CAN_NOT_BLANK_EX_MESSAGE);
         if (dto == null) dto = new ChangeUserDto();
-        int loginUserAuth = authenticationFacade.getLoginUserAuth();
-        if (loginUserAuth == 1) {
+        Auth loginUserAuth = authenticationFacade.getLoginUserAuth();
+        if (loginUserAuth == Auth.USER) {
             dto.setCompCode(0);
             dto.setCompNm(null);
         }
-        if (loginUserAuth == 2) {
+        if (loginUserAuth == Auth.COMP) {
             if (dto.getCompCode() != 0 && dto.getCompCode() < 1000000000 || dto.getCompCode() > 9999999999L) {
                 throw new BadInformationException(ILLEGAL_RANGE_EX_MESSAGE);
             }
@@ -348,8 +355,8 @@ public class UserService {
             compResult = mapper.changeCompInfo(new CompInfoDto(dto.getCompCode(), dto.getCompNm()));
         }
         if (result == 1 && compResult == 1) {
-            int auth = authenticationFacade.getLoginUserAuth();
-            return auth;
+            Auth auth = authenticationFacade.getLoginUserAuth();
+            return Const.SUCCESS;
         }
         throw new BadDateInfoException(AUTHENTICATION_FAIL_EX_MESSAGE);
     }
