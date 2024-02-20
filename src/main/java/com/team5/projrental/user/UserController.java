@@ -60,8 +60,14 @@ public class UserController {
             , @Parameter(name="pic", description = "사진")
             , @Parameter(name="phone", description = "휴대폰 번호 (형식 : 010-1111-2222)")
             , @Parameter(name="email", description = "이메일 (형식 : aaa@naver.com)")
-            , @Parameter(name="compCode", description ="사업자번호")
-            , @Parameter(name="compNm", description = "업체명")
+            , @Parameter(name = "compCode", description = "사업자번호")
+            , @Parameter(name = "compCeo", description = "회사 대표이름")
+            , @Parameter(name = "staredAt", description = "개업일")
+            , @Parameter(name = "compNm", description = "회사이름")
+            , @Parameter(name = "isValid", description = "중복체크 ( 완료되었다면 2) ")
+            , @Parameter(name = "uuid", description = "???-아무거나 적어줘요")
+            , @Parameter(name = "signUpType", description = "회원가입시 유저(1)인지, 기업(2)인지")
+
     })
     public SignUpVo postSignup(@RequestPart(required = false) MultipartFile pic, @RequestPart @Validated UserSignupDto dto) {
         dto.setPic(pic);
@@ -133,6 +139,12 @@ public class UserController {
             , @Parameter(name = "nick", description = "닉네임")
             , @Parameter(name = "pic", description = "사진")
             , @Parameter(name = "phone", description = "휴대폰 번호 (형식 : 010-1111-2222)")
+            , @Parameter(name = "email", description = "이메일 (형식 : xxx@xxx.xxx)")
+            , @Parameter(name = "compCode", description = "사업자번호")
+            , @Parameter(name = "compCeo", description = "회사 대표이름")
+            , @Parameter(name = "staredAt", description = "개업일")
+            , @Parameter(name = "compNm", description = "회사이름")
+
     })
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResVo putUser(@RequestPart(required = false) @Validated ChangeUserDto dto,

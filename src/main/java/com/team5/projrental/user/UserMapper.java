@@ -25,7 +25,8 @@ public interface UserMapper {
     Integer selpatchUser(int iuser);
 
     Integer checkUserUid(String dto);
-    Integer checkUserNick(String dto);
+    Integer checkUserNickComp(String dto);
+    Integer checkUserNickUser(String dto);
 
     // 채팅 삭제 관련
     Integer getUserChatCount(Integer iuser);
@@ -36,5 +37,5 @@ public interface UserMapper {
 
     CompInfoDto getCompInf(int iuser);
 
-    int changeCompInfo(CompInfoDto dto);
+    int changeCompInfo(ChangeUserDto dto);
 }

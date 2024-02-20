@@ -32,6 +32,7 @@ public class Comp  extends Users {
     private String compCeo;
     private LocalDate staredAt;
     private Long cash;
+
     @Enumerated(EnumType.STRING)
     private JoinStatus joinStatus;
 }

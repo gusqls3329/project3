@@ -25,6 +25,7 @@ import com.team5.projrental.entities.embeddable.Address;
 import com.team5.projrental.entities.enums.Auth;
 import com.team5.projrental.entities.enums.JoinStatus;
 import com.team5.projrental.entities.enums.ProvideType;
+import com.team5.projrental.entities.inheritance.Users;
 import com.team5.projrental.entities.mappedsuper.BaseUser;
 import com.team5.projrental.user.model.*;
 import com.team5.projrental.user.verification.SignUpVo;
@@ -61,7 +62,6 @@ public class UserService {
     private final UserMapper mapper;
     private final UserRepository userRepository;
     private final CompRepository compRepository;
-    private final AdminRepository adminRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final SecurityProperties securityProperties;
@@ -73,9 +73,8 @@ public class UserService {
     private final JPAQueryFactory queryFactory;
     private final CompCodeValidator validator;
 
-
-
-
+    @Value("${config.activate.on-profile}")
+    private String profile;
 
     public VerificationReadyVo readyVerification(VerificationUserInfo userInfo) {
         return tossVerificationRequester.verificationRequest(userInfo);
@@ -105,26 +104,24 @@ public class UserService {
         String hashedPw = passwordEncoder.encode(dto.getUpw());
         dto.setUpw(hashedPw);
 
-        if (dto.getPic() != null) {
-            myFileUtils.delFolderTrigger(Const.CATEGORY_USER + "/" + dto.getIuser());
-            try {
-                String savedPicFileNm = String.valueOf(
-                        myFileUtils.savePic(dto.getPic(), Const.CATEGORY_USER,
-                                String.valueOf(dto.getIuser())));
-                Admin admin = new Admin();
-                admin.setStoredAdminPic(savedPicFileNm);
-                adminRepository.save(admin);
-                baseUser.setStoredPic(savedPicFileNm);
-            } catch (FileNotContainsDotException e) {
-                throw new ClientException(BAD_PIC_EX_MESSAGE);
-            }
-        }
+        String path = Const.CATEGORY_USER + "/" + dto.getIuser();
+        myFileUtils.delFolderTrigger(path);
 
         if (dto.getSignUpType() == 2) {
             CommonUtils.ifAnyNullThrow(ClientException.class, BAD_INFO_EX_MESSAGE, "회사정보 4개가 다 필수임",
                     dto.getCompCeo(), dto.getCompNm(), dto.getCompCode(), dto.getStartedAt());
-            if (dto.getCompCode() < 1000000000 || dto.getCompCode() > 9999999999L) {
+            if (dto.getCompCode() < 1000000000L || dto.getCompCode() > 9999999999L) {
                 throw new BadInformationException(ILLEGAL_RANGE_EX_MESSAGE);
+            }
+            if (dto.getPic() != null) {
+                try {
+                    String savedPicFileNm = String.valueOf(
+                            myFileUtils.savePic(dto.getPic(), Const.CATEGORY_USER,
+                                    String.valueOf(dto.getIuser())));
+                    dto.setChPic(savedPicFileNm);
+                } catch (FileNotContainsDotException e) {
+                    throw new BadInformationException(BAD_PIC_EX_MESSAGE);
+                }
             }
             CompCodeVo validated = validator.validate(CompCodeDto.builder()
                     .compCode(String.valueOf(dto.getCompCode()))
@@ -134,23 +131,32 @@ public class UserService {
                     .build());
 
 
-            // 사업자 인증
-            if (validated.getStatusCode().equalsIgnoreCase("FAIL")) {
-                return SignUpVo.builder()
-                        .result(-1)
-                        .compCodeVo(validated)
-                        .build();
+            // 사업자 인증 :
+            if(!profile.equalsIgnoreCase("default")) {
+                if (validated.getStatusCode().equalsIgnoreCase("FAIL")) {
+                    return SignUpVo.builder()
+                            .result(-1)
+                            .compCodeVo(validated)
+                            .build();
+                }
             }
 
 
             Comp comp = new Comp();
+            baseUser.setStoredPic(dto.getChPic());
+            comp.setUid(dto.getUid());
+            comp.setUpw(hashedPw);
             comp.setBaseUser(baseUser);
             comp.setNick(dto.getNick());
             comp.setCompNm(dto.getCompNm());
             comp.setCompCode(dto.getCompCode());
             comp.setCompCeo(dto.getCompCeo());
             comp.setStaredAt(dto.getStartedAt());
+            comp.setEmail(dto.getEmail());
+            comp.setPhone(dto.getPhone());
+            comp.setAuth(Auth.COMP);
             comp.setCash((long) -1);
+
             comp.setJoinStatus(JoinStatus.WAIT);
             compRepository.save(comp);
 
@@ -162,10 +168,27 @@ public class UserService {
 
 
         if (dto.getSignUpType() == 1) {
+            if (dto.getPic() != null) {
+                try {
+                    String savedPicFileNm = String.valueOf(
+                            myFileUtils.savePic(dto.getPic(), Const.CATEGORY_USER,
+                                    String.valueOf(dto.getIuser())));
+                    dto.setChPic(savedPicFileNm);
+                } catch (FileNotContainsDotException e) {
+                    throw new BadInformationException(BAD_PIC_EX_MESSAGE);
+                }
+            }
+            baseUser.setStoredPic(dto.getChPic());
+
             User user = new User();
+            user.setUid(dto.getUid());
+            user.setUpw(hashedPw);
             user.setBaseUser(baseUser);
             user.setNick(dto.getNick());
             user.setProvideType(ProvideType.LOCAL);
+            user.setEmail(dto.getEmail());
+            user.setPhone(dto.getPhone());
+            user.setAuth(Auth.USER);
             userRepository.save(user);
 
             return SignUpVo.builder()
@@ -185,16 +208,24 @@ public class UserService {
                 .where(user.uid.eq(dto.getUid()))
                 .fetchOne();
 
+        QComp comp = QComp.comp;
+        Comp compEntity = queryFactory.select(comp)
+                .from(comp)
+                .where(comp.uid.eq(dto.getUid()))
+                .fetchOne();
 
-        if (entity == null) {
+
+
+        if (entity == null && compEntity == null) {
             throw new NoSuchDataException(NO_SUCH_ID_EX_MESSAGE);
-        } else if (!passwordEncoder.matches(dto.getUpw(), entity.getUpw())) {
+        } else if (!passwordEncoder.matches(dto.getUpw(), entity.getUpw()) && !passwordEncoder.matches(dto.getUpw(), compEntity.getUpw()) ) {
             throw new NoSuchDataException(NO_SUCH_PASSWORD_EX_MESSAGE);
         }
 
         SecurityPrincipal principal = SecurityPrincipal.builder()
-                .iuser(entity.getId().intValue())
+                .iuser(entity != null ? entity.getId().intValue() : compEntity.getId().intValue())
                 .build();
+
         String at = jwtTokenProvider.generateAccessToken(principal);
         String rt = jwtTokenProvider.generateRefreshToken(principal);
         if (res != null) {
@@ -204,8 +235,7 @@ public class UserService {
         }
         return SigninVo.builder()
                 .result(String.valueOf(Const.SUCCESS))
-//                .iauth(entity.getIauth())
-                .iuser(entity.getId().intValue())
+                .iuser(entity != null ? entity.getId().intValue() : compEntity.getId().intValue())
 //                .auth(entity.getAuth())
 //                .firebaseToken(entity.getFirebaseToken())
                 .accessToken(at)
@@ -228,7 +258,7 @@ public class UserService {
 
     public SigninVo getRefrechToken(HttpServletRequest req) {
         Optional<String> optRt = cookieUtils.getCookie(req, "rt").map(Cookie::getValue);
-        if(optRt.isEmpty()) {
+        if (optRt.isEmpty()) {
             return SigninVo.builder()
                     .result(String.valueOf(Const.FAIL))
                     .accessToken(null)
@@ -277,9 +307,6 @@ public class UserService {
         dto.setUpw(hashedPw);
 
         int result = mapper.upFindUpw(dto);
-        FindUidDto fDto = new FindUidDto();
-        fDto.setPhone(dto.getPhone());
-        FindUidVo fVo = mapper.selFindUid(fDto);
 
         if (result == 1) {
             return Const.SUCCESS;
@@ -351,8 +378,9 @@ public class UserService {
                 dto.getRestAddr(), dto.getEmail())) {
             result = mapper.changeUser(dto);
         }
-        if (dto.getCompCode() > 0 || dto.getCompNm() != null) {
-            compResult = mapper.changeCompInfo(new CompInfoDto(dto.getCompCode(), dto.getCompNm()));
+        if (loginUserAuth == Auth.COMP) {
+
+            compResult = mapper.changeCompInfo(dto);
         }
         if (result == 1 && compResult == 1) {
             Auth auth = authenticationFacade.getLoginUserAuth();
@@ -427,7 +455,7 @@ public class UserService {
 
         SelUserVo vo = mapper.selUser(actionIuser);
 
-        if (vo.getIauth() == 2) {
+        if (vo.getAuth() == Auth.COMP) {
             CompInfoDto compInf = mapper.getCompInf(actionIuser);
             CommonUtils.ifAllNullThrow(BadInformationException.class, BAD_INFO_EX_MESSAGE,
                     compInf);
@@ -445,8 +473,9 @@ public class UserService {
     private Integer checkNickOrId(Integer div, String obj) {
         Integer result = null;
         if (div == 1) {
-            result = mapper.checkUserNick(obj);
-            if (result > 0) {
+            result = mapper.checkUserNickComp(obj);
+            Integer result1 = mapper.checkUserNickUser(obj);
+            if (result + result1 > 0) {
                 throw new BadInformationException(BAD_NICK_EX_MESSAGE);
             }
         }

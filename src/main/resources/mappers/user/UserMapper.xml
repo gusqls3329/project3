@@ -44,46 +44,50 @@
     </update>
 
     <select id="selFindUid">
-        SELECT uid, iuser, iauth
-        FROM user
+        SELECT uid, upw, auth
+        FROM users
         WHERE phone = #{phone}
     </select>
 
     <update id="upFindUpw">
-        UPDATE user
+        UPDATE users
         SET upw = #{upw}
         WHERE phone = #{phone}
         and uid = #{uid}
     </update>
 
     <update id="changeUser">
-        UPDATE user
+        UPDATE users us
+        Left JOIN user u
+        ON u.iuser = us.iuser
+        Left JOIN comp c
+        ON c.iuser = us.iuser
         <set>
             <if test="nick != null and nick != '' ">
-                nick =#{nick}
+                u.nick =#{nick}
             </if>
             <if test="chPic != null and chPic != '' ">
-                ,stored_pic =#{chPic}
+                , u.stored_pic =#{chPic}
             </if>
             <if test="upw != null and upw != '' ">
-                ,upw =#{upw}
+                , us.upw =#{upw}
             </if>
             <if test="phone != null and phone != '' ">
-                ,phone =#{phone}
+                , us.phone =#{phone}
             </if>
             <if test="addr != null and addr != '' ">
-                , addr = #{addr}
+                , u.addr = #{addr}
                 , y = #{y}
                 , x = #{x}
             </if>
             <if test="restAddr != null and restAddr != '' ">
-                ,rest_addr =#{restAddr}
+                ,u.rest_addr =#{restAddr}
             </if>
             <if test="email != null and email != '' ">
-                ,email = #{email}
+                ,us.email = #{email}
             </if>
         </set>
-        where iuser = #{iuser}
+        where us.iuser = #{iuser}
     </update>
 
     <delete id="delUser">
@@ -144,9 +148,13 @@
     </delete>
     <!--    -->
     <select id="selUser">
-        SELECT y, x, nick, stored_pic as storedPic, phone, email, rating, addr, rest_addr AS restAddr, iauth
-        FROM user
-        WHERE iuser = #{iuser}
+        SELECT u.y,c.y, c.x, u.x, u.nick, c.nick, c.stored_pic as storedPic, u.stored_pic as storedPic, us.phone, us.email, u.rating, c.rating,  u.addr, c.addr, u.rest_addr as restAddr, c.rest_addr AS restAddr, us.auth
+        FROM users us
+        Left JOIN user u
+        ON us.iuser = u.iuser
+        Left JOIN comp c
+        ON c.iuser = us.iuser
+        WHERE us.iuser = #{iuser}
     </select>
 
 
@@ -168,29 +176,69 @@
 
     <select id="checkUserUid">
         SELECT count(iuser)
-        FROM user
+        FROM users
         WHERE uid = #{obj}
     </select>
 
-    <select id="checkUserNick">
+    <select id="checkUserNickComp">
+        SELECT count(iuser)
+        FROM comp
+        WHERE nick = #{obj}
+    </select>
+    <select id="checkUserNickUser">
         SELECT count(iuser)
         FROM user
         WHERE nick = #{obj}
     </select>
 
     <select id="getCompInf">
-        SELECT comp_code as compCode, comp_nm as compNm FROM comp_info WHERE iuser = #{iuser}
+        SELECT comp_code as compCode, comp_nm as compNm
+        FROM comp
+        WHERE iuser = #{iuser}
     </select>
 
     <update id="changeCompInfo">
-        update comp_info
+        uUPDATE users us
+        Left JOIN comp c
+        ON c.iuser = us.iuser
         <set>
+            <if test="nick != null and nick != '' ">
+                c.nick =#{nick}
+            </if>
+            <if test="chPic != null and chPic != '' ">
+                , c.stored_pic =#{chPic}
+            </if>
+            <if test="upw != null and upw != '' ">
+                , us.upw =#{upw}
+            </if>
+            <if test="phone != null and phone != '' ">
+                , us.phone =#{phone}
+            </if>
+            <if test="addr != null and addr != '' ">
+                , c.addr = #{addr}
+                , y = #{y}
+                , x = #{x}
+            </if>
+            <if test="restAddr != null and restAddr != '' ">
+                ,c.rest_addr =#{restAddr}
+            </if>
+            <if test="email != null and email != '' ">
+                ,us.email = #{email}
+            </if>
             <if test="compCode != null and compCode > 0">
-                comp_code = #{compCode}
+                c.comp_code = #{compCode}
             </if>
             <if test="compNm != null">
-                , comp_nm = #{compNm}
+                , c.comp_nm = #{compNm}
             </if>
+            <if test="compCeo != null">
+                , c.comp_ceo = #{compCeo}
+            </if>
+            <if test="staredAt != null">
+                , c.stared_at = #{staredAt}
+            </if>
+
         </set>
+        where us.iuser = #{iuser}
     </update>
 </mapper>
