@@ -10,4 +10,6 @@ import lombok.NoArgsConstructor;
 public class CompInfoDto {
     private Long compCode;
     private String compNm;
+    private String compCeo;
+    private String staredAt;
 }

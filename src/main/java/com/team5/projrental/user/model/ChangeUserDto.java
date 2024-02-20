@@ -33,7 +33,10 @@ public class ChangeUserDto {
 
 //  @Range(max = 10, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private long compCode;
-
+    @Length(max = 20, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
+    private String compCeo;
+    @Length(max = 10, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
+    private String staredAt;
     @Length(max = 20, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private String compNm;
 
