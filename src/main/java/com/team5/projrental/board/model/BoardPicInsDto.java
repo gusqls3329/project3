@@ -12,7 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BoardPicInsDto {
-    private Integer iboard;
+    private int iboard;
     private List<String> storedPic;
-
 }
