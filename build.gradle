@@ -55,26 +55,17 @@ dependencies {
 	implementation 'com.google.firebase:firebase-admin:9.2.0'
 
 
-	implementation 'org.springframework.boot:spring-boot-starter-amqp'
+//	implementation 'org.springframework.boot:spring-boot-starter-amqp'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
-	runtimeOnly 'mysql:mysql-connector-java'
+//	runtimeOnly 'mysql:mysql-connector-java'
 
-	//외부 브로커를 사용하기 위해
+/*	//외부 브로커를 사용하기 위해
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-reactor-netty', version: '2.4.6'
 	//jackson2json에서 LocalDateTime을 handling 하기 위해
-	implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.12.4'
-	implementation 'org.springframework.boot:spring-boot-starter-amqp'
-	testImplementation 'org.springframework.amqp:spring-rabbit-test'
-
-
-	/* ---아래는 선택--- */
-// https://mvnrepository.com/artifact/org.webjars/sockjs-client
-	implementation group: 'org.webjars', name: 'sockjs-client', version: '1.1.2'
-// https://mvnrepository.com/artifact/org.webjars/stomp-websocket
-	implementation group: 'org.webjars', name: 'stomp-websocket', version: '2.3.3-1'
+	implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.12.4'*/
 
 
 

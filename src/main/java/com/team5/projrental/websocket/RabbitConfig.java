@@ -1,3 +1,4 @@
+/*
 package com.team5.projrental.websocket;
 
 import com.fasterxml.jackson.databind.Module;
@@ -79,3 +80,4 @@ public class RabbitConfig {
         return new JavaTimeModule();
     }
 }
+*/
