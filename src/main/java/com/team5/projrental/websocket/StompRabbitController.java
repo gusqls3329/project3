@@ -1,3 +1,4 @@
+/*
 package com.team5.projrental.websocket;
 
 import com.team5.projrental.websocket.model.ChatDto;
@@ -47,3 +48,4 @@ public class StompRabbitController {
         System.out.println("received : " + chat.getMessage());
     }
 }
+*/
