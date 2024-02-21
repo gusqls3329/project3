@@ -77,8 +77,8 @@
             </if>
             <if test="addr != null and addr != '' ">
                 , u.addr = #{addr}
-                , y = #{y}
-                , x = #{x}
+                , u.y = #{y}
+                , u.x = #{x}
             </if>
             <if test="restAddr != null and restAddr != '' ">
                 ,u.rest_addr =#{restAddr}
@@ -159,6 +159,16 @@
 
 
     <!--예외처리-->
+    <select id="selLoginStatus">
+        SELECT u.`status` as ustatus , c.`status` as cstatus
+        FROM users us
+        LEFT JOIN `user` u
+        ON us.iuser = u.iuser
+        LEFT JOIN comp c
+        ON c.iuser = us.iuser
+        WHERE us.uid = 'mic11'
+        AND us.upw = '$2a$10$twr1mYczjff.I6JWg386/OrFSspOqJGCuFuHW5Uh.6Wo95GYNHUXO';
+    </select>
 
     <select id="selpatchUser">
         SELECT count(P.iproduct)
@@ -216,8 +226,8 @@
             </if>
             <if test="addr != null and addr != '' ">
                 , c.addr = #{addr}
-                , y = #{y}
-                , x = #{x}
+                , c.y = #{y}
+                , c.x = #{x}
             </if>
             <if test="restAddr != null and restAddr != '' ">
                 ,c.rest_addr =#{restAddr}

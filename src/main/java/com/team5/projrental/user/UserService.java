@@ -22,9 +22,7 @@ import com.team5.projrental.common.security.model.SecurityPrincipal;
 import com.team5.projrental.common.utils.MyFileUtils;
 import com.team5.projrental.entities.*;
 import com.team5.projrental.entities.embeddable.Address;
-import com.team5.projrental.entities.enums.Auth;
-import com.team5.projrental.entities.enums.JoinStatus;
-import com.team5.projrental.entities.enums.ProvideType;
+import com.team5.projrental.entities.enums.*;
 import com.team5.projrental.entities.inheritance.Users;
 import com.team5.projrental.entities.mappedsuper.BaseUser;
 import com.team5.projrental.user.model.*;
@@ -144,6 +142,7 @@ public class UserService {
 
             Comp comp = new Comp();
             baseUser.setStoredPic(dto.getChPic());
+            comp.setStatus(CompStatus.WAIT);
             comp.setUid(dto.getUid());
             comp.setUpw(hashedPw);
             comp.setBaseUser(baseUser);
@@ -179,8 +178,9 @@ public class UserService {
                 }
             }
             baseUser.setStoredPic(dto.getChPic());
-
+            //baseUser.setStatus(dto.get);
             User user = new User();
+            user.setStatus(UserStatus.ACTIVE);
             user.setUid(dto.getUid());
             user.setUpw(hashedPw);
             user.setBaseUser(baseUser);
@@ -214,16 +214,24 @@ public class UserService {
                 .where(comp.uid.eq(dto.getUid()))
                 .fetchOne();
 
-
-
         if (entity == null && compEntity == null) {
             throw new NoSuchDataException(NO_SUCH_ID_EX_MESSAGE);
         } else if (!passwordEncoder.matches(dto.getUpw(), entity.getUpw()) && !passwordEncoder.matches(dto.getUpw(), compEntity.getUpw()) ) {
             throw new NoSuchDataException(NO_SUCH_PASSWORD_EX_MESSAGE);
         }
-
+        SelSigninVo vo = mapper.selLoginStatus(dto);
+        if(vo.getCstatus() == CompStatus.HIDE.toString() || vo.getUstatus() == UserStatus.HIDE.toString()){
+            throw new ClientException(NO_SUCH_USER_HIDE_MESSAGE);
+        }
+        if(vo.getCstatus() == CompStatus.WAIT.toString()){
+            throw new ClientException(NO_SUCH_USER_WAIT_MESSAGE);
+        }
+        if(vo.getCstatus() == CompStatus.COMPANION.toString() || vo.getUstatus() == UserStatus.COMPANION.toString()){
+            throw new ClientException(NO_SUCH_USER_COMPANION_MESSAGE);
+        }
         SecurityPrincipal principal = SecurityPrincipal.builder()
                 .iuser(entity != null ? entity.getId().intValue() : compEntity.getId().intValue())
+                .auth(entity.getAuth().name())
                 .build();
 
         String at = jwtTokenProvider.generateAccessToken(principal);
@@ -233,6 +241,7 @@ public class UserService {
             cookieUtils.deleteCookie(res, "rt");
             cookieUtils.setCookie(res, "rt", rt, rtCookieMaxAge);
         }
+
         return SigninVo.builder()
                 .result(String.valueOf(Const.SUCCESS))
                 .iuser(entity != null ? entity.getId().intValue() : compEntity.getId().intValue())
@@ -382,7 +391,7 @@ public class UserService {
 
             compResult = mapper.changeCompInfo(dto);
         }
-        if (result == 1 && compResult == 1) {
+        if (result == 1 || compResult == 1) {
             Auth auth = authenticationFacade.getLoginUserAuth();
             return Const.SUCCESS;
         }

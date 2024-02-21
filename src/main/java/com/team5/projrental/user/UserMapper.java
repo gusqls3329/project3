@@ -38,4 +38,7 @@ public interface UserMapper {
     CompInfoDto getCompInf(int iuser);
 
     int changeCompInfo(ChangeUserDto dto);
+
+    //예외
+    SelSigninVo selLoginStatus(SigninDto dto);
 }

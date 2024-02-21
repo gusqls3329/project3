@@ -22,6 +22,9 @@ public interface ErrorMessage {
     String NO_SUCH_ID_EX_MESSAGE = "아이디가 존재하지 않습니다";
     String NO_SUCH_PASSWORD_EX_MESSAGE = "비밀번호가 틀렸습니다";
     String NO_SUCH_REVIEW_EX_MESSAGE = "작성하신 리뷰가 없습니다.";
+    String NO_SUCH_USER_HIDE_MESSAGE = "탈퇴하신 유저입니다.";
+    String NO_SUCH_USER_WAIT_MESSAGE = "회원승인 대기중입니다.";
+    String NO_SUCH_USER_COMPANION_MESSAGE = "회원가입이 반려되었습니다.";
     //
     String BAD_ADDRESS_INFO_EX_MESSAGE = "잘못된 주소 입니다.";
     String BAD_INFO_EX_MESSAGE = "잘못된 정보 입니다.";
