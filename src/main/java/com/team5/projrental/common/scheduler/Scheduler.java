@@ -43,7 +43,6 @@ public class Scheduler {
 
         findPaymentInfo.forEach(i -> i.setStatus(PaymentInfoStatus.EXPIRED));
 
-
 //        paymentRepository.updateStatusIfOverRentalEndDate(LocalDate.now());
     }
 

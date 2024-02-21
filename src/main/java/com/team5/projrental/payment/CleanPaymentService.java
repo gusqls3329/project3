@@ -44,7 +44,7 @@ public class CleanPaymentService implements RefPaymentService {
     @NamedLock("postPayment")
     public ResVo postPayment(PaymentInsDto paymentInsDto) {
 
-        int loginUserPk = getLoginUserPk();
+        Long loginUserPk = getLoginUserPk();
         paymentInsDto.setIbuyer(loginUserPk);
         CommonUtils.ifFalseThrow(NoSuchUserException.class, NO_SUCH_USER_EX_MESSAGE,
                 productRepository.findIuserCountBy(paymentInsDto.getIbuyer()));
@@ -146,7 +146,7 @@ public class CleanPaymentService implements RefPaymentService {
     public ResVo delPayment(Integer ipayment, Integer div) {
 
         // 데이터 검증
-        int iuser = getLoginUserPk();
+        Long iuser = getLoginUserPk();
         GetInfoForCheckIproductAndIuserResult checkResult = paymentRepository.checkIuserAndIproduct(ipayment, iuser);
         if (checkResult == null) {
             throw new NoSuchProductException(NO_SUCH_PRODUCT_EX_MESSAGE);
@@ -245,7 +245,7 @@ public class CleanPaymentService implements RefPaymentService {
         throw new BadDivInformationException(BAD_DIV_INFO_EX_MESSAGE);
     }
 
-    private int getLoginUserPk() {
+    private Long getLoginUserPk() {
         return authenticationFacade.getLoginUserPk();
     }
 

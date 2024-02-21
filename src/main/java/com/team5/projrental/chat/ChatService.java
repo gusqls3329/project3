@@ -35,7 +35,7 @@ public class ChatService {
 
     public List<ChatSelVo> getChatAll(ChatSelDto dto) {
 
-        int loginUserPk = authenticationFacade.getLoginUserPk();
+        Long loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setLoginedIuser(loginUserPk);
         List<ChatSelVo> list = mapper.selChatAll(dto);
         return list;
@@ -43,7 +43,7 @@ public class ChatService {
 
 
     public ResVo postChatMsg(ChatMsgInsDto dto) {
-        int loginUserPk = authenticationFacade.getLoginUserPk();
+        Long loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setLoginedIuser(loginUserPk);
         dto.setMsg(CommonUtils.ifContainsBadWordChangeThat(dto.getMsg()));
         int istatus = mapper.delBeforeChatIstatus(dto);
@@ -102,7 +102,7 @@ public class ChatService {
 
     //채팅방 입장시 메세지 내용 불러오기
     public List<ChatMsgSelVo> getMsgAll(ChatMsgSelDto dto) {
-        int loginUserPk = authenticationFacade.getLoginUserPk();
+        Long loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setLoginedIuser(loginUserPk);
 
         List<ChatMsgSelVo> list = mapper.selChatMsgAll(dto);
@@ -119,7 +119,7 @@ public class ChatService {
     // 채팅 입력
     public ChatSelVo postChat(ChatInsDto dto) {
 
-        int loginUserPk = authenticationFacade.getLoginUserPk();
+        Long loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setLoginedIuser(loginUserPk);
 
         /*Integer isExixtChat = mapper.selChatUserCheck(dto);

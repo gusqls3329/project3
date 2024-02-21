@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class SeldelUserPayDto {
     private Integer iproduct;
-    private int iuser;
+    private Long iuser;
     @JsonIgnore
     private int pistatus;
     @JsonIgnore

@@ -8,16 +8,16 @@ import lombok.Getter;
 public class GetProductBaseDto {
     private Categories icategory;
     private Integer iproduct;
-    private Integer iuser;
+    private Long iuser;
 
 
 
-    public GetProductBaseDto(Categories icategory, Integer iproduct, Integer iuser) {
+    public GetProductBaseDto(Categories icategory, Integer iproduct, Long iuser) {
         this.icategory = icategory;
         this.iproduct = iproduct;
         this.iuser = iuser;
     }
-    public GetProductBaseDto( Integer iproduct, Integer iuser) {
+    public GetProductBaseDto( Integer iproduct, Long iuser) {
         this.iproduct = iproduct;
         this.iuser = iuser;
     }

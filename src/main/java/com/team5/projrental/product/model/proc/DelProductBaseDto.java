@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 public class DelProductBaseDto {
 
     private Integer iproduct;
-    private Integer iuser;
+    private Long iuser;
     private Integer div;
 }

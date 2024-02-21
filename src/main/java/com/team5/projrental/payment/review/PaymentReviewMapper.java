@@ -13,11 +13,11 @@ public interface PaymentReviewMapper {
 
     int upProductIstatus(Integer ipayment);
     int upReview(UpRieDto dto);
-    int delReview(int ireview, int iuser);
+    int delReview(int ireview, Long iuser);
 
-    String selReIstatus(Integer ipayment, Integer iuser);
-    int selReview(Integer iuser, Integer ipayment);
-    CheckIsBuyer selBuyRew(Integer iuser, Integer ipayment);
+    String selReIstatus(Integer ipayment, Long iuser);
+    int selReview(Long iuser, Integer ipayment);
+    CheckIsBuyer selBuyRew(Long iuser, Integer ipayment);
     RiviewVo selPatchRev(Integer ireview);
 
     // 평균 별점올리기

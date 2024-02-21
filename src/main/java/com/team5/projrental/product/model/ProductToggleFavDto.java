@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 public class ProductToggleFavDto {
-    private int iuser;
+    private Long iuser;
     private int iproduct;
 }

@@ -17,7 +17,7 @@ public class ChatMsgSelDto {
     private int ichat;
 
     @JsonIgnore
-    private int loginedIuser;
+    private Long loginedIuser;
 
     @JsonIgnore
     private int startIdx;

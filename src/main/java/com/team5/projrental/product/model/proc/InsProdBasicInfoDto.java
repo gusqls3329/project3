@@ -15,7 +15,7 @@ public class InsProdBasicInfoDto {
     // useAutoGenKey
     private Integer iproduct;
 
-    private Integer iuser;
+    private Long iuser;
     private String title;
     private String contents;
     private String addr;
@@ -34,7 +34,7 @@ public class InsProdBasicInfoDto {
     private Double y;
     private Integer inventory;
 
-    public InsProdBasicInfoDto(Integer iuser, String title, String contents, String addr, String restAddr,
+    public InsProdBasicInfoDto(Long iuser, String title, String contents, String addr, String restAddr,
                                String storedPic, Integer price, Integer rentalPrice, Integer deposit, LocalDate buyDate,
                                LocalDate rentalStartDate, LocalDate rentalEndDate, Categories icategory, Double x, Double y,
                                Integer inventory) {

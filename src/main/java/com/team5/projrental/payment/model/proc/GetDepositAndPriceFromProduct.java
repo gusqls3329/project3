@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetDepositAndPriceFromProduct {
-    private Integer iseller;
+    private Long iseller;
     private Integer rentalPrice;
     private Integer deposit;
     private Integer price;

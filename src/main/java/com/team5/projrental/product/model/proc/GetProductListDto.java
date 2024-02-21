@@ -14,14 +14,14 @@ public class GetProductListDto {
     private Integer sort;
     private String search;
     private Categories icategory;
-    private Integer loginedIuser;
-    private Integer targetIuser;
+    private Long loginedIuser;
+    private Long targetIuser;
     private Integer prodPerPage;
     private Integer page;
 
-    private Integer loginedIuserForHiddenProduct;
+    private Long loginedIuserForHiddenProduct;
 
-    public GetProductListDto(Integer sort, String search, Categories icategory, Integer page, Integer iuser,
+    public GetProductListDto(Integer sort, String search, Categories icategory, Integer page, Long iuser,
                              Integer prodPerPage) {
         this.sort = sort;
         this.search = search;
@@ -32,7 +32,7 @@ public class GetProductListDto {
     }
 
 
-    public GetProductListDto(Integer iuser, Integer page) {
+    public GetProductListDto(Long iuser, Integer page) {
         this.targetIuser = iuser;
         this.page = page;
         this.prodPerPage = Const.PROD_PER_PAGE;

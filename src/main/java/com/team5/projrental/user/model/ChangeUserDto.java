@@ -46,7 +46,7 @@ public class ChangeUserDto {
     @JsonIgnore
     private String chPic;
     @JsonIgnore
-    private int iuser;
+    private Long iuser;
     @JsonIgnore
     private double x;
     @JsonIgnore

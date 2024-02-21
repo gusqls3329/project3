@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 public class UserFirebaseTokenPatchDto {
     @JsonIgnore
-    private int iuser;
+    private Long iuser;
 
     @NotBlank(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
     private String firebaseToken;

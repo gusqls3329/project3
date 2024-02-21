@@ -52,7 +52,7 @@ public class PaymentService implements RefPaymentService{
 //        if (totalRentalPrice == null || totalRentalPrice == 0) {
 //            throw new NoSuchProductException(NO_SUCH_PRODUCT_EX_MESSAGE);
 //        }
-        int loginUserPk = getLoginUserPk();
+        Long loginUserPk = getLoginUserPk();
         paymentInsDto.setIbuyer(loginUserPk);
         CommonUtils.ifFalseThrow(NoSuchUserException.class, NO_SUCH_USER_EX_MESSAGE,
                 productRepository.findIuserCountBy(paymentInsDto.getIbuyer()));
@@ -163,7 +163,7 @@ public class PaymentService implements RefPaymentService{
 //        CommonUtils.ifFalseThrow(NoSuchUserException.class, NO_SUCH_USER_EX_MESSAGE,
 //                productRepository.findIuserCountBy(iuser));
 
-        int iuser = getLoginUserPk();
+        Long iuser = getLoginUserPk();
         GetInfoForCheckIproductAndIuserResult checkResult = paymentRepository.checkIuserAndIproduct(ipayment, iuser);
         if (checkResult == null) {
             throw new NoSuchProductException(NO_SUCH_PRODUCT_EX_MESSAGE);
@@ -292,7 +292,7 @@ public class PaymentService implements RefPaymentService{
         throw new BadDivInformationException(BAD_DIV_INFO_EX_MESSAGE);
     }
 
-    private int getLoginUserPk() {
+    private Long getLoginUserPk() {
         return authenticationFacade.getLoginUserPk();
     }
 

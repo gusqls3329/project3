@@ -17,14 +17,14 @@ public class MypageService {
     private final AuthenticationFacade authenticationFacade;
 
     public List<PaymentSelVo> paymentList(PaymentSelDto dto){
-        int loginUserPk = authenticationFacade.getLoginUserPk();
+        Long loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setLoginedIuser(loginUserPk);
 
         return mapper.getPaymentList(dto);
     }
 
     public List<MyBuyReviewListSelVo> selIbuyerReviewList(MyBuyReviewListSelDto dto){
-        int loginUserPk = authenticationFacade.getLoginUserPk();
+        Long loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setIuser(loginUserPk);
 
 
@@ -34,7 +34,7 @@ public class MypageService {
     }
 
     public List<MyFavListSelVo> selMyFavList(MyFavListSelDto dto) {
-        int loginUserPk = authenticationFacade.getLoginUserPk();
+        Long loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setLoginedIuser(loginUserPk);
 
         return mapper.getFavList(dto);

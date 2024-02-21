@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RejectMessageInfo {
-    private int iuser;
+    private Long iuser;
     private String message;
     private int code;
     private int num;

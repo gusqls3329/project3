@@ -19,7 +19,7 @@ import java.util.List;
 public class ProductInsDto {
     //    @NotNull
     @JsonIgnore
-    private Integer iuser;
+    private Long iuser;
     @NotBlank(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
     @Length(min = 2, max = 50)
     private String title;

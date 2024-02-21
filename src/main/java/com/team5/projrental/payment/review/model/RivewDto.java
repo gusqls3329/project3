@@ -11,7 +11,7 @@ import org.hibernate.validator.constraints.Range;
 @Data
 public class RivewDto {
     @JsonIgnore
-    private int iuser;
+    private Long iuser;
 
     @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
     @Min(value = 1, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)

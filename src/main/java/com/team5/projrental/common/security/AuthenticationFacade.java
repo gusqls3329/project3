@@ -13,7 +13,7 @@ public class AuthenticationFacade {
         return (SecurityUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
-    public int getLoginUserPk() {
+    public Long getLoginUserPk() {
         return getLoginUser().getSecurityPrincipal().getIuser();
     }
 
@@ -21,7 +21,7 @@ public class AuthenticationFacade {
         return Auth.getAuth(getLoginUser().getSecurityPrincipal().getAuth());
     }
 
-    public Map<Integer, Auth> getLoginUserPKAndAuth(){
+    public Map<Long, Auth> getLoginUserPKAndAuth(){
         return Map.of(getLoginUserPk(), getLoginUserAuth());
     }
 }
