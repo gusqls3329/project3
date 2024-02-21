@@ -166,8 +166,7 @@
         ON us.iuser = u.iuser
         LEFT JOIN comp c
         ON c.iuser = us.iuser
-        WHERE us.uid = 'mic11'
-        AND us.upw = '$2a$10$twr1mYczjff.I6JWg386/OrFSspOqJGCuFuHW5Uh.6Wo95GYNHUXO';
+        WHERE us.uid = #{uid}
     </select>
 
     <select id="selpatchUser">
