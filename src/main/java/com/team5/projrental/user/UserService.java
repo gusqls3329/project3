@@ -61,6 +61,8 @@ public class UserService {
     private final UserMapper mapper;
     private final UserRepository userRepository;
     private final CompRepository compRepository;
+    private final UsersRepository usersRepository;
+    //
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final SecurityProperties securityProperties;
@@ -203,28 +205,37 @@ public class UserService {
     public SigninVo postSignin(HttpServletResponse res, SigninDto dto) {
 //        UserEntity entity = mapper.selSignin(dto);
 
+        User user = null;
+        Comp comp = null;
+        Users findUsers = usersRepository.findByUid(dto.getUid());
 
-        QUser user = QUser.user;
-        User entity = queryFactory.select(user)
-                .from(user)
-                .where(user.uid.eq(dto.getUid()))
-                .fetchOne();
+        String password = "";
+        Long iuser = 0L;
+        Auth auth = findUsers.getAuth();
 
-        QComp comp = QComp.comp;
-        Comp compEntity = queryFactory.select(comp)
-                .from(comp)
-                .where(comp.uid.eq(dto.getUid()))
-                .fetchOne();
+        if (auth == Auth.USER) {
+            user = (User) findUsers;
+            password = user.getUpw();
+            iuser = user.getId();
+        } else {
+            comp = (Comp) findUsers;
+            password = comp.getUpw();
+        }
+
+
 
         QUsers users = QUsers.users;
         queryFactory.select(users)
                 .from();
 
-        if (entity == null && compEntity == null) {
+        if (user == null && comp == null) {
             throw new NoSuchDataException(NO_SUCH_ID_EX_MESSAGE);
-        } else if (!passwordEncoder.matches(dto.getUpw(), entity.getUpw()) && !passwordEncoder.matches(dto.getUpw(), compEntity.getUpw()) ) {
+        } else if (!passwordEncoder.matches(dto.getUpw(), password)) {
             throw new NoSuchDataException(NO_SUCH_PASSWORD_EX_MESSAGE);
         }
+
+
+
         SelSigninVo vo = mapper.selLoginStatus(dto);
         if(CompStatus.HIDE.toString().equals(vo.getCstatus())  || UserStatus.HIDE.toString().equals(vo.getUstatus())){
             throw new ClientException(NO_SUCH_USER_HIDE_MESSAGE);
@@ -236,8 +247,8 @@ public class UserService {
             throw new ClientException(NO_SUCH_USER_COMPANION_MESSAGE);
         }
         SecurityPrincipal principal = SecurityPrincipal.builder()
-                .iuser(entity != null ? entity.getId().intValue() : compEntity.getId().intValue())
-                .auth(entity.getAuth().name())
+                .iuser(iuser)
+                .auth(auth.name())
                 .build();
 
         String at = jwtTokenProvider.generateAccessToken(principal);
@@ -250,8 +261,8 @@ public class UserService {
 
         return SigninVo.builder()
                 .result(String.valueOf(Const.SUCCESS))
-                .iuser(entity != null ? entity.getId().intValue() : compEntity.getId().intValue())
-                .auth(entity.getAuth())
+                .iuser(iuser)
+                .auth(auth)
 //                .firebaseToken(entity.getFirebaseToken())
                 .accessToken(at)
                 .build();
@@ -297,7 +308,7 @@ public class UserService {
     }
 
     public ResVo patchUserFirebaseToken(UserFirebaseTokenPatchDto dto) { //FirebaseToken을 발급 : Firebase방식 : 메시지를 보낼때 ip대신 고유값(Firebase)을 가지고 있는사람에게 메시지 전달
-        int loginUserPk = authenticationFacade.getLoginUserPk();
+        Long loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setIuser(loginUserPk);
         int result = mapper.updUserFirebaseToken(dto);
         if (result == 1) {
@@ -354,7 +365,7 @@ public class UserService {
                 dto.getCompNm() == null ? "" : dto.getCompNm(),
                 dto.getRestAddr() == null ? "" : dto.getRestAddr());
 
-        int loginUserPk = authenticationFacade.getLoginUserPk();
+        Long loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setIuser(loginUserPk);
 
         if (checkNickOrId(1, dto.getNick()) == null) throw new BadInformationException(BAD_INFO_EX_MESSAGE);
@@ -407,7 +418,7 @@ public class UserService {
 
     @Transactional
     public int patchUser(DelUserDto dto) {
-        int loginUserPk = authenticationFacade.getLoginUserPk();
+        Long loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setIuser(loginUserPk);
 
 
@@ -437,7 +448,7 @@ public class UserService {
                     List<SeldelUserPayDto> payDtos = mapper.seldelUserPay(entity.getIuser());
 
                     List<Integer> iproducts = new ArrayList<>();
-                    List<Integer> iusers = new ArrayList<>();
+                    List<Long> iusers = new ArrayList<>();
 
                     for (SeldelUserPayDto list : payDtos) {
                         iproducts.add(list.getIproduct());
@@ -465,9 +476,9 @@ public class UserService {
         throw new BadDateInfoException(AUTHENTICATION_FAIL_EX_MESSAGE);
     }
 
-    public SelUserVo getUser(Integer iuser) {
+    public SelUserVo getUser(Long iuser) {
         boolean checker = iuser == null || iuser == 0;
-        Integer actionIuser = checker ? authenticationFacade.getLoginUserPk() : iuser;
+        Long actionIuser = checker ? authenticationFacade.getLoginUserPk() : iuser;
 
         SelUserVo vo = mapper.selUser(actionIuser);
 

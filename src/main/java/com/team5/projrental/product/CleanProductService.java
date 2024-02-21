@@ -68,7 +68,7 @@ public class CleanProductService implements RefProductService {
             throw new IllegalCategoryException(ILLEGAL_CATEGORY_EX_MESSAGE);
         }
         // iuser 가져오기 -> isLiked 를 위해서
-        Integer iuser;
+        Long iuser;
         try {
             iuser = getLoginUserPk();
         } catch (ClassCastException ignored) {
@@ -284,7 +284,7 @@ public class CleanProductService implements RefProductService {
         }
 
         // 병합하지 않아도 되는 데이터 검증
-        int loginUserPk = getLoginUserPk();
+        Long loginUserPk = getLoginUserPk();
         // 카테고리 검증
         if (dto.getIcategory() != null) {
             CommonUtils.ifCategoryNotContainsThrow(dto.getIcategory());
@@ -422,7 +422,7 @@ public class CleanProductService implements RefProductService {
         return new ResVo(SUCCESS);
     }
 
-    public List<ProductUserVo> getUserProductList(Integer iuser, Integer page) {
+    public List<ProductUserVo> getUserProductList(Long iuser, Integer page) {
         GetProductListDto getProductListDto;
         if (iuser != null) {
             getProductListDto = new GetProductListDto(iuser, page);
@@ -471,7 +471,7 @@ public class CleanProductService implements RefProductService {
         return productRepository.getReview(new ReviewGetDto(iproduct, (page - 1) * reviewPerPage, reviewPerPage));
     }
 
-    private int getLoginUserPk() {
+    private Long getLoginUserPk() {
         return authenticationFacade.getLoginUserPk();
     }
 

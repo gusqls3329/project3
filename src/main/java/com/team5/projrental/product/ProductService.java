@@ -264,7 +264,7 @@ public class ProductService implements RefProductService {
         }
         // 병합하지 않아도 되는 데이터 검증
 
-        int loginUserPk = getLoginUserPk();
+        Long loginUserPk = getLoginUserPk();
         // 카테고리 검증
         if (dto.getIcategory() != null) {
             CommonUtils.ifCategoryNotContainsThrow(dto.getIcategory());
@@ -444,7 +444,7 @@ public class ProductService implements RefProductService {
         return new ResVo(SUCCESS);
     }
 
-    public List<ProductUserVo> getUserProductList(Integer iuser, Integer page) {
+    public List<ProductUserVo> getUserProductList(Long iuser, Integer page) {
         List<GetProductListResultDto> productListBy =
                 productRepository.findProductListBy(new GetProductListDto(
                         iuser == null ? getLoginUserPk() : iuser, page
@@ -493,7 +493,7 @@ public class ProductService implements RefProductService {
         return productRepository.getReview(new ReviewGetDto(iproduct, (page - 1) * reviewPerPage, reviewPerPage));
     }
 
-    private int getLoginUserPk() {
+    private Long getLoginUserPk() {
         return authenticationFacade.getLoginUserPk();
     }
 

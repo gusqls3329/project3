@@ -27,7 +27,7 @@ public class PaymentReviewService {
 
     @Transactional
     public int postReview(RivewDto dto) {
-        int loginUserPk = authenticationFacade.getLoginUserPk();
+        Long loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setIuser(loginUserPk);
 
         // 0: 리뷰를 작성하지 않음
@@ -78,7 +78,7 @@ public class PaymentReviewService {
     public int patchReview(UpRieDto dto) { //구매자면 잘못된요청
         CommonUtils.ifAllNullThrow(BadInformationException.class, BAD_INFO_EX_MESSAGE,
                 dto.getContents(), dto.getRating());
-        int loginUserPk = authenticationFacade.getLoginUserPk();
+        Long loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setIuser(loginUserPk);
         RiviewVo check = reviewMapper.selPatchRev(dto.getIreview());
         //수정하려는 유저가 구매자가 맞는지
@@ -113,7 +113,7 @@ public class PaymentReviewService {
     }
 
     public int delReview(DelRivewDto dto) {
-        int loginUserPk = authenticationFacade.getLoginUserPk();
+        Long loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setIuser(loginUserPk);
         //삭제전 리뷰를 작성한 사람이 iuser가 맞는지 확인
         RiviewVo check = reviewMapper.selPatchRev(dto.getIreview());

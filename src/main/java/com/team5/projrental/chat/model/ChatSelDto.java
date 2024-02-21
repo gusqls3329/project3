@@ -18,7 +18,7 @@ public class ChatSelDto {
     private int page;
 
     @JsonIgnore
-    private int loginedIuser;
+    private Long loginedIuser;
 
     @JsonIgnore
     private int startIdx;

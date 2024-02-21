@@ -22,7 +22,7 @@ public interface RefProductRepository {
     //
 
     //
-    boolean findIuserCountBy(Integer iuser);
+    boolean findIuserCountBy(Long iuser);
     //
 
     //

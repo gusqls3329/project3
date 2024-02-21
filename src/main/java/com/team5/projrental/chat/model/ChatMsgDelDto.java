@@ -12,5 +12,5 @@ public class ChatMsgDelDto {
     private int ichat;
 
     @JsonIgnore
-    private int iuser;
+    private Long iuser;
 }

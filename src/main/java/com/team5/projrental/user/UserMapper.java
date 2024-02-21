@@ -18,9 +18,9 @@ public interface UserMapper {
     int delUser(DelUserDto dto);
     List<SeldelUserPayDto> seldelUserPay(int iuser);
     int delUserProPic(List<Integer> iproducts);
-    int delLike(List<Integer> iusers);
-    int delRev(List<Integer> iusers);
-    SelUserVo selUser(int iuser);
+    int delLike(List<Long> iusers);
+    int delRev(List<Long> iusers);
+    SelUserVo selUser(Long iuser);
     UserModel selUserSocial(UserSelDto dto);
     Integer selpatchUser(int iuser);
 
@@ -29,13 +29,13 @@ public interface UserMapper {
     Integer checkUserNickUser(String dto);
 
     // 채팅 삭제 관련
-    Integer getUserChatCount(Integer iuser);
+    Long getUserChatCount(Long iuser);
 
-    Integer delUserChat(Integer iuser);
+    Long delUserChat(Long iuser);
 
     int patchToken(UserFirebaseTokenPatchDto dto);
 
-    CompInfoDto getCompInf(int iuser);
+    CompInfoDto getCompInf(Long iuser);
 
     int changeCompInfo(ChangeUserDto dto);
 

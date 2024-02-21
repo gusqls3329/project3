@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class DelRivewDto {
     @JsonIgnore
-    private int iuser;
+    private Long iuser;
 
     @JsonIgnore
     private String istatus;

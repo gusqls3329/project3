@@ -303,7 +303,7 @@ public class ProductController {
     @GetMapping("/list")
     public List<ProductUserVo> getUserProductList(@RequestParam(required = false)
                                                   @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
-                                                  Integer iuser,
+                                                      Long iuser,
                                                   @RequestParam
                                                   @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
                                                   @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)

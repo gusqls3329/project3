@@ -21,5 +21,5 @@ public class UpRieDto {
     private Integer rating;
 
     @JsonIgnore
-    private int iuser;
+    private Long iuser;
 }

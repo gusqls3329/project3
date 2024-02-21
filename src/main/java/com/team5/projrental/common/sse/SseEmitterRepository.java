@@ -13,19 +13,19 @@ public class SseEmitterRepository {
 
     private final SseEmitterMapper emitterMapper;
 
-    public int findExpiredPaymentCountBy(int iuser) {
+    public int findExpiredPaymentCountBy(Long iuser) {
         return emitterMapper.findExpiredPaymentCountBy(iuser);
     }
 
-    public FindDiffUserDto findDiffUserBy(int ipayment, int iuser) {
+    public FindDiffUserDto findDiffUserBy(int ipayment, Long iuser) {
         return emitterMapper.findDiffUserBy(ipayment, iuser);
     }
 
-    public List<RejectMessageInfo> findRejectedMessage(int iuser) {
+    public List<RejectMessageInfo> findRejectedMessage(Long iuser) {
         return emitterMapper.findRejectedMessage(iuser);
     }
 
-    public int deleteRejectedMessage(int iuser) {
+    public int deleteRejectedMessage(Long iuser) {
         return emitterMapper.deleteRejectedMessage(iuser);
     }
 

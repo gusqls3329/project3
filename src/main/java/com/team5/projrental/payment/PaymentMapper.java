@@ -22,7 +22,7 @@ public interface PaymentMapper {
 
     int insProductPayment(Integer iproduct, Integer ipayment);
 
-    GetInfoForCheckIproductAndIuserResult checkIuserAndIproduct(Integer ipayment, Integer iuser);
+    GetInfoForCheckIproductAndIuserResult checkIuserAndIproduct(Integer ipayment, Long iuser);
 
     int delPayment(DelPaymentDto delPaymentDto);
 
@@ -31,5 +31,5 @@ public interface PaymentMapper {
     // scheduler
     int updateIstatusOverRentalEndDate(LocalDate now);
 
-    int savePaymentStatus(Integer ipayment, Integer iseller);
+    int savePaymentStatus(Integer ipayment, Long iseller);
 }
