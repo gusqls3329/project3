@@ -13,10 +13,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProfutQdslRepositoryImpl implements ProfitQdslRepository{
     private final JPAQueryFactory jpaQueryFactory;
-
-    @Override
-    public List<ProfitDto> getProfit(ProfitDto dto, Pageable pageable) {
-       // List<Admin> list = jpaQueryFactory.select().from()
-        return null;
-    }
+//
+//    @Override
+//    public List<ProfitDto> getProfit(ProfitDto dto, Pageable pageable) {
+//       // List<Admin> list = jpaQueryFactory.select().from()
+//        return null;
+//    }
 }

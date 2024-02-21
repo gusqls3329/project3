@@ -6,5 +6,5 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface ProfitQdslRepository {
-    List<ProfitDto> getProfit(ProfitDto dto, Pageable pageable);
+//    List<ProfitDto> getProfit(ProfitDto dto, Pageable pageable);
 }
