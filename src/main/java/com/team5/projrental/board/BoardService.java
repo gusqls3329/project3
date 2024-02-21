@@ -35,11 +35,11 @@ import static com.team5.projrental.common.exception.ErrorCode.BAD_WORD_EX_MESSAG
 @Service
 @RequiredArgsConstructor
 public class BoardService {
-    /*private final BoardRepository boardRepository;
+    private final BoardRepository boardRepository;
     private final AuthenticationFacade authenticationFacade;
     private final MyFileUtils myFileUtils;
 
-    public ResVo postBoard(List<MultipartFile> storedPics, BoardInsDto dto) {
+    /*public ResVo postBoard(List<MultipartFile> storedPics, BoardInsDto dto) {
         CommonUtils.ifContainsBadWordThrow(BadWordException.class, BAD_WORD_EX_MESSAGE,
                 dto.getTitle(), dto.getContents());
 
@@ -71,32 +71,30 @@ public class BoardService {
             }
         }
         return new ResVo(boardPicInsDto.getIboard());
-    }
+    }*/
 
     public List<BoardListSelVo> getBoardList(Pageable pageable) {
-        List<Board> boardList = null;
+        /*List<Board> boardList = null;
         User user = new User();
         return null;
 
 
 
-        *//*BoardListSelDto dto = new BoardListSelDto();
+        BoardListSelDto dto = new BoardListSelDto();
         dto.setLoginedIuser(authenticationFacade.getLoginUserPk());
-        if(dto.getLoginedIuser() > 0){
+        if(dto.getLoginedIuser() > 0) {
             boardList = boardRepository.findAllByUserOrderByIboardDesc(user, pageable);
-        }*//*
+        }
 
-        *//*return boardList.stream().map(item -> {
+        return boardList.stream().map(item -> {
         Users users = new User();
         users.setId((long)authenticationFacade.getLoginUserPk());
-        int isFav = boardRepository.findById(users.getId()).isPresent() ? 1 :0;
+        int isFav = boardRepository.findById(users.getId()).isPresent() ? 1 : 0;
+
+        });*/
+    return null;
+    }
 
 
 
-        })*//*
-        *//*return BoardListSelVo.builder()
-                .nick(user.getNick())
-                .iboard()
-                .build()*//*
-    }*/
 }
