@@ -23,6 +23,7 @@ import com.team5.projrental.common.utils.MyFileUtils;
 import com.team5.projrental.entities.*;
 import com.team5.projrental.entities.embeddable.Address;
 import com.team5.projrental.entities.enums.*;
+import com.team5.projrental.entities.inheritance.QUsers;
 import com.team5.projrental.entities.inheritance.Users;
 import com.team5.projrental.entities.mappedsuper.BaseUser;
 import com.team5.projrental.user.model.*;
@@ -202,6 +203,7 @@ public class UserService {
     public SigninVo postSignin(HttpServletResponse res, SigninDto dto) {
 //        UserEntity entity = mapper.selSignin(dto);
 
+
         QUser user = QUser.user;
         User entity = queryFactory.select(user)
                 .from(user)
@@ -214,19 +216,23 @@ public class UserService {
                 .where(comp.uid.eq(dto.getUid()))
                 .fetchOne();
 
+        QUsers users = QUsers.users;
+        queryFactory.select(users)
+                .from();
+
         if (entity == null && compEntity == null) {
             throw new NoSuchDataException(NO_SUCH_ID_EX_MESSAGE);
         } else if (!passwordEncoder.matches(dto.getUpw(), entity.getUpw()) && !passwordEncoder.matches(dto.getUpw(), compEntity.getUpw()) ) {
             throw new NoSuchDataException(NO_SUCH_PASSWORD_EX_MESSAGE);
         }
         SelSigninVo vo = mapper.selLoginStatus(dto);
-        if(vo.getCstatus() == CompStatus.HIDE.toString() || vo.getUstatus() == UserStatus.HIDE.toString()){
+        if(CompStatus.HIDE.toString().equals(vo.getCstatus())  || UserStatus.HIDE.toString().equals(vo.getUstatus())){
             throw new ClientException(NO_SUCH_USER_HIDE_MESSAGE);
         }
-        if(vo.getCstatus() == CompStatus.WAIT.toString()){
+        if(CompStatus.WAIT.toString().equals(vo.getCstatus()) ){
             throw new ClientException(NO_SUCH_USER_WAIT_MESSAGE);
         }
-        if(vo.getCstatus() == CompStatus.COMPANION.toString() || vo.getUstatus() == UserStatus.COMPANION.toString()){
+        if(CompStatus.COMPANION.toString().equals(vo.getCstatus())|| UserStatus.COMPANION.toString().equals(vo.getUstatus()) ){
             throw new ClientException(NO_SUCH_USER_COMPANION_MESSAGE);
         }
         SecurityPrincipal principal = SecurityPrincipal.builder()
@@ -245,7 +251,7 @@ public class UserService {
         return SigninVo.builder()
                 .result(String.valueOf(Const.SUCCESS))
                 .iuser(entity != null ? entity.getId().intValue() : compEntity.getId().intValue())
-//                .auth(entity.getAuth())
+                .auth(entity.getAuth())
 //                .firebaseToken(entity.getFirebaseToken())
                 .accessToken(at)
                 .build();
@@ -302,6 +308,7 @@ public class UserService {
 
     public FindUidVo getFindUid(FindUidDto phone) {
         FindUidVo vo = mapper.selFindUid(phone);
+
         //vo.setIauth(authenticationFacade.getLoginUserAuth());
         if (vo == null) {
             throw new BadInformationException(NO_SUCH_USER_EX_MESSAGE);
@@ -463,6 +470,11 @@ public class UserService {
         Integer actionIuser = checker ? authenticationFacade.getLoginUserPk() : iuser;
 
         SelUserVo vo = mapper.selUser(actionIuser);
+
+        if(iuser != authenticationFacade.getLoginUserPk()){
+            vo.setPhone(null);
+            vo.setEmail(null);
+        }
 
         if (vo.getAuth() == Auth.COMP) {
             CompInfoDto compInf = mapper.getCompInf(actionIuser);
