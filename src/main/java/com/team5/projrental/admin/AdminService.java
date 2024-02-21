@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AdminService {
 
-    public ProfitVo getProfit( ProfitDto dto){
-return null;
+    public ProfitVo getProfit(ProfitDto dto) {
+        return null;
     }
 }
