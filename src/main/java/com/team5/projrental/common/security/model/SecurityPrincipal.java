@@ -9,6 +9,6 @@ import lombok.*;
 @Setter
 @Builder
 public class SecurityPrincipal {
-    private int iuser;
+    private Long iuser;
     private String auth;
 }

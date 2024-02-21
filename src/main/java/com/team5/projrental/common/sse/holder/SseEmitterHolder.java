@@ -20,7 +20,7 @@ import java.util.concurrent.ExecutorService;
 @Component
 @Slf4j
 public class SseEmitterHolder {
-    private Map<Integer, SseEmitter> emitterMap;
+    private Map<Long, SseEmitter> emitterMap;
 
     private SseEmitterRepository emitterRepository;
 
@@ -40,7 +40,7 @@ public class SseEmitterHolder {
      * @param iuser
      * @return SseEmitter
      */
-    public SseEmitter add(Integer iuser) {
+    public SseEmitter add(Long iuser) {
         SseEmitter sseEmitter = new SseEmitter(Const.SSE_TIMEOUT_TIME);
         emitterMap.put(iuser, sseEmitter);
 
@@ -66,7 +66,7 @@ public class SseEmitterHolder {
 
     // + 만약 해당 유저의 SseEmitter 가 존재하지 않으면 DB 에 저장해두고, 로그인시 해당 데이터 일괄 보내기
     // 여기서 필요한건 DB에서 해당 유저에게 보내야할 푸시가 존재한다면 해당 메시지 다 담아서 푸시하기.
-    public void sendFromDbMessage(Integer iuser) {
+    public void sendFromDbMessage(Long iuser) {
         List<RejectMessageInfo> messages = emitterRepository.findRejectedMessage(iuser);
         messages.forEach(this::send);
         int deletedPushMessageFromDb = emitterRepository.deleteRejectedMessage(iuser);

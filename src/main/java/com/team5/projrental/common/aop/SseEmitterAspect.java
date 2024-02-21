@@ -58,7 +58,7 @@ public class SseEmitterAspect {
 
 
     //
-    private RejectMessageInfo catchEventPropertiesGenerator(Integer iuser, String message,
+    private RejectMessageInfo catchEventPropertiesGenerator(Long iuser, String message,
                                                             Integer code, Integer num,
                                                             String name) {
         return new RejectMessageInfo(iuser, message, code, num, name);

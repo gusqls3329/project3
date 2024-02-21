@@ -8,13 +8,13 @@ import java.util.List;
 
 @Mapper
 public interface SseEmitterMapper {
-    int findExpiredPaymentCountBy(int iuser);
+    int findExpiredPaymentCountBy(Long iuser);
 
-    FindDiffUserDto findDiffUserBy(int ipayment, int iuser);
+    FindDiffUserDto findDiffUserBy(int ipayment, Long iuser);
 
-    List<RejectMessageInfo> findRejectedMessage(int iuser);
+    List<RejectMessageInfo> findRejectedMessage(Long iuser);
 
-    int deleteRejectedMessage(int iuser);
+    int deleteRejectedMessage(Long iuser);
 
     int savePushInfoWhenNotExistsEmitterInMap(RejectMessageInfo dto);
 }

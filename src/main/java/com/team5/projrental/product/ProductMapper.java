@@ -36,7 +36,7 @@ public interface ProductMapper {
     //
 
     //
-    int checkIuser(Integer iuser);
+    Long checkIuser(Long iuser);
     //
 
 

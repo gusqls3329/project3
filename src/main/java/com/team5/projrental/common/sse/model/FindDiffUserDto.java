@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class FindDiffUserDto {
-    private Integer diffIuser;
+    private Long diffIuser;
     private Integer reviewCount;
 }

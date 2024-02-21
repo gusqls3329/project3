@@ -10,5 +10,5 @@ import lombok.Setter;
 public class ChatMsgPushVo extends ChatMsgSelVo {
     private int ichat; // 채팅 방 번호(PK)
     @JsonIgnore
-    private int iuser;
+    private Long iuser;
 }

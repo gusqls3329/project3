@@ -18,7 +18,7 @@ public class ProductLikeService {
 
     public ResVo toggleFav(int iproduct) {
         ProductToggleFavDto dto = new ProductToggleFavDto();
-        int loginUserPk = authenticationFacade.getLoginUserPk();
+        Long loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setIuser(loginUserPk);
         dto.setIproduct(iproduct);
 

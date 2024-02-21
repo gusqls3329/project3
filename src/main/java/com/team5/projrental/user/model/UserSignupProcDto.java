@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class UserSignupProcDto {
-    private int iuser;
+    private Long iuser;
     private String uid;
     private String upw;
     private String nm;

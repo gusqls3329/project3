@@ -42,7 +42,7 @@ public interface RefProductService {
      ResVo putProduct(MultipartFile mainPic, List<MultipartFile> pics, ProductUpdDto dto);
      ResVo delProduct(Integer iproduct, Integer div) ;
 
-     List<ProductUserVo> getUserProductList(Integer iuser, Integer page) ;
+     List<ProductUserVo> getUserProductList(Long iuser, Integer page) ;
 
      List<ReviewResultVo> getAllReviews(Integer iproduct, Integer page) ;
 

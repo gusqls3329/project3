@@ -15,7 +15,7 @@ public class ChatMsgInsDto {
     private int seq; // 각 채팅방의 채팅고유 번호(채팅 PK)
 
     @JsonIgnore
-    private int loginedIuser; // 로그인 유저 PK
+    private Long loginedIuser; // 로그인 유저 PK
 
     @NotBlank
     private String msg; // 전송할 메세지 내용

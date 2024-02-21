@@ -12,12 +12,12 @@ public class ChatInsDto {
     private int ichat;
 
     @JsonIgnore
-    private int loginedIuser;
+    private Long loginedIuser;
 
     @Range(min = 1, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private int iproduct;
 
     @Range(min = 1, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
-    private int otherPersonIuser;
+    private Long otherPersonIuser;
 
 }

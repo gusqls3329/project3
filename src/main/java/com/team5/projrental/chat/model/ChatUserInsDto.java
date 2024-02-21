@@ -12,5 +12,5 @@ public class ChatUserInsDto {
     private int ichat; // 방 PK
 
     @Range(min = 1, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
-    private int iuser; // 유저 PK
+    private Long iuser; // 유저 PK
 }

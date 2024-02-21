@@ -24,7 +24,7 @@ public class PaymentInsDto {
 //    @NotNull
 //    @Min(0)
     @JsonIgnore
-    private Integer ibuyer;
+    private Long ibuyer;
     @NotEmpty(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
     private String paymentMethod;
     @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)

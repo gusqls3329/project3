@@ -10,7 +10,7 @@ import org.hibernate.validator.constraints.Length;
 @Data
 public class DelUserDto {
     @JsonIgnore
-    private int iuser;
+    private Long iuser;
 
     @NotBlank(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
     @Length(min = 4, max = 15, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)

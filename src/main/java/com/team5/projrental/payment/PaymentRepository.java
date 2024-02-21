@@ -28,7 +28,7 @@ public class PaymentRepository {
         return paymentMapper.insProductPayment(iproduct, ipayment);
     }
 
-    public GetInfoForCheckIproductAndIuserResult checkIuserAndIproduct(Integer ipayment, Integer iuser) {
+    public GetInfoForCheckIproductAndIuserResult checkIuserAndIproduct(Integer ipayment, Long iuser) {
         return paymentMapper.checkIuserAndIproduct(ipayment, iuser);
 
     }
@@ -46,7 +46,7 @@ public class PaymentRepository {
         return paymentMapper.updateIstatusOverRentalEndDate(now);
     }
 
-    public int savePaymentStatus(Integer ipayment, Integer iseller) {
+    public int savePaymentStatus(Integer ipayment, Long iseller) {
         return paymentMapper.savePaymentStatus(ipayment, iseller);
     }
 }

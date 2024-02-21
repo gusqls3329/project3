@@ -34,7 +34,7 @@ public class ProductRepository implements RefProductRepository {
 
     //
     @Override
-    public boolean findIuserCountBy(Integer iuser) {
+    public boolean findIuserCountBy(Long iuser) {
         return productMapper.checkIuser(iuser) == 1;
     }
     //
