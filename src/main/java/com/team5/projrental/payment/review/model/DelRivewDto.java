@@ -12,7 +12,7 @@ public class DelRivewDto {
     private int iuser;
 
     @JsonIgnore
-    private int istatus;
+    private String istatus;
 
     @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
     @Min(value = 1, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)

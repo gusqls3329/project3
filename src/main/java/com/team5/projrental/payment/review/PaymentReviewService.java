@@ -6,6 +6,7 @@ import com.team5.projrental.common.exception.ErrorMessage;
 import com.team5.projrental.common.exception.base.BadInformationException;
 import com.team5.projrental.common.security.AuthenticationFacade;
 import com.team5.projrental.common.utils.CommonUtils;
+import com.team5.projrental.entities.enums.PaymentInfoStatus;
 import com.team5.projrental.payment.review.model.*;
 import com.team5.projrental.user.model.CheckIsBuyer;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ import static com.team5.projrental.common.exception.ErrorMessage.REVIEW_ALREADY_
 public class PaymentReviewService {
     private final PaymentReviewMapper reviewMapper;
     private final AuthenticationFacade authenticationFacade;
+
     @Transactional
     public int postReview(RivewDto dto) {
         int loginUserPk = authenticationFacade.getLoginUserPk();
@@ -33,24 +35,24 @@ public class PaymentReviewService {
         // contents 도 not null
 
         //t_payment 상태가 -4 일때만 리뷰쓸수 있도록
-        Integer istatus = reviewMapper.selReIstatus(dto.getIpayment(), loginUserPk);
-        if (istatus == -4) {
+        String istatus = reviewMapper.selReIstatus(dto.getIpayment(), loginUserPk);
+        if (istatus == PaymentInfoStatus.COMPLETED.toString()) {
             //로그인한 유저가 리뷰를 적었던건지 확인하는것
             int selReview = reviewMapper.selReview(loginUserPk, dto.getIpayment());
             if (selReview == 0) {
                 CheckIsBuyer buyCheck = reviewMapper.selBuyRew(loginUserPk, dto.getIpayment());
                 CommonUtils.ifAnyNullThrow(BadInformationException.class, BAD_INFO_EX_MESSAGE, buyCheck);
                 if (buyCheck.getIsBuyer() == 0) {
-                    dto.setContents("");
-                    dto.setRating(0);
+                    throw new BadInformationException(ILLEGAL_EX_MESSAGE);
                 }
+
                 int result = reviewMapper.insReview(dto);
                 if (result == 0) {
                     throw new RuntimeException();
                 }
 
                 if (buyCheck.getIsBuyer() == 1) {
-                    if(dto.getRating() ==null && (dto.getContents() == null || dto.getContents().equals(""))){
+                    if (dto.getRating() == null && (dto.getContents() == null || dto.getContents().equals(""))) {
                         throw new BadInformationException(ILLEGAL_EX_MESSAGE);
                     }
                     int chIuser = reviewMapper.selUser(dto.getIpayment());
@@ -61,21 +63,11 @@ public class PaymentReviewService {
                     uprating.setIuser(chIuser);
                     uprating.setRating(averageRat);
                     int r = reviewMapper.upRating(uprating);
-                    if (r !=1){
+                    if (r != 1) {
                         throw new RuntimeException();
                     }
                 }
-                int countIstatus = reviewMapper.selUpProIs(dto.getIpayment());
-
-                if (countIstatus == 2) {
-                    int result2 = reviewMapper.upProductIstatus(dto.getIpayment());
-                    if (result2 == 0) {
-                        throw new RuntimeException();
-                    }
-                    return Const.SUCCESS;
-                } else {
-                    return Const.SUCCESS;
-                }
+                return Const.SUCCESS;
 
             }
             throw new BadInformationException(REVIEW_ALREADY_EXISTS_EX_MESSAGE);
@@ -99,7 +91,7 @@ public class PaymentReviewService {
         if (buyCheck.getIsBuyer() == 1) {
             //수정전 리뷰를 작성한 사람이 iuser가 맞는지 확인
             if (check.getIuser() == loginUserPk) {
-               reviewMapper.upReview(dto);
+                reviewMapper.upReview(dto);
                 if (buyCheck.getIsBuyer() == 1 && dto.getRating() != null) {
                     int chIuser = reviewMapper.selUser(check.getIpayment());
                     SelRatVo vo = reviewMapper.selRat(chIuser);
@@ -137,12 +129,12 @@ public class PaymentReviewService {
             }
 
             // 리뷰를 삭제하기전 t_payment의 istatus를 확인해 삭제가능한 상태가 맞는지 확인
-            Integer istatus = reviewMapper.selReIstatus(check.getIpayment(), loginUserPk);
-            if (istatus == 1 || istatus == -2 || istatus == -3) {
+            String istatus = reviewMapper.selReIstatus(check.getIpayment(), loginUserPk);
+            if (istatus == PaymentInfoStatus.COMPLETED.toString()) {
                 dto.setIstatus(istatus);
                 BeforRatingDto beforRatingDto = reviewMapper.sleDelBefor(dto.getIreview());
                 if (beforRatingDto.getRating() != null && beforRatingDto.getRating() != 0) {
-                    int result = reviewMapper.delReview(dto);
+                    int result = reviewMapper.delReview(dto.getIreview(), dto.getIuser());
                     if (result != 1) {
                         throw new BadInformationException(ILLEGAL_EX_MESSAGE);
                     }

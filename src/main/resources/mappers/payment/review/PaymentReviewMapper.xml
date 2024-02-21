@@ -7,7 +7,7 @@
     <insert id="insReview">
         INSERT INTO review
         set
-        iuser = #{iuser}
+        iusers = #{iuser}
         ,ipayment = #{ipayment}
         , contents = #{contents}
         , rating = #{rating}
@@ -42,24 +42,19 @@
         <if test="rating != null">
             ,rating = #{rating}
         </if>
-
-
         where ireview = #{ireview}
     </update>
 
-    <update id="delReview">
-        update review r
-        JOIN payment_status p
-        ON r.ipayment = p.ipayment
-        SET r.contents = ''
-        , r.rating = 0
-        WHERE r.ireview = #{ireview}
-        AND p.istatus = #{istatus}
-    </update>
+    <delete id="delReview">
+        DELETE
+        from review
+        WHERE ireview = #{ireview}
+        AND iusers = #{iuser}
+    </delete>
 
     <select id="selReIstatus">
-        SELECT istatus
-        FROM payment_status
+        SELECT status
+        FROM payment_info
         WHERE ipayment = #{ipayment} and iuser = #{iuser}
     </select>
 
@@ -71,15 +66,15 @@
     </select>
     <!--결제의 구매자와바이어인지 / 구매자인지 바이어인지 1이면 구매자 0판매자 -->
     <select id="selBuyRew">
-        select count(PA.ipayment) as isExists, if(PA.ibuyer = #{iuser}, 1, 0) as isBuyer
-        from product_payment PP
-        join product P on PP.iproduct = P.iproduct
-        join payment PA on PP.ipayment = PA.ipayment and PA.ipayment = #{ipayment}
-        where P.iuser = #{iuser} or PA.ibuyer = #{iuser}
+        SELECT count(pa.ipayment) as isExists, if(pa.iusers = #{iuser}, 1, 0) as isBuyer
+        from payment pa
+        join product P
+        ON p.iproduct = pa.iproduct AND pa.ipayment = #{ipayment}
+        WHERE p.iusers = #{iuser} or pa.iusers = #{iuser};
     </select>
 
     <select id="selPatchRev">
-        select iuser, ipayment
+        select iusers, ipayment
         FROM review
         WHERE ireview = #{ireview}
     </select>
@@ -87,19 +82,24 @@
     <!--평균 별점올리기-->
 
     <select id="selUser">
-        SELECT P.iuser
+        SELECT P.iusers
         FROM product P
-        JOIN product_payment PA ON P.iproduct = PA.iproduct
+        JOIN payment pa
+        ON p.iproduct = pa.iproduct
         WHERE PA.ipayment = #{ipayment}
     </select>
 
     <select id="selRat">
         SELECT COUNT(R.ireview) as countIre, U.rating
         from product P
-        JOIN product_payment PP ON P.iproduct = PP.iproduct
-        JOIN review R ON R.ipayment = PP.ipayment
-        JOIN user U ON U.iuser = P.iuser AND R.rating IS NOT NULL and R.rating > 0
-        WHERE P.iuser = #{iuser}
+        JOIN payment PA
+        ON P.iproduct = PA.iproduct
+        JOIN review R
+        ON R.ipayment = PA.ipayment
+        JOIN user U
+        ON U.iuser = P.iusers
+        AND R.rating IS NOT NULL and R.rating > 0
+        WHERE P.iusers = #{iuser}
     </select>
 
     <update id="upRating">
