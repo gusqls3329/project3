@@ -18,7 +18,7 @@ public interface RefProductRepository {
     //
 
     //
-    boolean findIproductCountBy(Integer iproduct);
+    boolean findIproductCountBy(Long iproduct);
     //
 
     //
@@ -35,7 +35,7 @@ public interface RefProductRepository {
 
     GetProductResultDto findProductBy(GetProductBaseDto getProductBaseDto);
 
-    List<PicsInfoVo> findPicsBy(Integer productPK);
+    List<PicsInfoVo> findPicsBy(Long productPK);
 
     int saveProduct(InsProdBasicInfoDto insProdBasicInfoDto);
 
@@ -62,11 +62,11 @@ public interface RefProductRepository {
 
     List<CanNotRentalDateVo> findDisabledDatesBy(CanNotRentalDateDto dto);
 
-    Integer findStockCountBy(int iproduct);
+    Integer findStockCountBy(Long iproduct);
 
-    String findMainPicPathForDelBy(int iproduct);
+    String findMainPicPathForDelBy(Long iproduct);
 
-    List<String> findSubPicsPathForDelBy(int iproduct);
+    List<String> findSubPicsPathForDelBy(Long iproduct);
 
     List<Integer> getAllIproductsLimit(int limit);
 

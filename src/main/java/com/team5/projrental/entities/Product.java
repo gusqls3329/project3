@@ -2,12 +2,16 @@ package com.team5.projrental.entities;
 
 import com.team5.projrental.entities.embeddable.Address;
 import com.team5.projrental.entities.embeddable.RentalDates;
-import com.team5.projrental.entities.enums.ProductCategory;
+import com.team5.projrental.entities.enums.ProductMainCategory;
 import com.team5.projrental.entities.enums.ProductStatus;
+import com.team5.projrental.entities.enums.ProductSubCategory;
 import com.team5.projrental.entities.inheritance.Users;
 import com.team5.projrental.entities.mappedsuper.BaseAt;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,20 +27,25 @@ public class Product extends BaseAt {
     private Long id;
 
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @JoinColumn(name = "iusers")
-    private Users users;
+    @JoinColumn(name = "iuser")
+    private User user;
 
     @Enumerated(EnumType.STRING)
-    private ProductCategory category;
+    private ProductMainCategory mainCategory;
+    @Enumerated(EnumType.STRING)
+    private ProductSubCategory subCategory;
 
     @Embedded
     private Address address;
 
+    @Builder.Default
+    @OneToMany(mappedBy = "product", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private List<ProdLike> prodLikes = new ArrayList<>();
 
     private String title;
     private String contents;
     private String storedPic;
-    private String rentalPrice;
+    private Integer rentalPrice;
 
     @Embedded
     private RentalDates rentalDates;

@@ -12,12 +12,12 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class GetProductListResultDto {
 
-    private Integer iuser;
+    private Long iuser;
     private String nick;
     private String userStoredPic;
     private Integer iauth;
 
-    private Integer iproduct;
+    private Long iproduct;
     private String addr;
     private String restAddr;
     private String title;
@@ -30,7 +30,7 @@ public class GetProductListResultDto {
     private Integer prodLike;
     private Integer istatus;
     private Integer isLiked;
-    private Integer view;
+    private Long view;
     private Integer inventory;
 
     //

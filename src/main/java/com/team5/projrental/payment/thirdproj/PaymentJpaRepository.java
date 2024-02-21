@@ -1,4 +1,4 @@
-package com.team5.projrental.product.thirdproj.japrepositories;
+package com.team5.projrental.payment.thirdproj;
 
 import com.team5.projrental.entities.Payment;
 import org.springframework.data.jpa.repository.JpaRepository;

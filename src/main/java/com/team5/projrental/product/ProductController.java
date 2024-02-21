@@ -1,9 +1,7 @@
 package com.team5.projrental.product;
 
 import com.team5.projrental.common.Const;
-import com.team5.projrental.common.exception.ErrorCode;
 import com.team5.projrental.common.exception.ErrorMessage;
-import com.team5.projrental.common.exception.base.BadInformationException;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.product.model.*;
 import com.team5.projrental.product.model.review.ReviewResultVo;
@@ -21,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.team5.projrental.common.exception.ErrorMessage.*;
@@ -33,7 +30,7 @@ import static com.team5.projrental.common.exception.ErrorMessage.*;
 public class ProductController {
 
     //    private final RefProductService productService;
-    private final CleanProductService productService;
+    private final ProductService productService;
 
     @Operation(summary = "메인페이지용 카테고리별 상품 (8개씩 조회)",
             description = "<strong>메인페이지용 카테고리별 상품 (8개씩 조회)</strong><br>" +
@@ -269,7 +266,7 @@ public class ProductController {
     public ResVo delProduct(@PathVariable
                             @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
                             @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
-                            Integer iproduct,
+                                Long iproduct,
                             @RequestParam
                             @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
                             @Range(min = 1, max = 2, message = ILLEGAL_RANGE_EX_MESSAGE)
@@ -329,7 +326,7 @@ public class ProductController {
     public List<ReviewResultVo> getAllReviews(@PathVariable
                                               @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
                                               @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
-                                              Integer iproduct,
+                                                  Long iproduct,
                                               @RequestParam
                                               @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
                                               @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
@@ -349,7 +346,7 @@ public class ProductController {
     public List<LocalDate> getDisabledDate(@PathVariable
                                            @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
                                            @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
-                                           Integer iproduct,
+                                               Long iproduct,
                                            @RequestParam
                                            @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
                                            @Range(min = 2000, max = 9999, message = ILLEGAL_RANGE_EX_MESSAGE)

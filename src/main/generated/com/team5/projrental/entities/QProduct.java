@@ -26,8 +26,6 @@ public class QProduct extends EntityPathBase<Product> {
 
     public final com.team5.projrental.entities.embeddable.QAddress address;
 
-    public final EnumPath<com.team5.projrental.entities.enums.ProductCategory> category = createEnum("category", com.team5.projrental.entities.enums.ProductCategory.class);
-
     public final StringPath contents = createString("contents");
 
     //inherited
@@ -35,20 +33,26 @@ public class QProduct extends EntityPathBase<Product> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final EnumPath<com.team5.projrental.entities.enums.ProductMainCategory> mainCategory = createEnum("mainCategory", com.team5.projrental.entities.enums.ProductMainCategory.class);
+
+    public final ListPath<ProdLike, QProdLike> prodLikes = this.<ProdLike, QProdLike>createList("prodLikes", ProdLike.class, QProdLike.class, PathInits.DIRECT2);
+
     public final com.team5.projrental.entities.embeddable.QRentalDates rentalDates;
 
-    public final StringPath rentalPrice = createString("rentalPrice");
+    public final NumberPath<Integer> rentalPrice = createNumber("rentalPrice", Integer.class);
 
     public final EnumPath<com.team5.projrental.entities.enums.ProductStatus> status = createEnum("status", com.team5.projrental.entities.enums.ProductStatus.class);
 
     public final StringPath storedPic = createString("storedPic");
+
+    public final EnumPath<com.team5.projrental.entities.enums.ProductSubCategory> subCategory = createEnum("subCategory", com.team5.projrental.entities.enums.ProductSubCategory.class);
 
     public final StringPath title = createString("title");
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
 
-    public final com.team5.projrental.entities.inheritance.QUsers users;
+    public final QUser user;
 
     public final NumberPath<Long> view = createNumber("view", Long.class);
 
@@ -72,7 +76,7 @@ public class QProduct extends EntityPathBase<Product> {
         super(type, metadata, inits);
         this.address = inits.isInitialized("address") ? new com.team5.projrental.entities.embeddable.QAddress(forProperty("address")) : null;
         this.rentalDates = inits.isInitialized("rentalDates") ? new com.team5.projrental.entities.embeddable.QRentalDates(forProperty("rentalDates")) : null;
-        this.users = inits.isInitialized("users") ? new com.team5.projrental.entities.inheritance.QUsers(forProperty("users")) : null;
+        this.user = inits.isInitialized("user") ? new QUser(forProperty("user"), inits.get("user")) : null;
     }
 
 }

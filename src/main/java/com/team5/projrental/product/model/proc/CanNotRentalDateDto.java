@@ -8,7 +8,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 public class CanNotRentalDateDto {
-    private int iproduct;
+    private Long iproduct;
     private LocalDate refStartDate;
     private LocalDate refEndDate;
 }

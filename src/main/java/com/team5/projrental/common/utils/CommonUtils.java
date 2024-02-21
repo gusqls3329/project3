@@ -159,6 +159,7 @@ public abstract class CommonUtils {
 
     }
 
+
     public static void ifChatUserStatusThrowOrReturn(Integer istatus) {
         if (istatus == DEL_I_STATUS) thrown(IllegalCategoryException.class, ILLEGAL_STATUS_EX_MESSAGE);
     }

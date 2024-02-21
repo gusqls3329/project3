@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DelProductBaseDto {
 
-    private Integer iproduct;
+    private Long iproduct;
     private Long iuser;
     private Integer div;
 }
