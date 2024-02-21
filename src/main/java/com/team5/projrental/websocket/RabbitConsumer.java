@@ -1,4 +1,3 @@
-/*
 package com.team5.projrental.websocket;
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -12,4 +11,3 @@ public class RabbitConsumer {
         System.out.println(message);
     }
 }
-*/
