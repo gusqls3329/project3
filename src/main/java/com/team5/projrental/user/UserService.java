@@ -208,7 +208,9 @@ public class UserService {
         User user = null;
         Comp comp = null;
         Users findUsers = usersRepository.findByUid(dto.getUid());
-
+        if (findUsers == null) {
+            throw new ClientException(ErrorCode.NO_SUCH_ID_EX_MESSAGE, "아이디가 존재하지 않음");
+        }
         String password = "";
         Long iuser = 0L;
         Auth auth = findUsers.getAuth();
