@@ -40,11 +40,11 @@ public interface RefProductService {
      ProductVo getProduct(int imainCategory, int isubCategory, Integer iproduct);
      ResVo postProduct(MultipartFile mainPic, List<MultipartFile> pics, ProductInsDto dto);
      ResVo putProduct(MultipartFile mainPic, List<MultipartFile> pics, ProductUpdDto dto);
-     ResVo delProduct(Integer iproduct, Integer div) ;
+     ResVo delProduct(Long iproduct, Integer div) ;
 
      List<ProductUserVo> getUserProductList(Long iuser, Integer page) ;
 
-     List<ReviewResultVo> getAllReviews(Integer iproduct, Integer page) ;
+     List<ReviewResultVo> getAllReviews(Long iproduct, Integer page) ;
 
-     List<LocalDate> getDisabledDate(Integer iproduct, Integer y, Integer m);
+     List<LocalDate> getDisabledDate(Long iproduct, Integer y, Integer m);
 }

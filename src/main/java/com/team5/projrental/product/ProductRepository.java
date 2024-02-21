@@ -27,7 +27,7 @@ public class ProductRepository implements RefProductRepository {
 
     //
     @Override
-    public boolean findIproductCountBy(Integer iproduct) {
+    public boolean findIproductCountBy(Long iproduct) {
         return productMapper.checkIproduct(iproduct) == 1;
     }
     //
@@ -63,7 +63,7 @@ public class ProductRepository implements RefProductRepository {
         return productMapper.getProduct(getProductBaseDto);
     }
     @Override
-    public List<PicsInfoVo> findPicsBy(Integer productPK) {
+    public List<PicsInfoVo> findPicsBy(Long productPK) {
         return productMapper.getProdEctPics(productPK);
     }
     @Override
@@ -121,17 +121,17 @@ public class ProductRepository implements RefProductRepository {
 
 
     @Override
-    public Integer findStockCountBy(int iproduct) {
+    public Integer findStockCountBy(Long iproduct) {
         return productMapper.findStockCountBy(iproduct);
     }
 
     @Override
-    public String findMainPicPathForDelBy(int iproduct) {
+    public String findMainPicPathForDelBy(Long iproduct) {
         return productMapper.findMainPicPathForDelBy(iproduct);
     }
 
     @Override
-    public List<String> findSubPicsPathForDelBy(int iproduct) {
+    public List<String> findSubPicsPathForDelBy(Long iproduct) {
         return productMapper.findSubPicsPathForDelBy(iproduct);
     }
 

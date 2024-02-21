@@ -6,10 +6,10 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class GetProductViewAopDto {
-    private Integer iproduct;
+    private Long iproduct;
     private Integer beforeView;
 
-    public GetProductViewAopDto(Integer iproduct) {
+    public GetProductViewAopDto(Long iproduct) {
         this.iproduct = iproduct;
     }
 }

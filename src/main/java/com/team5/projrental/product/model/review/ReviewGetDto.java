@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReviewGetDto {
-    private Integer iproduct;
+    private Long iproduct;
     private Integer page;
     private Integer prodPerPage;
 }

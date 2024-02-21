@@ -50,7 +50,7 @@ public interface ProductMapper {
 
     GetProductResultDto getProduct(GetProductBaseDto getProductBaseDto);
 
-    List<PicsInfoVo> getProdEctPics(Integer productPK);
+    List<PicsInfoVo> getProdEctPics(Long productPK);
 
 
     int insProduct(InsProdBasicInfoDto insProdBasicInfoDto);
@@ -69,7 +69,7 @@ public interface ProductMapper {
 
     int changeProdStatus(DelProductBaseDto delProductBaseDto);
 
-    int checkIproduct(Integer iproduct);
+    int checkIproduct(Long iproduct);
 
     List<ReviewResultVo> getReview(ReviewGetDto dto);
 
@@ -79,11 +79,11 @@ public interface ProductMapper {
 
     List<CanNotRentalDateVo> findDisabledDatesBy(CanNotRentalDateDto dto);
 
-    Integer findStockCountBy(int iproduct);
+    Integer findStockCountBy(Long iproduct);
 
-    String findMainPicPathForDelBy(int iproduct);
+    String findMainPicPathForDelBy(Long iproduct);
 
-    List<String> findSubPicsPathForDelBy(int iproduct);
+    List<String> findSubPicsPathForDelBy(Long iproduct);
 
 
     // cache 세팅용
