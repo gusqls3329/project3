@@ -1,5 +1,5 @@
 package com.team5.projrental.entities.enums;
-// 대기중 :ATOM ,회원가입 승인됨 : APPROVAL, 회원가입 반려됨 : Companion, 신고누적으로 정지됨 : SANCTIONS
+//ACTIVE : 활동중(회원가입 승인됨 ) , 대기중 :WAIT, 회원가입 반려됨 : COMPANION, 벌점누적으로 정지됨 : SANCTIONS, 유저탈퇴(숨김):HIDE
 public enum CompStatus {
-    ATOM, APPROVAL, COMPANION, SANCTIONS
+    WAIT, ACTIVE, COMPANION, SANCTIONS, HIDE
 }
