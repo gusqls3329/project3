@@ -5,5 +5,6 @@ import com.team5.projrental.entities.ids.ProdLikeIds;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProdLikeJpaRepository extends JpaRepository<ProdLike, ProdLikeIds> {
-    Integer countByProdLikeIds(ProdLikeIds build);
+    Integer countByProdLikeIds(ProdLikeIds ids);
+    Integer count(ProdLikeIds ids);
 }
