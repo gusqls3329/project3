@@ -22,7 +22,7 @@ public class ChatController {
     private final ChatService service;
 
 
-    @Operation("로그인한 유저의 모든채팅방 개수출력")
+    @Operation(summary = "로그인한 유저의 모든채팅방 개수출력")
     @GetMapping("/{iuser}/count")
     public ResVo getChatCount(@RequestParam(defaultValue = "1")@Range(min = 1) long page) {
         return null;
