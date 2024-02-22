@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.parameters.P;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,7 +25,7 @@ public class BoardController {
     private final BoardService service;
 
 
-    /*@Operation(summary = "게시글 등록", description = "게시판에 게시글 등록")
+   @Operation(summary = "게시글 등록", description = "게시판에 게시글 등록")
     @Parameters(value = {
             @Parameter(name = "title", description = "제목"),
             @Parameter(name = "contents", description = "내용")})
@@ -32,8 +33,13 @@ public class BoardController {
     public ResVo postBoard(@RequestPart(required = false) List<MultipartFile> storedPic, @RequestPart BoardInsDto dto) {
         //return service.postBoard(storedPic, dto);
         return null;
-    }*/
+    }
 
+    @Operation(summary = "게시판 목록", description = "게시판 목록")
+    @Parameters(value = {
+            @Parameter(name = "page", description = "min:1"),
+            @Parameter(name = "size", description = "페이징처리 할 게시글 갯수"),
+            @Parameter(name = "sort", description = "변경 할 필요 없음")})
     @Validated
     @GetMapping
     public List<BoardListSelVo> getBoardList(@PageableDefault(page =1, size = 12) Pageable pageable) {
@@ -41,6 +47,9 @@ public class BoardController {
     }
 
 
+    @Operation(summary = "게시글 입장", description = "특정 게시글 입장")
+    @Parameters(value = {
+            @Parameter(name = "iboard", description = "입장 할 게시글pk")})
     @GetMapping("{iboard}")
     public BoardSelVo getBoard(@PathVariable Integer iboard) {
         return null;
