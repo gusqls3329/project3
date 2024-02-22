@@ -1,5 +1,6 @@
 package com.team5.projrental.payment;
 
+import com.team5.projrental.admin.model.paymentInfoVo;
 import com.team5.projrental.common.Const;
 import com.team5.projrental.common.exception.ErrorMessage;
 import com.team5.projrental.common.model.ResVo;
@@ -103,7 +104,11 @@ public class PaymentController {
                                 @Min(value = 1, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
                                 Integer ipayment) {
         return paymentService.getPayment(ipayment);
-
     }
 
+    @Operation(summary = "특정 결제의 결제정보 조회")
+    @GetMapping("{ipayment}")
+    public paymentInfoVo getPaymentInfo(long ipayment) {
+        return null;
+    }
 }
