@@ -172,15 +172,10 @@
     <select id="selpatchUser">
         SELECT count(P.iproduct)
         FROM product P
-        left JOIN product_payment PP
-        ON P.iproduct = PP.iproduct
-        left JOIN payment PA
-        ON PP.ipayment = PA.ipayment
-        left join payment_status PS
-        on PA.ipayment = PS.ipayment
-        WHERE P.istatus not IN (-1, -2)
-        AND P.iuser = #{iuser} OR PA.ibuyer = #{iuser}
-        and PS.istatus not IN (1, -1, -3)
+        JOIN payment PA
+        ON P.iproduct = PA.iproduct
+        WHERE P.`status` NOT IN ('COMPLETED')
+        AND P.iusers = #{iuser} OR PA.iusers = #{iuser}
     </select>
 
     <select id="checkUserUid">
