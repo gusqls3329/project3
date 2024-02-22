@@ -2,7 +2,7 @@ package com.team5.projrental.common.sse;
 
 import com.team5.projrental.common.security.AuthenticationFacade;
 import com.team5.projrental.common.sse.holder.SseEmitterHolder;
-import com.team5.projrental.common.sse.model.RejectMessageInfo;
+import com.team5.projrental.common.sse.model.SseMessageInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +23,7 @@ public class SseEmitterService {
 
     @Async
     @EventListener
-    public void catchEvent(RejectMessageInfo info) {
+    public void catchEvent(SseMessageInfo info) {
         emitterHolder.send(info);
     }
 

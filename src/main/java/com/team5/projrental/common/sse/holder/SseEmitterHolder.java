@@ -2,7 +2,7 @@ package com.team5.projrental.common.sse.holder;
 
 import com.team5.projrental.common.Const;
 import com.team5.projrental.common.sse.SseEmitterRepository;
-import com.team5.projrental.common.sse.model.RejectMessageInfo;
+import com.team5.projrental.common.sse.model.SseMessageInfo;
 import com.team5.projrental.common.sse.responseproperties.Code;
 import com.team5.projrental.common.sse.responseproperties.Message;
 import com.team5.projrental.common.threadpool.MyThreadPoolHolder;
@@ -54,7 +54,7 @@ public class SseEmitterHolder {
             log.info("[SseEmitterHolder.add] Exception", e);
             throw new RuntimeException(e);
         }
-        if (!send(new RejectMessageInfo(iuser, Message.SEND_EXPIRED_PAYMENT_COUNT.get(), Code.SEND_EXPIRED_PAYMENT_COUNT.get(),
+        if (!send(new SseMessageInfo(iuser, Message.SEND_EXPIRED_PAYMENT_COUNT.get(), Code.SEND_EXPIRED_PAYMENT_COUNT.get(),
                 emitterRepository.findExpiredPaymentCountBy(iuser), "payment"), "create sse")) {
             return null;
         }
@@ -67,7 +67,7 @@ public class SseEmitterHolder {
     // + 만약 해당 유저의 SseEmitter 가 존재하지 않으면 DB 에 저장해두고, 로그인시 해당 데이터 일괄 보내기
     // 여기서 필요한건 DB에서 해당 유저에게 보내야할 푸시가 존재한다면 해당 메시지 다 담아서 푸시하기.
     public void sendFromDbMessage(Long iuser) {
-        List<RejectMessageInfo> messages = emitterRepository.findRejectedMessage(iuser);
+        List<SseMessageInfo> messages = emitterRepository.findRejectedMessage(iuser);
         messages.forEach(this::send);
         int deletedPushMessageFromDb = emitterRepository.deleteRejectedMessage(iuser);
         log.debug("[SseEmitterHolder.sendFromDbMessage] deletedPushMessageFromDb = {}", deletedPushMessageFromDb);
@@ -82,19 +82,19 @@ public class SseEmitterHolder {
      */
     // + 만약 해당 유저의 SseEmitter 가 존재하지 않으면 DB 에 저장해두고, 로그인시 해당 데이터 일괄 보내기
     // 여기서 필요한건 SseEmitter 가 존재하지 않으면 DB 에 저장.
-    public boolean send(RejectMessageInfo info) {
+    public boolean send(SseMessageInfo info) {
         return send(info, "sse push");
     }
 
-    public boolean send(RejectMessageInfo info, String eventName) {
+    public boolean send(SseMessageInfo info, String eventName) {
         try {
-            emitterMap.get(info.getIuser()).send(SseEmitter.event()
+            emitterMap.get(info.getReceiver()).send(SseEmitter.event()
                     .name(eventName)
                     .data(info, MediaType.APPLICATION_JSON)
                     );
         } catch (NullPointerException e) {
-            int savedPushCount = emitterRepository.savePushInfoWhenNotExistsEmitterInMap(new RejectMessageInfo(
-                    info.getIuser(), info.getMessage(), info.getCode(), info.getNum(), info.getName()
+            int savedPushCount = emitterRepository.savePushInfoWhenNotExistsEmitterInMap(new SseMessageInfo(
+                    info.getReceiver(), info.getType(), info.getCode(), info.getIdentityNum(), info.getType()
             ));
 
             log.debug("[SseEmitterHolder.send] savedPushCount = {}", savedPushCount);

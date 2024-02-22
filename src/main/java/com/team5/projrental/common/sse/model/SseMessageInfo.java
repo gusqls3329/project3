@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RejectMessageInfo {
-    private Long iuser;
-    private String message;
+public class SseMessageInfo {
+    private Long receiver;
+    private String description;
     private int code;
-    private int num;
-    private String name;
+    private int identityNum;
+    private String type;
 
 }
