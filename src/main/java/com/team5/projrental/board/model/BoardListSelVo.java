@@ -19,5 +19,5 @@ public class BoardListSelVo {
     private int iboard;
     private String title;
     private int view;
-    private LocalDateTime createdAt;
+    private String createdAt;
 }
