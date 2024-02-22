@@ -10,7 +10,7 @@ import org.hibernate.validator.constraints.Range;
 @Setter
 public class BoardListSelDto {
     private int loginedIuser;
-    private int targetIuser;
+    //private int targetIuser;
 
     /*private int startIdx;
     private int rowCount = 12;
