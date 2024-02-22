@@ -14,5 +14,6 @@ public class VerificationUserInfo {
     private String userName;
     private String userPhone;
     private String userBirthday;
+    private String nationality;
     // 암호화 필요 데이터 끝
 }

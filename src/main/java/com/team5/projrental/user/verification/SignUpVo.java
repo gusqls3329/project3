@@ -9,6 +9,4 @@ import lombok.Getter;
 @Getter
 public class SignUpVo {
     private Integer result;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private CompCodeVo compCodeVo;
 }

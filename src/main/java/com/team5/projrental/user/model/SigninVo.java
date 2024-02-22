@@ -16,7 +16,7 @@ public class SigninVo {
     private String upw;
     @JsonIgnore
     private String uid;
-    private Auth auth;
+    private int auth;
     private Long iuser;
     private String result;
     private String firebaseToken;

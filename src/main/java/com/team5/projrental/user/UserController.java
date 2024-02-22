@@ -69,18 +69,18 @@ public class UserController {
             , @Parameter(name = "signUpType", description = "회원가입시 유저(1)인지, 기업(2)인지")
 
     })
-    public SignUpVo postSignup(@RequestPart(required = false) MultipartFile pic, @RequestPart @Validated UserSignupDto dto) {
+    public ResVo postSignup(@RequestPart(required = false) MultipartFile pic, @RequestPart @Validated UserSignupDto dto) {
         dto.setPic(pic);
         log.info("dto : {}", dto);
-        return service.postSignup(dto);
+        return new ResVo(service.postSignup(dto));
     }
 
     @PostMapping
     @Operation(summary = "로그인", description = "유저 로그인(iauth:권한)<br><br>" +
             "로그인 성공시 fireBaseToken 수정부분 수행 해야함.(Patch: /api/user/fcm")
     @Parameters(value = {
-            @Parameter(name = "uid", description = "아이디")
-            , @Parameter(name = "upw", description = "비밀번호")
+            @Parameter(name = "uid", description = "아이디(길이 : 4~15)")
+            , @Parameter(name = "upw", description = "비밀번호(길이 : 8~20)")
     })
     public SigninVo postSignin(HttpServletResponse res, @RequestBody @Validated SigninDto dto) {
         return service.postSignin(res, dto);
@@ -97,7 +97,8 @@ public class UserController {
         return service.patchToken(dto);
     }
 
-    @PostMapping("/signout")
+    @Operation(summary = "로그아웃", description = "토큰만료시 자동 로그아웃")
+    @GetMapping("/signout")
     public ResVo getSignOut(HttpServletResponse res){
         return new ResVo(service.getSignOut(res));
     }
@@ -125,6 +126,7 @@ public class UserController {
     @Parameters(value = {
             @Parameter(name = "uid", description = "아이디")
             , @Parameter(name = "phone", description = "휴대폰 번호 (형식 : 010-1111-2222)")
+            ,@Parameter(name = "upw", description = "변경을 위한 비밀번호(길이 : 8~20)")
     })
     @PatchMapping("/pw")
     public ResVo getFindUpw(@RequestBody @Validated FindUpwDto dto) {

@@ -86,10 +86,7 @@ public class UserService {
     }
 
     @Transactional
-    public SignUpVo postSignup(UserSignupDto dto) {
-
-        CommonUtils.ifContainsBadWordThrow(BadWordException.class, BAD_WORD_EX_MESSAGE,
-                dto.getNick(), dto.getRestAddr(), dto.getCompNm() == null ? "" : dto.getCompNm());
+    public int postSignup(UserSignupDto dto) {
 
         Addrs addrs = axisGenerator.getAxis(dto.getAddr());
         CommonUtils.ifAnyNullThrow(BadAddressInfoException.class, BAD_ADDRESS_INFO_EX_MESSAGE,
@@ -108,68 +105,7 @@ public class UserService {
         String path = Const.CATEGORY_USER + "/" + dto.getIuser();
         myFileUtils.delFolderTrigger(path);
 
-        if (dto.getSignUpType() == 2) {
-            CommonUtils.ifAnyNullThrow(ClientException.class, BAD_INFO_EX_MESSAGE, "회사정보 4개가 다 필수임",
-                    dto.getCompCeo(), dto.getCompNm(), dto.getCompCode(), dto.getStartedAt());
-            if (dto.getCompCode() < 1000000000L || dto.getCompCode() > 9999999999L) {
-                throw new BadInformationException(ILLEGAL_RANGE_EX_MESSAGE);
-            }
-            if (dto.getPic() != null) {
-                try {
-                    String savedPicFileNm = String.valueOf(
-                            myFileUtils.savePic(dto.getPic(), Const.CATEGORY_USER,
-                                    String.valueOf(dto.getIuser())));
-                    dto.setChPic(savedPicFileNm);
-                } catch (FileNotContainsDotException e) {
-                    throw new BadInformationException(BAD_PIC_EX_MESSAGE);
-                }
-            }
-            CompCodeVo validated = validator.validate(CompCodeDto.builder()
-                    .compCode(String.valueOf(dto.getCompCode()))
-                    .compNm(dto.getCompNm())
-                    .compCEO(dto.getCompCeo())
-                    .startAt(dto.getStartedAt())
-                    .build());
 
-
-            // 사업자 인증 :
-            if(!profile.equalsIgnoreCase("default")) {
-                if (validated.getStatusCode().equalsIgnoreCase("FAIL")) {
-                    return SignUpVo.builder()
-                            .result(-1)
-                            .compCodeVo(validated)
-                            .build();
-                }
-            }
-
-
-            Comp comp = new Comp();
-            baseUser.setStoredPic(dto.getChPic());
-            comp.setStatus(CompStatus.WAIT);
-            comp.setUid(dto.getUid());
-            comp.setUpw(hashedPw);
-            comp.setBaseUser(baseUser);
-            comp.setNick(dto.getNick());
-            comp.setCompNm(dto.getCompNm());
-            comp.setCompCode(dto.getCompCode());
-            comp.setCompCeo(dto.getCompCeo());
-            comp.setStaredAt(dto.getStartedAt());
-            comp.setEmail(dto.getEmail());
-            comp.setPhone(dto.getPhone());
-            comp.setAuth(Auth.COMP);
-            comp.setCash((long) -1);
-
-            comp.setJoinStatus(JoinStatus.WAIT);
-            compRepository.save(comp);
-
-            return SignUpVo.builder()
-                    .result(2)
-                    .compCodeVo(validated)
-                    .build();
-        }
-
-
-        if (dto.getSignUpType() == 1) {
             if (dto.getPic() != null) {
                 try {
                     String savedPicFileNm = String.valueOf(
@@ -194,11 +130,7 @@ public class UserService {
             user.setAuth(Auth.USER);
             userRepository.save(user);
 
-            return SignUpVo.builder()
-                    .result(1)
-                    .build();
-        }
-        throw new ClientException(BAD_INFO_EX_MESSAGE);
+            return Const.SUCCESS;
     }
 
 

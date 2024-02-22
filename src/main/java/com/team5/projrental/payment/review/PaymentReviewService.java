@@ -67,7 +67,7 @@ public class PaymentReviewService {
                         throw new RuntimeException();
                     }
                 }
-                return Const.SUCCESS;
+                return dto.getIreview().intValue();
 
             }
             throw new BadInformationException(REVIEW_ALREADY_EXISTS_EX_MESSAGE);

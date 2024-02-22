@@ -59,12 +59,8 @@ public class UserSignupDto {
     @Range(min = 2, max = 2, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private Integer isValid;
 
-    private long compCode;
-    private String compNm;
-    private String compCeo;
-    private LocalDate startedAt;
+    //uuid : 본인인증 (조인테이블)
     private String uuid;
-    private int signUpType;
 
     @JsonIgnore
     private double x;
