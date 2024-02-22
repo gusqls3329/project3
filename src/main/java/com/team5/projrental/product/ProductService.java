@@ -109,7 +109,7 @@ public class ProductService implements RefProductService {
             List<Integer> imainCategory,
             List<Integer> isubCategory
     ) {
-
+        // TODO 작업 재시작
         int page = 0;
         int limit = Const.MAIN_PROD_PER_PAGE;
         List<ProductListVo> result = new ArrayList<>();

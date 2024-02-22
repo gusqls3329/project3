@@ -85,22 +85,7 @@ public class ProductController {
         return null;
     }
 
-    @Operation(summary = "해당 상품 찜 토글",
-            description = "<strong>해당 상품 찜하기 - 토글</strong><br>" +
-                    "[ [v] : 필수값 ]<br>" +
-                    "[v]iprod: 상품 pk <br> " +
-                    "성공시: <br>" +
-                    "result: 1 (찜누름)<br><br>" +
-                    "result: -1(찜취소) <br><br>" +
-                    "실패시:<br>" +
-                    "message: 에러 발생 사유<br>errorCode: 에러 코드")
-    @Validated
-    @GetMapping("/fav/")
-    public ResVo toggleFav(@RequestParam(name = "iprod", required = false)
-                           @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
-                           Integer iprod) {
-        return null;
-    }
+
 
     @Operation(summary = "전체 작성받은 리뷰수",
             description = "<strong>전체 작성리뷰수/strong><br>" +
