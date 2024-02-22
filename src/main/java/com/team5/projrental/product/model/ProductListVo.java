@@ -24,11 +24,9 @@ public class ProductListVo {
     private Long iproduct;
     private String title;
     private String prodMainPic;
-    @JsonInclude(JsonInclude.Include.NON_NULL) // FIXME 3차 완성시 삭제 (제외 필드)
-    private Integer price;
     private Integer rentalPrice;
-    @JsonInclude(JsonInclude.Include.NON_NULL) // FIXME 3차 완성시 삭제 (제외 필드)
-    private Integer deposit;
+    //@JsonInclude(JsonInclude.Include.NON_NULL) // FIXME 3차 완성시 삭제 (제외 필드)
+    //private Integer deposit;
     private LocalDate rentalStartDate;
     private LocalDate rentalEndDate;
     private String addr;
@@ -48,8 +46,7 @@ public class ProductListVo {
         this.iauth = dto.getIauth();
         this.iproduct = dto.getIproduct();
         this.title = dto.getTitle();
-        this.price = dto.getPrice();
-        this.deposit = dto.getDeposit();
+        //this.deposit = dto.getDeposit();
         this.rentalPrice = dto.getRentalPrice();
         this.rentalStartDate = dto.getRentalStartDate();
         this.rentalEndDate = dto.getRentalEndDate();
@@ -70,8 +67,7 @@ public class ProductListVo {
         this.iauth = dto.getIauth();
         this.iproduct = dto.getIproduct();
         this.title = dto.getTitle();
-        this.price = dto.getPrice();
-        this.deposit = dto.getDeposit();
+       // this.deposit = dto.getDeposit();
         this.rentalPrice = dto.getRentalPrice();
         this.rentalStartDate = dto.getRentalStartDate();
         this.rentalEndDate = dto.getRentalEndDate();

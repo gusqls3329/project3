@@ -15,6 +15,7 @@ public class ReviewResultVo {
     private String contents;
     private Integer rating;
     private Integer iuser;
+    private Integer auth;
     private String nick;
     private String userProfPic;
     private int imainCategory;

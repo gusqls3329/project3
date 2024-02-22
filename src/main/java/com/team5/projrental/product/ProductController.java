@@ -32,6 +32,116 @@ public class ProductController {
     //    private final RefProductService productService;
     private final ProductService productService;
 
+    @Operation(summary = "해당 카테고리의 전체 제품 목록",
+            description = "<strong>is_del 값이 0 인 product 정보들을 응답</strong><br>" +
+                    "[ [v] : 필수값 ]<br>" +
+                    "[v]count: 카테고리에 있는 제품의 갯수<br> " +
+                    "search: 검색어 조회 (특정 단어가 제목에 포함된 제품목록 조회<br><br>" +
+                    "[v] mc: 조회할 메인 카테고리 PK<br>" +
+                    "[v] sc: 조회할 서브 카테고리 PK<br>" +
+                    "<br><br>" +
+                    "성공시:<br>" +
+                    "[<br>" +
+                    "  count : (조건에 맞는 전체 제품 갯수)<br>" +
+                    "<br><br>" +
+                    "실패시:<br>" +
+                    "message: 에러 발생 사유<br>errorCode: 에러 코드")
+    @Validated
+    @GetMapping
+    public ResVo getProdCount(@RequestParam(name = "count", required = false)
+                              Integer count,
+                              @RequestParam(name = "search", required = false)
+                              @Length(min = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
+                              String search,
+                              @RequestParam(name = "mc", required = false)
+                              @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
+                              Integer imainCategory,
+                              @RequestParam(name = "sc", required = false)
+                              @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
+                              Integer isubCategory) {
+        return null;
+    }
+
+    @Operation(summary = "특정 제품의 리스트 의 개수 조회 ",
+            description = "<strong></strong><br>" +
+                    "[ [v] : 필수값 ]<br>" +
+                    "[ [v] page: 페이징 " +
+                    "iuser : 유저pk<br><br>" +
+                    "<br><br>" +
+                    "성공시:<br>" +
+                    "[<br>" +
+                    "  count : (개수)<br>" +
+                    "<br><br>" +
+                    "실패시:<br>" +
+                    "message: 에러 발생 사유<br>errorCode: 에러 코드")
+    @Validated
+    @GetMapping("/list")
+    public ResVo getUserProductCount(@RequestParam(name = "count", required = false)
+                                     Integer count,
+                                     @RequestParam(name = "page", required = false)
+                                     @Length(min = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
+                                     String page,
+                                     @RequestParam(name = "iuser", required = false)
+                                     @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
+                                     Integer iuser) {
+        return null;
+    }
+
+    @Operation(summary = "해당 상품 찜 토글",
+            description = "<strong>해당 상품 찜하기 - 토글</strong><br>" +
+                    "[ [v] : 필수값 ]<br>" +
+                    "[v]iprod: 상품 pk <br> " +
+                    "성공시: <br>" +
+                    "result: 1 (찜누름)<br><br>" +
+                    "result: -1(찜취소) <br><br>" +
+                    "실패시:<br>" +
+                    "message: 에러 발생 사유<br>errorCode: 에러 코드")
+    @Validated
+    @GetMapping("/fav/")
+    public ResVo toggleFav(@RequestParam(name = "iprod", required = false)
+                           @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
+                           Integer iprod) {
+        return null;
+    }
+
+    @Operation(summary = "전체 작성받은 리뷰수",
+            description = "<strong>전체 작성리뷰수/strong><br>" +
+                    "[ [v] : 필수값 ]<br>" +
+                    "[v]iproduct: 상품 pk<br> " +
+                    "성공시: <br>" +
+                    "result: count(전체리뷰수)<br><br>" +
+                    "실패시:<br>" +
+                    "message: 에러 발생 사유<br>errorCode: 에러 코드")
+    @Validated
+    @GetMapping("/review/{iproduct}")
+    public ResVo getReviewCount(@RequestParam(name = "count", required = false)
+                                Integer count,
+                                @RequestParam(name = "page", required = false)
+                                @Length(min = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
+                                String page
+    ) {
+        return null;
+    }
+
+    @Operation(summary = "전체 작성받은 리뷰수",
+            description = "<strong>상품에 작성 받은 리뷰</strong><br>" +
+                    "[ [v] : 필수값 ]<br>" +
+                    "[v] page: 페이징" +
+                    "[v]iproduct: 상품 pk<br> " +
+                    "성공시: <br>" +
+                    "result: count(전체리뷰수)<br><br>" +
+                    "실패시:<br>" +
+                    "message: 에러 발생 사유<br>errorCode: 에러 코드")
+    @Validated
+    @GetMapping("/review/{iproduct}")
+    public getReviewedListVo getReviewedList(@RequestParam(name = "page", required = false)
+                                 @Length(min = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
+                                 String page
+    ) {
+        return null;
+    }
+
+
     @Operation(summary = "메인페이지용 카테고리별 상품 (8개씩 조회)",
             description = "<strong>메인페이지용 카테고리별 상품 (8개씩 조회)</strong><br>" +
                     "[ [v] : 필수값 ]<br>" +
@@ -266,7 +376,7 @@ public class ProductController {
     public ResVo delProduct(@PathVariable
                             @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
                             @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
-                                Long iproduct,
+                            Long iproduct,
                             @RequestParam
                             @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
                             @Range(min = 1, max = 2, message = ILLEGAL_RANGE_EX_MESSAGE)
@@ -300,7 +410,7 @@ public class ProductController {
     @GetMapping("/list")
     public List<ProductUserVo> getUserProductList(@RequestParam(required = false)
                                                   @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
-                                                      Long iuser,
+                                                  Long iuser,
                                                   @RequestParam
                                                   @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
                                                   @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
@@ -326,7 +436,7 @@ public class ProductController {
     public List<ReviewResultVo> getAllReviews(@PathVariable
                                               @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
                                               @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
-                                                  Long iproduct,
+                                              Long iproduct,
                                               @RequestParam
                                               @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
                                               @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
@@ -346,7 +456,7 @@ public class ProductController {
     public List<LocalDate> getDisabledDate(@PathVariable
                                            @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
                                            @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
-                                               Long iproduct,
+                                           Long iproduct,
                                            @RequestParam
                                            @NotNull(message = CAN_NOT_BLANK_EX_MESSAGE)
                                            @Range(min = 2000, max = 9999, message = ILLEGAL_RANGE_EX_MESSAGE)
