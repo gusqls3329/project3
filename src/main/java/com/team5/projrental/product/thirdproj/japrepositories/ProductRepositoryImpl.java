@@ -114,7 +114,10 @@ public class ProductRepositoryImpl implements ProductRepository {
                             .inventory(stockJpaRepository.countById(productEntity.getId()))
                             .isLiked(prodLikeCount == 1 ? 1 : 0)
                             .view(productEntity.getView())
-                            .categories(Categories.builder().mainCategory(productEntity.getMainCategory().getCategoryNum()).build())
+                            .categories(Categories.builder()
+                                    .mainCategory(productEntity.getMainCategory().getCategoryNum())
+                                    .subCategory(productEntity.getSubCategory().getCategoryNum())
+                                    .build())
                             .build();
                 })
                 .toList();
