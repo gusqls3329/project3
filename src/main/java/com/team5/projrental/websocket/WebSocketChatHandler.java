@@ -32,7 +32,7 @@ import java.util.Set;
 public class WebSocketChatHandler extends TextWebSocketHandler {
     private final ObjectMapper mapper;
 
-    // 현재 연결된 세션들
+    // 현재 연결된 세션들S
     private final Set<WebSocketSession> sessions = new HashSet<>();
 
     // chatRoomId: {session1, session2}
