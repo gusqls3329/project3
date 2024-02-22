@@ -36,4 +36,5 @@ public class Ad extends BaseAt {
     private Integer profit;
     private LocalDateTime calculatedRef;
 
+
 }
