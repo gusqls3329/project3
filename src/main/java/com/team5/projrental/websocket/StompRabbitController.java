@@ -18,6 +18,7 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
@@ -33,6 +34,11 @@ public class StompRabbitController {
     private final org.springframework.amqp.core.Exchange exchange;
     private final Binding binding;
 
+    /*
+       FIXME -> routingKey 를 각 채팅방 별로 지정하고, 저장할 수 있게 컬럼을 추가해주자 그리고 targetIuser 가 제공되면,
+                로그인 유져와 target 유저가 속해있는 방의 저장되어있는 routingKey 를 가져와서 해당키를 queue 방식으로 구독시키자.
+     */
+    // TODO -> 현재는 routingKey 자체가 Queue 가 되고, 자기 자신으로 라우팅 한다.
     // TODO -> 1:1채팅은 무조건 큐 발급, 큐 구독으로 하자 (routingKey 는 쓰지않고, 큐만으로 구분을 하자.)
     // TODO -> 이제 큐구독을 어떻게 하는지를 알아보아야 한다.
     // TODO -> 리스너로는 테스트 성공한다.
@@ -49,10 +55,12 @@ public class StompRabbitController {
                 @MessageMapping 에 경로(/chat/message.{queue} 에 요청, 구독 할 수 있도록) 를 알려줌
                 그 이후, 클라이언트는 /chat/message.{queue} 로 소켓요청 -> 이때 메시지를 포함해서 보내야 함 그 메시지가 전송됨
     */
+
+
     @GetMapping("queue")
-    public void createQueue() {
+    public void createQueue(@RequestParam(required = false) String routingKey) {
 //        template.convertAndSend(CHAT_EXCHANGE_NAME, "test", "testMessage");
-        template.convertAndSend("test", "testMessage");
+        template.convertAndSend("test" +(routingKey == null? "" : routingKey), "testMessage");
     }
 
     @RabbitListener(queues = "test")
@@ -89,8 +97,7 @@ public class StompRabbitController {
     @RabbitListener(bindings = @QueueBinding(
             exchange = @Exchange(name = CHAT_EXCHANGE_NAME, type = ExchangeTypes.TOPIC),
             value = @Queue(name = CHAT_QUEUE_NAME),
-            key = "room.*"
-    ))
+            key = "room.*"))
     public void receive(String message) {
         System.out.println("=========================================");
         log.info("message = {}", message);
@@ -99,8 +106,7 @@ public class StompRabbitController {
     @RabbitListener(bindings = @QueueBinding(
             exchange = @Exchange(name = CHAT_EXCHANGE_NAME),
             value = @Queue(name = CHAT_QUEUE_NAME),
-            key = "room.*"
-    ))
+            key = "room.*"))
     public void receive2(String message) {
         System.out.println("=========================================");
         log.info("message = {}", message);
