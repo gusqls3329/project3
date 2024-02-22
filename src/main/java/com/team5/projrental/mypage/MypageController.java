@@ -1,5 +1,6 @@
 package com.team5.projrental.mypage;
 
+import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.mypage.model.*;
 import com.team5.projrental.product.model.review.ReviewResultVo;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,10 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,7 +23,7 @@ import java.util.List;
 public class MypageController {
     private final MypageService service;
 
-    @Validated
+    /*@Validated
     @GetMapping("/prod")
     @Operation(summary = "대여리스트", description = "대여관련 내역")
     @Parameters(value = {
@@ -34,6 +32,16 @@ public class MypageController {
         PaymentSelDto dto = new PaymentSelDto();
         dto.setPage(page);
         return service.getRentalList(dto);
+    }*/
+
+    @Validated
+    @Operation(summary = "대여리스트", description = "로그인 유저가 ")
+    @Parameters(value = {@Parameter(name = "page", description = "페이지"),
+            @Parameter(name = "role", description = "role:1 -> iuser 가 구매한 상품들\n" +
+                    "role:2 -> iuser 가 판매한 상품들")})
+    @GetMapping("/prod")
+    public List<PaymentSelVo> getRentalList(int role, @Range(min = 1) int page) {
+        return null;
     }
 
     @Validated
@@ -59,11 +67,27 @@ public class MypageController {
 
     @Validated
     @GetMapping("/dispute")
-    @Operation(summary = "작성한 후기", description = "로그인 유저가 빌린내역 중 작성한 후기 리스트")
+    @Operation(summary = "신고한 목록", description = "로그인 유저가 신고한 목록")
     @Parameters(value = {@Parameter(name = "page", description = "페이지")})
     public List<MyDisputeVo> getDispute(@RequestParam(defaultValue = "1") @Min(1) int page) {
         MyBuyReviewListSelDto dto = new MyBuyReviewListSelDto();
         dto.setPage(page);
         return service.getDispute(dto);
+    }
+
+    @PatchMapping("/dispute")
+    @Operation(summary = "신고 철회", description = "로그인 유저가 신고한 목록")
+    @Parameters(value = {@Parameter(name = "idispute", description = "철회 할 분쟁pk")})
+    public ResVo cancelDispute(@RequestBody int idispute) {
+        return null;
+    }
+
+
+    @Validated
+    @GetMapping("/board")
+    @Operation(summary = "내가 쓴 게시글", description = "내가 작성한 자유게시글 조회")
+    @Parameters(value = {@Parameter(name = "page", description = "페이지")})
+    public List<MyBoardListVo> getBoard(@RequestParam(defaultValue = "1") @Min(1) int page) {
+        return null;
     }
 }
