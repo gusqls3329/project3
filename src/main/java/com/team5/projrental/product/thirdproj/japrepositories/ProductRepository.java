@@ -19,4 +19,7 @@ public interface ProductRepository {
                                   int page,
                                   Long iuser,
                                   int prodPerPage);
+
+    List<ProductListVo> findProductListVoByIproducts(List<Integer> imainCategory,
+                                                     List<Integer> isubCategory);
 }

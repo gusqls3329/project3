@@ -124,6 +124,15 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     }
 
+    @Override
+    public List<ProductListVo> findProductListVoByIproducts(List<Integer> imainCategory, List<Integer> isubCategory) {
+
+
+
+        return null;
+    }
+
+
     private BooleanBuilder whereSearchForFindAllBy(String search, ProductMainCategory mainCategory,
                                                    ProductSubCategory subCategory) {
         BooleanBuilder booleanBuilder = new BooleanBuilder();

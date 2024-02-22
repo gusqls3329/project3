@@ -2,7 +2,7 @@ package com.team5.projrental.common.aop;
 
 import com.team5.projrental.common.sse.SseEmitterRepository;
 import com.team5.projrental.common.sse.model.FindDiffUserDto;
-import com.team5.projrental.common.sse.model.RejectMessageInfo;
+import com.team5.projrental.common.sse.model.SseMessageInfo;
 import com.team5.projrental.common.sse.responseproperties.Properties;
 import com.team5.projrental.common.threadpool.MyThreadPoolHolder;
 import com.team5.projrental.payment.review.model.RivewDto;
@@ -58,10 +58,10 @@ public class SseEmitterAspect {
 
 
     //
-    private RejectMessageInfo catchEventPropertiesGenerator(Long iuser, String message,
-                                                            Integer code, Integer num,
-                                                            String name) {
-        return new RejectMessageInfo(iuser, message, code, num, name);
+    private SseMessageInfo catchEventPropertiesGenerator(Long iuser, String message,
+                                                         Integer code, Integer num,
+                                                         String name) {
+        return new SseMessageInfo(iuser, message, code, num, name);
 
     }
 
