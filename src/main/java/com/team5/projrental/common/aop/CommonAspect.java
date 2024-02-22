@@ -10,7 +10,7 @@ import com.team5.projrental.common.aop.model.DisabledDateInfo;
 import com.team5.projrental.common.threadpool.MyThreadPoolHolder;
 import com.team5.projrental.payment.model.PaymentInsDto;
 import com.team5.projrental.payment.review.model.RivewDto;
-import com.team5.projrental.product.thirdproj.japrepositories.ProductRepositoryImpl;
+import com.team5.projrental.product.thirdproj.japrepositories.product.ProductQueryRepositoryImpl;
 import com.team5.projrental.product.RefProductRepository;
 import com.team5.projrental.product.RefProductService;
 import com.team5.projrental.product.model.ProductVo;
@@ -48,10 +48,10 @@ public class CommonAspect {
     // <iproduct, 해당 제품의 2달간 활성화 재고들>
     public Map<Long, List<ActivatedStock>> activatedStockCache;
 
-    private final ProductRepositoryImpl productRepositoryImpl;
+    private final ProductQueryRepositoryImpl productRepositoryImpl;
 
     public CommonAspect(RefProductService productService, RefProductRepository productRepository, MyThreadPoolHolder threadPool
-    , EntityManager em, JPAQueryFactory query, ProductRepositoryImpl productRepositoryImpl) {
+    , EntityManager em, JPAQueryFactory query, ProductQueryRepositoryImpl productRepositoryImpl) {
         this.productService = productService;
         this.productRepository = productRepository;
         this.threadPool = threadPool.getThreadPool();

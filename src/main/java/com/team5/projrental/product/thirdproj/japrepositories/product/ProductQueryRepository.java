@@ -1,4 +1,4 @@
-package com.team5.projrental.product.thirdproj.japrepositories;
+package com.team5.projrental.product.thirdproj.japrepositories.product;
 
 import com.team5.projrental.entities.enums.ProductMainCategory;
 import com.team5.projrental.entities.enums.ProductSubCategory;
@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-public interface ProductRepository {
+public interface ProductQueryRepository {
     Map<Long, List<ActivatedStock>> getActivatedStock(LocalDate refDate);
 
     List<ProductListVo> findAllBy(Integer sort,
