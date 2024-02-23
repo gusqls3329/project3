@@ -9,5 +9,5 @@ import lombok.Setter;
 @Builder
 public class VerificationReadyVo {
     private String resultType;
-    private String uuid;
+    private Long id;
 }

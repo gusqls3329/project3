@@ -57,18 +57,17 @@ public class TossVerificationRequester {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-        String id = UUID.randomUUID().toString();
 
+        VerificationInfo info = VerificationInfo.builder()
+                .txId(verificationReadyResponse.getSuccess().getTxId())
+                .build();
         if (verificationReadyResponse.getSuccess() != null) {
-            repository.save(VerificationInfo.builder()
-                    .id(id)
-                    .txId(verificationReadyResponse.getSuccess().getTxId())
-                    .build());
+            repository.save(info);
         }
 
 
         return VerificationReadyVo.builder()
-                .uuid(id)
+                .id(info.getId())
                 .resultType(verificationReadyResponse.getResultType())
                 .build();
     }
@@ -90,11 +89,11 @@ public class TossVerificationRequester {
 
     }
 
-    public CheckResponseVo check(String uuid) {
+    public CheckResponseVo check(Long id) {
         TossCertSession session = generator.generate();
         String sessionKey = session.getSessionKey();
 
-        VerificationInfo info = repository.findById(uuid).orElseThrow(() -> new ClientException(ErrorCode.ILLEGAL_EX_MESSAGE, "존재하지 않는 결제건"));
+        VerificationInfo info = repository.findById(id).orElseThrow(() -> new ClientException(ErrorCode.ILLEGAL_EX_MESSAGE, "존재하지 않는 결제건"));
 
         CheckRequestDto dto = CheckRequestDto.builder()
                 .txId(info.getTxId())
@@ -121,12 +120,13 @@ public class TossVerificationRequester {
             throw new ClientException(ErrorCode.BAD_INFO_EX_MESSAGE, "본인인증에 실패함");
         }
 
-        return decode(uuid, session, resultDto);
+
+        return decode(id, session, resultDto);
     }
 
-    private CheckResponseVo decode(String uuid, TossCertSession session, CheckResultDto dto) {
+    private CheckResponseVo decode(Long id, TossCertSession session, CheckResultDto dto) {
         return CheckResponseVo.builder()
-                .uuid(uuid)
+                .id(id)
                 .name(session.decrypt(dto.getSuccess().getPersonalData().getName()))
                 .gender(session.decrypt(dto.getSuccess().getPersonalData().getGender()))
                 .birthday(session.decrypt(dto.getSuccess().getPersonalData().getBirthday()))
