@@ -24,5 +24,6 @@ public class Chat extends CreatedAt {
     @Column(length = 2000, name = "last_msg")
     private String lastMsg;
 
+    @Column(length = 100, name = "last_msg_at")
     private String lastMsgAt;
 }

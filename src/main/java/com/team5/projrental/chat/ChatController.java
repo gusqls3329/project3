@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Parameters;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,7 @@ public class ChatController {
 
     @Operation(summary = "로그인한 유저의 모든채팅방 개수출력", description = "로그인한 유저의 모든 채팅방 개수 출력")
     @GetMapping("/{iuser}/count")
-    public ResVo getChatCount(@RequestParam(defaultValue = "1")@Range(min = 1) long page) {
+    public ResVo getChatCount(@PageableDefault(page = 1, size = 10) Pageable pageable) {
         return null;
     }
 
@@ -35,8 +36,8 @@ public class ChatController {
     @Operation(summary = "대화중인 리스트 출력", description = "대화중인 채팅 리스트 출력")
     @Parameters(value = {
             @Parameter(name = "page", description = "page당 노출되는 채팅 방 리스트 10개")})
-    public List<ChatSelVo> getChatAll(Pageable pageable) {
-        return service.getChatAll(pageable);
+    public List<ChatSelVo> getChatAll(ChatSelDto dto ,@PageableDefault(page = 1, size = 10) Pageable pageable) {
+        return service.getChatAll(dto, pageable);
     }
 
     @PostMapping
@@ -58,22 +59,22 @@ public class ChatController {
     }
 
     @Validated
-    @GetMapping("/msg")
+    @GetMapping("/room/{ichat}")
     @Operation(summary = "채팅방 입장", description = "채팅방 입장시 모든 내용 출력")
     @Parameters(value = {
             @Parameter(name = "page", description = "페이지"),
             @Parameter(name = "ichat", description = "채팅방 번호")})
-    public List<ChatMsgSelVo> getChatMsgAll(ChatMsgSelDto dto){
-        log.debug("dto : {}", dto);
-        return service.getMsgAll(dto);
+    public List<ChatMsgSelVo> getMessageAll(@PageableDefault(page = 1, size = 10)Pageable pageable, long ichat){
+
+        return null;
     }
 
     @Validated
-    @DeleteMapping("/msg")
+    @DeleteMapping("/{ichat}/{iuser}")
     @Operation(summary = "채팅방 삭제(숨김)", description = "실행시 로그인 유저의 채팅 숨김 처리되도록 설계함")
     @Parameters(value = {
             @Parameter(name = "ichat", description = "로그인 유저가 선택한 ichat 삭제(실제로는 숨김처리)")})
-    public ResVo delChatMsg(ChatMsgDelDto dto) {
+    public ResVo delChat(ChatMsgDelDto dto) {
         return service.chatDelMsg(dto);
     }
 

@@ -4,12 +4,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
+//import com.team5.projrental.chat.repository.ChatRepository;
+import com.team5.projrental.chat.repository.ChatUserRepository;
 import com.team5.projrental.common.exception.ErrorCode;
 import com.team5.projrental.common.exception.base.BadInformationException;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.chat.model.*;
 import com.team5.projrental.common.security.AuthenticationFacade;
 import com.team5.projrental.common.utils.CommonUtils;
+import com.team5.projrental.entities.Chat;
 import com.team5.projrental.user.UserMapper;
 import com.team5.projrental.user.model.UserEntity;
 import com.team5.projrental.user.model.UserSelDto;
@@ -35,7 +38,24 @@ public class ChatService {
     private final AuthenticationFacade authenticationFacade;
 
 
-    public List<ChatSelVo> getChatAll(@PageableDefault(page = 1, size = 30)Pageable pageable) {
+    //private final ChatRepository chatRepository;
+    private final ChatUserRepository chatUserRepository;
+
+
+
+    public List<ChatSelVo> getChatAll(ChatSelDto dto, Pageable pageable) {
+
+        long loginedIuser = authenticationFacade.getLoginUserPk();
+        //repository
+        //로그인한 유저가 속해 있는 채팅방 pk들,상대 유저의 pk, product pk을 찾고(find...)
+        //그 pk들로 chat에 있는 최신 메시지와 최신 메시지가 올라온 시간을 찾고(find...)
+        //상대 유저의 pk로 유저의 닉네임, 사진을 유저에서 찾고(find...)
+        //product pk로 title, 제품 사진을 찾는다(find..)
+        //final List<Chat> chatList = chatRepository.findAllOrderByLastMsgAtDesc(pageable);
+
+
+
+
 
         return null;
     }
@@ -108,13 +128,13 @@ public class ChatService {
     }
 
     //채팅방 입장시 메세지 내용 불러오기
-    public List<ChatMsgSelVo> getMsgAll(ChatMsgSelDto dto) {
+    /*public List<ChatMsgSelVo> getMsgAll(Pageable pageable, long ichat) {
         Long loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setLoginedIuser(loginUserPk);
 
         List<ChatMsgSelVo> list = mapper.selChatMsgAll(dto);
         return list;
-    }
+    }*/
 
     // 메세지 삭제(실제로 숨김처리)
     public ResVo chatDelMsg(ChatMsgDelDto dto) {
