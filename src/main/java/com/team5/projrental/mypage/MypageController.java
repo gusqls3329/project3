@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.team5.projrental.common.exception.ErrorMessage.BAD_SORT_EX_MESSAGE;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -23,18 +25,22 @@ import java.util.List;
 public class MypageController {
     private final MypageService service;
 
-    /*@Validated
+    @Validated
     @GetMapping("/prod")
     @Operation(summary = "대여리스트", description = "대여관련 내역")
     @Parameters(value = {
+            @Parameter(name = "status", description = "특정 상태인 결제 조회 (예약중, 거래시작, 만료됨, 거래완료, 예약취소, 숨김 조회 가능)\n"+
+                    "로그인유저의 결제정보를 조회한다는것을 잊으면 안됨."),
             @Parameter(name = "page", description = "페이지")})
-    public List<PaymentSelVo> getRentalList(@RequestParam(defaultValue = "1") @Range(min = 1) int page) {
+    public List<PaymentSelVo> getRentalList(@RequestParam(name = "status", required = false) int status,
+                                            @RequestParam(defaultValue = "1") @Range(min = 1) int page) {
         PaymentSelDto dto = new PaymentSelDto();
         dto.setPage(page);
         return service.getRentalList(dto);
-    }*/
+    }
 
-    @Validated
+
+    /*@Validated
     @Operation(summary = "대여리스트", description = "로그인 유저가 ")
     @Parameters(value = {@Parameter(name = "page", description = "페이지"),
             @Parameter(name = "role", description = "role:1 -> iuser 가 구매한 상품들\n" +
@@ -42,7 +48,7 @@ public class MypageController {
     @GetMapping("/prod")
     public List<PaymentSelVo> getRentalList(int role, @Range(min = 1) int page) {
         return null;
-    }
+    }*/
 
     @Validated
     @GetMapping("/fav")

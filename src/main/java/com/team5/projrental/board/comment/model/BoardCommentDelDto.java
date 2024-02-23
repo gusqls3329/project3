@@ -10,4 +10,5 @@ import lombok.*;
 @AllArgsConstructor
 public class BoardCommentDelDto {
     private int iboardComment;
+    private int status;
 }

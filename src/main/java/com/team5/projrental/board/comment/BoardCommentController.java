@@ -36,7 +36,7 @@ public class BoardCommentController {
         return null;
     }
 
-    @Operation(summary = "댓글 삭제", description = "내가 쓴 댓글 삭제(숨김)")
+    @Operation(summary = "댓글 삭제", description = "내가 쓴 댓글 삭제(숨김:status를 2로 변경/default:1)")
     @Parameters(value = {
             @Parameter(name = "iboardComment", description = "삭제할 댓글pk")})
     @DeleteMapping("{iboardComment}")
