@@ -24,7 +24,9 @@ public class ChatController {
     private final ChatService service;
 
 
-    @Operation(summary = "로그인한 유저의 모든채팅방 개수출력", description = "로그인한 유저의 모든 채팅방 개수 출력")
+    @Operation(summary = "로그인한 유저의 모든채팅방 개수출력", description = "로그인한 유저의 모든 채팅방 개수 출력" +
+            "pageable: 페이지"
+    )
     @GetMapping("/{iuser}/count")
     public ResVo getChatCount(@PageableDefault(page = 1, size = 10) Pageable pageable) {
         return null;

@@ -11,9 +11,11 @@ import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 @Slf4j
@@ -38,9 +40,11 @@ public class MypageController {
     @Operation(summary = "대여리스트", description = "로그인 유저가 ")
     @Parameters(value = {@Parameter(name = "page", description = "페이지"),
             @Parameter(name = "role", description = "role:1 -> iuser 가 구매한 상품들\n" +
-                    "role:2 -> iuser 가 판매한 상품들")})
+                    "role:2 -> iuser 가 판매한 상품들"),
+            @Parameter(name = "status", description = "1:예약중 <br> 6까지 설명작성예정")
+    })
     @GetMapping("/prod")
-    public List<PaymentSelVo> getRentalList(int role, @Range(min = 1) int page) {
+    public List<PaymentSelVo> getRentalList(long role, @Range(min = 1) @PageableDefault(page = 1, size = 10)Pageable pageable, long status) {
         return null;
     }
 
@@ -48,10 +52,9 @@ public class MypageController {
     @GetMapping("/fav")
     @Operation(summary = "관심 목록", description = "로그인한 유저가 관심 등록한 제품 리스트")
     @Parameters(value = {@Parameter(name = "page", description = "페이지")})
-    public List<MyFavListSelVo> getFavList(@RequestParam(defaultValue = "1") @Min(1) int page) {
-        MyFavListSelDto dto = new MyFavListSelDto();
-        dto.setPage(page);
-        return service.getFavList(dto);
+    public List<MyFavListSelVo> getFavList(@RequestParam(defaultValue = "1") @PageableDefault(page = 1, size = 10)Pageable pageable) {
+
+        return null;
     }
 
 
@@ -59,9 +62,8 @@ public class MypageController {
     @GetMapping("/review")
     @Operation(summary = "작성한 후기", description = "로그인 유저가 빌린내역 중 작성한 후기 리스트")
     @Parameters(value = {@Parameter(name = "page", description = "페이지")})
-    public List<MyBuyReviewListSelVo> getReview(@RequestParam(defaultValue = "1") @Min(1) int page) {
+    public List<MyBuyReviewListSelVo> getReview(@RequestParam(defaultValue = "1") @PageableDefault(page = 1, size = 10)Pageable pageable) {
         MyBuyReviewListSelDto dto = new MyBuyReviewListSelDto();
-        dto.setPage(page);
         return service.getReview(dto);
     }
 
@@ -69,10 +71,9 @@ public class MypageController {
     @GetMapping("/dispute")
     @Operation(summary = "신고한 목록", description = "로그인 유저가 신고한 목록")
     @Parameters(value = {@Parameter(name = "page", description = "페이지")})
-    public List<MyDisputeVo> getDispute(@RequestParam(defaultValue = "1") @Min(1) int page) {
-        MyBuyReviewListSelDto dto = new MyBuyReviewListSelDto();
-        dto.setPage(page);
-        return service.getDispute(dto);
+    public List<MyDisputeVo> getDispute(@RequestParam(defaultValue = "1") @PageableDefault(page = 1, size = 10)Pageable pageable) {
+
+        return null;
     }
 
     @PatchMapping("/dispute")
