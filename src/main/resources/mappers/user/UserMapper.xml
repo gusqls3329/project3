@@ -22,7 +22,9 @@
         , comp_nm = #{compNm}
         , iuser = #{iuser}
     </insert>
-
+    <select id="selUserSignup">
+        select
+    </select>
     <!--    auth join 필요 없음 user 데이터만 가져오기.
          -->
     <select id="selSignin">

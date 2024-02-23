@@ -7,7 +7,6 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -18,15 +17,11 @@ public class QRecharge extends EntityPathBase<Recharge> {
 
     private static final long serialVersionUID = 477349034L;
 
-    private static final PathInits INITS = PathInits.DIRECT2;
-
     public static final QRecharge recharge = new QRecharge("recharge");
 
     public final com.team5.projrental.entities.mappedsuper.QCreatedAt _super = new com.team5.projrental.entities.mappedsuper.QCreatedAt(this);
 
     public final NumberPath<Integer> cash = createNumber("cash", Integer.class);
-
-    public final QComp comp;
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
@@ -36,24 +31,15 @@ public class QRecharge extends EntityPathBase<Recharge> {
     public final EnumPath<com.team5.projrental.entities.enums.PaymentMethod> method = createEnum("method", com.team5.projrental.entities.enums.PaymentMethod.class);
 
     public QRecharge(String variable) {
-        this(Recharge.class, forVariable(variable), INITS);
+        super(Recharge.class, forVariable(variable));
     }
 
     public QRecharge(Path<? extends Recharge> path) {
-        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
+        super(path.getType(), path.getMetadata());
     }
 
     public QRecharge(PathMetadata metadata) {
-        this(metadata, PathInits.getFor(metadata, INITS));
-    }
-
-    public QRecharge(PathMetadata metadata, PathInits inits) {
-        this(Recharge.class, metadata, inits);
-    }
-
-    public QRecharge(Class<? extends Recharge> type, PathMetadata metadata, PathInits inits) {
-        super(type, metadata, inits);
-        this.comp = inits.isInitialized("comp") ? new QComp(forProperty("comp"), inits.get("comp")) : null;
+        super(Recharge.class, metadata);
     }
 
 }
