@@ -4,7 +4,9 @@ import com.team5.projrental.common.exception.ErrorCode;
 import com.team5.projrental.common.exception.thrid.ClientException;
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @Getter
 public enum ProductSubCategory {
@@ -49,5 +51,13 @@ public enum ProductSubCategory {
                 .filter(sub -> sub.getMainCategory() == mainCategory && sub.getCategoryNum() == categoryNum)
                 .findAny()
                 .orElseThrow(() -> new ClientException(ErrorCode.ILLEGAL_CATEGORY_EX_MESSAGE, "잘못된 카테고리 입력"));
+    }
+
+    public static List<ProductSubCategory> getByNums(List<ProductMainCategory> mainCategories, List<Integer> categoryNums) {
+        List<ProductSubCategory> result = new ArrayList<>();
+        for (int i = 0; i < categoryNums.size(); i++) {
+            result.add(getByNum(mainCategories.get(i), categoryNums.get(i)));
+        }
+        return result;
     }
 }

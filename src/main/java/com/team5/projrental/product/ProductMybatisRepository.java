@@ -14,7 +14,7 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class ProductRepository implements RefProductRepository {
+public class ProductMybatisRepository implements RefProductRepository {
 
     private final ProductMapper productMapper;
 

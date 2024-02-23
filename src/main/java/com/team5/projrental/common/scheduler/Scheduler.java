@@ -5,7 +5,7 @@ import com.team5.projrental.common.aop.anno.Retry;
 import com.team5.projrental.entities.PaymentInfo;
 import com.team5.projrental.entities.QPaymentInfo;
 import com.team5.projrental.entities.enums.PaymentInfoStatus;
-import com.team5.projrental.payment.PaymentRepository;
+import com.team5.projrental.payment.PaymentMybatisRepository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +15,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -24,7 +23,7 @@ import java.util.List;
 @Slf4j
 public class Scheduler {
 
-    private final PaymentRepository paymentRepository;
+    private final PaymentMybatisRepository paymentMybatisRepository;
     private final EntityManager em;
     private final JPAQueryFactory query;
 

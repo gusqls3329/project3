@@ -19,7 +19,8 @@ import com.team5.projrental.product.model.*;
 import com.team5.projrental.product.model.proc.*;
 import com.team5.projrental.product.model.review.ReviewGetDto;
 import com.team5.projrental.product.model.review.ReviewResultVo;
-import com.team5.projrental.product.thirdproj.japrepositories.product.ProductQueryRepository;
+import com.team5.projrental.product.thirdproj.japrepositories.product.ProductRepository;
+import com.team5.projrental.product.thirdproj.model.ProductListForMainDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +48,7 @@ public class ProductService implements RefProductService {
 
     private final MyFileUtils myFileUtils;
 
-    private final ProductQueryRepository productQueryRepository;
+    private final ProductRepository productRepository;
 
 
     /*
@@ -82,7 +84,7 @@ public class ProductService implements RefProductService {
 
 
         ProductMainCategory mainCategory = ProductMainCategory.getByNum(imainCategory);
-        return productQueryRepository.findAllBy(
+        return productRepository.findAllBy(
                 sort,
                 search,
                 mainCategory,
@@ -105,20 +107,40 @@ public class ProductService implements RefProductService {
 
     }
 
-    public List<ProductListVo> getProductListForMain(
-            List<Integer> imainCategory,
-            List<Integer> isubCategory
-    ) {
+    public List<ProductListVo> getProductListForMain(Integer cnt) {
         // TODO 작업 재시작
-        int page = 0;
-        int limit = Const.MAIN_PROD_PER_PAGE;
-        List<ProductListVo> result = new ArrayList<>();
-        for (int i = 0; i < imainCategory.size(); i++) {
-            result.addAll(getProductList(null, null, imainCategory.get(i), isubCategory.get(i), page, limit));
-        }
+
+        int limit = cnt == null || cnt == 0 ? Const.MAIN_PROD_PER_PAGE : cnt;
 
 
-        return result;
+        List<ProductListForMainDto> dto = productRepository.findEachTop8ByCategoriesOrderByIproductDesc(limit);
+
+        // dto -> vo 변환작업 시작
+        return dto.stream().map(d -> ProductListVo.builder()
+                        .iuser(d.getIuser())
+                        .nick(d.getNick())
+                        .userPic(d.getUserPic())
+                        .iproduct(d.getIproduct())
+                        .title(d.getTitle())
+                        .prodMainPic(d.getProdMainPic())
+                        .rentalPrice(d.getRentalPrice())
+                        .rentalStartDate(d.getRentalStartDate()
+                        )
+                        .build()
+                ).toList();
+
+
+
+
+
+
+//        List<ProductListVo> result = new ArrayList<>();
+//        for (int i = 0; i < imainCategory.size(); i++) {
+//            result.addAll(getProductList(null, null, imainCategory.get(i), isubCategory.get(i), page, limit));
+//        }
+
+
+//        return result;
     }
 
     /**

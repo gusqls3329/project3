@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class PaymentRepository {
+public class PaymentMybatisRepository {
 
     private final PaymentMapper paymentMapper;
 

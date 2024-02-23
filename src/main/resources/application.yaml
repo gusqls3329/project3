@@ -26,6 +26,14 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  config:
+    activate:
+      on-profile: default
+#  rabbitmq:
+#    host: localhost
+#    port: 5672
+#    username: guest
+#    password: guest
 
 logging:
   level:
@@ -84,9 +92,9 @@ api:
       base-url: "https://api.odcloud.kr/api/nts-businessman/v1/validate"
       service-code-key: "serviceKey"
       service-code-value: "VUXEsrgmuyDberLO0pvh4iEQON2Apg6dFFxNMvxc5hAYZjC4XBmmNyxuWvgxfaQpZVNnP%2BVqKNgS1W1isULaQA%3D%3D"
-config:
-  activate:
-    on-profile: default
+
+
+
 ---
 spring:
   datasource:
@@ -94,9 +102,6 @@ spring:
     url: jdbc:mariadb://192.168.0.144:3306/db_even_last_5
     username: even_last_5
     password: fines
-  config:
-    activate:
-      on-profile: "prod"
   graphql:
     schema:
       file-extensions:
@@ -111,21 +116,16 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  config:
+    activate:
+      on-profile: prod
 file:
   base-package: /home/download/
 
-config:
-  activate:
-    on-profile: prod
 
 
----
-spring:
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
+
+
 
 
 #logging:

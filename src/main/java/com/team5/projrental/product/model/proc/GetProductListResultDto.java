@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -25,8 +26,8 @@ public class GetProductListResultDto {
     private Integer price;
     private Integer rentalPrice;
     private Integer deposit;
-    private LocalDate rentalStartDate;
-    private LocalDate rentalEndDate;
+    private LocalDateTime rentalStartDate;
+    private LocalDateTime rentalEndDate;
     private Integer prodLike;
     private Integer istatus;
     private Integer isLiked;

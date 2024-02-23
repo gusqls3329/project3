@@ -74,7 +74,7 @@ public class UserService {
     private final JPAQueryFactory queryFactory;
     private final CompCodeValidator validator;
 
-    @Value("${config.activate.on-profile}")
+    @Value("${spring.config.activate.on-profile}")
     private String profile;
 
     public VerificationReadyVo readyVerification(VerificationUserInfo userInfo) {

@@ -4,14 +4,15 @@ import jakarta.persistence.Embeddable;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
 @Embeddable
 public class RentalDates {
 
-    private LocalDate rentalStartDate;
-    private LocalDate rentalEndDate;
+    private LocalDateTime rentalStartDate;
+    private LocalDateTime rentalEndDate;
 
     protected RentalDates() {
 
