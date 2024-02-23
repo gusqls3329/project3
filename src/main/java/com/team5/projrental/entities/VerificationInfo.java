@@ -20,6 +20,11 @@ public class VerificationInfo extends CreatedAt {
     @Column(length = 1000)
     private String txId;
 
+    private String userName;
+    private String userPhone;
+    private String userBirthday;
+
+
 
 
 }

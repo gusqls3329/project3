@@ -60,7 +60,7 @@ public class UserSignupDto {
     private Integer isValid;
 
     //uuid : 본인인증 (조인테이블)
-    private String uuid;
+    private Long iverificationInfo;
 
     @JsonIgnore
     private double x;

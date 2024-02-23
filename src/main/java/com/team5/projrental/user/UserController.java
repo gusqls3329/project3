@@ -2,11 +2,13 @@ package com.team5.projrental.user;
 
 import com.team5.projrental.common.exception.ErrorMessage;
 import com.team5.projrental.common.model.ResVo;
+import com.team5.projrental.entities.VerificationInfo;
 import com.team5.projrental.user.model.*;
-import com.team5.projrental.user.verification.SignUpVo;
 import com.team5.projrental.user.verification.users.model.VerificationUserInfo;
 import com.team5.projrental.user.verification.users.model.check.CheckResponseVo;
+import com.team5.projrental.user.verification.users.model.ready.VerificationReadyDto;
 import com.team5.projrental.user.verification.users.model.ready.VerificationReadyVo;
+import com.team5.projrental.user.verification.users.repository.TossVerificationRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -29,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class UserController {
     private final UserService service;
 
+
     // FIXME : 해당 부분의 리턴을 uuid 말고 그냥 본인인증 테이블의 generated key 를 리턴할까 싶다. -> 보안상 문제가 없을거 같고, 있다고해도 uuid 라고 다를것 없어 보인다.
     @PostMapping("/verification")
     @Operation(summary = "본인인증 요청", description = "본인 요청하기")
@@ -38,8 +41,8 @@ public class UserController {
     // FIXME : 해당 부분의 리턴을 uuid 말고 그냥 본인인증 테이블의 generated key 를 리턴할까 싶다. -> 보안상 문제가 없을거 같고, 있다고해도 uuid 라고 다를것 없어 보인다.
     @GetMapping("/verification")
     @Operation(summary = "본인인증 결과 확인", description = "본인인증 수행 햇는지 확인")
-    public CheckResponseVo checkVerification(String uuid){
-        return service.checkVerification(uuid);
+    public CheckResponseVo checkVerification(Long id){
+        return service.checkVerification(id);
     }
 
     @PostMapping("/check")
