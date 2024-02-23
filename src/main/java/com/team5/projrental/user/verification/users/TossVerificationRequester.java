@@ -10,10 +10,9 @@ import com.team5.projrental.user.verification.users.model.check.CheckRequestDto;
 import com.team5.projrental.user.verification.users.model.check.CheckResponseVo;
 import com.team5.projrental.user.verification.users.model.check.CheckResultDto;
 import com.team5.projrental.user.verification.users.model.ready.VerificationReadyResponse;
-import com.team5.projrental.user.verification.users.model.ready.VerificationReadyVo;
+import com.team5.projrental.user.verification.users.model.ready.VerificationReadyDto;
 import com.team5.projrental.user.verification.users.model.ready.VerificationRequestDto;
 import com.team5.projrental.user.verification.users.properties.TossVerificationProperties;
-import com.team5.projrental.user.verification.users.repository.TossVerificationRepository;
 import im.toss.cert.sdk.TossCertSession;
 import im.toss.cert.sdk.TossCertSessionGenerator;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
-
-import java.util.UUID;
 
 @Component
 @Slf4j
@@ -36,7 +33,7 @@ public class TossVerificationRequester {
 //    private final TossVerificationRepository repository;
 
 
-    public VerificationReadyVo verificationRequest(VerificationUserInfo userInfo) {
+    public VerificationReadyDto verificationRequest(VerificationUserInfo userInfo) {
 
         // toss 에 전달할 Dto 생성
         VerificationRequestDto dto = encode(userInfo);
@@ -67,8 +64,10 @@ public class TossVerificationRequester {
 //        }
 
 
-        return VerificationReadyVo.builder()
+
+        return VerificationReadyDto.builder()
                 .id(info.getId())
+                .txid(verificationReadyResponse.getSuccess().getTxId())
                 .success(verificationReadyResponse.getSuccess())
                 .fail(verificationReadyResponse.getFail())
                 .resultType(verificationReadyResponse.getResultType())
@@ -93,6 +92,7 @@ public class TossVerificationRequester {
     }
 
     public CheckResponseVo check(VerificationInfo info) {
+
         TossCertSession session = generator.generate();
         String sessionKey = session.getSessionKey();
 
