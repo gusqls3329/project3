@@ -33,9 +33,10 @@ public class ProductListVo {
     private String addr;
     private String restAddr;
     private Long view;
-    // prod_like
-    private Integer prodLike;
     private Integer istatus;
+    // prod_like
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Integer prodLike;
 
     // stock
     private Integer inventory; // 해당 제품의 총 재고 (다 나간거 관계 없이)

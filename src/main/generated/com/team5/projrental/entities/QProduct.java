@@ -43,6 +43,8 @@ public class QProduct extends EntityPathBase<Product> {
 
     public final EnumPath<com.team5.projrental.entities.enums.ProductStatus> status = createEnum("status", com.team5.projrental.entities.enums.ProductStatus.class);
 
+    public final ListPath<Stock, QStock> stocks = this.<Stock, QStock>createList("stocks", Stock.class, QStock.class, PathInits.DIRECT2);
+
     public final StringPath storedPic = createString("storedPic");
 
     public final EnumPath<com.team5.projrental.entities.enums.ProductSubCategory> subCategory = createEnum("subCategory", com.team5.projrental.entities.enums.ProductSubCategory.class);

@@ -24,9 +24,15 @@ public class QVerificationInfo extends EntityPathBase<VerificationInfo> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
-    public final StringPath id = createString("id");
+    public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final StringPath txId = createString("txId");
+
+    public final StringPath userBirthday = createString("userBirthday");
+
+    public final StringPath userName = createString("userName");
+
+    public final StringPath userPhone = createString("userPhone");
 
     public QVerificationInfo(String variable) {
         super(VerificationInfo.class, forVariable(variable));
