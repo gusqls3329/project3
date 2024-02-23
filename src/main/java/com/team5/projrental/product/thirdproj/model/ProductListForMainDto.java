@@ -1,5 +1,6 @@
 package com.team5.projrental.product.thirdproj.model;
 
+import com.team5.projrental.entities.enums.ProductStatus;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -23,5 +24,7 @@ public class ProductListForMainDto {
     private LocalDateTime rentalEndDate;
     private String addr;
     private String restAddr;
+    private Integer istatus;
+    private Long view;
     private EnumCategories enumCategories;
 }
