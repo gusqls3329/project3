@@ -9,6 +9,7 @@ import com.team5.projrental.entities.inheritance.Users;
 import com.team5.projrental.entities.mappedsuper.BaseAt;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +56,10 @@ public class Product extends BaseAt {
     private ProductStatus status;
 
 
+    @Builder.Default
+    @BatchSize(size = 1000)
+    @OneToMany(mappedBy = "product")
+    private List<Stock> stocks = new ArrayList<>();
 
 
 

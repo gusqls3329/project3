@@ -14,6 +14,7 @@ import com.team5.projrental.product.model.ProductListVo;
 import com.team5.projrental.product.model.jpa.ActivatedStock;
 import com.team5.projrental.product.thirdproj.japrepositories.product.like.ProductLikeRepository;
 import com.team5.projrental.product.thirdproj.japrepositories.product.stock.StockRepository;
+import com.team5.projrental.product.thirdproj.model.ProductLikeCountAndMyLikeDto;
 import com.team5.projrental.product.thirdproj.model.ProductListForMainDto;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -54,7 +55,7 @@ public class ProductQueryRepositoryImpl implements ProductQueryRepository {
         Map<Long, List<ActivatedStock>> result = new HashMap<>();
 
         for (Long iproduct : iproducts) {
-            LocalDate dateWalker = LocalDate.of(from.getYear(), from.getMonth(), from.getMonthValue());
+            LocalDateTime dateWalker = LocalDateTime.of(from.getYear(), from.getMonth(), from.getMonthValue(), 0, 0, 0);
             QStock stock = QStock.stock;
             QPayment payment = QPayment.payment;
 
@@ -129,12 +130,6 @@ public class ProductQueryRepositoryImpl implements ProductQueryRepository {
 
     }
 
-    @Override
-    public List<ProductListVo> findProductListVoByIproducts(List<Integer> imainCategory, List<Integer> isubCategory) {
-
-
-        return null;
-    }
 
     @Override
     public List<ProductListForMainDto> findEachTop8ByCategoriesOrderByIproductDesc(int limitNum) {
@@ -162,6 +157,8 @@ public class ProductQueryRepositoryImpl implements ProductQueryRepository {
 
         return result;
     }
+
+
 
 
     private BooleanBuilder whereSearchForFindAllBy(String search, ProductMainCategory mainCategory,

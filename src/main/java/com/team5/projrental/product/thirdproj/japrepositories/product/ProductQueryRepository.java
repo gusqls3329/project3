@@ -1,10 +1,12 @@
 package com.team5.projrental.product.thirdproj.japrepositories.product;
 
 import com.team5.projrental.entities.Product;
+import com.team5.projrental.entities.User;
 import com.team5.projrental.entities.enums.ProductMainCategory;
 import com.team5.projrental.entities.enums.ProductSubCategory;
 import com.team5.projrental.product.model.ProductListVo;
 import com.team5.projrental.product.model.jpa.ActivatedStock;
+import com.team5.projrental.product.thirdproj.model.ProductLikeCountAndMyLikeDto;
 import com.team5.projrental.product.thirdproj.model.ProductListForMainDto;
 
 import java.time.LocalDate;
@@ -23,8 +25,9 @@ public interface ProductQueryRepository {
                                   Long iuser,
                                   int prodPerPage);
 
-    List<ProductListVo> findProductListVoByIproducts(List<Integer> imainCategory,
-                                                     List<Integer> isubCategory);
 
     List<ProductListForMainDto> findEachTop8ByCategoriesOrderByIproductDesc(int limitNum);
+
+
+
 }

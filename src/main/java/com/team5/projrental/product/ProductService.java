@@ -7,20 +7,25 @@ import com.team5.projrental.common.exception.*;
 import com.team5.projrental.common.exception.base.*;
 import com.team5.projrental.common.exception.checked.FileNotContainsDotException;
 import com.team5.projrental.common.exception.thrid.ClientException;
+import com.team5.projrental.common.exception.thrid.ServerException;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.model.restapi.Addrs;
 import com.team5.projrental.common.security.AuthenticationFacade;
 import com.team5.projrental.common.utils.AxisGenerator;
 import com.team5.projrental.common.utils.CommonUtils;
 import com.team5.projrental.common.utils.MyFileUtils;
+import com.team5.projrental.entities.ProdLike;
+import com.team5.projrental.entities.Product;
 import com.team5.projrental.entities.enums.ProductMainCategory;
 import com.team5.projrental.entities.enums.ProductStatus;
 import com.team5.projrental.entities.enums.ProductSubCategory;
+import com.team5.projrental.entities.ids.ProdLikeIds;
 import com.team5.projrental.product.model.*;
 import com.team5.projrental.product.model.proc.*;
 import com.team5.projrental.product.model.review.ReviewGetDto;
 import com.team5.projrental.product.model.review.ReviewResultVo;
 import com.team5.projrental.product.thirdproj.japrepositories.product.ProductRepository;
+import com.team5.projrental.product.thirdproj.japrepositories.product.like.ProductLikeRepository;
 import com.team5.projrental.product.thirdproj.model.ProductListForMainDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +37,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.team5.projrental.common.Const.*;
 import static com.team5.projrental.common.exception.ErrorCode.*;
@@ -50,6 +56,8 @@ public class ProductService implements RefProductService {
     private final MyFileUtils myFileUtils;
 
     private final ProductRepository productRepository;
+
+    private final ProductLikeRepository productLikeRepository;
 
 
     /*
@@ -109,44 +117,54 @@ public class ProductService implements RefProductService {
     }
 
     public List<ProductListVo> getProductListForMain(Integer cnt) {
-        // TODO 작업 재시작
+
 
         int limit = cnt == null || cnt == 0 ? Const.MAIN_PROD_PER_PAGE : cnt;
 
 
         List<ProductListForMainDto> dto = productRepository.findEachTop8ByCategoriesOrderByIproductDesc(limit);
 
+        Long loginUserPk = authenticationFacade.getLoginUserPk();
+
+        List<Long> iproducts = dto.stream().map(ProductListForMainDto::getIproduct).toList();
         // 제품의 전체 좋아요 수와 로그인 유저가 좋아요 했는지 여부 가져오기
+
+        List<ProdLike> prodLikes = productLikeRepository.countByIuserAndInIproduct(loginUserPk, iproducts);
+
+        List<Product> findProduct = productRepository.findByIdIn(iproducts);
 
 
         // dto -> vo 변환작업 시작
         return dto.stream().map(d -> ProductListVo.builder()
-                        .iuser(d.getIuser())
-                        .nick(d.getNick())
-                        .userPic(d.getUserPic())
-                        .iproduct(d.getIproduct())
-                        .title(d.getTitle())
-                        .prodMainPic(d.getProdMainPic())
-                        .rentalPrice(d.getRentalPrice())
-                        .rentalStartDate(d.getRentalStartDate())
-                        .rentalEndDate(d.getRentalEndDate())
-                        .addr(d.getAddr())
-                        .restAddr(d.getRestAddr())
-                        .prodLike(//) // 해당 제품의 찜 수
-                        .isLiked(//) // 내가 좋아요 했는지 여부
-                        .istatus(ProductStatus.getByNum(d.getIstatus()))
-                        .inventory(//) // 전체 재고 수
-                        .view(d.getView())
-                        .categories(Categories.builder()
-                                .mainCategory(d.getEnumCategories().getMainCategory().getCategoryNum())
-                                .subCategory(d.getEnumCategories().getSubCategory().getCategoryNum())
-                                .build())
-                        .build()
-                ).toList();
-
-
-
-
+                .iuser(d.getIuser())
+                .nick(d.getNick())
+                .userPic(d.getUserPic())
+                .iproduct(d.getIproduct())
+                .title(d.getTitle())
+                .prodMainPic(d.getProdMainPic())
+                .rentalPrice(d.getRentalPrice())
+                .rentalStartDate(d.getRentalStartDate())
+                .rentalEndDate(d.getRentalEndDate())
+                .addr(d.getAddr())
+                .restAddr(d.getRestAddr())
+                // 해당 제품의 찜 수
+                .isLiked(prodLikes.stream().anyMatch(l -> Objects.equals(l.getProdLikeIds().getIproduct(),
+                        d.getIproduct())) ? 1 : 0) // 내가
+                // 좋아요 했는지 여부
+                .istatus(ProductStatus.getByNum(d.getIstatus()).getCode())
+                .inventory(findProduct.stream()
+                        .filter(fp -> Objects.equals(fp.getId(), d.getIproduct()))
+                        .findFirst()
+                        .orElseThrow(() -> new ServerException(SERVER_ERR_MESSAGE, "재고 조회중 에러 발생."))
+                        .getStocks()
+                        .size()) // 전체 재고 수
+                .view(d.getView())
+                .categories(Categories.builder()
+                        .mainCategory(d.getEnumCategories().getMainCategory().getCategoryNum())
+                        .subCategory(d.getEnumCategories().getSubCategory().getCategoryNum())
+                        .build())
+                .build()
+        ).toList();
 
 
 //        List<ProductListVo> result = new ArrayList<>();
@@ -167,6 +185,7 @@ public class ProductService implements RefProductService {
     @CountView(CountCategory.PRODUCT)
     public ProductVo getProduct(int imainCategory, int isubCategory, Integer iproduct) {
 
+        // TODO 작업 재시작
         Categories icategory = new Categories(imainCategory, isubCategory);
 
         // 카테고리 검증
