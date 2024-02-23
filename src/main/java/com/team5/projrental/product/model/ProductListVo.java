@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -27,16 +28,19 @@ public class ProductListVo {
     private Integer rentalPrice;
     //@JsonInclude(JsonInclude.Include.NON_NULL) // FIXME 3차 완성시 삭제 (제외 필드)
     //private Integer deposit;
-    private LocalDate rentalStartDate;
-    private LocalDate rentalEndDate;
+    private LocalDateTime rentalStartDate;
+    private LocalDateTime rentalEndDate;
     private String addr;
     private String restAddr;
+    // prod_like
     private Integer prodLike;
     private Integer istatus;
 
+    // stock
     private Integer inventory; // 해당 제품의 총 재고 (다 나간거 관계 없이)
     private Integer isLiked;
     private Long view;
+    // enum 객체 따로존재
     private Categories categories;
 
 

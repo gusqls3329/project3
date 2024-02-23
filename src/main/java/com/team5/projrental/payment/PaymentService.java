@@ -16,7 +16,7 @@ import com.team5.projrental.common.utils.CommonUtils;
 import com.team5.projrental.payment.model.PaymentInsDto;
 import com.team5.projrental.payment.model.PaymentVo;
 import com.team5.projrental.payment.model.proc.*;
-import com.team5.projrental.product.ProductRepository;
+import com.team5.projrental.product.ProductMybatisRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,8 +38,8 @@ public class PaymentService implements RefPaymentService{
         코드 리펙토링
         --by Hyunmin
     */
-    private final PaymentRepository paymentRepository;
-    private final ProductRepository productRepository;
+    private final PaymentMybatisRepository paymentMybatisRepository;
+    private final ProductMybatisRepository productMybatisRepository;
     private final AuthenticationFacade authenticationFacade;
 
     @Transactional
@@ -55,7 +55,7 @@ public class PaymentService implements RefPaymentService{
         Long loginUserPk = getLoginUserPk();
         paymentInsDto.setIbuyer(loginUserPk);
         CommonUtils.ifFalseThrow(NoSuchUserException.class, NO_SUCH_USER_EX_MESSAGE,
-                productRepository.findIuserCountBy(paymentInsDto.getIbuyer()));
+                productMybatisRepository.findIuserCountBy(paymentInsDto.getIbuyer()));
         CommonUtils.ifBeforeThrow(BadDateInfoException.class, RENTAL_END_DATE_MUST_BE_AFTER_THAN_RENTAL_START_DATE_EX_MESSAGE,
                 paymentInsDto.getRentalEndDate(), paymentInsDto.getRentalStartDate());
 
@@ -63,7 +63,7 @@ public class PaymentService implements RefPaymentService{
         // 해당 상품의 현재 등록된 rentalPrice, deposit, price 를 가져온다
 
         List<GetDepositAndPriceFromProduct> validationInfoFromProduct =
-                paymentRepository.getValidationInfoFromProduct(paymentInsDto.getIproduct());
+                paymentMybatisRepository.getValidationInfoFromProduct(paymentInsDto.getIproduct());
         CommonUtils.checkNullOrZeroIfCollectionThrow(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE,
                 validationInfoFromProduct);
 
@@ -109,8 +109,8 @@ public class PaymentService implements RefPaymentService{
 //        }
 
 
-        if (paymentRepository.savePayment(paymentInsDto) != 0) {
-            if (paymentRepository.saveProductPayment(paymentInsDto.getIproduct(), paymentInsDto.getIpayment()) != 0) {
+        if (paymentMybatisRepository.savePayment(paymentInsDto) != 0) {
+            if (paymentMybatisRepository.saveProductPayment(paymentInsDto.getIproduct(), paymentInsDto.getIpayment()) != 0) {
                 return new ResVo(SUCCESS);
             }
         }
@@ -164,7 +164,7 @@ public class PaymentService implements RefPaymentService{
 //                productRepository.findIuserCountBy(iuser));
 
         Long iuser = getLoginUserPk();
-        GetInfoForCheckIproductAndIuserResult checkResult = paymentRepository.checkIuserAndIproduct(ipayment, iuser);
+        GetInfoForCheckIproductAndIuserResult checkResult = paymentMybatisRepository.checkIuserAndIproduct(ipayment, iuser);
         if (checkResult == null) {
             throw new NoSuchProductException(NO_SUCH_PRODUCT_EX_MESSAGE);
         }
@@ -192,7 +192,7 @@ public class PaymentService implements RefPaymentService{
         // 객체 생성
         DelPaymentDto delPaymentDto = new DelPaymentDto(ipayment, istatusForUpdate);
 
-        if (paymentRepository.deletePayment(delPaymentDto) == 0) {
+        if (paymentMybatisRepository.deletePayment(delPaymentDto) == 0) {
             throw new WrapRuntimeException(SERVER_ERR_MESSAGE);
         }
         return new ResVo(istatusForUpdate);
@@ -224,7 +224,7 @@ public class PaymentService implements RefPaymentService{
         // 가져오기
         GetPaymentListResultDto aPayment;
         try {
-            aPayment = paymentRepository.findPaymentBy(
+            aPayment = paymentMybatisRepository.findPaymentBy(
                     new GetPaymentListDto(getLoginUserPk(), Flag.ONE.getValue(), ipayment)
             );
         } catch (IndexOutOfBoundsException e) {
