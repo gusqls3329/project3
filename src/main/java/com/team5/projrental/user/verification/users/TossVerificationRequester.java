@@ -35,6 +35,7 @@ public class TossVerificationRequester {
     private final ObjectMapper om;
     private final TossVerificationRepository repository;
 
+
     public VerificationReadyVo verificationRequest(VerificationUserInfo userInfo) {
 
         // toss 에 전달할 Dto 생성
