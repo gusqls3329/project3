@@ -11,6 +11,7 @@ import org.hibernate.validator.constraints.Range;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 @Slf4j
@@ -22,7 +23,7 @@ public class ChatController {
     private final ChatService service;
 
 
-    @Operation(summary = "로그인한 유저의 모든채팅방 개수출력")
+    @Operation(summary = "로그인한 유저의 모든채팅방 개수출력", description = "로그인한 유저의 모든 채팅방 개수 출력")
     @GetMapping("/{iuser}/count")
     public ResVo getChatCount(@RequestParam(defaultValue = "1")@Range(min = 1) long page) {
         return null;
@@ -34,8 +35,8 @@ public class ChatController {
     @Operation(summary = "대화중인 리스트 출력", description = "대화중인 채팅 리스트 출력")
     @Parameters(value = {
             @Parameter(name = "page", description = "page당 노출되는 채팅 방 리스트 10개")})
-    public List<ChatSelVo> getChatAll(ChatSelDto dto) {
-        return service.getChatAll(dto);
+    public List<ChatSelVo> getChatAll(Pageable pageable) {
+        return service.getChatAll(pageable);
     }
 
     @PostMapping

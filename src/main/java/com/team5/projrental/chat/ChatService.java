@@ -15,8 +15,10 @@ import com.team5.projrental.user.model.UserEntity;
 import com.team5.projrental.user.model.UserSelDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Pageable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -33,13 +35,18 @@ public class ChatService {
     private final AuthenticationFacade authenticationFacade;
 
 
-    public List<ChatSelVo> getChatAll(ChatSelDto dto) {
+    public List<ChatSelVo> getChatAll(@PageableDefault(page = 1, size = 30)Pageable pageable) {
+
+        return null;
+    }
+
+    /*public List<ChatSelVo> getChatAll(ChatSelDto dto) {
 
         Long loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setLoginedIuser(loginUserPk);
         List<ChatSelVo> list = mapper.selChatAll(dto);
         return list;
-    }
+    }*/
 
 
     public ResVo postChatMsg(ChatMsgInsDto dto) {
