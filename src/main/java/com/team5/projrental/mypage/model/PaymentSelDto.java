@@ -14,6 +14,8 @@ public class PaymentSelDto {
     @JsonIgnore
     private Long loginedIuser; // 로그인 유저정보가 ibuyer에 조건으로 들어가면 빌린내역 seller에 들어가면 빌려준내역
 
+    private Long targetIuser;
+
     @Range(min = 1,max = 2, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private int role; // 디폴트 1:일반유저 // 3차프로젝트때 2:기업  이렇게?
 

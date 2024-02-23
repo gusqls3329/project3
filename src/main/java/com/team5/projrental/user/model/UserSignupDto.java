@@ -59,7 +59,6 @@ public class UserSignupDto {
     @Range(min = 2, max = 2, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private Integer isValid;
 
-    @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
     private Long iverificationInfo;
 
     @JsonIgnore
