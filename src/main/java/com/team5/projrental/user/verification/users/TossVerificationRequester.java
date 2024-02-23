@@ -33,7 +33,7 @@ public class TossVerificationRequester {
 
     private final TossVerificationProperties tossVerificationProperties;
     private final ObjectMapper om;
-    private final TossVerificationRepository repository;
+//    private final TossVerificationRepository repository;
 
 
     public VerificationReadyVo verificationRequest(VerificationUserInfo userInfo) {
@@ -62,9 +62,9 @@ public class TossVerificationRequester {
         VerificationInfo info = VerificationInfo.builder()
                 .txId(verificationReadyResponse.getSuccess().getTxId())
                 .build();
-        if (verificationReadyResponse.getSuccess() != null) {
-            repository.save(info);
-        }
+//        if (verificationReadyResponse.getSuccess() != null) {
+//            repository.save(info);
+//        }
 
 
         return VerificationReadyVo.builder()
