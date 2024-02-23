@@ -1,7 +1,5 @@
 package com.team5.projrental.user;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.team5.projrental.common.Const;
 import com.team5.projrental.common.SecurityProperties;
@@ -9,7 +7,6 @@ import com.team5.projrental.common.exception.*;
 import com.team5.projrental.common.exception.base.*;
 import com.team5.projrental.common.exception.checked.FileNotContainsDotException;
 import com.team5.projrental.common.exception.thrid.ClientException;
-import com.team5.projrental.common.exception.thrid.ServerException;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.common.model.restapi.Addrs;
 import com.team5.projrental.common.utils.AxisGenerator;
@@ -27,11 +24,12 @@ import com.team5.projrental.entities.inheritance.QUsers;
 import com.team5.projrental.entities.inheritance.Users;
 import com.team5.projrental.entities.mappedsuper.BaseUser;
 import com.team5.projrental.user.model.*;
-import com.team5.projrental.user.verification.SignUpVo;
 import com.team5.projrental.user.verification.users.TossVerificationRequester;
 import com.team5.projrental.user.verification.users.model.VerificationUserInfo;
 import com.team5.projrental.user.verification.users.model.check.CheckResponseVo;
+import com.team5.projrental.user.verification.users.model.ready.VerificationReadyDto;
 import com.team5.projrental.user.verification.users.model.ready.VerificationReadyVo;
+import com.team5.projrental.user.verification.users.repository.TossVerificationRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -68,20 +66,58 @@ public class UserService {
     private final MyFileUtils myFileUtils;
     private final TossVerificationRequester tossVerificationRequester;
     private final JPAQueryFactory queryFactory;
+    private final TossVerificationRepository tossVerificationRepository;
 
     @Value("${spring.config.activate.on-profile}")
     private String profile;
 
+    @Transactional
     public VerificationReadyVo readyVerification(VerificationUserInfo userInfo) {
-        return tossVerificationRequester.verificationRequest(userInfo);
+
+
+        VerificationReadyDto dto = tossVerificationRequester.verificationRequest(userInfo);
+        if (dto.getSuccess() == null) {
+            throw new ClientException(ErrorCode.AUTHENTICATION_FAIL_EX_MESSAGE, "본인인증에 실패하였습니다.");
+        }
+
+        // 만약 존재할 경우 update, 존재하지 않을경우 save
+        tossVerificationRepository.findByUserNameAndUserPhoneAndUserBirthday(userInfo.getUserName(), userInfo.getUserPhone(),
+                userInfo.getUserBirthday()).ifPresentOrElse(verificationInfo -> verificationInfo.setTxId(dto.getTxid()),
+                () -> {
+                    VerificationInfo info = VerificationInfo.builder()
+                            .id(dto.getId())
+                            .txId(dto.getTxid())
+                            .userPhone(userInfo.getUserPhone())
+                            .build();
+                    tossVerificationRepository.save(info);
+                });
+
+        return VerificationReadyVo.builder()
+                .resultType(dto.getResultType())
+                .success(dto.getSuccess())
+                .fail(dto.getFail())
+                .id(dto.getId())
+                .build();
     }
 
-    public CheckResponseVo checkVerification(String uuid) {
-        return tossVerificationRequester.check(uuid);
+    @Transactional
+    public CheckResponseVo checkVerification(Long id) {
+        VerificationInfo info = tossVerificationRepository.findById(id).orElseThrow(() -> new ClientException(ILLEGAL_EX_MESSAGE, "본인인증 내역이 없습니다."));
+
+        CheckResponseVo responseVo = tossVerificationRequester.check(info);
+
+        info.setUserName(responseVo.getName());
+        info.setUserBirthday(responseVo.getBirthday());
+
+        return responseVo;
     }
 
     @Transactional
     public int postSignup(UserSignupDto dto) {
+
+        VerificationInfo info = tossVerificationRepository.findById(dto.getIverificationInfo()).orElseThrow(() -> new ClientException(AUTHENTICATION_FAIL_EX_MESSAGE,
+                "본인인증 후 진행해 주세요"));
+
 
         Addrs addrs = axisGenerator.getAxis(dto.getAddr());
         CommonUtils.ifAnyNullThrow(BadAddressInfoException.class, BAD_ADDRESS_INFO_EX_MESSAGE,
@@ -122,6 +158,7 @@ public class UserService {
             user.setEmail(dto.getEmail());
             user.setPhone(dto.getPhone());
             user.setAuth(Auth.USER);
+            user.setVerificationInfo(info);
             userRepository.save(user);
 
             return Const.SUCCESS;

@@ -14,6 +14,7 @@ import com.team5.projrental.common.utils.AxisGenerator;
 import com.team5.projrental.common.utils.CommonUtils;
 import com.team5.projrental.common.utils.MyFileUtils;
 import com.team5.projrental.entities.enums.ProductMainCategory;
+import com.team5.projrental.entities.enums.ProductStatus;
 import com.team5.projrental.entities.enums.ProductSubCategory;
 import com.team5.projrental.product.model.*;
 import com.team5.projrental.product.model.proc.*;
@@ -115,6 +116,9 @@ public class ProductService implements RefProductService {
 
         List<ProductListForMainDto> dto = productRepository.findEachTop8ByCategoriesOrderByIproductDesc(limit);
 
+        // 제품의 전체 좋아요 수와 로그인 유저가 좋아요 했는지 여부 가져오기
+
+
         // dto -> vo 변환작업 시작
         return dto.stream().map(d -> ProductListVo.builder()
                         .iuser(d.getIuser())
@@ -124,8 +128,19 @@ public class ProductService implements RefProductService {
                         .title(d.getTitle())
                         .prodMainPic(d.getProdMainPic())
                         .rentalPrice(d.getRentalPrice())
-                        .rentalStartDate(d.getRentalStartDate()
-                        )
+                        .rentalStartDate(d.getRentalStartDate())
+                        .rentalEndDate(d.getRentalEndDate())
+                        .addr(d.getAddr())
+                        .restAddr(d.getRestAddr())
+                        .prodLike(//) // 해당 제품의 찜 수
+                        .isLiked(//) // 내가 좋아요 했는지 여부
+                        .istatus(ProductStatus.getByNum(d.getIstatus()))
+                        .inventory(//) // 전체 재고 수
+                        .view(d.getView())
+                        .categories(Categories.builder()
+                                .mainCategory(d.getEnumCategories().getMainCategory().getCategoryNum())
+                                .subCategory(d.getEnumCategories().getSubCategory().getCategoryNum())
+                                .build())
                         .build()
                 ).toList();
 

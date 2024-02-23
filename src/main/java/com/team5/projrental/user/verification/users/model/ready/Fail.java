@@ -4,7 +4,6 @@ import lombok.Getter;
 
 @Getter
 public class Fail {
-    private String resultType;
-    private Success success;
-    private Fail fail;
+    private String errorCode;
+    private String reason;
 }

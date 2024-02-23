@@ -12,7 +12,7 @@ import com.team5.projrental.entities.ids.ProdLikeIds;
 import com.team5.projrental.product.model.Categories;
 import com.team5.projrental.product.model.ProductListVo;
 import com.team5.projrental.product.model.jpa.ActivatedStock;
-import com.team5.projrental.product.thirdproj.japrepositories.product.like.ProdLikeRepository;
+import com.team5.projrental.product.thirdproj.japrepositories.product.like.ProductLikeRepository;
 import com.team5.projrental.product.thirdproj.japrepositories.product.stock.StockRepository;
 import com.team5.projrental.product.thirdproj.model.ProductListForMainDto;
 import jakarta.persistence.EntityManager;
@@ -35,7 +35,7 @@ public class ProductQueryRepositoryImpl implements ProductQueryRepository {
     private final EntityManager em;
     private final JPAQueryFactory query;
     private final StockRepository stockRepository;
-    private final ProdLikeRepository prodLikeRepository;
+    private final ProductLikeRepository productLikeRepository;
 
     public Map<Long, List<ActivatedStock>> getActivatedStock(LocalDateTime refDate) {
 
@@ -64,7 +64,7 @@ public class ProductQueryRepositoryImpl implements ProductQueryRepository {
                 List<Stock> findStock = query.select(stock)
                         .from(stock)
                         .join(stock)
-                        .on(stock.product.status.eq(ProductStatus.ACTIVATED))
+                        .on(stock.product.status.eq(ProductStatus.ACTIVE))
                         .join(payment)
                         .on(payment.rentalDates.rentalStartDate.after(from).and(payment.rentalDates.rentalEndDate.before(from)))
                         .fetch();
@@ -97,7 +97,7 @@ public class ProductQueryRepositoryImpl implements ProductQueryRepository {
                 .fetchAll()
                 .stream()
                 .map(productEntity -> {
-                    int prodLikeCount = prodLikeRepository.countByProdLikeIds(ProdLikeIds.builder()
+                    int prodLikeCount = productLikeRepository.countByProdLikeIds(ProdLikeIds.builder()
                             .iusers(productEntity.getUser().getId())
                             .iproduct(productEntity.getId())
                             .build());
@@ -146,7 +146,8 @@ public class ProductQueryRepositoryImpl implements ProductQueryRepository {
                         "SQ.iproduct, SQ.title, SQ.stored_pic as prodMainPic, " +
                         "SQ.rental_price as rentalPrice, SQ.rental_start_date as rentalStartDate, " +
                         "SQ.rental_end_date as rentalEndDate, SQ.addr, SQ.rest_addr as restAddr, " +
-                        "SQ.main_category as mainCategory, SQ.sub_category as subCateogry " +
+                        "SQ.status, SQ.view, SQ.main_category as mainCategory, " +
+                        "SQ.sub_category as subCateogry " +
                         "from ( " +
                         "select row_number() over(partition by main_category, sub_category order by iproduct desc) rn " +
                         "from product P" +

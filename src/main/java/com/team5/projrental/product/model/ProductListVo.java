@@ -32,6 +32,7 @@ public class ProductListVo {
     private LocalDateTime rentalEndDate;
     private String addr;
     private String restAddr;
+    private Long view;
     // prod_like
     private Integer prodLike;
     private Integer istatus;
@@ -39,7 +40,6 @@ public class ProductListVo {
     // stock
     private Integer inventory; // 해당 제품의 총 재고 (다 나간거 관계 없이)
     private Integer isLiked;
-    private Long view;
     // enum 객체 따로존재
     private Categories categories;
 

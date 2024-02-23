@@ -10,10 +10,9 @@ import com.team5.projrental.user.verification.users.model.check.CheckRequestDto;
 import com.team5.projrental.user.verification.users.model.check.CheckResponseVo;
 import com.team5.projrental.user.verification.users.model.check.CheckResultDto;
 import com.team5.projrental.user.verification.users.model.ready.VerificationReadyResponse;
-import com.team5.projrental.user.verification.users.model.ready.VerificationReadyVo;
+import com.team5.projrental.user.verification.users.model.ready.VerificationReadyDto;
 import com.team5.projrental.user.verification.users.model.ready.VerificationRequestDto;
 import com.team5.projrental.user.verification.users.properties.TossVerificationProperties;
-import com.team5.projrental.user.verification.users.repository.TossVerificationRepository;
 import im.toss.cert.sdk.TossCertSession;
 import im.toss.cert.sdk.TossCertSessionGenerator;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
-
-import java.util.UUID;
 
 @Component
 @Slf4j
@@ -33,9 +30,10 @@ public class TossVerificationRequester {
 
     private final TossVerificationProperties tossVerificationProperties;
     private final ObjectMapper om;
-    private final TossVerificationRepository repository;
+//    private final TossVerificationRepository repository;
 
-    public VerificationReadyVo verificationRequest(VerificationUserInfo userInfo) {
+
+    public VerificationReadyDto verificationRequest(VerificationUserInfo userInfo) {
 
         // toss 에 전달할 Dto 생성
         VerificationRequestDto dto = encode(userInfo);
@@ -57,18 +55,21 @@ public class TossVerificationRequester {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-        String id = UUID.randomUUID().toString();
 
-        if (verificationReadyResponse.getSuccess() != null) {
-            repository.save(VerificationInfo.builder()
-                    .id(id)
-                    .txId(verificationReadyResponse.getSuccess().getTxId())
-                    .build());
-        }
+        VerificationInfo info = VerificationInfo.builder()
+                .txId(verificationReadyResponse.getSuccess().getTxId())
+                .build();
+//        if (verificationReadyResponse.getSuccess() != null) {
+//            repository.save(info);
+//        }
 
 
-        return VerificationReadyVo.builder()
-                .uuid(id)
+
+        return VerificationReadyDto.builder()
+                .id(info.getId())
+                .txid(verificationReadyResponse.getSuccess().getTxId())
+                .success(verificationReadyResponse.getSuccess())
+                .fail(verificationReadyResponse.getFail())
                 .resultType(verificationReadyResponse.getResultType())
                 .build();
     }
@@ -90,11 +91,12 @@ public class TossVerificationRequester {
 
     }
 
-    public CheckResponseVo check(String uuid) {
+    public CheckResponseVo check(VerificationInfo info) {
+
         TossCertSession session = generator.generate();
         String sessionKey = session.getSessionKey();
 
-        VerificationInfo info = repository.findById(uuid).orElseThrow(() -> new ClientException(ErrorCode.ILLEGAL_EX_MESSAGE, "존재하지 않는 결제건"));
+//        VerificationInfo info = repository.findById(id).orElseThrow(() -> new ClientException(ErrorCode.ILLEGAL_EX_MESSAGE, "존재하지 않는 결제건"));
 
         CheckRequestDto dto = CheckRequestDto.builder()
                 .txId(info.getTxId())
@@ -121,12 +123,12 @@ public class TossVerificationRequester {
             throw new ClientException(ErrorCode.BAD_INFO_EX_MESSAGE, "본인인증에 실패함");
         }
 
-        return decode(uuid, session, resultDto);
+
+        return decode(session, resultDto);
     }
 
-    private CheckResponseVo decode(String uuid, TossCertSession session, CheckResultDto dto) {
+    private CheckResponseVo decode(TossCertSession session, CheckResultDto dto) {
         return CheckResponseVo.builder()
-                .uuid(uuid)
                 .name(session.decrypt(dto.getSuccess().getPersonalData().getName()))
                 .gender(session.decrypt(dto.getSuccess().getPersonalData().getGender()))
                 .birthday(session.decrypt(dto.getSuccess().getPersonalData().getBirthday()))

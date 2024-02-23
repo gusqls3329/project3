@@ -13,10 +13,18 @@ import lombok.*;
 public class VerificationInfo extends CreatedAt {
 
     @Id
-    @Column(name = "uuid", unique = true)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "IVERIFICATION_INFO")
+    private Long id;
 
     @Column(length = 1000)
     private String txId;
+
+    private String userName;
+    private String userPhone;
+    private String userBirthday;
+
+
+
 
 }
