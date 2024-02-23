@@ -1,5 +1,6 @@
 package com.team5.projrental.user;
 
+import com.team5.projrental.common.exception.ErrorMessage;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.user.model.*;
 import com.team5.projrental.user.verification.SignUpVo;
@@ -12,6 +13,8 @@ import io.swagger.v3.oas.annotations.Parameters;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -61,10 +64,6 @@ public class UserController {
             , @Parameter(name="pic", description = "사진")
             , @Parameter(name="phone", description = "휴대폰 번호 (형식 : 010-1111-2222)")
             , @Parameter(name="email", description = "이메일 (형식 : aaa@naver.com)")
-            , @Parameter(name = "compCode", description = "사업자번호")
-            , @Parameter(name = "compCeo", description = "회사 대표이름")
-            , @Parameter(name = "staredAt", description = "개업일")
-            , @Parameter(name = "compNm", description = "회사이름")
             , @Parameter(name = "isValid", description = "중복체크 ( 완료되었다면 2) ")
             , @Parameter(name = "uuid", description = "본인인증 완료시 리턴해주는 uuid 값 다시 제공해주세요")
             , @Parameter(name = "signUpType", description = "회원가입시 유저(1)인지, 기업(2)인지")
@@ -113,13 +112,16 @@ public class UserController {
     public ResVo patchUserFirebaseToken(@RequestBody UserFirebaseTokenPatchDto dto) {
         return service.patchUserFirebaseToken(dto);
     }
-
+    @Validated
     @Operation(summary = "아이디 찾기", description = "유저 아이디 찾기(iauth:권한) ")
     @Parameters(value = {
             @Parameter(name = "phone", description = "휴대폰 번호 (형식 : 010-1111-2222)")
     })
     @PostMapping("/id")
-    public FindUidVo getFindUid(@RequestBody @Validated FindUidDto phone) {
+    public FindUidVo getFindUid(@RequestBody
+                                    @NotBlank(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
+                                    @Pattern(regexp = "(01)\\d-\\d{3,4}-\\d{4}", message = ErrorMessage.BAD_INFO_EX_MESSAGE)
+                                    String phone) {
         return service.getFindUid(phone);
     }
 
@@ -143,10 +145,6 @@ public class UserController {
             , @Parameter(name = "pic", description = "사진")
             , @Parameter(name = "phone", description = "휴대폰 번호 (형식 : 010-1111-2222)")
             , @Parameter(name = "email", description = "이메일 (형식 : xxx@xxx.xxx)")
-            , @Parameter(name = "compCode", description = "사업자번호")
-            , @Parameter(name = "compCeo", description = "회사 대표이름")
-            , @Parameter(name = "staredAt", description = "개업일")
-            , @Parameter(name = "compNm", description = "회사이름")
 
     })
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
