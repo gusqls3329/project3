@@ -19,9 +19,9 @@ public class QRentalDates extends BeanPath<RentalDates> {
 
     public static final QRentalDates rentalDates = new QRentalDates("rentalDates");
 
-    public final DatePath<java.time.LocalDate> rentalEndDate = createDate("rentalEndDate", java.time.LocalDate.class);
+    public final DateTimePath<java.time.LocalDateTime> rentalEndDate = createDateTime("rentalEndDate", java.time.LocalDateTime.class);
 
-    public final DatePath<java.time.LocalDate> rentalStartDate = createDate("rentalStartDate", java.time.LocalDate.class);
+    public final DateTimePath<java.time.LocalDateTime> rentalStartDate = createDateTime("rentalStartDate", java.time.LocalDateTime.class);
 
     public QRentalDates(String variable) {
         super(RentalDates.class, forVariable(variable));

@@ -29,6 +29,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -116,7 +117,7 @@ public class CommonAspect {
     }
 
     @Profile({"default", "hyunmin"})
-    @Around("execution(* com.team5.projrental.payment.PaymentRepository.updateStatusIfOverRentalEndDate(..)) && args(now)")
+    @Around("execution(* com.team5.projrental.payment.PaymentMybatisRepository.updateStatusIfOverRentalEndDate(..)) && args(now)")
     public int doLog(ProceedingJoinPoint joinPoint, LocalDate now) throws Throwable {
 
         int changedColumn = (int) joinPoint.proceed();
@@ -201,7 +202,7 @@ public class CommonAspect {
     // FIXME -> FIXED
     @EventListener(ApplicationReadyEvent.class)
     public void initCacheData() {
-        LocalDate now = LocalDate.now();
+        LocalDateTime now = LocalDateTime.now();
         this.activatedStockCache.putAll(productRepositoryImpl.getActivatedStock(now));
 
         log.debug("Cache init -> disabledCache {}", this.disabledCache);

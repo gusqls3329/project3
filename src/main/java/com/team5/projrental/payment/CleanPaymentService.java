@@ -17,7 +17,7 @@ import com.team5.projrental.common.utils.CommonUtils;
 import com.team5.projrental.payment.model.PaymentInsDto;
 import com.team5.projrental.payment.model.PaymentVo;
 import com.team5.projrental.payment.model.proc.*;
-import com.team5.projrental.product.ProductRepository;
+import com.team5.projrental.product.ProductMybatisRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -36,8 +36,8 @@ import static com.team5.projrental.common.exception.ErrorCode.*;
 @RequiredArgsConstructor
 public class CleanPaymentService implements RefPaymentService {
 
-    private final PaymentRepository paymentRepository;
-    private final ProductRepository productRepository;
+    private final PaymentMybatisRepository paymentMybatisRepository;
+    private final ProductMybatisRepository productMybatisRepository;
     private final AuthenticationFacade authenticationFacade;
 
 //    @Transactional
@@ -47,14 +47,14 @@ public class CleanPaymentService implements RefPaymentService {
         Long loginUserPk = getLoginUserPk();
         paymentInsDto.setIbuyer(loginUserPk);
         CommonUtils.ifFalseThrow(NoSuchUserException.class, NO_SUCH_USER_EX_MESSAGE,
-                productRepository.findIuserCountBy(paymentInsDto.getIbuyer()));
+                productMybatisRepository.findIuserCountBy(paymentInsDto.getIbuyer()));
         CommonUtils.ifBeforeThrow(BadDateInfoException.class, RENTAL_END_DATE_MUST_BE_AFTER_THAN_RENTAL_START_DATE_EX_MESSAGE,
                 paymentInsDto.getRentalEndDate(), paymentInsDto.getRentalStartDate());
 
 
         // 해당 상품의 현재 등록된 rentalPrice, deposit, price 를 가져온다
         List<GetDepositAndPriceFromProduct> validationInfoFromProduct =
-                paymentRepository.getValidationInfoFromProduct(paymentInsDto.getIproduct());
+                paymentMybatisRepository.getValidationInfoFromProduct(paymentInsDto.getIproduct());
         CommonUtils.checkNullOrZeroIfCollectionThrow(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE,
                 validationInfoFromProduct);
 
@@ -96,10 +96,10 @@ public class CleanPaymentService implements RefPaymentService {
 //                CommonUtils.getDepositPerFromPrice(productValidation.getPrice(), productValidation.getDeposit())));
         paymentInsDto.setDeposit(productValidation.getDeposit());
 
-        if (paymentRepository.savePayment(paymentInsDto) != 0) {
-            if (paymentRepository.saveProductPayment(paymentInsDto.getIproduct(), paymentInsDto.getIpayment()) != 0) {
-                if (paymentRepository.savePaymentStatus(paymentInsDto.getIpayment(), productValidation.getIseller()) != 0 &&
-                        paymentRepository.savePaymentStatus(paymentInsDto.getIpayment(), loginUserPk) != 0) {
+        if (paymentMybatisRepository.savePayment(paymentInsDto) != 0) {
+            if (paymentMybatisRepository.saveProductPayment(paymentInsDto.getIproduct(), paymentInsDto.getIpayment()) != 0) {
+                if (paymentMybatisRepository.savePaymentStatus(paymentInsDto.getIpayment(), productValidation.getIseller()) != 0 &&
+                        paymentMybatisRepository.savePaymentStatus(paymentInsDto.getIpayment(), loginUserPk) != 0) {
                     return new ResVo(paymentInsDto.getIpayment());
                 }
             }
@@ -147,7 +147,7 @@ public class CleanPaymentService implements RefPaymentService {
 
         // 데이터 검증
         Long iuser = getLoginUserPk();
-        GetInfoForCheckIproductAndIuserResult checkResult = paymentRepository.checkIuserAndIproduct(ipayment, iuser);
+        GetInfoForCheckIproductAndIuserResult checkResult = paymentMybatisRepository.checkIuserAndIproduct(ipayment, iuser);
         if (checkResult == null) {
             throw new NoSuchProductException(NO_SUCH_PRODUCT_EX_MESSAGE);
         }
@@ -174,7 +174,7 @@ public class CleanPaymentService implements RefPaymentService {
         // 객체 생성
         DelPaymentDto delPaymentDto = new DelPaymentDto(ipayment, istatusForUpdate, iuser);
 
-        if (paymentRepository.deletePayment(delPaymentDto) == 0) {
+        if (paymentMybatisRepository.deletePayment(delPaymentDto) == 0) {
             throw new WrapRuntimeException(SERVER_ERR_MESSAGE);
         }
         return new ResVo(istatusForUpdate);
@@ -185,7 +185,7 @@ public class CleanPaymentService implements RefPaymentService {
 
         // 가져오기
         // iuser 또는 ipayment 가 없으면 결과가 size 0 일 것
-        GetPaymentListResultDto aPayment = paymentRepository.findPaymentBy(
+        GetPaymentListResultDto aPayment = paymentMybatisRepository.findPaymentBy(
                 new GetPaymentListDto(getLoginUserPk(), Flag.ONE.getValue(), ipayment));
         CommonUtils.ifAllNotNullThrow(NoSuchPaymentException.class, NO_SUCH_PAYMENT_EX_MESSAGE);
         return new PaymentVo(aPayment);

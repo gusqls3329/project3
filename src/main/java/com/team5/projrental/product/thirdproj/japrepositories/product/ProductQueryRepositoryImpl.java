@@ -14,11 +14,13 @@ import com.team5.projrental.product.model.ProductListVo;
 import com.team5.projrental.product.model.jpa.ActivatedStock;
 import com.team5.projrental.product.thirdproj.japrepositories.product.like.ProdLikeRepository;
 import com.team5.projrental.product.thirdproj.japrepositories.product.stock.StockRepository;
+import com.team5.projrental.product.thirdproj.model.ProductListForMainDto;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,11 +37,12 @@ public class ProductQueryRepositoryImpl implements ProductQueryRepository {
     private final StockRepository stockRepository;
     private final ProdLikeRepository prodLikeRepository;
 
-    public Map<Long, List<ActivatedStock>> getActivatedStock(LocalDate refDate) {
+    public Map<Long, List<ActivatedStock>> getActivatedStock(LocalDateTime refDate) {
 
-        LocalDate from = LocalDate.of(refDate.getYear(), refDate.getMonth(), refDate.getMonthValue());
-        LocalDate toBuilder = refDate.plusMonths(Const.SEARCH_ACTIVATED_MONTH_DURATION);
-        LocalDate to = LocalDate.of(toBuilder.getYear(), toBuilder.getMonth(), toBuilder.lengthOfMonth());
+        LocalDateTime from = LocalDateTime.of(refDate.getYear(), refDate.getMonth(), refDate.getMonthValue(), 0, 0, 0);
+        LocalDateTime toBuilder = refDate.plusMonths(Const.SEARCH_ACTIVATED_MONTH_DURATION);
+        LocalDateTime to = LocalDateTime.of(toBuilder.getYear(), toBuilder.getMonth(), toBuilder.toLocalDate().lengthOfMonth(),
+                0, 0, 0);
 
         QProduct product = QProduct.product;
         List<Long> iproducts = query.select(product.id)
@@ -130,8 +133,33 @@ public class ProductQueryRepositoryImpl implements ProductQueryRepository {
     public List<ProductListVo> findProductListVoByIproducts(List<Integer> imainCategory, List<Integer> isubCategory) {
 
 
-
         return null;
+    }
+
+    @Override
+    public List<ProductListForMainDto> findEachTop8ByCategoriesOrderByIproductDesc(int limitNum) {
+
+
+        List result = em.createNativeQuery("" +
+                        "select " +
+                        "U.iuser, U.nick, U.stored_pic as userPic, " +
+                        "SQ.iproduct, SQ.title, SQ.stored_pic as prodMainPic, " +
+                        "SQ.rental_price as rentalPrice, SQ.rental_start_date as rentalStartDate, " +
+                        "SQ.rental_end_date as rentalEndDate, SQ.addr, SQ.rest_addr as restAddr, " +
+                        "SQ.main_category as mainCategory, SQ.sub_category as subCateogry " +
+                        "from ( " +
+                        "select row_number() over(partition by main_category, sub_category order by iproduct desc) rn " +
+                        "from product P" +
+                        "order by P.iproduct desc" +
+                        ") SQ" +
+                        "join USER U on U.iuser = SQ.iuser " +
+                        "where SQ.rn < :limitNum " +
+                        "order By SQ.main_category, SQ.sub_category, SQ.rn ", ProductListForMainDto.class)
+                .setParameter("limitNum", limitNum)
+                .getResultList();
+
+
+        return result;
     }
 
 
