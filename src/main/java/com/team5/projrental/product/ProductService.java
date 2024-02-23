@@ -132,10 +132,10 @@ public class ProductService implements RefProductService {
                         .rentalEndDate(d.getRentalEndDate())
                         .addr(d.getAddr())
                         .restAddr(d.getRestAddr())
-                        //.prodLike(//) // 해당 제품의 찜 수
-                        //.isLiked(//) // 내가 좋아요 했는지 여부
-                        //.istatus(ProductStatus.getByNum(d.getIstatus()))
-                        //.inventory(//) // 전체 재고 수
+                        .prodLike(//) // 해당 제품의 찜 수
+                        .isLiked(//) // 내가 좋아요 했는지 여부
+                        .istatus(ProductStatus.getByNum(d.getIstatus()))
+                        .inventory(//) // 전체 재고 수
                         .view(d.getView())
                         .categories(Categories.builder()
                                 .mainCategory(d.getEnumCategories().getMainCategory().getCategoryNum())
