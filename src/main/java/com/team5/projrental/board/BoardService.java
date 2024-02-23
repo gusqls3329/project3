@@ -17,6 +17,8 @@ import com.team5.projrental.entities.Board;
 import com.team5.projrental.entities.BoardPic;
 import com.team5.projrental.entities.User;
 import com.team5.projrental.entities.inheritance.Users;
+import com.team5.projrental.user.UserRepository;
+import com.team5.projrental.user.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -38,21 +40,22 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final AuthenticationFacade authenticationFacade;
     private final MyFileUtils myFileUtils;
+    private final UsersRepository usersRepository;
 
-    /*public ResVo postBoard(List<MultipartFile> storedPics, BoardInsDto dto) {
+    public ResVo postBoard(BoardInsDto dto) {
         CommonUtils.ifContainsBadWordThrow(BadWordException.class, BAD_WORD_EX_MESSAGE,
                 dto.getTitle(), dto.getContents());
 
-        dto.setStoredPic(storedPics);
-
-        Board board = boardRepository.getReferenceById((long)authenticationFacade.getLoginUserPk());
+        Users users = usersRepository.getReferenceById(authenticationFacade.getLoginUserPk());
+        Board board = new Board();//boardRepository.getReferenceById((long)authenticationFacade.getLoginUserPk());
+        board.setUsers(users);
         board.setTitle(dto.getTitle());
         board.setContents(dto.getContents());
         boardRepository.save(board);
 
         BoardPicInsDto boardPicInsDto = new BoardPicInsDto();
         boardPicInsDto.setIboard(board.getId().intValue());
-        if(storedPics != null && !storedPics.isEmpty()) {
+        if(dto.getStoredPic() != null && !dto.getStoredPic().isEmpty()) {
             for (MultipartFile file : dto.getStoredPic()) {
                 try {
                     myFileUtils.delFolderTrigger("board" + "/" + boardPicInsDto.getIboard());
@@ -71,7 +74,7 @@ public class BoardService {
             }
         }
         return new ResVo(boardPicInsDto.getIboard());
-    }*/
+    }
 
     public List<BoardListSelVo> getBoardList(Pageable pageable) {
         /*List<Board> boardList = null;

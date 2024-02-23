@@ -16,7 +16,7 @@ import javax.annotation.Nullable;
 @AllArgsConstructor
 public class BoardListSelDto {
 
-    private int targetIuser;
+    private Integer targetIuser;
 
     @Range(min = 1, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private int page;
