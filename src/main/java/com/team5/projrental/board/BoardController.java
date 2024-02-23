@@ -34,7 +34,8 @@ public class BoardController {
             @Parameter(name = "contents", description = "내용")})
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResVo postBoard(@RequestPart(required = false) List<MultipartFile> storedPic, @RequestPart @Validated BoardInsDto dto) {
-        return service.postBoard(dto);
+        //return service.postBoard(dto);
+        return null;
     }
 
     @Operation(summary = "전체 게시글 목록", description = "게시판 목록")
@@ -100,10 +101,5 @@ public class BoardController {
     public ResVo toggleLike(@PathVariable int iboard) {
         return null;
     }
-
-
-
-
-
 
 }

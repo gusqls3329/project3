@@ -43,7 +43,7 @@ public class BoardService {
     private final UsersRepository usersRepository;
 
     public ResVo postBoard(BoardInsDto dto) {
-        CommonUtils.ifContainsBadWordThrow(BadWordException.class, BAD_WORD_EX_MESSAGE,
+        /*CommonUtils.ifContainsBadWordThrow(BadWordException.class, BAD_WORD_EX_MESSAGE,
                 dto.getTitle(), dto.getContents());
 
         Users users = usersRepository.getReferenceById(authenticationFacade.getLoginUserPk());
@@ -73,7 +73,8 @@ public class BoardService {
                 return new ResVo(boardPicInsDto.getIboard());
             }
         }
-        return new ResVo(boardPicInsDto.getIboard());
+        return new ResVo(boardPicInsDto.getIboard());*/
+        return null;
     }
 
     public List<BoardListSelVo> getBoardList(Pageable pageable) {
