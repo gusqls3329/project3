@@ -19,7 +19,7 @@ import com.team5.projrental.product.model.*;
 import com.team5.projrental.product.model.proc.*;
 import com.team5.projrental.product.model.review.ReviewGetDto;
 import com.team5.projrental.product.model.review.ReviewResultVo;
-import com.team5.projrental.product.thirdproj.japrepositories.ProductRepository;
+import com.team5.projrental.product.thirdproj.japrepositories.product.ProductQueryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -46,7 +46,7 @@ public class ProductService implements RefProductService {
 
     private final MyFileUtils myFileUtils;
 
-    private final ProductRepository productRepository;
+    private final ProductQueryRepository productQueryRepository;
 
 
     /*
@@ -82,7 +82,7 @@ public class ProductService implements RefProductService {
 
 
         ProductMainCategory mainCategory = ProductMainCategory.getByNum(imainCategory);
-        return productRepository.findAllBy(
+        return productQueryRepository.findAllBy(
                 sort,
                 search,
                 mainCategory,
@@ -95,7 +95,7 @@ public class ProductService implements RefProductService {
 
 //        // search 의 length 가 2 이상으로 validated 되었으므로 문제 없음.
 //        List<GetProductListResultDto> products =
-//                productRepository.findProductListBy(new GetProductListDto(sort, search, icategory, page, iuser, prodPerPage));
+//                productQueryRepository.findProductListBy(new GetProductListDto(sort, search, icategory, page, iuser, prodPerPage));
 //        // 결과물 없음 여부 체크 (결과물 없으면 빈 객체 리턴)
 //        if (!CommonUtils.checkNullOrZeroIfCollectionReturnFalse(NoSuchProductException.class, NO_SUCH_PRODUCT_EX_MESSAGE,
 //                products)) return new ArrayList<>();

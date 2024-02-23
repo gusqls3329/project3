@@ -1,4 +1,4 @@
-package com.team5.projrental.product.thirdproj.japrepositories;
+package com.team5.projrental.product.thirdproj.japrepositories.product;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.OrderSpecifier;
@@ -12,6 +12,8 @@ import com.team5.projrental.entities.ids.ProdLikeIds;
 import com.team5.projrental.product.model.Categories;
 import com.team5.projrental.product.model.ProductListVo;
 import com.team5.projrental.product.model.jpa.ActivatedStock;
+import com.team5.projrental.product.thirdproj.japrepositories.product.like.ProdLikeRepository;
+import com.team5.projrental.product.thirdproj.japrepositories.product.stock.StockRepository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -26,12 +28,12 @@ import static com.team5.projrental.entities.QProduct.product;
 
 @Repository
 @RequiredArgsConstructor
-public class ProductRepositoryImpl implements ProductRepository {
+public class ProductQueryRepositoryImpl implements ProductQueryRepository {
 
     private final EntityManager em;
     private final JPAQueryFactory query;
-    private final StockJpaRepository stockJpaRepository;
-    private final ProdLikeJpaRepository prodLikeJpaRepository;
+    private final StockRepository stockRepository;
+    private final ProdLikeRepository prodLikeRepository;
 
     public Map<Long, List<ActivatedStock>> getActivatedStock(LocalDate refDate) {
 
@@ -92,7 +94,7 @@ public class ProductRepositoryImpl implements ProductRepository {
                 .fetchAll()
                 .stream()
                 .map(productEntity -> {
-                    int prodLikeCount = prodLikeJpaRepository.countByProdLikeIds(ProdLikeIds.builder()
+                    int prodLikeCount = prodLikeRepository.countByProdLikeIds(ProdLikeIds.builder()
                             .iusers(productEntity.getUser().getId())
                             .iproduct(productEntity.getId())
                             .build());
@@ -111,7 +113,7 @@ public class ProductRepositoryImpl implements ProductRepository {
                             .prodLike(prodLikeCount)
                             //FIXME -> enum 숫자 2차때랑 동일하게 변경. (ordinal 로 불가능한것은 value 설정 하기
                             .istatus(productEntity.getStatus().getCode())
-                            .inventory(stockJpaRepository.countById(productEntity.getId()))
+                            .inventory(stockRepository.countById(productEntity.getId()))
                             .isLiked(prodLikeCount == 1 ? 1 : 0)
                             .view(productEntity.getView())
                             .categories(Categories.builder()
