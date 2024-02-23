@@ -68,6 +68,8 @@ public class TossVerificationRequester {
 
         return VerificationReadyVo.builder()
                 .id(info.getId())
+                .success(verificationReadyResponse.getSuccess())
+                .fail(verificationReadyResponse.getFail())
                 .resultType(verificationReadyResponse.getResultType())
                 .build();
     }
@@ -89,11 +91,11 @@ public class TossVerificationRequester {
 
     }
 
-    public CheckResponseVo check(Long id) {
+    public CheckResponseVo check(VerificationInfo info) {
         TossCertSession session = generator.generate();
         String sessionKey = session.getSessionKey();
 
-        VerificationInfo info = repository.findById(id).orElseThrow(() -> new ClientException(ErrorCode.ILLEGAL_EX_MESSAGE, "존재하지 않는 결제건"));
+//        VerificationInfo info = repository.findById(id).orElseThrow(() -> new ClientException(ErrorCode.ILLEGAL_EX_MESSAGE, "존재하지 않는 결제건"));
 
         CheckRequestDto dto = CheckRequestDto.builder()
                 .txId(info.getTxId())
@@ -121,12 +123,11 @@ public class TossVerificationRequester {
         }
 
 
-        return decode(id, session, resultDto);
+        return decode(session, resultDto);
     }
 
-    private CheckResponseVo decode(Long id, TossCertSession session, CheckResultDto dto) {
+    private CheckResponseVo decode(TossCertSession session, CheckResultDto dto) {
         return CheckResponseVo.builder()
-                .id(id)
                 .name(session.decrypt(dto.getSuccess().getPersonalData().getName()))
                 .gender(session.decrypt(dto.getSuccess().getPersonalData().getGender()))
                 .birthday(session.decrypt(dto.getSuccess().getPersonalData().getBirthday()))
