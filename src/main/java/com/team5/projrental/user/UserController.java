@@ -26,12 +26,13 @@ import org.springframework.web.multipart.MultipartFile;
 public class UserController {
     private final UserService service;
 
+    // FIXME : 해당 부분의 리턴을 uuid 말고 그냥 본인인증 테이블의 generated key 를 리턴할까 싶다. -> 보안상 문제가 없을거 같고, 있다고해도 uuid 라고 다를것 없어 보인다.
     @PostMapping("/verification")
     @Operation(summary = "본인인증 요청", description = "본인 요청하기")
     public VerificationReadyVo readyVerification(@RequestBody VerificationUserInfo userInfo){
         return service.readyVerification(userInfo);
     }
-
+    // FIXME : 해당 부분의 리턴을 uuid 말고 그냥 본인인증 테이블의 generated key 를 리턴할까 싶다. -> 보안상 문제가 없을거 같고, 있다고해도 uuid 라고 다를것 없어 보인다.
     @GetMapping("/verification")
     @Operation(summary = "본인인증 결과 확인", description = "본인인증 수행 햇는지 확인")
     public CheckResponseVo checkVerification(String uuid){
@@ -65,7 +66,7 @@ public class UserController {
             , @Parameter(name = "staredAt", description = "개업일")
             , @Parameter(name = "compNm", description = "회사이름")
             , @Parameter(name = "isValid", description = "중복체크 ( 완료되었다면 2) ")
-            , @Parameter(name = "uuid", description = "???-아무거나 적어줘요")
+            , @Parameter(name = "uuid", description = "본인인증 완료시 리턴해주는 uuid 값 다시 제공해주세요")
             , @Parameter(name = "signUpType", description = "회원가입시 유저(1)인지, 기업(2)인지")
 
     })

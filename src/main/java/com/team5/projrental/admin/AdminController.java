@@ -80,7 +80,7 @@ public class AdminController {
     }
 
     @GetMapping("/user")
-    public GetUsersListVo getAllUsers (long page) {
+    public List<GetUsersListVo> getAllUsers (long page) {
 
         return null;
     }

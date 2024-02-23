@@ -47,16 +47,16 @@ public class ProductController {
                     "실패시:<br>" +
                     "message: 에러 발생 사유<br>errorCode: 에러 코드")
     @Validated
-    @GetMapping
-    public ResVo getProdCount(@RequestParam(name = "count", required = false)
-                              Integer count,
-                              @RequestParam(name = "search", required = false)
+    @GetMapping("/{category}/count")
+    public ResVo getProdCount(@PathVariable
+                              Integer category,
+                              @RequestParam(required = false)
                               @Length(min = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
                               String search,
-                              @RequestParam(name = "mc", required = false)
+                              @RequestParam("mc")
                               @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
                               Integer imainCategory,
-                              @RequestParam(name = "sc", required = false)
+                              @RequestParam(name = "sc")
                               @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
                               Integer isubCategory) {
         return null;
@@ -75,34 +75,17 @@ public class ProductController {
                     "실패시:<br>" +
                     "message: 에러 발생 사유<br>errorCode: 에러 코드")
     @Validated
-    @GetMapping("/list")
-    public ResVo getUserProductCount(@RequestParam(name = "count", required = false)
-                                     Integer count,
-                                     @RequestParam(name = "page", required = false)
+    @GetMapping("/list/count")
+    public ResVo getUserProductCount(@RequestParam
                                      @Length(min = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
                                      String page,
-                                     @RequestParam(name = "iuser", required = false)
+                                     @RequestParam(required = false)
                                      @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
                                      Integer iuser) {
         return null;
     }
 
-    @Operation(summary = "해당 상품 찜 토글",
-            description = "<strong>해당 상품 찜하기 - 토글</strong><br>" +
-                    "[ [v] : 필수값 ]<br>" +
-                    "[v]iprod: 상품 pk <br> " +
-                    "성공시: <br>" +
-                    "result: 1 (찜누름)<br><br>" +
-                    "result: -1(찜취소) <br><br>" +
-                    "실패시:<br>" +
-                    "message: 에러 발생 사유<br>errorCode: 에러 코드")
-    @Validated
-    @GetMapping("/fav/")
-    public ResVo toggleFav(@RequestParam(name = "iprod", required = false)
-                           @Min(value = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
-                           Integer iprod) {
-        return null;
-    }
+
 
     @Operation(summary = "전체 작성받은 리뷰수",
             description = "<strong>전체 작성리뷰수/strong><br>" +
@@ -113,33 +96,13 @@ public class ProductController {
                     "실패시:<br>" +
                     "message: 에러 발생 사유<br>errorCode: 에러 코드")
     @Validated
-    @GetMapping("/review/{iproduct}")
-    public ResVo getReviewCount(@RequestParam(name = "count", required = false)
-                                Integer count,
-                                @RequestParam(name = "page", required = false)
-                                @Length(min = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
-                                String page
-    ) {
+    @GetMapping("/review/{iproduct}/count")
+    public ResVo getReviewCount(@PathVariable(required = false)
+                                Integer iproduct) {
         return null;
     }
 
-    @Operation(summary = "전체 작성받은 리뷰수",
-            description = "<strong>상품에 작성 받은 리뷰</strong><br>" +
-                    "[ [v] : 필수값 ]<br>" +
-                    "[v] page: 페이징" +
-                    "[v]iproduct: 상품 pk<br> " +
-                    "성공시: <br>" +
-                    "result: count(전체리뷰수)<br><br>" +
-                    "실패시:<br>" +
-                    "message: 에러 발생 사유<br>errorCode: 에러 코드")
-    @Validated
-    @GetMapping("/review/{iproduct}")
-    public getReviewedListVo getReviewedList(@RequestParam(name = "page", required = false)
-                                 @Length(min = 1, message = ILLEGAL_RANGE_EX_MESSAGE)
-                                 String page
-    ) {
-        return null;
-    }
+
 
 
     @Operation(summary = "메인페이지용 카테고리별 상품 (8개씩 조회)",
@@ -443,6 +406,8 @@ public class ProductController {
                                               Integer page) {
         return productService.getAllReviews(iproduct, page);
     }
+
+
 
     @Operation(summary = "월별 대여 불가능한 날짜들 조회",
             description = "성공시:<br>" +

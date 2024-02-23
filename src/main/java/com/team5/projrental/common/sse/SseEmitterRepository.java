@@ -1,7 +1,7 @@
 package com.team5.projrental.common.sse;
 
 import com.team5.projrental.common.sse.model.FindDiffUserDto;
-import com.team5.projrental.common.sse.model.RejectMessageInfo;
+import com.team5.projrental.common.sse.model.SseMessageInfo;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -21,7 +21,7 @@ public class SseEmitterRepository {
         return emitterMapper.findDiffUserBy(ipayment, iuser);
     }
 
-    public List<RejectMessageInfo> findRejectedMessage(Long iuser) {
+    public List<SseMessageInfo> findRejectedMessage(Long iuser) {
         return emitterMapper.findRejectedMessage(iuser);
     }
 
@@ -29,7 +29,7 @@ public class SseEmitterRepository {
         return emitterMapper.deleteRejectedMessage(iuser);
     }
 
-    public int savePushInfoWhenNotExistsEmitterInMap(RejectMessageInfo dto) {
+    public int savePushInfoWhenNotExistsEmitterInMap(SseMessageInfo dto) {
         return emitterMapper.savePushInfoWhenNotExistsEmitterInMap(dto);
     }
 

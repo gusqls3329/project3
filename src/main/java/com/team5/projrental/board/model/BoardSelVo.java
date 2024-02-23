@@ -15,13 +15,13 @@ public class BoardSelVo {
     private String nick;
     private String userPic;
 
-    private Integer isLiked;
+    private int isLiked;
 
-    private Integer iboard;
+    private int iboard;
     private String title;
     private String contents;
-    private Integer view;
-    private LocalDateTime createdAt;
+    private int view;
+    private String createdAt;
     private List<String> pic;
 
     private List<BoardCommentSelVo> comments;

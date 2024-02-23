@@ -196,7 +196,7 @@ public class UserService {
         return SigninVo.builder()
                 .result(String.valueOf(Const.SUCCESS))
                 .iuser(iuser)
-                .auth(auth)
+                .auth(auth.getIauth())
 //                .firebaseToken(entity.getFirebaseToken())
                 .accessToken(at)
                 .build();
@@ -280,13 +280,13 @@ public class UserService {
         if (dto == null) dto = new ChangeUserDto();
         Auth loginUserAuth = authenticationFacade.getLoginUserAuth();
         if (loginUserAuth == Auth.USER) {
-            dto.setCompCode(0);
-            dto.setCompNm(null);
+//            dto.setCompCode(0);
+//            dto.setCompNm(null);
         }
         if (loginUserAuth == Auth.COMP) {
-            if (dto.getCompCode() != 0 && dto.getCompCode() < 1000000000 || dto.getCompCode() > 9999999999L) {
-                throw new BadInformationException(ILLEGAL_RANGE_EX_MESSAGE);
-            }
+//            if (dto.getCompCode() != 0 && dto.getCompCode() < 1000000000 || dto.getCompCode() > 9999999999L) {
+//                throw new BadInformationException(ILLEGAL_RANGE_EX_MESSAGE);
+//            }
 
         }
 
@@ -296,7 +296,7 @@ public class UserService {
 
         CommonUtils.ifContainsBadWordThrow(BadWordException.class, BAD_WORD_EX_MESSAGE,
                 dto.getNick() == null ? "" : dto.getNick(),
-                dto.getCompNm() == null ? "" : dto.getCompNm(),
+//                dto.getCompNm() == null ? "" : dto.getCompNm(),
                 dto.getRestAddr() == null ? "" : dto.getRestAddr());
 
         Long loginUserPk = authenticationFacade.getLoginUserPk();
@@ -420,13 +420,13 @@ public class UserService {
             vo.setEmail(null);
         }
 
-        if (vo.getAuth() == Auth.COMP) {
-            CompInfoDto compInf = mapper.getCompInf(actionIuser);
-            CommonUtils.ifAllNullThrow(BadInformationException.class, BAD_INFO_EX_MESSAGE,
-                    compInf);
-            vo.setCompCode(compInf.getCompCode());
-            vo.setCompNm((compInf.getCompNm()));
-        }
+//        if (vo.getAuth() == Auth.COMP) {
+//            CompInfoDto compInf = mapper.getCompInf(actionIuser);
+//            CommonUtils.ifAllNullThrow(BadInformationException.class, BAD_INFO_EX_MESSAGE,
+//                    compInf);
+//            vo.setCompCode(compInf.getCompCode());
+//            vo.setCompNm((compInf.getCompNm()));
+//        }
         return vo;
     }
 

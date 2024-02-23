@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,8 +21,15 @@ public class ChatController {
 
     private final ChatService service;
 
-    @Validated
 
+    @Operation(summary = "로그인한 유저의 모든채팅방 개수출력")
+    @GetMapping("/{iuser}/count")
+    public ResVo getChatCount(@RequestParam(defaultValue = "1")@Range(min = 1) long page) {
+        return null;
+    }
+
+
+    @Validated
     @GetMapping
     @Operation(summary = "대화중인 리스트 출력", description = "대화중인 채팅 리스트 출력")
     @Parameters(value = {
