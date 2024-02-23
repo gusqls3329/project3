@@ -4,9 +4,11 @@ import com.team5.projrental.common.Const;
 import com.team5.projrental.common.exception.ErrorCode;
 import com.team5.projrental.common.exception.ErrorMessage;
 import com.team5.projrental.common.exception.base.BadInformationException;
+import com.team5.projrental.common.exception.thrid.ClientException;
 import com.team5.projrental.common.security.AuthenticationFacade;
 import com.team5.projrental.common.utils.CommonUtils;
 import com.team5.projrental.entities.enums.PaymentInfoStatus;
+import com.team5.projrental.entities.enums.ReviewStatus;
 import com.team5.projrental.payment.review.model.*;
 import com.team5.projrental.user.model.CheckIsBuyer;
 import lombok.RequiredArgsConstructor;
@@ -29,12 +31,12 @@ public class PaymentReviewService {
     public int postReview(RivewDto dto) {
         Long loginUserPk = authenticationFacade.getLoginUserPk();
         dto.setIuser(loginUserPk);
-
+        dto.setStatus(ReviewStatus.EXISTENCE.name());
         // 0: 리뷰를 작성하지 않음
         // null: not null
         // contents 도 not null
 
-        //t_payment 상태가 -4 일때만 리뷰쓸수 있도록
+        //결제상태가 완료됨 일때만 리뷰쓸수 있도록
         String istatus = reviewMapper.selReIstatus(dto.getIpayment(), loginUserPk);
         if (istatus == PaymentInfoStatus.COMPLETED.toString()) {
             //로그인한 유저가 리뷰를 적었던건지 확인하는것
@@ -52,6 +54,7 @@ public class PaymentReviewService {
                 }
 
                 if (buyCheck.getIsBuyer() == 1) {
+
                     if (dto.getRating() == null && (dto.getContents() == null || dto.getContents().equals(""))) {
                         throw new BadInformationException(ILLEGAL_EX_MESSAGE);
                     }
@@ -147,10 +150,11 @@ public class PaymentReviewService {
                     uprating.setIuser(chIuser);
                     uprating.setRating(averageRat);
                     int upRating = reviewMapper.upRating(uprating);
-
+                    if(upRating == 0){
+                        throw new ClientException(SERVER_ERR_MESSAGE);
+                    }
+                    return Const.SUCCESS;
                 }
-
-                return Const.SUCCESS;
             }
             throw new BadInformationException(NO_SUCH_REVIEW_EX_MESSAGE);
         }

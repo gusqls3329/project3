@@ -32,6 +32,8 @@ public class QReview extends EntityPathBase<Review> {
 
     public final NumberPath<Long> rating = createNumber("rating", Long.class);
 
+    public final EnumPath<com.team5.projrental.entities.enums.ReviewStatus> status = createEnum("status", com.team5.projrental.entities.enums.ReviewStatus.class);
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
 

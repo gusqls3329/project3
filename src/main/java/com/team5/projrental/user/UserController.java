@@ -31,19 +31,21 @@ public class UserController {
 
     // FIXME : 해당 부분의 리턴을 uuid 말고 그냥 본인인증 테이블의 generated key 를 리턴할까 싶다. -> 보안상 문제가 없을거 같고, 있다고해도 uuid 라고 다를것 없어 보인다.
     @PostMapping("/verification")
-    @Operation(summary = "본인인증 요청", description = "본인 요청하기")
+    @Operation(summary = "본인인증 요청", description = "본인 요청하기\n" + "성공 : resultType, iverification_info();"
+    )
     public VerificationReadyVo readyVerification(@RequestBody VerificationUserInfo userInfo){
         return service.readyVerification(userInfo);
     }
     // FIXME : 해당 부분의 리턴을 uuid 말고 그냥 본인인증 테이블의 generated key 를 리턴할까 싶다. -> 보안상 문제가 없을거 같고, 있다고해도 uuid 라고 다를것 없어 보인다.
     @GetMapping("/verification")
-    @Operation(summary = "본인인증 결과 확인", description = "본인인증 수행 햇는지 확인")
+    @Operation(summary = "본인인증 결과 확인", description = "본인인증 수행 햇는지 확인"+ "성공 : name, birthday, gender, nationality"
+            )
     public CheckResponseVo checkVerification(String uuid){
         return service.checkVerification(uuid);
     }
 
     @PostMapping("/check")
-    @Operation(summary = "중복확인", description = "uid, nick 중복확인")
+    @Operation(summary = "중복확인", description = "uid, nick 중복확인" + " 1(or 0을 제외한 int): 성공\n" + "실패: errorMessage" )
     @Parameters(value = {
             @Parameter(name="div", description = "div:1 - nick 중복확인 <br>div:2 - uid 중복확인")
             , @Parameter(name="uid", description = "아이디")
@@ -54,7 +56,8 @@ public class UserController {
     }
 
     @PostMapping(value = "/signup", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @Operation(summary = "회원가입", description = "유저 회원가입, 권한이 리턴됨")
+    @Operation(summary = "회원가입", description = "유저 회원가입, 권한이 리턴됨"
+            + " 1(or 0을 제외한 int): 성공\n" + "실패: errorMessage")
     @Parameters(value = {
             @Parameter(name="addr", description = "동/면/읍까지의 주소")
             , @Parameter(name="restAddr", description = "나머지 주소")
@@ -87,7 +90,7 @@ public class UserController {
     }
 
     @Operation(summary = "fireBaseToken 등록", description = "발급받은 해당 유저의 브라우저에 발급된 " +
-            "fireBaseToken 을 로그인한 유저에 등록")
+            "fireBaseToken 을 로그인한 유저에 등록" + " 1(or 0을 제외한 int): 성공\n" + "실패: errorMessage")
     @Parameters(value = {
             @Parameter(name = "firebaseToken", description = "토큰값")
     })
@@ -97,7 +100,7 @@ public class UserController {
         return service.patchToken(dto);
     }
 
-    @Operation(summary = "로그아웃", description = "토큰만료시 자동 로그아웃")
+    @Operation(summary = "로그아웃", description = "토큰만료시 자동 로그아웃"+ " 1(or 0을 제외한 int): 성공\n" + "실패: errorMessage")
     @GetMapping("/signout")
     public ResVo getSignOut(HttpServletResponse res){
         return new ResVo(service.getSignOut(res));
@@ -113,7 +116,7 @@ public class UserController {
         return service.patchUserFirebaseToken(dto);
     }
     @Validated
-    @Operation(summary = "아이디 찾기", description = "유저 아이디 찾기(iauth:권한) ")
+    @Operation(summary = "아이디 찾기", description = "유저 아이디 찾기(iauth:권한)\n "+"성공 : string(아이디)\n"+  "실패: errorMessage")
     @Parameters(value = {
             @Parameter(name = "phone", description = "휴대폰 번호 (형식 : 010-1111-2222)")
     })
@@ -125,7 +128,7 @@ public class UserController {
         return service.getFindUid(phone);
     }
 
-    @Operation(summary = "비밀번호 변경", description = "비밀번호 찾기 불가능, 비밀번호 수정, 권한이 리턴됨")
+    @Operation(summary = "비밀번호 변경", description = "비밀번호 찾기 불가능, 비밀번호 수정, 권한이 리턴됨"+ " 1(or 0을 제외한 int): 성공\n" + "실패: errorMessage")
     @Parameters(value = {
             @Parameter(name = "uid", description = "아이디")
             , @Parameter(name = "phone", description = "휴대폰 번호 (형식 : 010-1111-2222)")
@@ -136,7 +139,7 @@ public class UserController {
         return new ResVo(service.getFindUpw(dto));
     }
 
-    @Operation(summary = "회원정보 수정", description = "닉네임, 프로필 사진, 비밀번호 수정, 위치 수정")
+    @Operation(summary = "회원정보 수정", description = "닉네임, 프로필 사진, 비밀번호 수정\n, 위치 수정"+ " 1(or 0을 제외한 int): 성공\n" + "실패: errorMessage")
     @Parameters(value = {
             @Parameter(name = "addr", description = "동/면/읍까지의 주소")
             , @Parameter(name = "restAddr", description = "나머지 주소")
@@ -153,7 +156,7 @@ public class UserController {
         return new ResVo(service.putUser(dto, pic));
     }
 
-    @Operation(summary = "회원탈퇴", description = "유저 삭제 : 유저정보, 상품, 결제정보 등 삭제")
+    @Operation(summary = "회원탈퇴", description = "유저 삭제 : 유저정보, 상품, 결제정보 등 삭제"+ " 1(or 0을 제외한 int): 성공\n" + "실패: errorMessage")
     @Parameters(value = {
             @Parameter(name = "uid", description = "아이디")
             , @Parameter(name = "upw", description = "비밀번호")
@@ -164,7 +167,16 @@ public class UserController {
         return new ResVo(service.patchUser(dto));
     }
 
-    @Operation(summary = "유저 정보 조회", description = "유저 개인 정보 조회, (iauth:권한)")
+    @Operation(summary = "유저 정보 조회", description = "유저 개인 정보 조회, (iauth:권한)"+ " 성공시: y" +
+            "  x," +
+            "  addr," +
+            " rest_addr, " +
+            " nick," +
+            "  storedPic," +
+            "  phone," +
+            "  email," +
+            "  rating, " +
+            "auth")
     @Parameters(value = {
             @Parameter(name = "tar", description = "유저 Pk값")
     })

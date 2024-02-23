@@ -59,8 +59,8 @@ public class UserSignupDto {
     @Range(min = 2, max = 2, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
     private Integer isValid;
 
-    //uuid : 본인인증 (조인테이블)
-    private String uuid;
+    @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
+    private Long iverificationInfo;
 
     @JsonIgnore
     private double x;

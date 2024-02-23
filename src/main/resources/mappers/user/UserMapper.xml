@@ -16,12 +16,7 @@
         , y = #{y}
         , x = #{x}
     </insert>
-    <insert id="insCom">
-        INSERT INTO comp_info
-        set comp_code = #{compCode}
-        , comp_nm = #{compNm}
-        , iuser = #{iuser}
-    </insert>
+
     <select id="selUserSignup">
         select
     </select>
@@ -45,18 +40,6 @@
         WHERE iuser = #{iuser}
     </update>
 
-    <select id="selFindUid">
-        SELECT uid, upw, auth
-        FROM users
-        WHERE phone = #{phone}
-    </select>
-
-    <update id="upFindUpw">
-        UPDATE users
-        SET upw = #{upw}
-        WHERE phone = #{phone}
-        and uid = #{uid}
-    </update>
 
     <update id="changeUser">
         UPDATE users us
@@ -150,12 +133,10 @@
     </delete>
     <!--    -->
     <select id="selUser">
-        SELECT u.y,c.y, c.x, u.x, u.nick, c.nick, c.stored_pic as storedPic, u.stored_pic as storedPic, us.phone, us.email, u.rating, c.rating,  u.addr, c.addr, u.rest_addr as restAddr, c.rest_addr AS restAddr, us.auth
+        SELECT u.y, u.x, u.nick, u.stored_pic as storedPic, us.phone, us.email, u.rating,  u.addr, u.rest_addr as restAddr, us.auth
         FROM users us
         Left JOIN user u
         ON us.iuser = u.iuser
-        Left JOIN comp c
-        ON c.iuser = us.iuser
         WHERE us.iuser = #{iuser}
     </select>
 
@@ -186,65 +167,12 @@
         WHERE uid = #{obj}
     </select>
 
-    <select id="checkUserNickComp">
-        SELECT count(iuser)
-        FROM comp
-        WHERE nick = #{obj}
-    </select>
+
     <select id="checkUserNickUser">
         SELECT count(iuser)
         FROM user
         WHERE nick = #{obj}
     </select>
 
-    <select id="getCompInf">
-        SELECT comp_code as compCode, comp_nm as compNm
-        FROM comp
-        WHERE iuser = #{iuser}
-    </select>
 
-    <update id="changeCompInfo">
-        uUPDATE users us
-        Left JOIN comp c
-        ON c.iuser = us.iuser
-        <set>
-            <if test="nick != null and nick != '' ">
-                c.nick =#{nick}
-            </if>
-            <if test="chPic != null and chPic != '' ">
-                , c.stored_pic =#{chPic}
-            </if>
-            <if test="upw != null and upw != '' ">
-                , us.upw =#{upw}
-            </if>
-            <if test="phone != null and phone != '' ">
-                , us.phone =#{phone}
-            </if>
-            <if test="addr != null and addr != '' ">
-                , c.addr = #{addr}
-                , c.y = #{y}
-                , c.x = #{x}
-            </if>
-            <if test="restAddr != null and restAddr != '' ">
-                ,c.rest_addr =#{restAddr}
-            </if>
-            <if test="email != null and email != '' ">
-                ,us.email = #{email}
-            </if>
-            <if test="compCode != null and compCode > 0">
-                c.comp_code = #{compCode}
-            </if>
-            <if test="compNm != null">
-                , c.comp_nm = #{compNm}
-            </if>
-            <if test="compCeo != null">
-                , c.comp_ceo = #{compCeo}
-            </if>
-            <if test="staredAt != null">
-                , c.stared_at = #{staredAt}
-            </if>
-
-        </set>
-        where us.iuser = #{iuser}
-    </update>
 </mapper>

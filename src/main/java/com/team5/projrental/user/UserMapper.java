@@ -8,12 +8,9 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
     int insUser(UserSignupProcDto dto);
-    int insCom(UserSignUpComDto dto);
     UserEntity selSignin(SigninDto dto);
     int updUserFirebaseToken(UserFirebaseTokenPatchDto dto);
 
-    FindUidVo selFindUid(FindUidDto phone);
-    int upFindUpw(FindUpwDto dto);
     int changeUser(ChangeUserDto dto);
     int delUser(DelUserDto dto);
     List<SeldelUserPayDto> seldelUserPay(int iuser);
@@ -25,7 +22,6 @@ public interface UserMapper {
     Integer selpatchUser(int iuser);
 
     Integer checkUserUid(String dto);
-    Integer checkUserNickComp(String dto);
     Integer checkUserNickUser(String dto);
 
     // 채팅 삭제 관련
@@ -34,10 +30,6 @@ public interface UserMapper {
     Long delUserChat(Long iuser);
 
     int patchToken(UserFirebaseTokenPatchDto dto);
-
-    CompInfoDto getCompInf(Long iuser);
-
-    int changeCompInfo(ChangeUserDto dto);
 
     //예외
     SelSigninVo selLoginStatus(SigninDto dto);
