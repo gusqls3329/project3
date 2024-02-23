@@ -28,9 +28,6 @@ import com.team5.projrental.entities.inheritance.Users;
 import com.team5.projrental.entities.mappedsuper.BaseUser;
 import com.team5.projrental.user.model.*;
 import com.team5.projrental.user.verification.SignUpVo;
-import com.team5.projrental.user.verification.comp.CompCodeValidator;
-import com.team5.projrental.user.verification.comp.model.CompCodeDto;
-import com.team5.projrental.user.verification.comp.model.CompCodeVo;
 import com.team5.projrental.user.verification.users.TossVerificationRequester;
 import com.team5.projrental.user.verification.users.model.VerificationUserInfo;
 import com.team5.projrental.user.verification.users.model.check.CheckResponseVo;
@@ -60,9 +57,8 @@ import static com.team5.projrental.common.exception.ErrorMessage.BAD_NICK_EX_MES
 public class UserService {
     private final UserMapper mapper;
     private final UserRepository userRepository;
-    private final CompRepository compRepository;
     private final UsersRepository usersRepository;
-    //
+
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final SecurityProperties securityProperties;
@@ -72,7 +68,6 @@ public class UserService {
     private final MyFileUtils myFileUtils;
     private final TossVerificationRequester tossVerificationRequester;
     private final JPAQueryFactory queryFactory;
-    private final CompCodeValidator validator;
 
     @Value("${spring.config.activate.on-profile}")
     private String profile;
@@ -104,7 +99,6 @@ public class UserService {
 
         String path = Const.CATEGORY_USER + "/" + dto.getIuser();
         myFileUtils.delFolderTrigger(path);
-
 
             if (dto.getPic() != null) {
                 try {
@@ -138,7 +132,7 @@ public class UserService {
 //        UserEntity entity = mapper.selSignin(dto);
 
         User user = null;
-        Comp comp = null;
+
         Users findUsers = usersRepository.findByUid(dto.getUid());
         if (findUsers == null) {
             throw new ClientException(ErrorCode.NO_SUCH_ID_EX_MESSAGE, "아이디가 존재하지 않음");
@@ -151,18 +145,13 @@ public class UserService {
             user = (User) findUsers;
             password = user.getUpw();
             iuser = user.getId();
-        } else {
-            comp = (Comp) findUsers;
-            password = comp.getUpw();
         }
-
-
 
         QUsers users = QUsers.users;
         queryFactory.select(users)
                 .from();
 
-        if (user == null && comp == null) {
+        if (user == null) {
             throw new NoSuchDataException(NO_SUCH_ID_EX_MESSAGE);
         } else if (!passwordEncoder.matches(dto.getUpw(), password)) {
             throw new NoSuchDataException(NO_SUCH_PASSWORD_EX_MESSAGE);
@@ -171,13 +160,10 @@ public class UserService {
 
 
         SelSigninVo vo = mapper.selLoginStatus(dto);
-        if(CompStatus.HIDE.toString().equals(vo.getCstatus())  || UserStatus.HIDE.toString().equals(vo.getUstatus())){
+        if( UserStatus.HIDE.toString().equals(vo.getUstatus())){
             throw new ClientException(NO_SUCH_USER_HIDE_MESSAGE);
         }
-        if(CompStatus.WAIT.toString().equals(vo.getCstatus()) ){
-            throw new ClientException(NO_SUCH_USER_WAIT_MESSAGE);
-        }
-        if(CompStatus.COMPANION.toString().equals(vo.getCstatus())|| UserStatus.COMPANION.toString().equals(vo.getUstatus()) ){
+        if(UserStatus.COMPANION.toString().equals(vo.getUstatus()) ){
             throw new ClientException(NO_SUCH_USER_COMPANION_MESSAGE);
         }
         SecurityPrincipal principal = SecurityPrincipal.builder()
@@ -250,7 +236,20 @@ public class UserService {
         }
         throw new BadInformationException(AUTHENTICATION_FAIL_EX_MESSAGE);
     }
+    @Transactional
+    public FindUidVo getFindUid(String phone) {
+        Users users = userRepository.findByUid(phone);
+        return FindUidVo.builder().uid(users.getUid()).build();
+    }
+    @Transactional
+    public int getFindUpw(FindUpwDto dto) {
+        User findUser = (User) userRepository.findByUid(dto.getUid());
+        findUser.setUpw(dto.getUpw());
 
+        return Const.SUCCESS;
+    }
+
+/*
     public FindUidVo getFindUid(FindUidDto phone) {
         FindUidVo vo = mapper.selFindUid(phone);
 
@@ -261,8 +260,8 @@ public class UserService {
 
         vo.setUid(vo.getUid().substring(0, 4) + "*".repeat(vo.getUid().substring(4).length()));
         return vo;
-    }
-
+    }*/
+/*
     public int getFindUpw(FindUpwDto dto) {
         String hashedPw = BCrypt.hashpw(dto.getUpw(), BCrypt.gensalt());
         dto.setUpw(hashedPw);
@@ -273,22 +272,12 @@ public class UserService {
             return Const.SUCCESS;
         }
         throw new BadInformationException(NO_SUCH_USER_EX_MESSAGE);
-    }
+    }*/
 
     public int putUser(ChangeUserDto dto, MultipartFile pic) {
         if (dto == null && pic == null) throw new BadInformationException(CAN_NOT_BLANK_EX_MESSAGE);
         if (dto == null) dto = new ChangeUserDto();
         Auth loginUserAuth = authenticationFacade.getLoginUserAuth();
-        if (loginUserAuth == Auth.USER) {
-//            dto.setCompCode(0);
-//            dto.setCompNm(null);
-        }
-        if (loginUserAuth == Auth.COMP) {
-//            if (dto.getCompCode() != 0 && dto.getCompCode() < 1000000000 || dto.getCompCode() > 9999999999L) {
-//                throw new BadInformationException(ILLEGAL_RANGE_EX_MESSAGE);
-//            }
-
-        }
 
         if (pic != null) {
             dto.setPic(pic);
@@ -296,7 +285,6 @@ public class UserService {
 
         CommonUtils.ifContainsBadWordThrow(BadWordException.class, BAD_WORD_EX_MESSAGE,
                 dto.getNick() == null ? "" : dto.getNick(),
-//                dto.getCompNm() == null ? "" : dto.getCompNm(),
                 dto.getRestAddr() == null ? "" : dto.getRestAddr());
 
         Long loginUserPk = authenticationFacade.getLoginUserPk();
@@ -332,18 +320,14 @@ public class UserService {
             dto.setUpw(hashedPw);
         }
         int result = 1;
-        int compResult = 1;
         if (CommonUtils.ifAllNullReturnFalse(
                 dto.getNick(), dto.getChPic(), dto.getUpw(),
                 dto.getPhone(), dto.getAddr(),
                 dto.getRestAddr(), dto.getEmail())) {
             result = mapper.changeUser(dto);
         }
-        if (loginUserAuth == Auth.COMP) {
 
-            compResult = mapper.changeCompInfo(dto);
-        }
-        if (result == 1 || compResult == 1) {
+        if (result == 1 ) {
             Auth auth = authenticationFacade.getLoginUserAuth();
             return Const.SUCCESS;
         }
@@ -420,13 +404,6 @@ public class UserService {
             vo.setEmail(null);
         }
 
-//        if (vo.getAuth() == Auth.COMP) {
-//            CompInfoDto compInf = mapper.getCompInf(actionIuser);
-//            CommonUtils.ifAllNullThrow(BadInformationException.class, BAD_INFO_EX_MESSAGE,
-//                    compInf);
-//            vo.setCompCode(compInf.getCompCode());
-//            vo.setCompNm((compInf.getCompNm()));
-//        }
         return vo;
     }
 
