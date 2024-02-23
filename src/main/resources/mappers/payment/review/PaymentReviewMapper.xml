@@ -11,6 +11,7 @@
         ,ipayment = #{ipayment}
         , contents = #{contents}
         , rating = #{rating}
+        , status = #{status}
     </insert>
     <!--selUpProIs: insert를 하고 난후 select가 2개일때 상태를 변경-->
     <select id="selUpProIs">
@@ -45,12 +46,12 @@
         where ireview = #{ireview}
     </update>
 
-    <delete id="delReview">
-        DELETE
-        from review
-        WHERE ireview = #{ireview}
+    <update id="delReview">
+        update review
+        set status = DELETE
+        WHERE status = #{ireview}
         AND iusers = #{iuser}
-    </delete>
+    </update>
 
     <select id="selReIstatus">
         SELECT status
