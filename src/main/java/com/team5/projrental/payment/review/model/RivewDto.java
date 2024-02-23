@@ -28,4 +28,8 @@ public class RivewDto {
     @JsonIgnore
     private Long ireview;
 
+    @JsonIgnore
+    private String status;
+
+
 }

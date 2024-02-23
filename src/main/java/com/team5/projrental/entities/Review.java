@@ -1,6 +1,8 @@
 package com.team5.projrental.entities;
 
 
+import com.team5.projrental.entities.enums.ReviewStatus;
+import com.team5.projrental.entities.enums.UserStatus;
 import com.team5.projrental.entities.ids.PaymentInfoIds;
 import com.team5.projrental.entities.inheritance.Users;
 import com.team5.projrental.entities.mappedsuper.UpdatedAt;
@@ -22,6 +24,8 @@ public class Review extends UpdatedAt {
     @Column(name = "ireview")
     private Long id;
 
+    @Enumerated(EnumType.STRING)
+    private ReviewStatus status;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ipayment")

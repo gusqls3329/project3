@@ -56,7 +56,6 @@ public class UserService {
     private final UserMapper mapper;
     private final UserRepository userRepository;
     private final UsersRepository usersRepository;
-
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final SecurityProperties securityProperties;
@@ -100,6 +99,7 @@ public class UserService {
                 .build();
     }
 
+
     @Transactional
     public CheckResponseVo checkVerification(Long id) {
         VerificationInfo info = tossVerificationRepository.findById(id).orElseThrow(() -> new ClientException(ILLEGAL_EX_MESSAGE, "본인인증 내역이 없습니다."));
@@ -136,16 +136,16 @@ public class UserService {
         String path = Const.CATEGORY_USER + "/" + dto.getIuser();
         myFileUtils.delFolderTrigger(path);
 
-            if (dto.getPic() != null) {
-                try {
-                    String savedPicFileNm = String.valueOf(
-                            myFileUtils.savePic(dto.getPic(), Const.CATEGORY_USER,
-                                    String.valueOf(dto.getIuser())));
-                    dto.setChPic(savedPicFileNm);
-                } catch (FileNotContainsDotException e) {
-                    throw new BadInformationException(BAD_PIC_EX_MESSAGE);
-                }
+        if (dto.getPic() != null) {
+            try {
+                String savedPicFileNm = String.valueOf(
+                        myFileUtils.savePic(dto.getPic(), Const.CATEGORY_USER,
+                                String.valueOf(dto.getIuser())));
+                dto.setChPic(savedPicFileNm);
+            } catch (FileNotContainsDotException e) {
+                throw new BadInformationException(BAD_PIC_EX_MESSAGE);
             }
+
             baseUser.setStoredPic(dto.getChPic());
             //baseUser.setStatus(dto.get);
             User user = new User();
@@ -161,7 +161,7 @@ public class UserService {
             user.setVerificationInfo(info);
             userRepository.save(user);
 
-            return Const.SUCCESS;
+        return Const.SUCCESS;
     }
 
 
@@ -195,12 +195,11 @@ public class UserService {
         }
 
 
-
         SelSigninVo vo = mapper.selLoginStatus(dto);
-        if( UserStatus.HIDE.toString().equals(vo.getUstatus())){
+        if (UserStatus.HIDE.toString().equals(vo.getUstatus())) {
             throw new ClientException(NO_SUCH_USER_HIDE_MESSAGE);
         }
-        if(UserStatus.COMPANION.toString().equals(vo.getUstatus()) ){
+        if (UserStatus.COMPANION.toString().equals(vo.getUstatus())) {
             throw new ClientException(NO_SUCH_USER_COMPANION_MESSAGE);
         }
         SecurityPrincipal principal = SecurityPrincipal.builder()
@@ -273,11 +272,13 @@ public class UserService {
         }
         throw new BadInformationException(AUTHENTICATION_FAIL_EX_MESSAGE);
     }
+
     @Transactional
     public FindUidVo getFindUid(String phone) {
         Users users = userRepository.findByUid(phone);
         return FindUidVo.builder().uid(users.getUid()).build();
     }
+
     @Transactional
     public int getFindUpw(FindUpwDto dto) {
         User findUser = (User) userRepository.findByUid(dto.getUid());
@@ -364,7 +365,7 @@ public class UserService {
             result = mapper.changeUser(dto);
         }
 
-        if (result == 1 ) {
+        if (result == 1) {
             Auth auth = authenticationFacade.getLoginUserAuth();
             return Const.SUCCESS;
         }
@@ -436,7 +437,7 @@ public class UserService {
 
         SelUserVo vo = mapper.selUser(actionIuser);
 
-        if(iuser != authenticationFacade.getLoginUserPk()){
+        if (iuser != authenticationFacade.getLoginUserPk()) {
             vo.setPhone(null);
             vo.setEmail(null);
         }
@@ -452,15 +453,14 @@ public class UserService {
     private Integer checkNickOrId(Integer div, String obj) {
         Integer result = null;
         if (div == 1) {
-            result = mapper.checkUserNickComp(obj);
             Integer result1 = mapper.checkUserNickUser(obj);
-            if (result + result1 > 0) {
+            if (result1 == 0) {
                 throw new BadInformationException(BAD_NICK_EX_MESSAGE);
             }
         }
         if (div == 2) {
             result = mapper.checkUserUid(obj);
-            if (result > 0) {
+            if (result == 0) {
                 throw new BadInformationException(BAD_ID_EX_MESSAGE);
             }
         }

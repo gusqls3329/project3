@@ -1,8 +1,6 @@
 package com.team5.projrental.admin;
 
-import com.team5.projrental.admin.model.GetUsersListVo;
-import com.team5.projrental.admin.model.ProfitDto;
-import com.team5.projrental.admin.model.ProfitVo;
+import com.team5.projrental.admin.model.*;
 import com.team5.projrental.common.exception.ErrorMessage;
 import com.team5.projrental.common.model.ResVo;
 import com.team5.projrental.payment.model.PaymentVo;
@@ -22,15 +20,6 @@ import java.util.List;
 @RequestMapping("/api/admin")
 public class AdminController {
     private final AdminService service;
-
-    @GetMapping("/profit")
-    @Operation(summary = "한달간 받은 수익", description = "광고로 받은 수익 표시")
-    public ProfitVo getProfit(@RequestBody ProfitDto dto){
-        return service.getProfit(dto);
-    }
-
-
-
 
     @Operation(summary = "유저 특정 결제정보 조회",
             description = "<strong>유저 특정 결제정보 조회</strong><br>" +
@@ -69,8 +58,10 @@ public class AdminController {
     }
 
 
-
-    @DeleteMapping("/delete")
+    @Operation(summary = "자유게시글 강제 삭제",
+            description = "<strong>신고당한 자유게시글이나 잘못된 게시글 강제 삭제 가능함, sse 푸시를 위해 이벤트 발행 해야함!!!</strong><br>")
+    @Validated
+    @DeleteMapping("/board")
     public ResVo delBoard(@PathVariable
                               @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
                               @Min(value = 1, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)
@@ -79,14 +70,74 @@ public class AdminController {
         return null;
     }
 
+    @Validated
+    @Operation(summary = "전체 *일반* 유저목록 조회",
+            description = "전체 *일반* 유저목록 조회</strong><br>" )
     @GetMapping("/user")
-    public List<GetUsersListVo> getAllUsers (long page) {
+    public List<GetUsersListVo> getAllUsers (@PathVariable
+                                                 @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
+                                                 @Min(value = 1, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)long page) {
 
         return null;
     }
 
 
 
+
+    @Operation(summary = "회원 강제 탈퇴",
+            description = "(자동화는 별도로 존재) 운영자 재량으로 유저 탈퇴, sse 푸시를 위해 이벤트 발행 해야함!!!" )
+    @DeleteMapping("/user")
+    @Validated
+    public ResVo delUser (@PathVariable
+                                             @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
+                                             @Min(value = 1, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)long iuser) {
+
+        return null;
+    }
+
+    @Operation(summary = "전체 신고내역 조회",
+            description = "전체 신고내역 조회" )
+    @GetMapping("/dispute")
+    @Validated
+    public List<GetDisputeListVo> getAllDisputes (@PathVariable
+                                         @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
+                                         @Min(value = 1, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)long page) {
+
+        return null;
+    }
+
+    @Operation(summary = "수리 또는 반려",
+            description = "신고 당한 유저의 내용 파악후 수락, sse 푸시를 위해 이벤트 발행 해야함!!!" )
+    @PostMapping("/dispute")
+    @Validated
+    public List<GetUsersListVo> postDispute (@PathVariable
+                                                @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
+                                                @Min(value = 1, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)long page, @RequestParam postDispute dto) {
+
+        return null;
+    }
+
+    @Operation(summary = "운영자 전체제품 조회",
+            description = "운영자 페이지에서 전체유저의 상품 조회" )
+    @GetMapping("/product")
+    @Validated
+    public List<GetProductListVo> getAllProducts (@PathVariable
+                                             @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
+                                             @Min(value = 1, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)long page) {
+
+        return null;
+    }
+
+    @Operation(summary = "상품 강제 숨김 처리",
+            description = "운영자가 해당 상품을 강제 삭제(숨김처리), sse 푸시를 위해 이벤트 발행 해야함!!!" )
+    @DeleteMapping("/product")
+    @Validated
+    public ResVo patchProduct (@PathVariable
+                                                  @NotNull(message = ErrorMessage.CAN_NOT_BLANK_EX_MESSAGE)
+                                                  @Min(value = 1, message = ErrorMessage.ILLEGAL_RANGE_EX_MESSAGE)long iproduct) {
+
+        return null;
+    }
 
 
 

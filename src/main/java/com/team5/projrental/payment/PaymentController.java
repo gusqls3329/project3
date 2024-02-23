@@ -8,6 +8,8 @@ import com.team5.projrental.payment.model.PaymentInsDto;
 import com.team5.projrental.payment.model.PaymentListVo;
 import com.team5.projrental.payment.model.PaymentVo;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -48,7 +50,7 @@ public class PaymentController {
                     "[ [v] : 필수값 ]<br>" +
                     "[v] ipayment: 요청할 결제의 PK<br>" +
                     "[v] div: 삭제, 숨김, 취소 요청 식별값<br>" +
-                    "     ㄴ> 1: 삭제 요청, 3: 취소 요청<br>" +
+                    "     ㄴ> 1: 삭제 요청, 3: 예약취소 요청<br>" +
                     "<br>" +
                     "성공시: <br>" +
                     "result: <br>" +
@@ -71,8 +73,18 @@ public class PaymentController {
 
 
     @Operation(summary = "특정 결제의 결제정보 조회")
+    @Parameters(value = {
+            @Parameter(name = "ipayment", description = "조회 할 결제pk")})
     @GetMapping("/{ipayment}")
     public paymentInfoVo getPaymentInfo(@PathVariable long ipayment) {
+        return null;
+    }
+
+    @Operation(summary = "특정 결제 취소(예약취소)")
+    @Parameters(value = {
+            @Parameter(name = "ipayment", description = "취소 할 결제pk")})
+    @GetMapping("/cancel/{ipayment}")
+    public ResVo cancelPayment(@PathVariable long ipayment) {
         return null;
     }
 }

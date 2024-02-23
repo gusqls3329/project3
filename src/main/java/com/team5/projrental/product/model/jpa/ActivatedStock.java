@@ -6,12 +6,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
 @Setter
 @Builder
 public class ActivatedStock {
-    private LocalDate date;
+    private LocalDateTime date;
     private List<Stock> activatedStock;
 }
